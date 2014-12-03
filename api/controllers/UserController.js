@@ -13,10 +13,10 @@ module.exports = {
 	insert: function(req,res,next){
 		User.create(req.params.all(),function(err,user){
 			if(err) return next(err);
-			/*res.view({
+			res.view({
 				user:user
-			});*/
-			res.json(user);
+			});
+			
 		});
 	}
 };
