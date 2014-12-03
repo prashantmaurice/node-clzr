@@ -33,5 +33,10 @@
     "url": "git://github.com/vigneshm/project.git"
   },
   "author": "vigneshm",
-  "license": ""
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vigneshm/project/issues"
+  },
+  "homepage": "https://github.com/vigneshm/project",
+  "devDependencies": {}
 }
