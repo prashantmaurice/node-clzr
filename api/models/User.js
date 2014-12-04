@@ -16,6 +16,6 @@ module.exports = {
   		type:'string',
   		email:true
   	}
-  }
+}
 };
 
