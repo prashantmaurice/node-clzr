@@ -45,17 +45,4 @@ module.exports = {
 	}
 
 };
-<<<<<<< HEAD
-=======
 
-show: function (req,res,next) {
-	 User.findOne(req.param	('id'),function foundUser(err,user)
-	 {
-	 	if(err)	return next(err);
-	 	if(!name) return next();
-	 	res.view({
-	 		name: user;
-	 	})
-	 })
-}
->>>>>>> aravind
