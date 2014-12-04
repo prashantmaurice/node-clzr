@@ -18,6 +18,32 @@ module.exports = {
 			});*/
 			res.json(user);
 		});
+	},
+	show: function (req,res,next) {
+	 console.log(req.param('id'));
+	 //res.end();
+	 User.findOne(req.param	('id'),function foundUser(err,user)
+	 {
+	 	if(err)	return next(err);
+	 	if(!user) return next();
+	 		console.log(user.name);
+	 	res.view({
+	 		user: user
+	 	});
+	 //res.json(user);
+	 });
+	},
+
+	index:function(req,res,next)
+	{
+		User.find(function foundUser(err,users){
+		if(err) return next(err);
+		res.json(users);
+		res.view({
+		users:users
+	});
+	});
 	}
+
 };
 
