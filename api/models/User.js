@@ -8,11 +8,11 @@
 module.exports = {
 	schema:true,
   attributes: {
-  	name: {
+  	name:{
   		type:'string',
-  		required:true
+  		required: true,
   	},
-  	email: {
+  	email:{
   		type:'string',
   		email:true
   	}

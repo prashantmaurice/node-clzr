@@ -16,8 +16,11 @@ module.exports = {
 			res.view({
 				user:user
 			});
+<<<<<<< Updated upstream
 			
+=======
+			//res.json(user);
+>>>>>>> Stashed changes
 		});
 	}
 };
-
