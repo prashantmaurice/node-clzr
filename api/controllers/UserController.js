@@ -37,7 +37,7 @@ module.exports = {
 	{
 		User.find(function foundUser(err,users){
 		if(err) return next(err);
-		res.json(users);
+		//res.json(users);
 		res.view({
 		users:users
 	});
