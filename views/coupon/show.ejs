@@ -1,0 +1,14 @@
+<div class='container'>
+	<h2>Coupon No : <%= coupon.number%></h2>
+	<h2>Vendor : <%= coupon.shop%></h2>
+	<h2>Offer tag: <%= coupon.offer%></h2>
+	<h2>Expiry Date: <%= coupon.expiry%></h2>
+	<h2>Visit count: <%= coupon.visitcount%></h2>	
+
+<hr>
+<form action='/coupon/edit/'<%=coupon.id%>method="POST">
+	<input type="hidden" name="_method"value="edit"/>
+	<input type="submit"class="btn btn-default"value="edit"/>
+	<input type="hidden" name="_csrf" value="<%=_csrf%>"/>
+	</form>
+</div>

@@ -1,0 +1,14 @@
+<form action="vendor/update/<%=vendor.id%>"method="POST"class="form-signup">
+<h2>hey you are editing a vendor....</h2>
+<input value="<%=vendor.ID%>"name="number"type="text"class="form-control"/>
+<input value="<%=vendor.name%>"name="name"type="text"class="form-control"/>
+<input value="<%=vendor.activeness%>"name="activeness"type="text"class="form-control"/>
+<input value="<%=vendor.address%>"name="address"type="text"class="form-control"/>
+<input value="<%=vendor.phoneno%>"name="phoneno"type="text"class="form-control"/>
+<input value="<%=vendor.rating%>"name="rating"type="text"class="form-control"/>
+<input value="<%=vendor.ratingcount%>"name="ratingcount"type="text"class="form-control"/>
+<input value="<%=vendor.lat%>"name="latitude"type="text"class="form-control"/>
+<input value="<%=vendor.lon%>"name="longitute"type="text"class="form-control"/>
+<input type="submit"value="proceed"class="btn btn-default"/>
+<input type="hidden" name="_csrf" value="<%=_csrf%>"/>
+</form>

@@ -1,0 +1,35 @@
+<div class="container">
+<h3>Coupons</h3>
+<table class='table'>
+<tr>
+	<th>Vendor ID</th>
+	<th>Vendor Name</th>
+	<th>Vendor activeness</th>
+	<th>Address</th>
+	<th>Phone no</th>
+	<th>Rating</th>
+	<th>Rating count</th>
+	<th>Latitude</th>
+	<th>Longitude</th>
+	
+</tr>
+
+<% _.each(vendors,function(vendor) { %>
+
+<tr data-id="<%= vendor.id %>" data-model="<%= vendor %>">
+	<td><%= vendor.ID %></td>
+	<td><%= vendor.name%></td>
+	<td><%= vendor.activeness%></td>
+	<td><%= vendor.address %></td>
+	<td><%= vendor.phoneno %></td>
+	<td><%= vendor.rating %></td>
+	<td><%= vendor.ratingcount %></td>
+	<td><%= vendor.lat %></td>
+	<td><%= vendor.lon %></td>
+	<td><a href="/vendor/show/<%=vendor.id%>"class="btn btn-default">show</a></td>
+	<td><a href="/vendor/edit/<%=vendor.id%>"class="btn btn-default">edit</a></td>
+	<td><a href="/vendor/destroy/<%=vendor.id%>"class="btn btn-default">destroy</a></td>
+</tr>
+<% }) %>
+</table>
+</div>
