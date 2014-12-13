@@ -1,0 +1,14 @@
+<form action="/location/update/"<%=location.id%>"method="POST"class="form-signup">
+<h2>hey you are editing a location....</h2>
+<input value="<%=location.latitude%>"name="latitude"type="text"class="form-control"/>
+<input value="<%=location.longitude%>"name="longitude"type="text"class="form-control"/>
+<input value="<%=location.country%>"name="country"type="text"class="form-control"/>
+<input value="<%=location.city%>"name="city"type="text"class="form-control"/>
+<input value="<%=location.stateCode%>"name="stateCode"type="text"class="form-control"/>
+<input value="<%=location.zipcode%>"name="zipcode"type="text"class="form-control"/>
+<input value="<%=location.streetName%>"name="streetName"type="text"class="form-control"/>
+<input value="<%=location.streetNumber%>"name="streetNumber"type="text"class="form-control"/>
+<input value="<%=location.c_id%>"name="c_id"type="text"class="form-control"/>
+<input type="submit"value="proceed"class="btn btn-default"/>
+<input type="hidden" name="_csrf" value="<%=_csrf%>"/>
+</form>

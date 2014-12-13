@@ -1,0 +1,34 @@
+<div class="container">
+<h3>Coupons</h3>
+<table class='table'>
+<tr>
+	<th>Latitude</th>
+	<th>Longitude</th>
+	<th>Country</th>
+	<th>City</th>
+	<th>State code</th>
+	<th>Zip code</th>
+	<th>Street number</th>
+	<th>Street name</th>
+	<th>Coupon id</th>
+</tr>
+
+<% _.each(locations,function(location) { %>
+
+<tr data-id="<%= location.id %>" data-model="<%= location %>">
+	<td><%= location.latitude %></td>
+	<td><%= location.longitude%></td>
+	<td><%= location.country %></td>
+	<td><%= location.city %></td>
+	<td><%= location.stateCode %></td>
+	<td><%= location.zipcode %></td>
+	<td><%= location.streetNumber %></td>
+	<td><%= location.streetName %></td>
+    <td><%= location.c_id %></td>
+	<td><a href="/location/show/<%=location.id%>"class="btn btn-default">show</a></td>
+	<td><a href="/location/edit/<%=location.id%>"class="btn btn-default">edit</a></td>
+	<td><a href="/location/destroy/<%=location.id%>"class="btn btn-default">destroy</a></td>
+</tr>
+<% }) %>
+</table>
+</div>
