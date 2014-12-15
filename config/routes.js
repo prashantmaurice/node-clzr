@@ -33,8 +33,66 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
-    view: 'static/home'
+    view: 'homepage'
+  },
+  '/coupon/new':{
+    view: 'coupon/new'
+  },
+  '/coupon/create':{
+    view:'coupon/create'
+  },
+  '/coupon/show':{
+    view:'coupon/show'
+  },
+  '/coupon/edit':{
+    view:'coupon/edit'
+  },
+  '/vendor/new':{
+    view: 'vendor/new'
+  },
+  '/vendor/create':{
+    view:'vendor/create'
+  },
+  '/vendor/show':{
+    view:'vendor/show'
+  },
+  '/vendor/edit':{
+    view:'vendor/edit'
+  },
+
+  '/user/new/':
+  {
+    view:'user/new'
+  },
+  '/user/create':{
+    view:'user/create'
+  },
+  '/user/show':{
+    view:'user/show'
+  },
+  '/user/edit':{
+    view:'user/edit'
+  },
+  '/location/locate':{
+    view:'location/locate'
+  },
+
+  '/location/new/':
+  {
+    view:'location/new'
+  },
+  '/location/create':{
+    view:'location/create'
+  },
+  '/location/show':{
+    view:'location/show'
+  },
+  '/location/edit':{
+    view:'location/edit'
   }
+  
+
+
 
   /***************************************************************************
   *                                                                          *

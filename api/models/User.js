@@ -6,16 +6,32 @@
 */
 
 module.exports = {
-	schema:true,
+  schema:true,
   attributes: {
   	name:{
   		type:'string',
-  		required: true,
+  		required:true
+  	},
+  	phoneno:{
+  		type:'string',
+  		required:true
   	},
   	email:{
   		type:'string',
-  		email:true
-  	}
-}
+  		email:true,
+  		required:true,
+  		unique:true
+  	},
+    password:{
+    	type:'string',
+    	required:true
+    }
+   // visits:
+    //{
+      //[v_id:{type:'string'},count:{type:'INTEGER',default:0}]
+   // }
+   
+
+  }
 };
 

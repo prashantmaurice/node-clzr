@@ -1,0 +1,13 @@
+{
+  "name": "secret-batman-ninja",
+  "version": "0.0.0",
+  "homepage": "https://github.com/SaipraveenB/secret-batman-ninja",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
