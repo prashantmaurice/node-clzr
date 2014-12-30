@@ -1,0 +1,7 @@
+<form action="/shop/update/<%=shop.id%>"method="POST"class="form-signup">
+<h2>hey you are editing a shop....</h2>
+<input value="<%=shop.name%>"name="name"type="text"class="form-control"/>
+<input value="<%=shop.tags%>"name="tags"type="text"class="form-control"/>
+<input type="submit"value="proceed"class="btn btn-default"/>
+<input type="hidden" name="_csrf" value="<%=_csrf%>"/>
+</form>

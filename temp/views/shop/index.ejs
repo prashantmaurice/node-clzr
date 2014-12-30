@@ -1,0 +1,22 @@
+<div class="container">
+<h3>Customers</h3>
+<table class='table'>
+<tr>
+	<th>Shop id</th>
+	<th>Name</th>
+	<th>Tags</th>
+</tr>
+
+<% _.each(shops,function(shop) { %>
+
+<tr data-id="<%= shop.id %>" data-model="<%= shop %>">
+	<td><%= shop.id %></td>
+	<td><%= shop.name%></td>
+	<td><%= shop.tags %></td>
+	<td><a href="/shop/show/<%=shop.id%>"class="btn btn-default">show</a></td>
+	<td><a href="/shop/edit/<%=shop.id%>"class="btn btn-default">edit</a></td>
+	<td><a href="/shop/destroy/<%=shop.id%>"class="btn btn-default">destroy</a></td>
+</tr>
+<% }) %>
+</table>
+</div>
