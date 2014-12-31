@@ -30,6 +30,7 @@ router.get('/get', function (req,res){
 	Vendor.findOne({vendorid:vendorid},function (err,data){
 		if(err) console.log(err);
 		if(data) res.send('vendorid : '+data.vendorid +'<br/>location : '+data.location+'</br>offers list : '+data.offers);
+		else res.end();
 	})
 })
 
