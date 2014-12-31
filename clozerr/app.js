@@ -4,9 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose=require('mongoose');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var offer = require('./routes/offer');
+var vendor = require('./routes/vendor');
 
 var app = express();
 
@@ -22,8 +25,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
 app.use('/users', users);
+app.use('/offer', offer);
+app.use('/vendor', vendor);
+
+// --------- DB ----------
+var db=mongoose.connection;
+db.open('mongodb://localhost/test');
+// --------- DB ----------
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

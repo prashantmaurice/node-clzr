@@ -2,11 +2,6 @@ var express = require('express');
 var mongoose=require('mongoose');
 var router = express.Router();
 
-var db=mongoose.connection;
-/*db.open('mongodb://localhost/test',function (err){
-	console.log(err);
-});
-*/
 var Vendor=mongoose.model('Vendor',{
 	vendorid : Number ,
 	location : {type:[Number],index:'2dsphere'} ,
