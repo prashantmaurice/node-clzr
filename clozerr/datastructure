@@ -1,0 +1,19 @@
+Offer 
+{
+	offerid:Number
+}
+
+Vendor
+{
+	vendorid : Number,
+	location : {type:[Number],index:'2dsphere'}, //2dpoint
+	offers : [Number]
+}
+
+/vendor/create?vendorid=(.)&lat=(.)&lon=(.)
+/vendor/get?vendorid=(.)
+/vendor/getnear?lat=(.)&lon=(.)&distance=(.)
+/vendor/addoffer?vendorid=(.)&offerid=(.)
+
+/offer/create?offerid=(.)
+/offer/get?offerid=(.)
