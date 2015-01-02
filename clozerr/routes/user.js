@@ -13,7 +13,8 @@ var user = models.User;
 function newuserfb(fb){
  var nuser=new user({
   name:'',
-  fb_id:fb
+  fb_id:fb,
+  stamplist:[]
  });
  return nuser;
 }
