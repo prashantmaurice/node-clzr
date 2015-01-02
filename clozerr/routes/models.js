@@ -28,7 +28,8 @@ Models.CheckIn = mongoose.model('CheckIn',new Schema({
 Models.User = mongoose.model('User',new Schema({
     id_type:String,
     social_id:String,
-    type:String
+    type:String,
+    vendor_id:String
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
