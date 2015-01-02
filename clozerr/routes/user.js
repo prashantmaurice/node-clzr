@@ -7,13 +7,10 @@ var settings = require('./settings');
 var https = require('https');
 var mongoose=require('mongoose');
 var Schema=mongoose.Schema;
+var models = require("./models");
 
-var user=mongoose.model('User',new Schema({
-    name:String,
-    fb_id:Number
-}));
-
-function newuser(fb){
+var user = models.User;
+function newuserfb(fb){
  var nuser=new user({
   name:'',
   fb_id:fb
@@ -21,10 +18,13 @@ function newuser(fb){
  return nuser;
 }
 
-var token=mongoose.model('token',new Schema({
-  access_token:String,
-  facebook_id:Number
-}));
+function newusergp(gp){
+  var nuser=new user({
+    name:'',
+    gp_id:gp
+  })
+}
+var token = models.Token;
 
 function newid(tok,acc){
   var nuser_id=new token({
@@ -36,7 +36,7 @@ function newid(tok,acc){
 
 router.get('/facebook/login', function(req, res) {
 
-var request = https.get('https://graph.facebook.com/debug_token?input_token='+req.query.fb_token+'&access_token=643340145745435|nyelclS2lAU75ksOpYtfOLNtwOg', function(response) {
+  var request = https.get('https://graph.facebook.com/debug_token?input_token='+req.query.fb_token+'&access_token=643340145745435|nyelclS2lAU75ksOpYtfOLNtwOg', function(response) {
   debugger;
   console.log("Statuscode: ", response.statusCode);
   console.log("headers: ", response.headers);
@@ -55,19 +55,75 @@ var request = https.get('https://graph.facebook.com/debug_token?input_token='+re
           
         if (result)
          {
+          //console.log(result._id);
+         // res.send(result);
          var id=hat();
          console.log(id);
          debugger;
-         newid(id,result._doc._id.id).save();
-         //res.redirect('/profile?'+id);
+         newid(id,result._id).save();
+          res.redirect('/users/profile/?acc_token='+id)
            } 
            else
-            {
-          newuser(d.data.user_id).save();
+            {var nu=newuserfb(d.data.user_id);
+          nu.save();
           var id=hat();
           console.log(id);
-          newid(id,result._doc._id.id).save(); 
-         // res.redirect('/profile?'+id); 
+          newid(id,nu._id).save(); 
+         res.redirect('/users/profile/?acc_token='+id)
+        }
+      });
+    }else{
+      res.end( JSON.stringify({ result:false, err:{} } ) );
+      // TODO: create error.js
+    }
+
+    });
+
+  });
+
+//req.end();
+
+request.on('error', function(e) {
+    console.error(e);
+});
+
+});
+router.get('/logingp', function(req, res) {
+
+var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=1/'+req.query.gp_token, function(response) {
+  debugger;
+  console.log("Statuscode: ", response.statusCode);
+  console.log("headers: ", response.headers);
+
+  response.on('data', function(d) {
+    debugger;
+    process.stdout.write(d);
+    d=JSON.parse(d);
+    console.log(d.data.is_valid);
+    if( d.data && d.data.is_valid )
+    {
+    //db.collections.find({facebook_user_id:options.user_id});
+     
+      user.findOne({fb_id:d.data.user_id}, function(err, result) {
+        if (err) { console.log("error:",err) }
+          
+        if (result)
+         {
+          //console.log(result._id);
+         // res.send(result);
+         var id=hat();
+         console.log(id);
+         debugger;
+         newid(id,result._id).save();
+          res.redirect('/users/profile/?acc_token='+id)
+           } 
+           else
+            {var nu=newuser(d.data.user_id);
+          nu.save();
+          var id=hat();
+          console.log(id);
+          newid(id,nu._id).save(); 
+         res.redirect('/users/profile/?acc_token='+id)
         }
       });
     }else{
@@ -113,12 +169,25 @@ router.get('/create', function(req, res) {
   });
 
 });
+
 router.get('/profile',function(req,res){
-  token.findOne({access_token:rep.query.access_token},function(err,result){
+  token.findOne({access_token:req.query.acc_token},function(err,result){
+    debugger;
     if(err){console.log("error:",err)}
       if(result)
       {
-        res.send(result);
+        //res.send(result);
+        user.findOne({_id:result.account_id},function(err,resu){
+          debugger;
+          if(err){console.log("error:",err)}
+            if(resu){
+              res.send( JSON.stringify(resu) );
+                }
+                else
+                {
+                  res.send('oops..sry login again');
+                }
+        });
       }
       else
       {

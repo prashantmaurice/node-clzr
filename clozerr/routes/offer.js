@@ -1,16 +1,16 @@
 var express = require('express');
 var mongoose=require('mongoose');
 var router = express.Router();
+var Schema =mongoose.Schema;
 
-
-var Offer=mongoose.model('Offer',{
+var Offer=mongoose.model('Offer',new Schema({
 	//offerid: Number
 	type:String,
 	stamps:String,
 	dateCreated:Date,
 	caption:String,
 	description:String
-});
+}));
 
 router.get('/get', function(req, res) {
 	var id;

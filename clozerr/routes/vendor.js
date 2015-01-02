@@ -5,7 +5,6 @@ var models = require("./models");
 var _ = require("underscore");
 var Vendor = models.Vendor;
 var Q = require("q");
-var vendor_det_ret={};
 
 
 router.get('/create', function (req, res) {
