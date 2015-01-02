@@ -155,10 +155,6 @@ request.on('error', function(e) {
 });
 
 });
-<<<<<<< HEAD
-router.get('/create', function(req, res) {
-=======
-
 router.get('/create', function(req, res) {
       var type = "v";
       if(req.query.vendor_id) {
