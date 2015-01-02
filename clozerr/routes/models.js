@@ -14,6 +14,14 @@ Models.Vendor = mongoose.model('Vendor',{
 
 });
 
+Models.CheckIn = mongoose.model('CheckIn'),{
+	user:String,
+	vendor:String,
+	offer:String,
+	state:int,
+	date_created:Date
+}
+
 Models.User = mongoose.model('User',new Schema({
     name:String,
     fb_id:Number

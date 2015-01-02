@@ -97,7 +97,7 @@ function getOffers( offer_ids ){
 
 router.get('/getnear',function (req,res){
 	var lat,lon,distance,accesstoken,typelist;
-	var vendor_det_ret_arr = [];
+	//var vendor_det_ret_arr = [];
 	if(req.query.lat) lat=req.query.lat;
 	if(req.query.lon) lon=req.query.lon;
 	if(req.query.distance) distance = req.query.distance;
@@ -121,7 +121,7 @@ router.get('/getnear',function (req,res){
                 var plist = [];
 			    for(var i=0;i<vendors.length;i++){
 				    var vendor = vendors[i];
-
+				    
                     plist.push( getOffers( vendor.offers, function( err, offers ){
                         
                         var offers_new = _.filter( offers, function( offer ){
@@ -130,6 +130,12 @@ router.get('/getnear',function (req,res){
                         /*
                          * MAKE VENDOR HERE.
                          */
+                        var vendor_new;
+                        vendor_new.location = vendor.location;
+                        vendor_new.name = vendor.name;
+                        vendor_new.offer = offer;
+                        vendor_new.image = vendor.image;
+                        vendor_new.fid = vendor.fid;
                         vendor_det_ret_arr.push( vendor_new );
                     }) );
                 }
