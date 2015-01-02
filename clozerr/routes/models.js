@@ -2,7 +2,9 @@ var mongoose = require("mongoose");
 
 var Models = {};
 
-Models.Vendor = mongoose.model('Vendor',{
+var Schema = mongoose.Schema;
+
+Models.Vendor = mongoose.model('Vendor',new Schema({
 
 	location : {type:[Number],index:'2dsphere'} ,
 	name:String,
@@ -12,15 +14,15 @@ Models.Vendor = mongoose.model('Vendor',{
 	fid:String,
 	dateCreated:Date
 
-});
+}));
 
-Models.CheckIn = mongoose.model('CheckIn'),{
+Models.CheckIn = mongoose.model('CheckIn',new Schema({
 	user:String,
 	vendor:String,
 	offer:String,
-	state:int,
+	state:Number,
 	date_created:Date
-}
+}));
 
 Models.User = mongoose.model('User',new Schema({
     name:String,
@@ -42,4 +44,4 @@ Models.Offer = mongoose.model('Offer',new Schema({
 
 }));;
 
-modules.exports = Models;
+module.exports = Models;

@@ -6,11 +6,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose=require('mongoose');
 
-var routes = require('./routes/user');
-var users = require('./routes/user');
+var auth = require('./routes/user');
 var offer = require('./routes/offer');
 var vendor = require('./routes/vendor');
-var settings = reqiure('./routes/settings');
+var settings = require('./routes/settings');
 
 var app = express();
 
@@ -26,9 +25,34 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/users', users);
-app.use('/offer', offer);
-app.use('/vendor', vendor);
+app.use('/', function( req, res, next ){
+  if( req.query.access_token ){
+    Token.findOne( { token:access_token }, function( err, data ){
+      if( err ){
+        // TODO: THROW ERROR.
+        return;
+      }
+      User.findOne({ _id: data }, function( err, data ){
+          if( err ){
+            // TODO: THROW ERROR.
+            return;
+          }
+
+          req.user = data;
+          next();
+      });
+
+    });
+  }else{
+    // TODO: SUBSTITUTE req.user with a dummy user object with a blank stamplist.
+    req.user = {};
+    next();
+  }
+
+});
+app.use('/auth', auth);
+//app.use('/offer', offer);
+//app.use('/vendor', vendor);
 
 // --------- DB ----------
 var db=mongoose.connection;

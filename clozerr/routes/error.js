@@ -5,7 +5,7 @@ error.ERR_DESCRIPTION = {
 
 };
 
-error.err( res, code ){
+error.err = function( res, code ){
   res.write({ result:false, err:{ code:code, description:ERR_DESCRIPTION[code] || "No description" } })
 }
 
