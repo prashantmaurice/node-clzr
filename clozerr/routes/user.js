@@ -11,6 +11,7 @@ var models = require("./models");
 var error = require("./error");
 
 var user = models.User;
+
 function newuserfb(fb){
  var nuser=new user({
   name:'',
@@ -30,41 +31,39 @@ var token = models.Token;
 function newid(tok,acc){
   var nuser_id=new token({
     access_token:tok,
-    account_id:acc
+    account:acc
   });
   return nuser_id;
 }
 
 router.get('/facebook/login', function(req, res) {
-  debugger;
   /*
     TODO: check req parameters.
   */
-  
+
   var request = https.get('https://graph.facebook.com/debug_token?input_token='+req.query.fb_token+'&access_token=643340145745435|nyelclS2lAU75ksOpYtfOLNtwOg', function(response) {
-  debugger;
   console.log("Statuscode: ", response.statusCode);
   console.log("headers: ", response.headers);
 
-  response.on('data', function(d) {
+  response.on('data', function(dat) {
+    //process.stdout.write(d);
     debugger;
-    process.stdout.write(d);
-    d=JSON.parse(d);
-    console.log(d.data.is_valid);
+    d=JSON.parse(dat.toString());
+    console.log(d);
     if( d.data && d.data.is_valid )
     {
     //db.collections.find({facebook_user_id:options.user_id});
 
       user.findOne({fb_id:d.data.user_id}, function(err, result) {
-        if (err) { console.log("error:",err) }
-
+        if (err) { console.log("error:") }
+        debugger;
         if (result)
          {
             //console.log(result._id);
             // res.send(result);
             var id=hat();
             console.log(id);
-            debugger;
+
             newid( id, result._id ).save();
             //res.redirect('/users/profile/?acc_token='+id)
             res.end( JSON.stringify( {result : true, token : id } ) );
@@ -74,9 +73,11 @@ router.get('/facebook/login', function(req, res) {
               var nu = newuserfb(d.data.user_id);
               nu.save();
               var id=hat();
+
               console.log(id);
+
               newid(id,nu._id).save();
-              //res.redirect('/users/profile/?acc_token='+id)
+              debugger;
               res.end( JSON.stringify( {result : true, token : id } ) );
             }
       });
@@ -95,15 +96,16 @@ request.on('error', function(e) {
 });
 
 });
+
 router.get('/google/login', function(req, res) {
 
 var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=1/'+req.query.gp_token, function(response) {
-  debugger;
+
   console.log("Statuscode: ", response.statusCode);
   console.log("headers: ", response.headers);
 
   response.on('data', function(d) {
-    debugger;
+
     process.stdout.write(d);
     d=JSON.parse(d);
    console.log(d.error);
@@ -120,18 +122,20 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
          // res.send(result);
          var id=hat();
          console.log(id);
-         debugger;
+
          newid(id,result._id).save();
+         res.end( JSON.stringify({ result:true, token: id }) );
           //res.redirect('/users/profile/?acc_token='+id)
            }
            else
-            {var nu=newuser(d.data.user_id);
-          nu.save();
-          var id=hat();
-          console.log(id);
-          newid(id,nu._id).save();
-         res.redirect('/users/profile/?acc_token='+id)
-        }
+            {
+              var nu=newuser(d.data.user_id);
+              nu.save();
+              var id=hat();
+              console.log(id);
+              newid(id,nu._id).save();
+              res.end( JSON.stringify({ result:true, token: id }) );
+            }
       });
     }else{
       res.end( JSON.stringify({ result:false, err:{} } ) );
@@ -149,7 +153,7 @@ request.on('error', function(e) {
 });
 
 });
-router.get('/create', function(req, res) {
+/*router.get('/create', function(req, res) {
  var name,acc_token;
  if(req.query.name)name=req.query.name;
   if(req.query.acc_token)acc_token=req.query.acc_token;
@@ -175,32 +179,14 @@ router.get('/create', function(req, res) {
       }
   });
 
-});
+});*/
 
 router.get('/profile',function(req,res){
-  token.findOne({access_token:req.query.acc_token},function(err,result){
-    debugger;
-    if(err){console.log("error:",err)}
-      if(result)
-      {
-        //res.send(result);
-        user.findOne({_id:result.account_id},function(err,resu){
-          debugger;
-          if(err){console.log("error:",err)}
-            if(resu){
-              res.send( JSON.stringify(resu) );
-                }
-                else
-                {
-                  res.send('oops..sry login again');
-                }
-        });
-      }
-      else
-      {
-        res.send('oops..sry pls login again.');
-      }
-  })
-})
+    /*
+      TODO: Remove user private details.
+    */
+
+    res.end( JSON.stringify( req.user ) );
+});
 
 module.exports = router;

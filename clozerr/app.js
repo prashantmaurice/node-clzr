@@ -5,6 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose=require('mongoose');
+var models = require("./routes/models");
+var Token = models.Token;
+var User = models.User;
 
 var auth = require('./routes/user');
 var offer = require('./routes/offer');
@@ -12,6 +15,8 @@ var vendor = require('./routes/vendor');
 var settings = require('./routes/settings');
 
 var app = express();
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,12 +32,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', function( req, res, next ){
   if( req.query.access_token ){
-    Token.findOne( { token:access_token }, function( err, data ){
+    Token.findOne( { access_token: req.query.access_token }, function( err, data ){
       if( err ){
         // TODO: THROW ERROR.
         return;
       }
-      User.findOne({ _id: data }, function( err, data ){
+      debugger;
+      User.findOne({ _id: data.account }, function( err, data ){
           if( err ){
             // TODO: THROW ERROR.
             return;
