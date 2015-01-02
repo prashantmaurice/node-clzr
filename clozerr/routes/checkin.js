@@ -77,13 +77,13 @@ router.get("validate", function( req, res ){
     var userobj = User.findOne({_id:user});
     var ut = userobj.type;
     if(ut.equals("u") || ut.equals("a"))
-      error.err("909");
+      error.err(res,"909");
     else {
       var checkinobj = CheckIn.findOne({_id:checkin});
       if(checkinobj.vendor == userobj.vendor_id) {
         console.log("checkin validated for : " + checkinobj.user + " , by " + checkinobj.vendor);
       }
-      else error.err("435");
+      else error.err(res,"435");
     }
   }
 
