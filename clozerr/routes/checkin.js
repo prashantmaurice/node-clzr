@@ -32,19 +32,34 @@ router.get("check-in", function( req, res ){
     if( !checkEligibility( user, vendor, offer ) ){
           // TODO: Throw Error.
     }
+
     var checkin = new CheckIn({
       user:user._id,
       vendor:vendor._id,
       offer:offer._id,
       state: CHECKIN_STATE_ACTIVE,
+      date_created: new Date();
     });
 
+    checkin.save().then( function( res ){
+          console.log("Successfully saved checkin")
+    }, function( err ){
+          console.log("Error saving checkin");
+          console.log(err);
+    });
 
     /*
-      TODO:
+      TODO: Send alert to Vendor. SocketIO.
     */
 
-
   );
+
+});
+
+router.get("validate", function( res, req ){
+  /*
+    TODO: Check request parameters.
+  */
+
 
 });
