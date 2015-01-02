@@ -69,15 +69,21 @@ router.get("validate", function( req, res ){
   /*
     TODO: Check request parameters.
   */
-  var user = req.query.user;
-  
-  if(req.query.id) {
+  var user = req.user;
+
+  if(req.query.id && req.query.checkin) {
     var id = req.query.id;
-    var ut = user.type;
+    var checkin = req.query.checkin;
+    var userobj = User.findOne({_id:user});
+    var ut = userobj.type;
     if(ut.equals("u") || ut.equals("a"))
-      error.err("909");
+      error.err(res,"909");
     else {
-      var vid = user.social_id;
+      var checkinobj = CheckIn.findOne({_id:checkin});
+      if(checkinobj.vendor == userobj.vendor_id) {
+        console.log("checkin validated for : " + checkinobj.user + " , by " + checkinobj.vendor);
+      }
+      else error.err(res,"435");
     }
   }
 

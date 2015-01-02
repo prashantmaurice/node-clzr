@@ -3,37 +3,39 @@ var mongoose = require("mongoose");
 var Models = {};
 
 var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
 
 Models.Vendor = mongoose.model('Vendor',new Schema({
 
 	location : {type:[Number],index:'2dsphere'} ,
 	name:String,
-	offers : [String],
+	offers : [ObjectId],
 	image : String,
-	offers_old : [String],
+	offers_old : [ObjectId],
 	fid:String,
 	dateCreated:Date
 
 }));
 
 Models.CheckIn = mongoose.model('CheckIn',new Schema({
-	user:String,
-	vendor:String,
-	offer:String,
+	user:ObjectId,
+	vendor:ObjectId,
+	offer:ObjectId,
 	state:Number,
 	date_created:Date,
 	pin:String
-}
+} ));
 
 Models.User = mongoose.model('User',new Schema({
     id_type:String,
     social_id:String,
-    type:String
+    type:String,
+    vendor_id:String
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
   access_token:String,
-  facebook_id:Number
+  account:ObjectId
 }));
 
 Models.Offer = mongoose.model('Offer',new Schema({

@@ -1,10 +1,13 @@
-var express = require('express');
+xvar express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose=require('mongoose');
+var models = require("./routes/models");
+var Token = models.Token;
+var User = models.User;
 
 var auth = require('./routes/user');
 var offer = require('./routes/offer');
@@ -27,12 +30,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', function( req, res, next ){
   if( req.query.access_token ){
-    Token.findOne( { token:access_token }, function( err, data ){
+    Token.findOne( { access_token: req.query.access_token }, function( err, data ){
       if( err ){
         // TODO: THROW ERROR.
         return;
       }
-      User.findOne({ _id: data }, function( err, data ){
+      debugger;
+      User.findOne({ _id: data.account }, function( err, data ){
           if( err ){
             // TODO: THROW ERROR.
             return;
