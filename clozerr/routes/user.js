@@ -155,7 +155,7 @@ request.on('error', function(e) {
 });
 
 });
-/*router.get('/create', function(req, res) {
+router.get('/create', function(req, res) {
  var name,acc_token;
  if(req.query.name)name=req.query.name;
   if(req.query.acc_token)acc_token=req.query.acc_token;
@@ -181,7 +181,7 @@ request.on('error', function(e) {
             }
         });
 
-});*/
+});
 
 router.get('/profile',function(req,res){
     /*

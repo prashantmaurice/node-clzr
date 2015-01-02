@@ -1,4 +1,4 @@
-xvar express = require('express');
+var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -55,8 +55,8 @@ app.use('/', function( req, res, next ){
 
 });
 app.use('/auth', auth);
-//app.use('/offer', offer);
-//app.use('/vendor', vendor);
+app.use('/offer', offer);
+app.use('/vendor', vendor);
 
 // --------- DB ----------
 var db=mongoose.connection;
