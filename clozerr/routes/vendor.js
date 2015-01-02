@@ -1,8 +1,8 @@
 var express = require('express');
 var mongoose=require('mongoose');
 var router = express.Router();
-
-var Vendor=mongoose.model('Vendor',{
+var Schema =mongoose.Schema;
+var Vendor=mongoose.model('Vendor',new Schema({
 	//vendorid : Number ,
 	location : {type:[Number],index:'2dsphere'} ,
 	name:String,
@@ -11,7 +11,7 @@ var Vendor=mongoose.model('Vendor',{
 	offers_old : [String],
 	fid:String,
 	dateCreated:Date
-});
+}));
 
 var vendor_det_ret={};
 
