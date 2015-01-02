@@ -22,7 +22,7 @@ function newuserfb(fb){
 
 function newusergp(gp){
   var nuser=new user({
-    name:'',x
+    name:'',
     gp_id:gp
   })
 }
@@ -193,12 +193,12 @@ router.get('/create', function(req, res) {
             }
         });
 
-});
+});*/
 
 router.get('/profile',function(req,res){
-    /*
-      TODO: Remove user private details.
-    */
+    
+    //  TODO: Remove user private details.
+    
 
     res.end( JSON.stringify( req.user ) );
 });
