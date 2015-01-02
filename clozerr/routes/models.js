@@ -5,7 +5,7 @@ var Models = {};
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-Models.Vendor = mongoose.model('Vendor',new Schema({
+var vendorSchema = new Schema({
 
 	location : {type:[Number],index:'2dsphere'} ,
 	name:String,
@@ -13,9 +13,14 @@ Models.Vendor = mongoose.model('Vendor',new Schema({
 	image : String,
 	offers_old : [ObjectId],
 	fid:String,
-	dateCreated:Date
+	date_created:Date
 
-}));
+});
+vendorSchema.index({ location: '2d' });
+
+Models.Vendor = mongoose.model('Vendor', vendorSchema );
+
+
 
 Models.CheckIn = mongoose.model('CheckIn',new Schema({
 	user:ObjectId,
@@ -23,13 +28,15 @@ Models.CheckIn = mongoose.model('CheckIn',new Schema({
 	offer:ObjectId,
 	state:Number,
 	date_created:Date,
-	pin:String
+	pin:String,
+	gcm_id:String
 } ));
 
 Models.User = mongoose.model('User',new Schema({
     id_type:String,
     social_id:String,
-    type:String
+    type:String,
+    vendor_id:String
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
@@ -41,7 +48,7 @@ Models.Offer = mongoose.model('Offer',new Schema({
 
 	type:String,
 	stamps:String,
-	dateCreated:Date,
+	date_created:Date,
 	caption:String,
 	description:String
 

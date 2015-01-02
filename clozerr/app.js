@@ -16,8 +16,6 @@ var settings = require('./routes/settings');
 
 var app = express();
 
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -57,8 +55,8 @@ app.use('/', function( req, res, next ){
 
 });
 app.use('/auth', auth);
-//app.use('/offer', offer);
-//app.use('/vendor', vendor);
+app.use('/offer', offer);
+app.use('/vendor', vendor);
 
 // --------- DB ----------
 var db=mongoose.connection;
@@ -78,6 +76,7 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
+        throw err;
         res.status(err.status || 500);
         res.end( JSON.stringify({
             message: err.message,
@@ -89,6 +88,7 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
+  throw err;
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,

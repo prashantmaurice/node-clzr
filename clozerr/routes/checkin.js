@@ -7,6 +7,7 @@ var Q = require("q");
 var error = require("./error");
 var hat = require("hat");
 var rack = hat.rack(10,10);
+var gcm = require("node-gcm");
 
 var Vendor = models.Vendor;
 var Offer = models.Offer;
@@ -22,11 +23,20 @@ router.get("check-in", function( req, res ){
     TODO: CHECK FOR req.query parameters.
     Throw error if insufficient parameters.
   */
+<<<<<<< HEAD
   if( !(req.query.user && req.query.vendor_id && req.query.offer_id) )
+=======
+  if(!(req.query.vendor_id && req.query.offer_id && req.query.gcm_id))
+>>>>>>> aa2102c823f8409b24b275e1291b1dd03c8c6182
     error.err(res,"420");
 
   var user = req.user;
+<<<<<<< HEAD
 
+=======
+  var gcm_id = req.query.gcm_id;
+  
+>>>>>>> aa2102c823f8409b24b275e1291b1dd03c8c6182
   Vendor.find( {"_id":req.query.vendor_id} ).exec().then( function( res ,vendor_s){
 
     return Offer.find( {"_id":req.query.offer_id} ).exec();
@@ -47,8 +57,9 @@ router.get("check-in", function( req, res ){
       vendor:vendor._id,
       offer:offer._id,
       state: CHECKIN_STATE_ACTIVE,
-      date_created: new Date();
-      pin: rack();
+      date_created: new Date(),
+      pin: rack(),
+      gcm_id:gcm_id
     });
 
     checkin.save().then( function( res ){
@@ -66,19 +77,55 @@ router.get("check-in", function( req, res ){
 
 });
 
+function sendPushNotification(var checkinobj) {
+  var message = new gcm.Message({
+    collapseKey: 'Stamps updated !',
+    delayWhileIdle: true,
+    data: {
+      "key": "checkin_push",
+      "checkinobj": checkinobj
+    }
+  });
+
+  var sender = new gcm.Sender('key');             //Insert Google Server API Key
+  var regIds = [];
+  regIds.push(checkinobj.gcm_id);                 //Insert Registration ID
+
+  sender.send(message, regIds, 4, function(err,res) {
+    console.log(res);
+    if(err) console.log(err);
+  });
+}
+
 router.get("validate", function( req, res ){
   /*
     TODO: Check request parameters.
   */
+<<<<<<< HEAD
   var user = req.query.user;
 
   if(req.query.id) {
+=======
+  var user = req.user;
+
+  if(req.query.id && req.query.checkin) {
+>>>>>>> aa2102c823f8409b24b275e1291b1dd03c8c6182
     var id = req.query.id;
-    var ut = user.type;
+    var checkin = req.query.checkin;
+    var userobj = User.findOne({_id:user});
+    var ut = userobj.type;
     if(ut.equals("u") || ut.equals("a"))
       error.err(res,"909");
     else {
-      var vid = user.social_id;
+      var checkinobj = CheckIn.findOne({_id:checkin});
+      if(checkinobj.vendor == userobj.vendor_id) {
+        
+        //TODO : Send a push notification based on gcm_id of checkin
+        
+        sendPushNotification(checkinobj);
+        console.log("checkin validated for : " + checkinobj.user + " , by " + checkinobj.vendor);
+      }
+      else error.err(res,"435");
     }
   }
 

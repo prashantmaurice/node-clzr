@@ -41,7 +41,8 @@ router.get('/facebook/login', function(req, res) {
     TODO: check req parameters.
   */
 
-  var request = https.get('https://graph.facebook.com/debug_token?input_token='+req.query.fb_token+'&access_token=643340145745435|nyelclS2lAU75ksOpYtfOLNtwOg', function(response) {
+  var request = https.get('https://graph.facebook.com/debug_token?input_token='+req.query.fb_token+'&access_token='+settings.auth.facebook.app_token, function(response) {
+  debugger;
   console.log("Statuscode: ", response.statusCode);
   console.log("headers: ", response.headers);
 
@@ -82,7 +83,7 @@ router.get('/facebook/login', function(req, res) {
             }
       });
     }else{
-      error.err( res, 102 );
+      error.err( res, "102" );
     }
 
     });
@@ -137,10 +138,11 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
               res.end( JSON.stringify({ result:true, token: id }) );
             }
       });
-    }else{
-      res.end( JSON.stringify({ result:false, err:{} } ) );
-      // TODO: create error.js
     }
+        else{
+              res.end( JSON.stringify({ result:false, err:{} } ) );
+      // TODO: create error.js
+            }
 
     });
 
@@ -153,34 +155,47 @@ request.on('error', function(e) {
 });
 
 });
+
+
+router.get('/create', function(req, res) {
+      var type = "v";
+      if(req.query.vendor_id) {
+        var vendor_id = req.query.vendor_id;
+        var user = new User({type:type,vendor_id:vendor_id});
+        user.save(function(err) {
+          if(err) console.log(err);
+        });
+      }
+      else error.err(res,"420");
+  });
 /*router.get('/create', function(req, res) {
  var name,acc_token;
  if(req.query.name)name=req.query.name;
   if(req.query.acc_token)acc_token=req.query.acc_token;
-  token.findOne({access_token:acc_token},function(err,result){
-    if(err){console.log("error:",err)}
-      if(result)
-      {
-        user.findOne({fb_id:result.facebook_id},function(err,resu){
-          if(err){console.log("error:",err)}
-            if(resu){
-             var upsertData = resu.toObject();
-             resu.update({name:req.query.name}, upsertData, {upsert: true}, function(err){});
-            }
+        token.findOne({access_token:acc_token},function(err,result){
+             if(err){console.log("error:",err)}
+             if(result)
+                {
+                   user.findOne({fb_id:result.facebook_id},function(err,resu){
+                      if(err){console.log("error:",err)}
+                      if(resu){
+                      var upsertData = resu.toObject();
+                      resu.update({name:req.query.name}, upsertData, {upsert: true}, function(err){});
+                      }
+                      else
+                        {
+                          res.send('oops..sry login again');
+                        }
+                   });
+                }
             else
             {
-              res.send('oops..sry login again');
+              res.send('oops..sry pls login again.');
             }
         });
-      }
-      else
-      {
-        res.send('oops..sry pls login again.');
-      }
-  });
 
-});*/
-
+});
+*/
 router.get('/profile',function(req,res){
     /*
       TODO: Remove user private details.

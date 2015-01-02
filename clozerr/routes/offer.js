@@ -21,6 +21,9 @@ router.get('/create', function(req, res) {
 	//if(req.query.offerid) offerid=req.query.offerid;
 	if(req.query.type) type = req.query.type;
 	if(req.query.stamps) stamps = req.query.stamps;
+
+	else stamps =1;
+
 	if(req.query.dateCreated) dateCreated = req.query.dateCreated;
 	if(req.query.caption) caption = req.query.caption;
 	if(req.query.description) description = req.query.description;
