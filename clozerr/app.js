@@ -54,8 +54,8 @@ app.use('/', function( req, res, next ){
 
 });
 app.use('/auth', auth);
-//app.use('/offer', offer);
-//app.use('/vendor', vendor);
+app.use('/offer', offer);
+app.use('/vendor', vendor);
 
 // --------- DB ----------
 var db=mongoose.connection;

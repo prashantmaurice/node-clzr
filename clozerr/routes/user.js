@@ -155,6 +155,9 @@ request.on('error', function(e) {
 });
 
 });
+<<<<<<< HEAD
+router.get('/create', function(req, res) {
+=======
 
 router.get('/create', function(req, res) {
       var type = "v";
@@ -168,6 +171,7 @@ router.get('/create', function(req, res) {
       else error.err(res,"420");
   });
 /*router.get('/create', function(req, res) {
+>>>>>>> 7bddba36deed3a6a87a8be5d962cb21f4da0d99c
  var name,acc_token;
  if(req.query.name)name=req.query.name;
   if(req.query.acc_token)acc_token=req.query.acc_token;

@@ -28,9 +28,11 @@ router.get('/create', function (req, res) {
 		date_created:date_created
 	});
 	res.send('create request received : <br>'+JSON.stringify(vendor));
-	vendor.save(function (err){
+    
+	/*vendor.save(function (err){
 		if(err) console.log(err);
-	});
+	});*/
+vendor.save();
 });
 
 router.get('/get', function (req,res){
@@ -47,7 +49,10 @@ router.get('/addoffer',function (req,res){
 	var offerid,vendorid;
 	if(req.query.vendorid) vendorid=req.query.vendorid;
 	if(req.query.offerid) offerid=req.query.offerid;
-	Vendor.update({vendorid:vendorid},{$addToSet:{offers:offerid}},function (err,num,raw){
+
+
+	Vendor.update({_id:vendorid},{$addToSet:{offers:offerid}},function (err,num,raw){
+		debugger;
 		if(err) console.log(err+ ' num : '+num+' raw : '+raw);
 		else {
 			res.send('added to '+num+' records');
