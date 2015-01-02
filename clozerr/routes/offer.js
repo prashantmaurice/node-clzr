@@ -3,14 +3,7 @@ var mongoose=require('mongoose');
 var router = express.Router();
 var Schema =mongoose.Schema;
 
-var Offer=mongoose.model('Offer',new Schema({
-	//offerid: Number
-	type:String,
-	stamps:String,
-	dateCreated:Date,
-	caption:String,
-	description:String
-}));
+var Offer = models.Offer;
 
 router.get('/get', function(req, res) {
 	var id;
@@ -31,7 +24,7 @@ router.get('/create', function(req, res) {
 	if(req.query.dateCreated) dateCreated = req.query.dateCreated;
 	if(req.query.caption) caption = req.query.caption;
 	if(req.query.description) description = req.query.description;
-	
+
   	var offer=new Offer({type:type,stamps:stamps,dateCreated:dateCreated,caption:caption,description:description});
   	res.send('create request recieved for '+JSON.stringify(offer));
   	offer.save(function (err){
