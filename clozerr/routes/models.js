@@ -24,7 +24,7 @@ Models.CheckIn = mongoose.model('CheckIn',new Schema({
 	state:Number,
 	date_created:Date,
 	pin:String
-}
+} ));
 
 Models.User = mongoose.model('User',new Schema({
     id_type:String,

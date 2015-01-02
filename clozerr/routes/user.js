@@ -11,6 +11,7 @@ var models = require("./models");
 var error = require("./error");
 
 var user = models.User;
+
 function newuserfb(fb){
  var nuser=new user({
   name:'',
@@ -95,6 +96,7 @@ request.on('error', function(e) {
 });
 
 });
+
 router.get('/google/login', function(req, res) {
 
 var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=1/'+req.query.gp_token, function(response) {
