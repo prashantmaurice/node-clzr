@@ -1,4 +1,4 @@
-var express = require('express');
+/*var express = require('express');
 var mongoose=require('mongoose');
 var router = express.Router();
 
@@ -17,4 +17,4 @@ router.get('/create', function(req,res){
 	token.save(function (err){
 		if(err) console.log(err);
 	});
-});
+});*/
