@@ -1,7 +1,9 @@
+var mongoose = require("mongoose");
+
 var Models = {};
 
 Models.Vendor = mongoose.model('Vendor',{
-	
+
 	location : {type:[Number],index:'2dsphere'} ,
 	name:String,
 	offers : [String],
