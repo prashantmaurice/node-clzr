@@ -64,7 +64,7 @@ var request = https.get('https://graph.facebook.com/debug_token?input_token='+re
          console.log(id);
          debugger;
          newid(id,result._id).save();
-          res.redirect('/users/profile/?acc_token='+id)
+          //res.redirect('/users/profile/?acc_token='+id)
            } 
            else
             {var nu=newuserfb(d.data.user_id);
@@ -102,8 +102,8 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
     debugger;
     process.stdout.write(d);
     d=JSON.parse(d);
-    console.log(d.data.is_valid);
-    if( d.data && d.data.is_valid )
+   console.log(d.error);
+    if( d.data && !(d.error=="invalid_token"))
     {
     //db.collections.find({facebook_user_id:options.user_id});
      
@@ -118,7 +118,7 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
          console.log(id);
          debugger;
          newid(id,result._id).save();
-          res.redirect('/users/profile/?acc_token='+id)
+          //res.redirect('/users/profile/?acc_token='+id)
            } 
            else
             {var nu=newuser(d.data.user_id);
