@@ -22,7 +22,7 @@ function newuserfb(fb){
 
 function newusergp(gp){
   var nuser=new user({
-    name:'',
+    name:'',x
     gp_id:gp
   })
 }
@@ -83,7 +83,7 @@ router.get('/facebook/login', function(req, res) {
             }
       });
     }else{
-      error.err( res, 102 );
+      error.err( res, "102" );
     }
 
     });
@@ -155,7 +155,23 @@ request.on('error', function(e) {
 });
 
 });
+<<<<<<< HEAD
 router.get('/create', function(req, res) {
+=======
+
+router.get('/create', function(req, res) {
+      var type = "v";
+      if(req.query.vendor_id) {
+        var vendor_id = req.query.vendor_id;
+        var user = new User({type:type,vendor_id:vendor_id});
+        user.save(function(err) {
+          if(err) console.log(err);
+        });
+      }
+      else error.err(res,"420");
+  });
+/*router.get('/create', function(req, res) {
+>>>>>>> 7bddba36deed3a6a87a8be5d962cb21f4da0d99c
  var name,acc_token;
  if(req.query.name)name=req.query.name;
   if(req.query.acc_token)acc_token=req.query.acc_token;
