@@ -22,12 +22,13 @@ router.get("check-in", function( req, res ){
     TODO: CHECK FOR req.query parameters.
     Throw error if insufficient parameters.
   */
-  if(!(req.query.user && req.query.vendor_id && req.query.offer_id))
+  if( !(req.query.user && req.query.vendor_id && req.query.offer_id) )
     error.err(res,"420");
+
   var user = req.user;
-  
+
   Vendor.find( {"_id":req.query.vendor_id} ).exec().then( function( res ,vendor_s){
-   
+
     return Offer.find( {"_id":req.query.offer_id} ).exec();
   }
   ).then( function( res ,data) {
@@ -40,7 +41,7 @@ router.get("check-in", function( req, res ){
           error.err(res,"671");
     }
   }
-  
+
     var checkin = new CheckIn({
       user:user._id,
       vendor:vendor._id,
@@ -70,12 +71,12 @@ router.get("validate", function( req, res ){
     TODO: Check request parameters.
   */
   var user = req.query.user;
-  
+
   if(req.query.id) {
     var id = req.query.id;
     var ut = user.type;
     if(ut.equals("u") || ut.equals("a"))
-      error.err("909");
+      error.err(res,"909");
     else {
       var vid = user.social_id;
     }

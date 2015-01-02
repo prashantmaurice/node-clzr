@@ -16,7 +16,7 @@ router.get('/create', function (req, res) {
 	if(req.query.fid) fid=req.query.fid;
 	if(req.query.name) name=req.query.name;
 
-  
+
   	var vendor=new Vendor({
 		//vendorid:vendorid,
 		location:[lat,lon],
@@ -71,14 +71,14 @@ function getUser( req, cb ){
 
 
 /*function filterOffers( offers, criteria, checkstamps ){
-	
+
 	var len=vendor.offers.length;
 	for(var i=0;i<len;i++) {
 		Offer.findOne({
 		_id:vendor.offers[i]
 		},checkstamps );
 	}
-	
+
 }*/
 
 var predicates = {
@@ -89,7 +89,7 @@ var predicates = {
     "S0": function( user, vendor, offer ){
     	return true;
     	},
-    "SX": function( user, vendor, offer ){ 
+    "SX": function( user, vendor, offer ){
     	var temp = offer.type.split('');
      	if(user.stamplist[vendor.fid]>=parseInt(temp[1]))	return true;
      	else return false;
@@ -107,8 +107,8 @@ function getOffers( offer_ids ){
 router.get('/getnear',function (req,res){
 	var lat,lon,distance,accesstoken,typelist;
 	//var vendor_det_ret_arr = [];
-	if(req.query.lat) lat=req.query.lat;
-	if(req.query.lon) lon=req.query.lon;
+	if(req.query.lat) lat = req.query.lat;
+	if(req.query.lon) lon = req.query.lon;
 	if(req.query.distance) distance = req.query.distance;
 	if(req.query.accesstoken) accesstoken = req.query.accesstoken;
 	if(req.query.type) typelist = JSON.parse(type);
@@ -130,9 +130,9 @@ router.get('/getnear',function (req,res){
                 var plist = [];
 			    for(var i=0;i<vendors.length;i++){
 				    var vendor = vendors[i];
-				    
+
                     plist.push( getOffers( vendor.offers, function( err, offers ){
-                        
+
                         var offers_new = _.filter( offers, function( offer ){
                             return checkConditions( user, vendor, offer );
                         });
@@ -158,4 +158,3 @@ router.get('/getnear',function (req,res){
         });
 })
 module.exports = router;
-
