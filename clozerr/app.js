@@ -41,7 +41,6 @@ app.use('/', function( req, res, next ){
             // TODO: THROW ERROR.
             return;
           }
-
           req.user = data;
           next();
       });

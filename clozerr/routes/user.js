@@ -194,12 +194,14 @@ router.get('/create', function(req, res) {
             }
         });
 
-});
-*/
+
+});*/
+
+
 router.get('/profile',function(req,res){
-    /*
-      TODO: Remove user private details.
-    */
+
+    //  TODO: Remove user private details.
+
 
     res.end( JSON.stringify( req.user ) );
 });
