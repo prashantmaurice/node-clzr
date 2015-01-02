@@ -7,12 +7,9 @@ var settings = require('./settings');
 var https = require('https');
 var mongoose=require('mongoose');
 var Schema=mongoose.Schema;
+var models = require("./models");
 
-var user=mongoose.model('user',new Schema({
-name:String,
-fb_id:Number,
-gp_id:Number
-}));
+var user = models.User;
 function newuserfb(fb){
  var nuser=new user({
   name:'',
@@ -20,16 +17,15 @@ function newuserfb(fb){
  });
  return nuser;
 }
+
 function newusergp(gp){
   var nuser=new user({
     name:'',
     gp_id:gp
   })
 }
-var token=mongoose.model('token',new Schema({
-  access_token:String,
-  account_id:String
-}));
+var token = models.Token;
+
 function newid(tok,acc){
   var nuser_id=new token({
     access_token:tok,
@@ -37,9 +33,10 @@ function newid(tok,acc){
   });
   return nuser_id;
 }
-router.get('/loginfb', function(req, res) {
 
-var request = https.get('https://graph.facebook.com/debug_token?input_token='+req.query.fb_token+'&access_token=643340145745435|nyelclS2lAU75ksOpYtfOLNtwOg', function(response) {
+router.get('/facebook/login', function(req, res) {
+
+  var request = https.get('https://graph.facebook.com/debug_token?input_token='+req.query.fb_token+'&access_token=643340145745435|nyelclS2lAU75ksOpYtfOLNtwOg', function(response) {
   debugger;
   console.log("Statuscode: ", response.statusCode);
   console.log("headers: ", response.headers);
@@ -172,6 +169,7 @@ router.get('/create', function(req, res) {
   });
 
 });
+
 router.get('/profile',function(req,res){
   token.findOne({access_token:req.query.acc_token},function(err,result){
     debugger;
@@ -183,7 +181,7 @@ router.get('/profile',function(req,res){
           debugger;
           if(err){console.log("error:",err)}
             if(resu){
-              res.send(resu);
+              res.send( JSON.stringify(resu) );
                 }
                 else
                 {

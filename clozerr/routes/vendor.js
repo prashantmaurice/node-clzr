@@ -1,19 +1,10 @@
 var express = require('express');
 var mongoose=require('mongoose');
 var router = express.Router();
-var Schema =mongoose.Schema;
-var Vendor=mongoose.model('Vendor',new Schema({
-	//vendorid : Number ,
-	location : {type:[Number],index:'2dsphere'} ,
-	name:String,
-	offers : [String],
-	image : String,
-	offers_old : [String],
-	fid:String,
-	dateCreated:Date
-}));
-
-var vendor_det_ret={};
+var models = require("./models");
+var _ = require("underscore");
+var Vendor = models.Vendor;
+var Q = require("q");
 
 
 router.get('/create', function (req, res) {
@@ -77,15 +68,31 @@ function getUser( req, cb ){
 				});
 }
 
-function iterateThroughOffers(user,vendor,checkstamps){
+
+
+/*function filterOffers( offers, criteria, checkstamps ){
 	
 	var len=vendor.offers.length;
 	for(var i=0;i<len;i++) {
 		Offer.findOne({
 		_id:vendor.offers[i]
-		},checkstamps);
+		},checkstamps );
 	}
 	
+}*/
+
+var predicates = {
+    "S1": function( user, vendor, offer ){ },
+    "S0": function( user, vendor, offer ){ },
+    "SX": function( user, vendor, offer ){ }
+}
+
+function checkConditions( user, vendor, offer ){
+    return predicates[offer.type]( user, vendor, offer );
+}
+
+function getOffers( offer_ids ){
+    return Offer.find({"_id":{ "$in":offer_ids }} ).exec();
 }
 
 router.get('/getnear',function (req,res){
@@ -93,45 +100,47 @@ router.get('/getnear',function (req,res){
 	var vendor_det_ret_arr = [];
 	if(req.query.lat) lat=req.query.lat;
 	if(req.query.lon) lon=req.query.lon;
-	if(req.query.distance) distance=req.query.distance;
-	if(req.query.accesstoken) accesstoken=req.query.accesstoken;
-	if(req.query.type) typelist=JSON.parse(type);
+	if(req.query.distance) distance = req.query.distance;
+	if(req.query.accesstoken) accesstoken = req.query.accesstoken;
+	if(req.query.type) typelist = JSON.parse(type);
 
-	Vendor.find({
-		location: {$near :{$geometry:{
-			type:'Point',
-			coordinates:[lat,lon]},
-			$maxDistance : distance
-		}}
-	},function (err,data){
-		if(err) console.log(err);
-		else{
-			for(var i=0;i<data.length;i++){
-				var vendor=data[i];
-				getUser( req, function( err, data ){ 
-					if(data.stamplist[vendor.fid]!=null) {
-						iterateThroughOffers(data,vendor,function(err,data) {
-							if(err)	console.log(err);
-							else {
-								var temptype=data.type;
-								if(typelist.contains(data.type)) {
-									vendor_det_ret.id=vendor._id;
-									vendor_det_ret.name=vendor.name;
-									vendor_det_ret.location=vendor.location;
-									vendor_det_ret.offer=data;
-									vendor_det_ret.image=vendor.image;
-									vendor_det_ret.fid=vendor.fid;
-									vendor_det_ret_arr.push(vendor_det_ret);
-								}
-							}
-						});
-					}
-				});
-			}
-			res.send(JSON.stringify(vendor_det_ret_arr));
-			res.end();
-		}
-	});
+    getUser( req, function( err, user ){
+	    Vendor.find(
+            {
+		        location: {
+                    $near :{
+                        $geometry:{
+			                type:'Point',
+			                coordinates:[lat,lon]
+                        },
+			            $maxDistance : distance
+		            }
+                }
+	        },function ( err, vendors ){
+                var vendor_det_ret_arr = [];
+                var plist = [];
+			    for(var i=0;i<vendors.length;i++){
+				    var vendor = vendors[i];
+
+                    plist.push( getOffers( vendor.offers, function( err, offers ){
+                        
+                        var offers_new = _.filter( offers, function( offer ){
+                            return checkConditions( user, vendor, offer );
+                        });
+                        /*
+                         * MAKE VENDOR HERE.
+                         */
+                        vendor_det_ret_arr.push( vendor_new );
+                    }) );
+                }
+
+                Q.all( plist ).then( function(){
+        			res.send(JSON.stringify(vendor_det_ret_arr));
+		        	res.end();
+                });
+
+		    });
+        });
 })
 module.exports = router;
 
