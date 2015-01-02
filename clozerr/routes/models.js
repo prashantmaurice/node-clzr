@@ -18,13 +18,15 @@ Models.CheckIn = mongoose.model('CheckIn'),{
 	user:String,
 	vendor:String,
 	offer:String,
-	state:int,
-	date_created:Date
+	state:Number,
+	date_created:Date,
+	pin:String
 }
 
 Models.User = mongoose.model('User',new Schema({
-    name:String,
-    fb_id:Number
+    id_type:String,
+    social_id:String,
+    type:String
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
