@@ -25,16 +25,16 @@ router.get("check-in", function( req, res ){
   if(!(req.query.user && req.query.vendor_id && req.query.offer_id))
     error.err(res,"420");
   var user = req.user;
-  var data1;
-  Vendor.find( {"_id":req.query.vendor_id} ).exec().then( function( res ,data){
-    data1=data;
+  
+  Vendor.find( {"_id":req.query.vendor_id} ).exec().then( function( res ,vendor_s){
+   
     return Offer.find( {"_id":req.query.offer_id} ).exec();
   }
   ).then( function( res ,data) {
     /*
       TODO: Check if offer_id is there in the vendor's current offers.
     */
-    checkConditions(user,data1,data);
+    checkConditions(user,vendor_s,data);
     if( !checkConditions( user, vendor, offer ) ){
           // TODO: Throw Error.
           error.err(res,"671");
@@ -51,7 +51,7 @@ router.get("check-in", function( req, res ){
     });
 
     checkin.save().then( function( res ){
-          console.log("Successfully saved checkin")
+          console.log("Successfully saved checkin");
     }, function( err ){
           console.log("Error saving checkin");
           console.log(err);
@@ -69,7 +69,16 @@ router.get("validate", function( req, res ){
   /*
     TODO: Check request parameters.
   */
-  if(req.query.)
-
+  var user = req.query.user;
+  
+  if(req.query.id) {
+    var id = req.query.id;
+    var ut = user.type;
+    if(ut.equals("u") || ut.equals("a"))
+      error.err("909");
+    else {
+      var vid = user.social_id;
+    }
+  }
 
 });

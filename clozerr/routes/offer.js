@@ -2,7 +2,7 @@ var express = require('express');
 var mongoose=require('mongoose');
 var router = express.Router();
 var Schema =mongoose.Schema;
-
+var models = require('./models');
 var Offer = models.Offer;
 
 router.get('/get', function(req, res) {

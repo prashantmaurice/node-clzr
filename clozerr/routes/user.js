@@ -8,13 +8,13 @@ var https = require('https');
 var mongoose=require('mongoose');
 var Schema=mongoose.Schema;
 var models = require("./models");
+var error = require("./error");
 
 var user = models.User;
 function newuserfb(fb){
  var nuser=new user({
   name:'',
-  fb_id:fb,
-  stamplist:[]
+  fb_id:fb
  });
  return nuser;
 }
@@ -36,7 +36,11 @@ function newid(tok,acc){
 }
 
 router.get('/facebook/login', function(req, res) {
-
+  debugger;
+  /*
+    TODO: check req parameters.
+  */
+  
   var request = https.get('https://graph.facebook.com/debug_token?input_token='+req.query.fb_token+'&access_token=643340145745435|nyelclS2lAU75ksOpYtfOLNtwOg', function(response) {
   debugger;
   console.log("Statuscode: ", response.statusCode);
@@ -50,32 +54,34 @@ router.get('/facebook/login', function(req, res) {
     if( d.data && d.data.is_valid )
     {
     //db.collections.find({facebook_user_id:options.user_id});
-     
+
       user.findOne({fb_id:d.data.user_id}, function(err, result) {
         if (err) { console.log("error:",err) }
-          
+
         if (result)
          {
-          //console.log(result._id);
-         // res.send(result);
-         var id=hat();
-         console.log(id);
-         debugger;
-         newid(id,result._id).save();
-          //res.redirect('/users/profile/?acc_token='+id)
-           } 
+            //console.log(result._id);
+            // res.send(result);
+            var id=hat();
+            console.log(id);
+            debugger;
+            newid( id, result._id ).save();
+            //res.redirect('/users/profile/?acc_token='+id)
+            res.end( JSON.stringify( {result : true, token : id } ) );
+          }
            else
-            {var nu=newuserfb(d.data.user_id);
-          nu.save();
-          var id=hat();
-          console.log(id);
-          newid(id,nu._id).save(); 
-         res.redirect('/users/profile/?acc_token='+id)
-        }
+            {
+              var nu = newuserfb(d.data.user_id);
+              nu.save();
+              var id=hat();
+              console.log(id);
+              newid(id,nu._id).save();
+              //res.redirect('/users/profile/?acc_token='+id)
+              res.end( JSON.stringify( {result : true, token : id } ) );
+            }
       });
     }else{
-      res.end( JSON.stringify({ result:false, err:{} } ) );
-      // TODO: create error.js
+      error.err( res, 102 );
     }
 
     });
@@ -89,7 +95,7 @@ request.on('error', function(e) {
 });
 
 });
-router.get('/logingp', function(req, res) {
+router.get('/google/login', function(req, res) {
 
 var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=1/'+req.query.gp_token, function(response) {
   debugger;
@@ -104,10 +110,10 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
     if( d.data && !(d.error=="invalid_token"))
     {
     //db.collections.find({facebook_user_id:options.user_id});
-     
+
       user.findOne({fb_id:d.data.user_id}, function(err, result) {
         if (err) { console.log("error:",err) }
-          
+
         if (result)
          {
           //console.log(result._id);
@@ -117,13 +123,13 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
          debugger;
          newid(id,result._id).save();
           //res.redirect('/users/profile/?acc_token='+id)
-           } 
+           }
            else
             {var nu=newuser(d.data.user_id);
           nu.save();
           var id=hat();
           console.log(id);
-          newid(id,nu._id).save(); 
+          newid(id,nu._id).save();
          res.redirect('/users/profile/?acc_token='+id)
         }
       });
