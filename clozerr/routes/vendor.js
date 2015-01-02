@@ -82,9 +82,18 @@ function getUser( req, cb ){
 }*/
 
 var predicates = {
-    "S1": function( user, vendor, offer ){ },
-    "S0": function( user, vendor, offer ){ },
-    "SX": function( user, vendor, offer ){ }
+    "S1": function( user, vendor, offer ){
+    	if(user.stamplist[vendor.fid]>=0)	return true;
+    	else return false;
+     },
+    "S0": function( user, vendor, offer ){
+    	return true;
+    	},
+    "SX": function( user, vendor, offer ){ 
+    	var temp = offer.type.split('');
+     	if(user.stamplist[vendor.fid]>=parseInt(temp[1]))	return true;
+     	else return false;
+     }
 }
 
 function checkConditions( user, vendor, offer ){
@@ -133,7 +142,7 @@ router.get('/getnear',function (req,res){
                         var vendor_new;
                         vendor_new.location = vendor.location;
                         vendor_new.name = vendor.name;
-                        vendor_new.offer = offer;
+                        vendor_new.offers = offers_new;
                         vendor_new.image = vendor.image;
                         vendor_new.fid = vendor.fid;
                         vendor_det_ret_arr.push( vendor_new );

@@ -5,6 +5,8 @@ var models = require("./models");
 var _ = require("underscore");
 var Q = require("q");
 var error = require("./error");
+var hat = require("hat");
+var rack = hat.rack(10,10);
 
 var Vendor = models.Vendor;
 var Offer = models.Offer;
@@ -20,29 +22,36 @@ router.get("check-in", function( req, res ){
     TODO: CHECK FOR req.query parameters.
     Throw error if insufficient parameters.
   */
-
+  if(!(req.query.user && req.query.vendor_id && req.query.offer_id))
+    error.err(res,"420");
   var user = req.user;
-
-  Vendor.find( {"_id":req.query.vendor_id} ).exec().then(
+  
+  Vendor.find( {"_id":req.query.vendor_id} ).exec().then( function( res ,vendor_s){
+   
     return Offer.find( {"_id":req.query.offer_id} ).exec();
-  ).then(
+  }
+  ).then( function( res ,data) {
     /*
       TODO: Check if offer_id is there in the vendor's current offers.
     */
-    if( !checkEligibility( user, vendor, offer ) ){
+    checkConditions(user,vendor_s,data);
+    if( !checkConditions( user, vendor, offer ) ){
           // TODO: Throw Error.
+          error.err(res,"671");
     }
-
+  }
+  
     var checkin = new CheckIn({
       user:user._id,
       vendor:vendor._id,
       offer:offer._id,
       state: CHECKIN_STATE_ACTIVE,
       date_created: new Date();
+      pin: rack();
     });
 
     checkin.save().then( function( res ){
-          console.log("Successfully saved checkin")
+          console.log("Successfully saved checkin");
     }, function( err ){
           console.log("Error saving checkin");
           console.log(err);
@@ -56,10 +65,20 @@ router.get("check-in", function( req, res ){
 
 });
 
-router.get("validate", function( res, req ){
+router.get("validate", function( req, res ){
   /*
     TODO: Check request parameters.
   */
-
+  var user = req.query.user;
+  
+  if(req.query.id) {
+    var id = req.query.id;
+    var ut = user.type;
+    if(ut.equals("u") || ut.equals("a"))
+      error.err("909");
+    else {
+      var vid = user.social_id;
+    }
+  }
 
 });

@@ -22,12 +22,14 @@ Models.CheckIn = mongoose.model('CheckIn',new Schema({
 	vendor:ObjectId,
 	offer:ObjectId,
 	state:Number,
-	date_created:Date
-}));
+	date_created:Date,
+	pin:String
+}
 
 Models.User = mongoose.model('User',new Schema({
-    name:String,
-    fb_id:Number
+    id_type:String,
+    social_id:String,
+    type:String
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
