@@ -8,10 +8,10 @@ var Q = require("q");
 
 
 router.get('/create', function (req, res) {
-	var lat,lon,offers=[],image,offers_old=[],fid,dateCreated=new Date(),name;
+	var lat,lon,offers=[],image,offers_old=[],fid,date_created=new Date(),name;
 	//if(req.query.vendorid) vendorid=req.query.vendorid;
-	if(req.query.lat) lat=req.query.lat;
-	if(req.query.lon) lon=req.query.lon;
+	if(req.query.latitude) lat=req.query.latitude;
+	if(req.query.longitude) lon=req.query.longitude;
 	if(req.query.image) image=req.query.image;
 	if(req.query.fid) fid=req.query.fid;
 	if(req.query.name) name=req.query.name;
@@ -25,7 +25,7 @@ router.get('/create', function (req, res) {
 		image:image,
 		offers_old:offers_old,
 		fid:fid,
-		dateCreated:dateCreated
+		date_created:date_created
 	});
 	res.send('create request received : <br>'+JSON.stringify(vendor));
 	vendor.save(function (err){
@@ -105,12 +105,12 @@ function getOffers( offer_ids ){
 }
 
 router.get('/getnear',function (req,res){
-	var lat,lon,distance,accesstoken,typelist;
+	var lat,lon,distance,access_token,typelist;
 	//var vendor_det_ret_arr = [];
-	if(req.query.lat) lat=req.query.lat;
-	if(req.query.lon) lon=req.query.lon;
+	if(req.query.latitude) lat=req.query.latitude;
+	if(req.query.longitude) lon=req.query.longitude;
 	if(req.query.distance) distance = req.query.distance;
-	if(req.query.accesstoken) accesstoken = req.query.accesstoken;
+	if(req.query.access_token) access_token = req.query.access_token;
 	if(req.query.type) typelist = JSON.parse(type);
 
     getUser( req, function( err, user ){

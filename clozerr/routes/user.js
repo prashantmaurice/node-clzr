@@ -22,7 +22,7 @@ function newuserfb(fb){
 
 function newusergp(gp){
   var nuser=new user({
-    name:'',
+    name:'',x
     gp_id:gp
   })
 }
@@ -82,7 +82,7 @@ router.get('/facebook/login', function(req, res) {
             }
       });
     }else{
-      error.err( res, 102 );
+      error.err( res, "102" );
     }
 
     });
@@ -153,33 +153,19 @@ request.on('error', function(e) {
 });
 
 });
-/*router.get('/create', function(req, res) {
- var name,acc_token;
- if(req.query.name)name=req.query.name;
-  if(req.query.acc_token)acc_token=req.query.acc_token;
-  token.findOne({access_token:acc_token},function(err,result){
-    if(err){console.log("error:",err)}
-      if(result)
-      {
-        user.findOne({fb_id:result.facebook_id},function(err,resu){
-          if(err){console.log("error:",err)}
-            if(resu){
-             var upsertData = resu.toObject();
-             resu.update({name:req.query.name}, upsertData, {upsert: true}, function(err){});
-            }
-            else
-            {
-              res.send('oops..sry login again');
-            }
+router.get('/create', function(req, res) {
+      var type = "v";
+      if(req.query.vendor_id) {
+        var vendor_id = req.query.vendor_id;
+        var user = new User({type:type,vendor_id:vendor_id});
+        user.save(function(err) {
+          if(err) console.log(err);
         });
       }
-      else
-      {
-        res.send('oops..sry pls login again.');
-      }
+      else error.err(res,"420");
   });
 
-});*/
+});
 
 router.get('/profile',function(req,res){
     /*

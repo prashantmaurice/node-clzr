@@ -13,7 +13,7 @@ Models.Vendor = mongoose.model('Vendor',new Schema({
 	image : String,
 	offers_old : [ObjectId],
 	fid:String,
-	dateCreated:Date
+	date_created:Date
 
 }));
 
@@ -23,7 +23,8 @@ Models.CheckIn = mongoose.model('CheckIn',new Schema({
 	offer:ObjectId,
 	state:Number,
 	date_created:Date,
-	pin:String
+	pin:String,
+	gcm_id:String
 } ));
 
 Models.User = mongoose.model('User',new Schema({
@@ -42,7 +43,7 @@ Models.Offer = mongoose.model('Offer',new Schema({
 
 	type:String,
 	stamps:String,
-	dateCreated:Date,
+	date_created:Date,
 	caption:String,
 	description:String
 
