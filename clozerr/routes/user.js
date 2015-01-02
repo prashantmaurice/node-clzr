@@ -7,10 +7,12 @@ var settings = require('./settings');
 var https = require('https');
 var mongoose=require('mongoose');
 var Schema=mongoose.Schema;
-var user=mongoose.model('user',new Schema({
-name:String,
-fb_id:Number
+
+var user=mongoose.model('User',new Schema({
+    name:String,
+    fb_id:Number
 }));
+
 function newuser(fb){
  var nuser=new user({
   name:'',
@@ -18,10 +20,12 @@ function newuser(fb){
  });
  return nuser;
 }
+
 var token=mongoose.model('token',new Schema({
   access_token:String,
   facebook_id:Number
 }));
+
 function newid(tok,acc){
   var nuser_id=new token({
     access_token:tok,
@@ -29,7 +33,8 @@ function newid(tok,acc){
   });
   return nuser_id;
 }
-router.get('/login', function(req, res) {
+
+router.get('/facebook/login', function(req, res) {
 
 var request = https.get('https://graph.facebook.com/debug_token?input_token='+req.query.fb_token+'&access_token=643340145745435|nyelclS2lAU75ksOpYtfOLNtwOg', function(response) {
   debugger;

@@ -10,6 +10,7 @@ var routes = require('./routes/user');
 var users = require('./routes/user');
 var offer = require('./routes/offer');
 var vendor = require('./routes/vendor');
+var settings = reqiure('./routes/settings');
 
 var app = express();
 
@@ -31,7 +32,7 @@ app.use('/vendor', vendor);
 
 // --------- DB ----------
 var db=mongoose.connection;
-db.open('mongodb://localhost/test');
+db.open('mongodb://'+settings.db.mongo.host+'/'+settings.db.mongo.name);
 // --------- DB ----------
 
 // catch 404 and forward to error handler
