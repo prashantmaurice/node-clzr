@@ -12,6 +12,8 @@ var User = models.User;
 var auth = require('./routes/user');
 var offer = require('./routes/offer');
 var vendor = require('./routes/vendor');
+var checkin = require('./routes/checkin');
+
 var settings = require('./routes/settings');
 
 var app = express();
@@ -36,6 +38,7 @@ app.use('/', function( req, res, next ){
         return;
       }
       if( !data ){
+
         error.err(res,"619");
       }
       debugger;
@@ -62,6 +65,7 @@ app.use('/', function( req, res, next ){
 app.use('/auth', auth);
 app.use('/offer', offer);
 app.use('/vendor', vendor);
+app.use('/checkin', checkin);
 
 // --------- DB ----------
 var db=mongoose.connection;
