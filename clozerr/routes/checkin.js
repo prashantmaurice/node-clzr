@@ -16,18 +16,17 @@ var CheckIn = models.CheckIn;
 var OfferHandler = require("./predicate");
 
 
-const var CHECKIN_STATE_ACTIVE  = 0;
-const var CHECKIN_STATE_CONFIRMED  = 1;
-const var CHECKIN_STATE_CANCELLED = 2;
+var CHECKIN_STATE_ACTIVE  = 0;
+var CHECKIN_STATE_CONFIRMED  = 1;
+var CHECKIN_STATE_CANCELLED = 2;
 
-router.get("checkin/create", function( req, res ){
+router.get("/create", function( req, res ){
   /*
     TODO: CHECK FOR req.query parameters.
     Throw error if insufficient parameters.
   */
 
   if(!(req.query.vendor_id && req.query.offer_id && req.query.gcm_id))
-
     error.err(res,"420");
 
   var user = req.user;
@@ -35,16 +34,18 @@ router.get("checkin/create", function( req, res ){
   var gcm_id = req.query.gcm_id;
 
   var obj = { user: req.user };
-  Vendor.find( {"_id":req.query.vendor_id} ).exec().then( function( res ,vendor){
+  Vendor.find( {"_id":req.query.vendor_id} ).exec().then( function( vendor){
     obj.vendor = vendor;
     return Offer.find( {"_id":req.query.offer_id} ).exec();
 
-  }).then( function( res , offer ) {
+  }).then( function( offer ) {
     /*
       TODO: Check if offer_id is there in the vendor's current offers.
     */
     obj.offer = offer;
+    debugger;
     if( !OfferHandler.qualify( obj.user, obj.vendor, obj.offer ) ){
+        // TODO: change error description.
           error.err( res, "671" );
     }
 
@@ -74,7 +75,7 @@ router.get("checkin/create", function( req, res ){
 
 });
 
-function sendPushNotification(var checkinobj) {
+function sendPushNotification( checkinobj ) {
   var message = new gcm.Message({
     collapseKey: 'Stamps updated !',
     delayWhileIdle: true,
@@ -94,7 +95,7 @@ function sendPushNotification(var checkinobj) {
   });
 }
 
-router.get("checkin/validate", function( req, res ){
+router.get("/validate", function( req, res ){
 
   var user = req.user;
 
@@ -144,7 +145,7 @@ function check_confirmed(checkin) {
   else return false;
 }
 
-router.get("checkin/active",function(req, res) {
+router.get("/active",function(req, res) {
   var user = req.user;
   var userobj = User.findOne({_id:user});
   var ut = userobj.type;
@@ -171,9 +172,9 @@ router.get("checkin/active",function(req, res) {
     });
   }
 
-})
+});
 
-router.get("checkin/confirmed",function(req,res) {
+router.get("/confirmed",function(req,res) {
   var user = req.user;
   var userobj = User.findOne({_id:user});
   var ut = userobj.type;
@@ -191,5 +192,6 @@ router.get("checkin/confirmed",function(req,res) {
   }else{
     error.err(res,"909");
   }
-  }
 });
+
+module.exports = router;

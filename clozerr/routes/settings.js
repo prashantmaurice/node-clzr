@@ -4,10 +4,10 @@ module.exports = {
 			"app_token":"643340145745435|nyelclS2lAU75ksOpYtfOLNtwOg"
 		},
 		"google":{
-				"app_token":"";
-		}
+				"app_token":""
+		},
 		"password":{
-			"default":"password";
+			"default":"password"
 		}
 	},
     "db":{

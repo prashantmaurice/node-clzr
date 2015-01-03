@@ -5,25 +5,20 @@ var https = require('https');
 var mongoose=require('mongoose');
 var models = require("./models");
 var error = require("./error");
-var bcrypt = require("bcrypt");
+var bcrypt = require("bcrypt-nodejs");
 
 var router = express.Router();
 var user = models.User;
 
-function newuserfb(fb){
+function newUser( backend, id ) {
  var nuser=new user({
-  name:'',
-  fb_id:fb
+  type: backend,
+  social_id:id,
+  stamplist:{}
  });
  return nuser;
 }
 
-function newusergp(gp){
-  var nuser=new user({
-    name:'',
-    gp_id:gp
-  })
-}
 var token = models.Token;
 
 function newid( tok, acc ){
@@ -44,7 +39,7 @@ router.get('/login/facebook', function(req, res) {
     TODO: check req parameters.
   */
 
-  var request = https.get('https://graph.facebook.com/debug_token?input_token=' + req.query.fb_token + '&access_token='+settings.auth.facebook.app_token, function(response) {
+  var request = https.get('https://graph.facebook.com/debug_token?input_token=' + req.query.token + '&access_token='+settings.auth.facebook.app_token, function(response) {
   debugger;
   console.log("Statuscode: ", response.statusCode);
   console.log("headers: ", response.headers);
@@ -74,7 +69,7 @@ router.get('/login/facebook', function(req, res) {
           }
            else
             {
-              var nu = newuserfb(d.data.user_id);
+              var nu = newUser( "facebook", d.data.user_id );
               nu.save();
               var id=hat();
 
@@ -103,7 +98,7 @@ request.on('error', function(e) {
 
 router.get('/login/google', function(req, res) {
 
-var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=1/'+req.query.gp_token, function(response) {
+var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=1/'+req.query.token, function(response) {
 
   console.log("Statuscode: ", response.statusCode);
   console.log("headers: ", response.headers);
@@ -133,11 +128,12 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
            }
            else
             {
-              var nu=newuser(d.data.user_id);
-              nu.save();
-              var id=hat();
+              var user = newUser( "google", d.data.user_id );
+              user.save();
+              var id = hat();
               console.log(id);
-              newid(id,nu._id).save();
+              newid( id, nu._id ).save();
+
               res.end( JSON.stringify({ result:true, token: id }) );
             }
       });
@@ -206,16 +202,18 @@ router.get('/create', function(req, res) {
         if(err) console.log(err);
       });
 
-      else error.err(res,"420");
+
   });
 
 
 
 router.get('/profile',function(req,res){
 
-    //  TODO: Remove user private details.
 
-
+    if( req.user.type == "Anonymous" ){
+      // TODO: throw error.
+    }
+    //  TODO: Remove user private details.. remove password.
     res.end( JSON.stringify( req.user ) );
 });
 
