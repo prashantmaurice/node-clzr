@@ -9,8 +9,8 @@ var _ = require('underscore');
 router.get('/get', function(req, res) {
 	
 	var errobj = error.err_insuff_params(req.query,["offer_id"]);
-	if(errobj) {
-		error.err(res,errobj.code,errobj.params);
+	if(!errobj) {
+		//error.err(res,errobj.code,errobj.params);
 		return;
 	}
 
@@ -26,8 +26,8 @@ router.get('/get', function(req, res) {
 router.get('/create', function(req, res) {
 	
 	var errobj = error.err_insuff_params(req.query,["type","caption","description"]);
-	if(errobj) {
-		error.err(res,errobj.code,errobj.params);
+	if(!errobj) {
+		//error.err(res,errobj.code,errobj.params);
 		return;
 	}
 
@@ -51,8 +51,11 @@ router.get('/create', function(req, res) {
 });
 router.get('/update',function(req,res){
 var id,type,stamps,dateCreated,caption,description;
-if(req.query.id)id=req.query.id;
-else {error.err(res,"102");return;}
+if(!req.query.id)  {
+	error.err(res,"102");return;}
+}
+
+id=req.query.id;
 if(req.query.type) type = req.query.type;
 if(req.query.stamps) stamps = req.query.stamps;
 dateUpdated = new Date();
