@@ -20,6 +20,7 @@ function newuserfb(fb){
 
 function newusergp(gp){
   var nuser=new user({
+    type:"user"
     name:'',
     gp_id:gp
   })
@@ -173,9 +174,9 @@ request.on('error', function(e) {
 });
 
 // TODO: check this.
-router.get('/create', function(req, res) {
-      var type = "v";
-
+router.get('/create', function(req,res,err) {
+      var type = "vendor";
+      if (err) error.err(res,"420");
       if( !req.query.vendor_id || !req.query.username ){
         // TODO: Throw error.
         return;
@@ -190,8 +191,7 @@ router.get('/create', function(req, res) {
       user.save(function(err) {
         if(err) console.log(err);
       });
-
-      else error.err(res,"420");
+       
   });
 
 
