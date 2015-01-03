@@ -187,7 +187,9 @@ router.get('/create', function(req,res,err) {
       //if (err) error.err(res,"420");
 
       if( !req.query.vendor_id || !req.query.username ){
+
         error.err(res,"420");
+        error.err( res,"420" );
         return;
       }
 
