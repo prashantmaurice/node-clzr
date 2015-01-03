@@ -168,34 +168,7 @@ router.get('/create', function(req, res) {
       }
       else error.err(res,"420");
   });
-/*router.get('/create', function(req, res) {
- var name,acc_token;
- if(req.query.name)name=req.query.name;
-  if(req.query.acc_token)acc_token=req.query.acc_token;
-        token.findOne({access_token:acc_token},function(err,result){
-             if(err){console.log("error:",err)}
-             if(result)
-                {
-                   user.findOne({fb_id:result.facebook_id},function(err,resu){
-                      if(err){console.log("error:",err)}
-                      if(resu){
-                      var upsertData = resu.toObject();
-                      resu.update({name:req.query.name}, upsertData, {upsert: true}, function(err){});
-                      }
-                      else
-                        {
-                          res.send('oops..sry login again');
-                        }
-                   });
-                }
-            else
-            {
-              res.send('oops..sry pls login again.');
-            }
-        });
 
-
-});*/
 
 
 router.get('/profile',function(req,res){

@@ -8,7 +8,7 @@ var Offer = models.Offer;
 var Promise = mongoose.Promise;
 var Q = require("q");
 var OfferHandler = require("./predicate");
-
+var error = require("./error");
 
 router.get('/create', function (req, res) {
 	var lat,lon,offers=[],image,offers_old=[],fid,date_created=new Date(),name;
@@ -41,11 +41,26 @@ vendor.save();
 router.get('/get', function (req,res){
 	var id;
 	if(req.query.id) id=req.query.id;
-	Vendor.findOne({_id:id},function (err,data){
-		if(err) console.log(err);
-		if(data) res.send(JSON.stringify(data));
-		else res.end();
-	})
+	else{
+		// TODO: THROW ERROR.
+		return;
+	}
+
+	Vendor.findOne({ _id : id },function ( err, vendor ){
+		if(err) console.log( err );
+		if( !vendor ){
+			// TODO: Throw error.
+		}
+
+		Offer.find({ _id : { $in : vendor.offers } }, function( err, offers ){
+			var vendor_json = vendor.toJSON();
+			vendor_json.offers = offers;
+			//debugger;
+			res.send(JSON.stringify( vendor_json ));
+			res.end();
+		});
+
+	});
 })
 
 router.get('/addoffer',function (req,res){
@@ -58,23 +73,10 @@ router.get('/addoffer',function (req,res){
 		debugger;
 		if(err) console.log(err+ ' num : '+num+' raw : '+raw);
 		else {
-			res.send('added to '+num+' records');
+			res.send({ result : true });
 		}
 	})
-})
-
-function getUser( req, cb ){
-	Token.findOne({
-					accesstoken:req.query.accesstoken
-				},function(err,data){
-					if(err) console.log(err);	//No predefined accesstoken for that user
-					else{
-						user.findOne({
-							fb_id:data.accountid
-						},cb);
-					}
-				});
-}
+});
 
 
 
@@ -121,11 +123,7 @@ router.get('/getnear',function (req,res){
 										//debugger;
                     plist.push( pr.then( function( offers ){
 												var deferred = Q.defer();
-												//debugger;
-												//console.log("Async Op: "+i);
-												//debugger;
-												//debugger;
-												
+
                         var offers_new = _.filter( offers, function( offer ){
                         	return OfferHandler.qualify( req.user, vendor, offer );
                         });
@@ -136,6 +134,7 @@ router.get('/getnear',function (req,res){
                         vendor_new.offers = offers_new;
                         vendor_new.image = vendor.image;
                         vendor_new.fid = vendor.fid;
+												vendor_new._id = vendor._id;
                         vendor_det_ret_arr.push( vendor_new );
 												//debugger;
 												process.nextTick( function(){

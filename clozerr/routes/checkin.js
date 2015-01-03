@@ -23,20 +23,15 @@ router.get("checkin/create", function( req, res ){
     TODO: CHECK FOR req.query parameters.
     Throw error if insufficient parameters.
   */
-<<<<<<< HEAD
-  if( !(req.query.user && req.query.vendor_id && req.query.offer_id) )
-=======
+
   if(!(req.query.vendor_id && req.query.offer_id && req.query.gcm_id))
->>>>>>> aa2102c823f8409b24b275e1291b1dd03c8c6182
+
     error.err(res,"420");
 
   var user = req.user;
-<<<<<<< HEAD
 
-=======
   var gcm_id = req.query.gcm_id;
-  
->>>>>>> aa2102c823f8409b24b275e1291b1dd03c8c6182
+
   Vendor.find( {"_id":req.query.vendor_id} ).exec().then( function( res ,vendor_s){
 
     return Offer.find( {"_id":req.query.offer_id} ).exec();
@@ -98,45 +93,36 @@ function sendPushNotification(var checkinobj) {
 }
 
 router.get("checkin/validate", function( req, res ){
-  /*
-    TODO: Check request parameters.
-  */
-<<<<<<< HEAD
-  var user = req.query.user;
 
-  if(req.query.id) {
-=======
   var user = req.user;
 
-  if(req.query.id && req.query.checkin) {
->>>>>>> aa2102c823f8409b24b275e1291b1dd03c8c6182
+  if(!req.query.id || !req.query.checkin){
+    error.err( res, "435" );
+  }
     var id = req.query.id;
     var checkin = req.query.checkin;
     var userobj = User.findOne({_id:user});
     var ut = userobj.type;
-    if(ut.equals("u") || ut.equals("a"))
-      error.err(res,"909");
-    else {
+    if( ut.equals("v") ){
       var checkinobj = CheckIn.findOne({_id:checkin});
       if(checkinobj.vendor == userobj.vendor_id) {
-        
+
         //TODO : Send a push notification based on gcm_id of checkin
-        
+
         sendPushNotification(checkinobj);
 
-        //TODO : Update checkinobj's state to ACTIVE
+        //TODO : Update checkinobj's state to CONFIRMED.
 
-        console.log("checkin validated for : " + checkinobj.user + " , by " + checkinobj.vendor);
+        console.log("checkin validated for : " + checkinobj.user + ", by " + checkinobj.vendor);
       }
       else error.err(res,"435");
     }
-  }
 
 });
 
 function check_validity(checkin) {
   if(parse(new Date()) - parse(checkin.date_created)<1000000) return true;
-  else return false; 
+  else return false;
 }
 
 function check_activeness(checkin) {
@@ -146,7 +132,7 @@ function check_activeness(checkin) {
 
 function check_confirmed(checkin) {
   if(checkin.state==CHECKIN_STATE_CONFIRMED) return true;
-  else return false; 
+  else return false;
 }
 
 router.get("checkin/active",function(req, res) {
@@ -175,6 +161,7 @@ router.get("checkin/active",function(req, res) {
       res.send(JSON.stringify(checkins_filter));
     });
   }
+
 });
 
 router.get("checkin/confirmed",function(req,res) {
@@ -182,15 +169,18 @@ router.get("checkin/confirmed",function(req,res) {
   var userobj = User.findOne({_id:user});
   var ut = userobj.type;
 
-  if(ut.equals("u")) {
-    error.err(res,"909");
-  }
-  else if(ut.equals("v")) {
+  if(ut.equals("v")) {
+
     CheckIn.find({vendor:userobj.vendor_id},function(err,checkins_list) {
       if(err) console.log(err);
-      var checkins_conf_filter = _.filter(checkins_list,function(checkin) {
-        return check_confirmed(checkin);
-      });
+        var checkins_conf_filter = _.filter(checkins_list,function(checkin) {
+          return check_confirmed( checkin );
+        });
       res.send(JSON.stringify(checkins_conf_filter));
+    });
+
+  }else{
+    error.err(res,"909");
+  }
   }
 });
