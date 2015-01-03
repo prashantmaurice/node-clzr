@@ -167,6 +167,21 @@ router.get('/login/password', function( req, res ){
 
   });
 });
+
+router.get('/reset/password', function( req, res ){
+  var user = req.user;
+  /*
+  * TODO: allow only users of type VENDOR & ADMIN to reset password.
+  */
+
+  var salt = bcrypt.genSaltSync(10);
+  var hash = bcrypt.hashSync( settings.auth.password.default, salt );
+
+  user.password = hash;
+  user.save();
+  res.end({ result:true });
+
+});
 request.on('error', function(e) {
     console.error(e);
 });
