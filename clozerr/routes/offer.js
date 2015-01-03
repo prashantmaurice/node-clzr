@@ -4,6 +4,7 @@ var router = express.Router();
 var Schema =mongoose.Schema;
 var models = require('./models');
 var Offer = models.Offer;
+var _ = require('underscore');
 
 router.get('/get', function(req, res) {
 	
@@ -33,6 +34,11 @@ router.get('/create', function(req, res) {
 	var type = req.query.type;
 	if(req.query.stamps) stamps = req.query.stamps;
 	else stamps =1;
+    dateCreated = new Date();
+	if(req.query.caption) caption = req.query.caption;
+	if(req.query.description) description = req.query.description;
+   	var offer=new Offer({type:type,stamps:stamps,dateCreated:dateCreated,caption:caption,description:description,dateUpdated:dateCreated});
+
 	var dateCreated = new Date();
 	var caption = req.query.caption;
 	var description = req.query.description;
@@ -43,6 +49,26 @@ router.get('/create', function(req, res) {
   		if(err) console.log(err);
   	})
 });
+router.get('/update',function(req,res){
+var id,type,stamps,dateCreated,caption,description;
+if(req.query.id)id=req.query.id;
+else {error.err(res,"102");return;}
+if(req.query.type) type = req.query.type;
+if(req.query.stamps) stamps = req.query.stamps;
+dateUpdated = new Date();
+if(req.query.caption) caption = req.query.caption;
+if(req.query.description) description = req.query.description;
+Offer.findOne({_id:id},function (err,data){
+		if(err) console.log(err);
+		if(data) {
+			var off=data;
+			Offer.update({_id:off.id}, {$set: { type:type,stamps:stamps,dateUpdated:dateUpdated,caption:caption,description:description }}, {upsert: true}, function(err){
+				error.err(res:"102");
+			})
+		}
+		else res.end();
+	})
+})
 
 router.get('/delete', function(req,res) {
 
@@ -52,9 +78,19 @@ router.get('/delete', function(req,res) {
 		return;
 	}
 
+	var offer_id = req.query.offer_id;
+
 	Vendor.findOne({_id:offer_id},function(err, vendor) {
 		if(err)	console.log(err);
+		vendor.offers_old.push(offer_id);
+		var arr_offers = vendor.offers;
+		var index = arr_offers.indexOf(offer_id);
 
+		if(index > -1) {
+			arr_offers.splice(index,1);
+		}
+		vendor.offers = arr_offers;
+		vendor.save();
 	})
 });
 
