@@ -12,6 +12,8 @@ var User = models.User;
 var auth = require('./routes/user');
 var offer = require('./routes/offer');
 var vendor = require('./routes/vendor');
+var checkin = require('./routes/checkin');
+
 var settings = require('./routes/settings');
 
 var app = express();
@@ -20,8 +22,6 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,7 +36,9 @@ app.use('/', function( req, res, next ){
         return;
       }
       if( !data ){
+
         error.err(res,"619");
+        return;
       }
       debugger;
       User.findOne({ _id: data.account }, function( err, data ){
@@ -46,6 +48,7 @@ app.use('/', function( req, res, next ){
           }
           if( !data ){
             error.err(res,"646");
+            return;
           }
           req.user = data;
           next();
@@ -62,6 +65,7 @@ app.use('/', function( req, res, next ){
 app.use('/auth', auth);
 app.use('/offer', offer);
 app.use('/vendor', vendor);
+app.use('/checkin', checkin);
 
 // --------- DB ----------
 var db=mongoose.connection;
