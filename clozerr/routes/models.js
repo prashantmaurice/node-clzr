@@ -48,8 +48,8 @@ Models.Offer = mongoose.model('Offer',new Schema({
 	stamps:String,
 	date_created:Date,
 	caption:String,
-	description:String
-
+	description:String,
+    date_updated:Date
 }));;
 
 module.exports = Models;
