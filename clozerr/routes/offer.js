@@ -7,7 +7,7 @@ var Offer = models.Offer;
 
 router.get('/get', function(req, res) {
 	
-	var errobj = err_insuff_params(req.query,["offer_id"]);
+	var errobj = error.err_insuff_params(req.query,["offer_id"]);
 	if(errobj) {
 		error.err(res,errobj.code,errobj.params);
 		return;
@@ -24,7 +24,7 @@ router.get('/get', function(req, res) {
 
 router.get('/create', function(req, res) {
 	
-	var errobj = err_insuff_params(req.query,["type","caption","description"]);
+	var errobj = error.err_insuff_params(req.query,["type","caption","description"]);
 	if(errobj) {
 		error.err(res,errobj.code,errobj.params);
 		return;
@@ -42,6 +42,20 @@ router.get('/create', function(req, res) {
   	offer.save(function (err){
   		if(err) console.log(err);
   	})
+});
+
+router.get('/delete', function(req,res) {
+
+	var errobj = error.err_insuff_params(req.query,["offer_id"]);
+	if(errobj) {
+		error.err(res,errobj.code,errobj.params);
+		return;
+	}
+
+	Vendor.findOne({_id:offer_id},function(err, vendor) {
+		if(err)	console.log(err);
+
+	})
 });
 
 module.exports = router;

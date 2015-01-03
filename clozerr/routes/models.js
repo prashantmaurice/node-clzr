@@ -20,8 +20,6 @@ vendorSchema.index({ location: '2d' });
 
 Models.Vendor = mongoose.model('Vendor', vendorSchema );
 
-
-
 Models.CheckIn = mongoose.model('CheckIn',new Schema({
 	user:ObjectId,
 	vendor:ObjectId,
