@@ -35,11 +35,17 @@ app.use('/', function( req, res, next ){
         // TODO: THROW ERROR.
         return;
       }
+      if( !data ){
+        // TODO: Throw error.
+      }
       debugger;
       User.findOne({ _id: data.account }, function( err, data ){
           if( err ){
             // TODO: THROW ERROR.
             return;
+          }
+          if( !data ){
+            // TODO: Throw Error.
           }
           req.user = data;
           next();
@@ -48,7 +54,7 @@ app.use('/', function( req, res, next ){
     });
   }else{
     // TODO: SUBSTITUTE req.user with a dummy user object with a blank stamplist.
-    req.user = {};
+    req.user = { _id:"0", id_type:"Anonymous", auth_type:"None", stamplist:{}, social_id:""  };
     next();
   }
 

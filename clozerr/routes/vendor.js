@@ -5,7 +5,9 @@ var models = require("./models");
 var _ = require("underscore");
 var Vendor = models.Vendor;
 var Offer = models.Offer;
+var Promise = mongoose.Promise;
 var Q = require("q");
+var OfferHandler = require("./predicate");
 
 
 router.get('/create', function (req, res) {
@@ -87,28 +89,6 @@ function getUser( req, cb ){
 
 }*/
 
-var predicates = {
-    "S1": function( user, vendor, offer ){
-    	if(user.stamplist[vendor.fid]>=0)	return true;
-    	else return false;
-     },
-    "S0": function( user, vendor, offer ){
-    	return true;
-    	},
-    "SX": function( user, vendor, offer ){
-    	var temp = offer.type.split('');
-     	if(user.stamplist[vendor.fid]>=parseInt(temp[1]))	return true;
-     	else return false;
-     }
-}
-
-function checkConditions( user, vendor, offer ){
-    return predicates[offer.type]( user, vendor, offer );
-}
-
-function getOffers( offer_ids ){
-    return Offer.find({"_id":{ "$in":offer_ids }} ).exec();
-}
 
 router.get('/getnear',function (req,res){
 	var lat,lon,distance,access_token,typelist;
@@ -119,7 +99,8 @@ router.get('/getnear',function (req,res){
 	if(req.query.access_token) access_token = req.query.access_token;
 	if(req.query.type) typelist = JSON.parse(type);
 
-		var user = req.user;
+
+
 	    Vendor.find(
             {
 		        location: {
@@ -129,33 +110,51 @@ router.get('/getnear',function (req,res){
 								if( err ){
 									console.log(err);
 								}
-								console.log( vendors );
+								//console.log( vendors );
                 var vendor_det_ret_arr = [];
                 var plist = [];
-			    for(var i=0;i<vendors.length;i++){
-				    var vendor = vendors[i];
-
-                    plist.push( getOffers( vendor.offers, function( err, offers ){
-
+			    		for(var i=0;i<vendors.length;i++){
+				    				var vendor = vendors[i];
+										console.log("Getting offers: ");
+										console.log( vendor.offers );
+										var pr = Offer.find( { _id:{ $in : vendor.offers }} ).exec();
+										//debugger;
+                    plist.push( pr.then( function( offers ){
+												var deferred = Q.defer();
+												//debugger;
+												//console.log("Async Op: "+i);
+												//debugger;
+												//debugger;
+												
                         var offers_new = _.filter( offers, function( offer ){
-                            return checkConditions( user, vendor, offer );
+                        	return OfferHandler.qualify( req.user, vendor, offer );
                         });
-                        /*
-                         * MAKE VENDOR HERE.
-                         */
-                        var vendor_new;
+												//debugger;
+                        var vendor_new = {};
                         vendor_new.location = vendor.location;
                         vendor_new.name = vendor.name;
                         vendor_new.offers = offers_new;
                         vendor_new.image = vendor.image;
                         vendor_new.fid = vendor.fid;
                         vendor_det_ret_arr.push( vendor_new );
-                    }) );
+												//debugger;
+												process.nextTick( function(){
+													console.log("resolving.");
+													deferred.resolve();
+												});
+												return deferred.promise;
+                    }, function( err ){
+												/*
+													TODO: SMASH ERROR IN THY FACE.
+												*/
+										})
+										);
                 }
-
+								//debugger;
                 Q.all( plist ).then( function(){
-        			res.send(JSON.stringify(vendor_det_ret_arr));
-		        	res.end();
+									//debugger;
+        					res.send(JSON.stringify(vendor_det_ret_arr));
+		        			res.end();
                 });
 
 		    });
