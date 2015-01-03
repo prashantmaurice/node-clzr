@@ -4,6 +4,7 @@ var router = express.Router();
 var Schema =mongoose.Schema;
 var models = require('./models');
 var Offer = models.Offer;
+var _ = require('underscore');
 
 router.get('/get', function(req, res) {
 	
@@ -52,9 +53,19 @@ router.get('/delete', function(req,res) {
 		return;
 	}
 
+	var offer_id = req.query.offer_id;
+
 	Vendor.findOne({_id:offer_id},function(err, vendor) {
 		if(err)	console.log(err);
+		vendor.offers_old.push(offer_id);
+		var arr_offers = vendor.offers;
+		var index = arr_offers.indexOf(offer_id);
 
+		if(index > -1) {
+			arr_offers.splice(index,1);
+		}
+		vendor.offers = arr_offers;
+		vendor.save();
 	})
 });
 
