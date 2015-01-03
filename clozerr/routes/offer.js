@@ -7,7 +7,7 @@ var Offer = models.Offer;
 var _ = require('underscore');
 
 router.get('/get', function(req, res) {
-
+	
 	var errobj = error.err_insuff_params(req.query,["offer_id"]);
 	if(errobj) {
 		error.err(res,errobj.code,errobj.params);
@@ -24,7 +24,7 @@ router.get('/get', function(req, res) {
 });
 
 router.get('/create', function(req, res) {
-
+	
 	var errobj = error.err_insuff_params(req.query,["type","caption","description"]);
 	if(errobj) {
 		error.err(res,errobj.code,errobj.params);

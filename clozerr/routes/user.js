@@ -188,8 +188,12 @@ router.get('/reset/password', function( req, res ){
 // TODO: check this.
 router.get('/create', function(req,res,err) {
       var type = "vendor";
-      if (err) error.err(res,"420");
+      debugger;
+      //if (err) error.err(res,"420");
+
       if( !req.query.vendor_id || !req.query.username ){
+
+        error.err(res,"420");
         error.err( res,"420" );
         return;
       }
@@ -199,10 +203,13 @@ router.get('/create', function(req,res,err) {
       var salt = bcrypt.genSaltSync(10);
       var hash = bcrypt.hashSync( settings.auth.password.default, salt );
 
-      var user = new User({ type:type,vendor_id:vendor_id, password:hash, username: req.query.username });
-      user.save(function(err) {
+      var vuser = new user({ type:type,vendor_id:vendor_id, password:hash, username: req.query.username });
+      vuser.save();
+      debugger;
+
+     /* user.save(function(err) {
         if(err) console.log(err);
-      });
+      });*/
 
   });
 
