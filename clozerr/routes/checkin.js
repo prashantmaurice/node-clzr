@@ -26,11 +26,13 @@ router.get("/create", function( req, res ){
     Throw error if insufficient parameters.
   */
 
-  if(!(req.query.vendor_id && req.query.offer_id && req.query.gcm_id))
-    error.err(res,"420");
+  var errobj = err_insuff_params(req.query,["vendor_id","offer_id","gcm_id"]);
+  if(errobj) {
+    error.err(res,errobj.code,errobj.params);
+    return;
+  }
 
   var user = req.user;
-
   var gcm_id = req.query.gcm_id;
 
   var obj = { user: req.user };
@@ -114,15 +116,15 @@ router.get("/validate", function( req, res ){
         return CheckIn.findOne({_id:checkin}).exec();
     }).then( function(){
         obj.checkin = checkin;
-        if( !user.type.equals("v") ){
+        if( !user.type.equals("vendor") ){
           // TODO: Throw error.
         }
         if(obj.checkin.vendor == obj.user.vendor_id) {
 
-          sendPushNotification(obj.checkin);
           // Note: preferably send notification after checkin save in order to make sure the checkin's state is up-to-date.
           obj.checkin.state = CHECKIN_STATE_CONFIRMED;
           obj.checkin.save();
+          sendPushNotification(obj.checkin);
 
         }
         else error.err(res,"435");
@@ -145,12 +147,13 @@ function check_confirmed(checkin) {
   else return false;
 }
 
+
 router.get("/active",function(req, res) {
   var user = req.user;
   var userobj = User.findOne({_id:user});
   var ut = userobj.type;
 
-  if(ut.equals("u")) {
+  if(ut.equals("user")) {
     CheckIn.find({user:userobj._id, type:CHECKIN_STATE_ACTIVE},function(err,checkins_list) {
       if(err) console.log(err);
       /*var checkins_act_filter = _.filter(checkins_list,function(checkin) {
@@ -159,7 +162,7 @@ router.get("/active",function(req, res) {
       res.send(JSON.stringify(checkins_list));
     });
   }
-  else if(ut.equals("v")) {
+  else if(ut.equals("vendor")) {
     CheckIn.find({ vendor : userobj.vendor_id, type:CHECKIN_STATE_ACTIVE},function(err,checkins_list) {
       if(err) console.log(err);
       var checkins_filter = _.filter(checkins_list,function(checkin) {
@@ -179,7 +182,7 @@ router.get("/confirmed",function(req,res) {
   var userobj = User.findOne({_id:user});
   var ut = userobj.type;
 
-  if(ut.equals("v")) {
+  if(ut.equals("vendor")) {
 
     CheckIn.find({vendor:userobj.vendor_id},function(err,checkins_list) {
       if(err) console.log(err);

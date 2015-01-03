@@ -19,6 +19,7 @@ function newUser( backend, id ) {
  return nuser;
 }
 
+
 var token = models.Token;
 
 function newid( tok, acc ){
@@ -74,9 +75,8 @@ router.get('/login/facebook', function(req, res) {
               var id=hat();
 
               console.log(id);
-
               newid(id,nu._id).save();
-              debugger;
+
               res.end( JSON.stringify( {result : true, token : id } ) );
             }
       });
@@ -117,8 +117,6 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
 
         if (result)
          {
-          //console.log(result._id);
-         // res.send(result);
          var id=hat();
          console.log(id);
 
@@ -184,9 +182,9 @@ request.on('error', function(e) {
 });
 
 // TODO: check this.
-router.get('/create', function(req, res) {
-      var type = "v";
-
+router.get('/create', function(req,res,err) {
+      var type = "vendor";
+      if (err) error.err(res,"420");
       if( !req.query.vendor_id || !req.query.username ){
         // TODO: Throw error.
         return;
@@ -201,7 +199,6 @@ router.get('/create', function(req, res) {
       user.save(function(err) {
         if(err) console.log(err);
       });
-
 
   });
 

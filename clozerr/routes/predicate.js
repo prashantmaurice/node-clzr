@@ -29,13 +29,13 @@ var predicates = {
 module.exports.qualify = function( user, vendor, offer ){
 
   console.log("Calculating: "+user._id + " " + vendor._id + " "+offer._id);
-  //return true;
   console.log("Offer type: "+offer.type);
-  debugger;
+  
   if( !predicates[offer.type] ){
     /**
       TODO: Log an error here. we have an offer of unsupported type.
     **/
+    console.log("Type of offer is unsupported");
     return false;
   }
   return predicates[offer.type]( user, vendor, offer );
