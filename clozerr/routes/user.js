@@ -145,8 +145,7 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
     }
         else{
               res.end( JSON.stringify({ result:false, err:{} } ) );
-      // TODO: create error.js
-            }
+                }
 
     });
 
@@ -156,7 +155,7 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
 router.get('/login/password', function( req, res ){
   User.findOne( {username: req.query.username}, function( err, user ){
     if( err ){
-      // TODO: throw error.
+      error.err(res,"102");
     }
     // TODO: Test this.
     if( bcrypt.compareSync( req.query.password, user.password ) ){
@@ -193,7 +192,7 @@ router.get('/create', function(req,res,err) {
       var type = "vendor";
       if (err) error.err(res,"420");
       if( !req.query.vendor_id || !req.query.username ){
-        // TODO: Throw error.
+        error.err(res:"420");
         return;
       }
 
