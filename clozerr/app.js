@@ -32,20 +32,20 @@ app.use('/', function( req, res, next ){
   if( req.query.access_token ){
     Token.findOne( { access_token: req.query.access_token }, function( err, data ){
       if( err ){
-        // TODO: THROW ERROR.
+         error.err(res,"102");
         return;
       }
       if( !data ){
-        // TODO: Throw error.
+        error.err(res,"619");
       }
       debugger;
       User.findOne({ _id: data.account }, function( err, data ){
           if( err ){
-            // TODO: THROW ERROR.
+            error.err(res,"102");
             return;
           }
           if( !data ){
-            // TODO: Throw Error.
+            error.err(res,"646");
           }
           req.user = data;
           next();
