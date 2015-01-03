@@ -13,6 +13,8 @@ var Vendor = models.Vendor;
 var Offer = models.Offer;
 var CheckIn = models.CheckIn;
 
+var OfferHandler = require("./predicate");
+
 
 const var CHECKIN_STATE_ACTIVE  = 0;
 const var CHECKIN_STATE_CONFIRMED  = 1;
@@ -32,20 +34,19 @@ router.get("checkin/create", function( req, res ){
 
   var gcm_id = req.query.gcm_id;
 
-  Vendor.find( {"_id":req.query.vendor_id} ).exec().then( function( res ,vendor_s){
-
+  var obj = { user: req.user };
+  Vendor.find( {"_id":req.query.vendor_id} ).exec().then( function( res ,vendor){
+    obj.vendor = vendor;
     return Offer.find( {"_id":req.query.offer_id} ).exec();
-  }
-  ).then( function( res ,data) {
+
+  }).then( function( res , offer ) {
     /*
       TODO: Check if offer_id is there in the vendor's current offers.
     */
-    checkConditions(user,vendor_s,data);
-    if( !checkConditions( user, vendor, offer ) ){
-          // TODO: Throw Error.
-          error.err(res,"671");
+    obj.offer = offer;
+    if( !OfferHandler.qualify( obj.user, obj.vendor, obj.offer ) ){
+          error.err( res, "671" );
     }
-  }
 
     var checkin = new CheckIn({
       user:user._id,
@@ -64,11 +65,12 @@ router.get("checkin/create", function( req, res ){
           console.log(err);
     });
 
+    res.end( JSON.stringify({ result:true, checkin:checkin }) );
     /*
       TODO: Send alert to Vendor. SocketIO.
     */
 
-  );
+  });
 
 });
 
@@ -96,42 +98,49 @@ router.get("checkin/validate", function( req, res ){
 
   var user = req.user;
 
+  // Global memory to be used by the Promise chain.
+  var obj = {};
+
   if(!req.query.id || !req.query.checkin){
+    // TODO: Change this error code.
     error.err( res, "435" );
   }
+
     var id = req.query.id;
     var checkin = req.query.checkin;
-    var userobj = User.findOne({_id:user});
-    var ut = userobj.type;
-    if( ut.equals("v") ){
-      var checkinobj = CheckIn.findOne({_id:checkin});
-      if(checkinobj.vendor == userobj.vendor_id) {
+    User.findOne({_id:user}).exec().then( function( user ){
+        obj.user = user;
+        return CheckIn.findOne({_id:checkin}).exec();
+    }).then( function(){
+        obj.checkin = checkin;
+        if( !user.type.equals("v") ){
+          // TODO: Throw error.
+        }
+        if(obj.checkin.vendor == obj.user.vendor_id) {
 
-        //TODO : Send a push notification based on gcm_id of checkin
+          sendPushNotification(obj.checkin);
+          // Note: preferably send notification after checkin save in order to make sure the checkin's state is up-to-date.
+          obj.checkin.state = CHECKIN_STATE_CONFIRMED;
+          obj.checkin.save();
 
-        sendPushNotification(checkinobj);
-
-        //TODO : Update checkinobj's state to CONFIRMED.
-
-        console.log("checkin validated for : " + checkinobj.user + ", by " + checkinobj.vendor);
-      }
-      else error.err(res,"435");
-    }
+        }
+        else error.err(res,"435");
+    });
 
 });
 
 function check_validity(checkin) {
-  if(parse(new Date()) - parse(checkin.date_created)<1000000) return true;
+  if(parse(new Date()) - parse(checkin.date_created) < 1000000) return true;
   else return false;
 }
 
 function check_activeness(checkin) {
-  if(checkin.state==CHECKIN_STATE_ACTIVE) return true;
+  if(checkin.state == CHECKIN_STATE_ACTIVE) return true;
   else return false;
 }
 
 function check_confirmed(checkin) {
-  if(checkin.state==CHECKIN_STATE_CONFIRMED) return true;
+  if(checkin.state == CHECKIN_STATE_CONFIRMED) return true;
   else return false;
 }
 
@@ -141,16 +150,16 @@ router.get("checkin/active",function(req, res) {
   var ut = userobj.type;
 
   if(ut.equals("u")) {
-    CheckIn.find({user:userobj._id},function(err,checkins_list) {
+    CheckIn.find({user:userobj._id, type:CHECKIN_STATE_ACTIVE},function(err,checkins_list) {
       if(err) console.log(err);
-      var checkins_act_filter = _.filter(checkins_list,function(checkin) {
+      /*var checkins_act_filter = _.filter(checkins_list,function(checkin) {
         return check_activeness(checkin);
-      });
-      res.send(JSON.stringify(checkins_act_filter));
+      });*/
+      res.send(JSON.stringify(checkins_list));
     });
   }
   else if(ut.equals("v")) {
-    CheckIn.find({vendor:userobj.vendor_id},function(err,checkins_list) {
+    CheckIn.find({ vendor : userobj.vendor_id, type:CHECKIN_STATE_ACTIVE},function(err,checkins_list) {
       if(err) console.log(err);
       var checkins_filter = _.filter(checkins_list,function(checkin) {
         return check_validity(checkin);
@@ -162,7 +171,7 @@ router.get("checkin/active",function(req, res) {
     });
   }
 
-});
+})
 
 router.get("checkin/confirmed",function(req,res) {
   var user = req.user;

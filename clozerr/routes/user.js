@@ -1,15 +1,13 @@
 var express = require('express');
-
-var router = express.Router();
 var hat=require('hat');
 var settings = require('./settings');
-/* GET home page. */
 var https = require('https');
 var mongoose=require('mongoose');
-var Schema=mongoose.Schema;
 var models = require("./models");
 var error = require("./error");
+var bcrypt = require("bcrypt");
 
+var router = express.Router();
 var user = models.User;
 
 function newuserfb(fb){
@@ -28,20 +26,25 @@ function newusergp(gp){
 }
 var token = models.Token;
 
-function newid(tok,acc){
-  var nuser_id=new token({
+function newid( tok, acc ){
+  var nuser_id = new token({
     access_token:tok,
     account:acc
   });
   return nuser_id;
 }
 
-router.get('/facebook/login', function(req, res) {
+function loginUser( user ){
+  var id = hat();
+  return newid( id, acc ).save().exec();
+}
+
+router.get('/login/facebook', function(req, res) {
   /*
     TODO: check req parameters.
   */
 
-  var request = https.get('https://graph.facebook.com/debug_token?input_token='+req.query.fb_token+'&access_token='+settings.auth.facebook.app_token, function(response) {
+  var request = https.get('https://graph.facebook.com/debug_token?input_token=' + req.query.fb_token + '&access_token='+settings.auth.facebook.app_token, function(response) {
   debugger;
   console.log("Statuscode: ", response.statusCode);
   console.log("headers: ", response.headers);
@@ -62,7 +65,7 @@ router.get('/facebook/login', function(req, res) {
          {
             //console.log(result._id);
             // res.send(result);
-            var id=hat();
+            var id = hat();
             console.log(id);
 
             newid( id, result._id ).save();
@@ -98,7 +101,7 @@ request.on('error', function(e) {
 
 });
 
-router.get('/google/login', function(req, res) {
+router.get('/login/google', function(req, res) {
 
 var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=1/'+req.query.gp_token, function(response) {
 
@@ -148,24 +151,46 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
 
   });
 
-//req.end();
 
+router.get('/login/password', function( req, res ){
+  User.findOne( {username: req.query.username}, function( err, user ){
+    if( err ){
+      // TODO: throw error.
+    }
+    // TODO: Test this.
+    if( bcrypt.compareSync( req.query.password, user.password ) ){
+      loginUser( user ).then( function( token ){
+        res.end( JSON.stringify({ result:true, access_token:token.token }) );
+      });
+    }
+
+  });
+});
 request.on('error', function(e) {
     console.error(e);
 });
 
 });
 
-
+// TODO: check this.
 router.get('/create', function(req, res) {
       var type = "v";
-      if(req.query.vendor_id) {
-        var vendor_id = req.query.vendor_id;
-        var user = new User({type:type,vendor_id:vendor_id});
-        user.save(function(err) {
-          if(err) console.log(err);
-        });
+
+      if( !req.query.vendor_id || !req.query.username ){
+        // TODO: Throw error.
+        return;
       }
+
+      var vendor_id = req.query.vendor_id;
+
+      var salt = bcrypt.genSaltSync(10);
+      var hash = bcrypt.hashSync( settings.auth.password.default, salt );
+
+      var user = new User({ type:type,vendor_id:vendor_id, password:hash, username: req.query.username });
+      user.save(function(err) {
+        if(err) console.log(err);
+      });
+
       else error.err(res,"420");
   });
 
