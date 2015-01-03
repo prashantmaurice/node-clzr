@@ -34,7 +34,8 @@ Models.User = mongoose.model('User',new Schema({
     id_type:String,
     social_id:String,
     type:String,
-    vendor_id:String
+    vendor_id:String,
+		stamplist:Object
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
@@ -49,7 +50,6 @@ Models.Offer = mongoose.model('Offer',new Schema({
 	date_created:Date,
 	caption:String,
 	description:String,
-    date_updated:Date
 }));;
 
 module.exports = Models;

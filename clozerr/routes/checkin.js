@@ -32,13 +32,16 @@ router.get("/create", function( req, res ){
     return;
   }
 
+  //TODO : Check for duplicates and handle that
+
   var user = req.user;
   var gcm_id = req.query.gcm_id;
 
   var obj = { user: req.user };
-  Vendor.find( {"_id":req.query.vendor_id} ).exec().then( function( vendor){
+  Vendor.findOne( {_id:req.query.vendor_id} ).exec().then( function( vendor ){
+    debugger;
     obj.vendor = vendor;
-    return Offer.find( {"_id":req.query.offer_id} ).exec();
+    return Offer.findOne( {_id:req.query.offer_id} ).exec();
 
   }).then( function( offer ) {
     /*
@@ -49,23 +52,21 @@ router.get("/create", function( req, res ){
     if( !OfferHandler.qualify( obj.user, obj.vendor, obj.offer ) ){
         // TODO: change error description.
           error.err( res, "671" );
+          return;
     }
-
+    debugger;
     var checkin = new CheckIn({
-      user:user._id,
-      vendor:vendor._id,
-      offer:offer._id,
+      user: obj.user._id,
+      vendor: obj.vendor._id,
+      offer: obj.offer._id,
       state: CHECKIN_STATE_ACTIVE,
       date_created: new Date(),
       pin: rack(),
       gcm_id:gcm_id
     });
 
-    checkin.save().then( function( res ){
+    checkin.save( function( err, res, num ){
           console.log("Successfully saved checkin");
-    }, function( err ){
-          console.log("Error saving checkin");
-          console.log(err);
     });
 
     res.end( JSON.stringify({ result:true, checkin:checkin }) );
