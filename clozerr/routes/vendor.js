@@ -11,14 +11,19 @@ var OfferHandler = require("./predicate");
 var error = require("./error");
 
 router.get('/create', function (req, res) {
-	var lat,lon,offers=[],image,offers_old=[],fid,date_created=new Date(),name;
-	//if(req.query.vendorid) vendorid=req.query.vendorid;
-	if(req.query.latitude) lat=req.query.latitude;
-	if(req.query.longitude) lon=req.query.longitude;
-	if(req.query.image) image=req.query.image;
-	if(req.query.fid) fid=req.query.fid;
-	if(req.query.name) name=req.query.name;
+	
+	var errobj = error.err_insuff_params(req.query,["latitude","longitude","image","fid","name"]);
+	if(errobj) {
+		error.err(res,errobj.code,errobj.params);
+		return;
+	}
 
+	var lat=req.query.latitude;
+	var lon=req.query.longitude;
+	var image=req.query.image;
+	var fid=req.query.fid;
+	var name=req.query.name;
+	var offers = [], offers_old = [],date_created = new Date();
 
   	var vendor=new Vendor({
 		//vendorid:vendorid,
@@ -30,21 +35,20 @@ router.get('/create', function (req, res) {
 		fid:fid,
 		date_created:date_created
 	});
-	res.send('create request received : <br>'+JSON.stringify(vendor));
+	res.send(result:true,vendor);
 
-	/*vendor.save(function (err){
-		if(err) console.log(err);
-	});*/
 vendor.save();
 });
 
 router.get('/get', function (req,res){
-	var id;
-	if(req.query.id) id=req.query.id;
-	else{
-		// TODO: THROW ERROR.
+	
+	xvar errobj = error.err_insuff_params(req.query,["id"]);
+	if(errobj) {
+		error.err(res,errobj.code,errobj.params);
 		return;
 	}
+
+	var id = req.query.id;
 
 	Vendor.findOne({ _id : id },function ( err, vendor ){
 		if(err) console.log( err );
@@ -64,10 +68,15 @@ router.get('/get', function (req,res){
 })
 
 router.get('/addoffer',function (req,res){
-	var offerid,vendorid;
-	if(req.query.vendorid) vendorid=req.query.vendorid;
-	if(req.query.offerid) offerid=req.query.offerid;
+	
+	var errobj = err_insuff_params(req.query,["vendor_id","offer_id"]);
+	if(errobj) {
+		error.err(res,errobj.code,errobj.params);
+		return;
+	}
 
+	var vendorid=req.query.vendor_id;
+	var offerid=req.query.offer_id;
 
 	Vendor.update({_id:vendorid},{$addToSet:{offers:offerid}},function (err,num,raw){
 		debugger;
@@ -94,15 +103,12 @@ router.get('/addoffer',function (req,res){
 
 router.get('/getnear',function (req,res){
 	var lat,lon,distance,access_token,typelist;
-	//var vendor_det_ret_arr = [];
-	if(req.query.latitude) lat=req.query.latitude;
-	if(req.query.longitude) lon=req.query.longitude;
-	if(req.query.distance) distance = req.query.distance;
-	if(req.query.access_token) access_token = req.query.access_token;
-	if(req.query.type) typelist = JSON.parse(type);
-
-
-
+	
+	var errobj = err_insuff_params(req.query,["latitude","longitude","access_token","type"]);
+	if(errobj) {
+		error.err(res,errobj.code,errobj.params);
+		return;
+	}
 	    Vendor.find(
             {
 		        location: {

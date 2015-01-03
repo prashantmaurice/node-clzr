@@ -117,11 +117,11 @@ router.get("checkin/validate", function( req, res ){
           // TODO: Throw error.
         }
         if(obj.checkin.vendor == obj.user.vendor_id) {
-
-          sendPushNotification(obj.checkin);
+          
           // Note: preferably send notification after checkin save in order to make sure the checkin's state is up-to-date.
           obj.checkin.state = CHECKIN_STATE_CONFIRMED;
           obj.checkin.save();
+          sendPushNotification(obj.checkin);
 
         }
         else error.err(res,"435");
