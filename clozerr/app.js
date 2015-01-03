@@ -16,6 +16,8 @@ var checkin = require('./routes/checkin');
 
 var settings = require('./routes/settings');
 
+var error = require('./routes/error');
+
 var app = express();
 
 // view engine setup

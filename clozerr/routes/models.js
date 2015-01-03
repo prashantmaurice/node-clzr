@@ -34,7 +34,8 @@ Models.User = mongoose.model('User',new Schema({
     id_type:String,
     social_id:String,
     type:String,
-    vendor_id:String
+    vendor_id:String,
+		stamplist:Object
 }));
 
 Models.Token = mongoose.model('Token',new Schema({

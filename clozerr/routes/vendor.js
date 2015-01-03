@@ -35,14 +35,14 @@ router.get('/create', function (req, res) {
 		fid:fid,
 		date_created:date_created
 	});
-	
+
 	res.send({ result : true, vendor : vendor });
 
 vendor.save();
 });
 
 router.get('/get', function (req,res){
-	
+
 	var errobj = error.error.err_insuff_params(req.query,["id"]);
 	if(errobj) {
 		error.err(res,errobj.code,errobj.params);
@@ -69,7 +69,7 @@ router.get('/get', function (req,res){
 })
 
 router.get('/addoffer',function (req,res){
-	
+
 	var errobj = error.err_insuff_params(req.query,["vendor_id","offer_id"]);
 	if(errobj) {
 		error.err(res,errobj.code,errobj.params);
@@ -90,18 +90,18 @@ router.get('/addoffer',function (req,res){
 
 
 router.get('/get/near',function (req,res){
-	
-	var errobj = error.err_insuff_params(req.query,["latitude","longitude","access_token","type"]);
-	if(errobj) {
-		error.err(res,errobj.code,errobj.params);
+
+	var errobj = error.err_insuff_params(res,req,["latitude","longitude","access_token","type"]);
+	if(!errobj) {
+		//error.err(res,errobj.code,errobj.params);
 		return;
 	}
-	
+
 	var lat = req.query.latitude;
 	var lon = req.query.longitude;
 	var distance = req.query.distance;
 	var access_token = req.query.access_token;
-	var typelist = JSON.parse(type);
+	var typelist = JSON.parse(req.query.type);
 
 	    Vendor.find(
             {
