@@ -26,12 +26,13 @@ router.get("checkin/create", function( req, res ){
     Throw error if insufficient parameters.
   */
 
-  if(!(req.query.vendor_id && req.query.offer_id && req.query.gcm_id))
-
-    error.err(res,"420");
+  var errobj = err_insuff_params(req.query,["vendor_id","offer_id","gcm_id"]);
+  if(errobj) {
+    error.err(res,errobj.code,errobj.params);
+    return;
+  }
 
   var user = req.user;
-
   var gcm_id = req.query.gcm_id;
 
   var obj = { user: req.user };
@@ -178,7 +179,7 @@ router.get("checkin/confirmed",function(req,res) {
   var userobj = User.findOne({_id:user});
   var ut = userobj.type;
 
-  if(ut.equals("v")) {
+  if(ut.equals("vendor")) {
 
     CheckIn.find({vendor:userobj.vendor_id},function(err,checkins_list) {
       if(err) console.log(err);

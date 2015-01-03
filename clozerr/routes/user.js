@@ -80,9 +80,8 @@ router.get('/login/facebook', function(req, res) {
               var id=hat();
 
               console.log(id);
-
               newid(id,nu._id).save();
-              debugger;
+
               res.end( JSON.stringify( {result : true, token : id } ) );
             }
       });
@@ -123,8 +122,6 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
 
         if (result)
          {
-          //console.log(result._id);
-         // res.send(result);
          var id=hat();
          console.log(id);
 

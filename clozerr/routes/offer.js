@@ -7,7 +7,7 @@ var Offer = models.Offer;
 
 router.get('/get', function(req, res) {
 	
-	var errobj = err_insff_params(req.query,["offer_id"]);
+	var errobj = err_insuff_params(req.query,["offer_id"]);
 	if(errobj) {
 		error.err(res,errobj.code,errobj.params);
 		return;
