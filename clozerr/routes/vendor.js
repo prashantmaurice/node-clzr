@@ -11,7 +11,7 @@ var OfferHandler = require("./predicate");
 var error = require("./error");
 
 router.get('/create', function (req, res) {
-	
+
 	var errobj = error.err_insuff_params(req.query,["latitude","longitude","image","fid","name"]);
 	if(errobj) {
 		error.err(res,errobj.code,errobj.params);
@@ -35,14 +35,15 @@ router.get('/create', function (req, res) {
 		fid:fid,
 		date_created:date_created
 	});
-	res.send(result:true,vendor);
+	
+	res.send({ result : true, vendor : vendor });
 
 vendor.save();
 });
 
 router.get('/get', function (req,res){
 	
-	xvar errobj = error.err_insuff_params(req.query,["id"]);
+	var errobj = error.err_insuff_params(req.query,["id"]);
 	if(errobj) {
 		error.err(res,errobj.code,errobj.params);
 		return;
@@ -88,27 +89,20 @@ router.get('/addoffer',function (req,res){
 });
 
 
-
-/*function filterOffers( offers, criteria, checkstamps ){
-
-	var len=vendor.offers.length;
-	for(var i=0;i<len;i++) {
-		Offer.findOne({
-		_id:vendor.offers[i]
-		},checkstamps );
-	}
-
-}*/
-
-
-router.get('/getnear',function (req,res){
-	var lat,lon,distance,access_token,typelist;
+router.get('/get/near',function (req,res){
 	
 	var errobj = err_insuff_params(req.query,["latitude","longitude","access_token","type"]);
 	if(errobj) {
 		error.err(res,errobj.code,errobj.params);
 		return;
 	}
+	
+	var lat = req.query.latitude;
+	var lon = req.query.longitude;
+	var distance = req.query.distance;
+	var access_token = req.query.access_token;
+	var typelist = JSON.parse(type);
+
 	    Vendor.find(
             {
 		        location: {

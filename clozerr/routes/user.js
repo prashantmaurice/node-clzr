@@ -20,6 +20,7 @@ function newuserfb(fb){
 
 function newusergp(gp){
   var nuser=new user({
+    type:"user"
     name:'',
     gp_id:gp
   })
@@ -166,6 +167,21 @@ router.get('/login/password', function( req, res ){
 
   });
 });
+
+router.get('/reset/password', function( req, res ){
+  var user = req.user;
+  /*
+  * TODO: allow only users of type VENDOR & ADMIN to reset password.
+  */
+
+  var salt = bcrypt.genSaltSync(10);
+  var hash = bcrypt.hashSync( settings.auth.password.default, salt );
+
+  user.password = hash;
+  user.save();
+  res.end({ result:true });
+
+});
 request.on('error', function(e) {
     console.error(e);
 });
@@ -173,9 +189,9 @@ request.on('error', function(e) {
 });
 
 // TODO: check this.
-router.get('/create', function(req, res) {
-      var type = "v";
-
+router.get('/create', function(req,res,err) {
+      var type = "vendor";
+      if (err) error.err(res,"420");
       if( !req.query.vendor_id || !req.query.username ){
         // TODO: Throw error.
         return;
@@ -190,8 +206,7 @@ router.get('/create', function(req, res) {
       user.save(function(err) {
         if(err) console.log(err);
       });
-
-      else error.err(res,"420");
+       
   });
 
 

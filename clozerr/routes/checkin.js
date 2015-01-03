@@ -113,7 +113,7 @@ router.get("checkin/validate", function( req, res ){
         return CheckIn.findOne({_id:checkin}).exec();
     }).then( function(){
         obj.checkin = checkin;
-        if( !user.type.equals("v") ){
+        if( !user.type.equals("vendor") ){
           // TODO: Throw error.
         }
         if(obj.checkin.vendor == obj.user.vendor_id) {
@@ -143,13 +143,13 @@ function check_confirmed(checkin) {
   if(checkin.state == CHECKIN_STATE_CONFIRMED) return true;
   else return false;
 }
-
+                                                                                                                                                                                                  
 router.get("checkin/active",function(req, res) {
   var user = req.user;
   var userobj = User.findOne({_id:user});
   var ut = userobj.type;
 
-  if(ut.equals("u")) {
+  if(ut.equals("user")) {
     CheckIn.find({user:userobj._id, type:CHECKIN_STATE_ACTIVE},function(err,checkins_list) {
       if(err) console.log(err);
       /*var checkins_act_filter = _.filter(checkins_list,function(checkin) {
@@ -158,7 +158,7 @@ router.get("checkin/active",function(req, res) {
       res.send(JSON.stringify(checkins_list));
     });
   }
-  else if(ut.equals("v")) {
+  else if(ut.equals("vendor")) {
     CheckIn.find({ vendor : userobj.vendor_id, type:CHECKIN_STATE_ACTIVE},function(err,checkins_list) {
       if(err) console.log(err);
       var checkins_filter = _.filter(checkins_list,function(checkin) {
