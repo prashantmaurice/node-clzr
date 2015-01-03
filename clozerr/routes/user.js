@@ -9,6 +9,7 @@ var bcrypt = require("bcrypt-nodejs");
 
 var router = express.Router();
 var user = models.User;
+var User = user;
 
 function newUser( backend, id ) {
  var nuser=new user({
@@ -32,7 +33,7 @@ function newid( tok, acc ){
 
 function loginUser( user ){
   var id = hat();
-  return newid( id, acc ).save().exec();
+  return newid( id, user ).save().exec();
 }
 
 router.get('/login/facebook', function(req, res) {
@@ -144,6 +145,12 @@ var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_t
 
   });
 
+  request.on('error', function(e) {
+    console.error(e);
+  });
+
+});
+
 
 router.get('/login/password', function( req, res ){
   User.findOne( {username: req.query.username}, function( err, user ){
@@ -152,8 +159,10 @@ router.get('/login/password', function( req, res ){
     }
     // TODO: Test this.
     if( bcrypt.compareSync( req.query.password, user.password ) ){
-      loginUser( user ).then( function( token ){
-        res.end( JSON.stringify({ result:true, access_token:token.token }) );
+      var token = newid( hat(), user );
+      token.save( function( err, token, num ){
+        console.log( token );
+        res.end( JSON.stringify({ result:true, access_token:token.access_token }) );
       });
     }
 
@@ -174,19 +183,17 @@ router.get('/reset/password', function( req, res ){
   res.end({ result:true });
 
 });
-request.on('error', function(e) {
-    console.error(e);
-});
 
-});
 
 // TODO: check this.
 router.get('/create', function(req,res,err) {
       var type = "vendor";
-      if (err) error.err(res,"420");
+      debugger;
+      //if (err) error.err(res,"420");
+
       if( !req.query.vendor_id || !req.query.username ){
         error.err(res,"420");
-        return;
+=        return;
       }
 
       var vendor_id = req.query.vendor_id;
@@ -194,10 +201,13 @@ router.get('/create', function(req,res,err) {
       var salt = bcrypt.genSaltSync(10);
       var hash = bcrypt.hashSync( settings.auth.password.default, salt );
 
-      var user = new User({ type:type,vendor_id:vendor_id, password:hash, username: req.query.username });
-      user.save(function(err) {
+      var vuser = new user({ type:type,vendor_id:vendor_id, password:hash, username: req.query.username });
+      vuser.save();
+      debugger;
+
+     /* user.save(function(err) {
         if(err) console.log(err);
-      });
+      });*/
 
   });
 
