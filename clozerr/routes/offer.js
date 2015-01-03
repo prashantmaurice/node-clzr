@@ -63,7 +63,7 @@ Offer.findOne({_id:id},function (err,data){
 		if(data) {
 			var off=data;
 			Offer.update({_id:off.id}, {$set: { type:type,stamps:stamps,dateUpdated:dateUpdated,caption:caption,description:description }}, {upsert: true}, function(err){
-				error.err(res:"102");
+				error.err(res,"102");
 			})
 		}
 		else res.end();
