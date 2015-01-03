@@ -12,6 +12,7 @@ var gcm = require("node-gcm");
 var Vendor = models.Vendor;
 var Offer = models.Offer;
 var CheckIn = models.CheckIn;
+var User = models.User;
 
 var OfferHandler = require("./predicate");
 
@@ -119,11 +120,21 @@ router.get("/validate", function( req, res ){
           // TODO: Throw error.
         }
         if(obj.checkin.vendor == obj.user.vendor_id) {
-
           // Note: preferably send notification after checkin save in order to make sure the checkin's state is up-to-date.
           obj.checkin.state = CHECKIN_STATE_CONFIRMED;
           obj.checkin.save();
           sendPushNotification(obj.checkin);
+
+          Offer.findOne( { _id : obj.checkin.offer } ).exec().then(function( offer ){
+              obj.offer = offer;
+              return Vendor.findOne( { _id : obj.checkin.vendor } ).exec();
+            }).then( function( vendor ){
+              obj.vendor = vendor;
+              OfferHandler.onCheckin( obj.user, obj.offer, obj.vendor );
+              obj.user.save();
+
+              res.end( { result: true } );
+            });
 
         }
         else error.err(res,"435");
@@ -149,28 +160,32 @@ function check_confirmed(checkin) {
 
 router.get("/active",function(req, res) {
   var user = req.user;
-  var userobj = User.findOne({_id:user});
+  var userobj = user;
   var ut = userobj.type;
 
-  if(ut.equals("user")) {
-    CheckIn.find({user:userobj._id, type:CHECKIN_STATE_ACTIVE},function(err,checkins_list) {
+  if( ut == "user" ) {
+    CheckIn.find({user:userobj._id, state:CHECKIN_STATE_ACTIVE},function(err,checkins_list) {
       if(err) console.log(err);
       /*var checkins_act_filter = _.filter(checkins_list,function(checkin) {
         return check_activeness(checkin);
       });*/
-      res.send(JSON.stringify(checkins_list));
+      res.end(JSON.stringify(checkins_list));
     });
   }
-  else if(ut.equals("vendor")) {
-    CheckIn.find({ vendor : userobj.vendor_id, type:CHECKIN_STATE_ACTIVE},function(err,checkins_list) {
+  else if( ut == "vendor" ) {
+    debugger;
+    CheckIn.find({ vendor : userobj.vendor_id, state:CHECKIN_STATE_ACTIVE},function(err,checkins_list) {
       if(err) console.log(err);
+      console.log( checkins_list );
+
+      // TODO: Use _.partition instead of _.filter and then with the checkins that FAIL the test. iterate through them, set them to cancelled and save them.
       var checkins_filter = _.filter(checkins_list,function(checkin) {
         return check_validity(checkin);
       });
       checkins_filter = _.filter(checkins_filter,function(checkin) {
         return check_activeness(checkin);
       });
-      res.send(JSON.stringify(checkins_filter));
+      res.end(JSON.stringify(checkins_list));
     });
   }
 

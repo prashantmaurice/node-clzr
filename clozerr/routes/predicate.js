@@ -26,6 +26,14 @@ var predicates = {
     }
 };
 
+var handlers = {
+  "S1": function( user, vendor, offer ){
+    if( user.stamplist[vendor.fid] )
+      user.stamplist[vendor.fid] ++;
+    else
+      user.stamplist[vendor.fid]  = 0;
+  },
+}
 module.exports.qualify = function( user, vendor, offer ){
 
   console.log("Calculating: "+user._id + " " + vendor._id + " "+offer._id);
@@ -39,4 +47,19 @@ module.exports.qualify = function( user, vendor, offer ){
     return false;
   }
   return predicates[offer.type]( user, vendor, offer );
+}
+
+module.exports.onCheckin = function( user, vendor, offer ){
+
+  console.log("Checking in: "+user._id + " " + vendor._id + " "+offer._id);
+  console.log("Offer type: "+offer.type);
+  debugger;
+  if( !handlers[offer.type] ){
+    /**
+    TODO: Log an error here. we have an offer of unsupported type.
+    **/
+    console.log("Type of offer is unsupported");
+    return false;
+  }
+  return handlers[offer.type]( user, vendor, offer );
 }
