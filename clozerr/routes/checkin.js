@@ -26,9 +26,9 @@ router.get("/create", function( req, res ){
     Throw error if insufficient parameters.
   */
 
-  var errobj = error.err_insuff_params(req.query,["vendor_id","offer_id","gcm_id"]);
-  if(errobj) {
-    error.err(res,errobj.code,errobj.params);
+  var errobj = error.err_insuff_params( res, req, ["vendor_id","offer_id","gcm_id"]);
+  if(!errobj) {
+    //error.err(res,errobj.code,errobj.params);
     return;
   }
 

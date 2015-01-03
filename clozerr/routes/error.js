@@ -17,15 +17,23 @@ error.err = function( res, code, desc ){
     ));
 }
 
-error.err_insuff_params = function(reqq, arr) {
-	var errobj = {  params:[] };
+error.err_insuff_params = function( res, req,  arr ) {
+	var errobj = { params:[] };
 	for(var i=0;i<arr.length;i++) {
 		param = arr[i];
-		if( !(reqq[param]) )
+		if( !(req.query[param]) )
 			errobj.params.push(param);
 	}
-	errobj.code = "420";
-	return errobj;
+
+	if( errobj.params.length ){
+		res.end(JSON.stringify(
+		{ result:false, err:{ code:420, description: "" } }
+		));
+		return false;
+	}
+
+	return true;
+
 }
 
 module.exports = error;
