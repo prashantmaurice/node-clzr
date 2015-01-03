@@ -13,11 +13,11 @@ var error = require("./error");
 router.get('/create', function (req, res) {
 	var lat,lon,offers=[],image,offers_old=[],fid,date_created=new Date(),name;
 	//if(req.query.vendorid) vendorid=req.query.vendorid;
-	if(req.query.latitude) lat=req.query.latitude;
-	if(req.query.longitude) lon=req.query.longitude;
-	if(req.query.image) image=req.query.image;
-	if(req.query.fid) fid=req.query.fid;
-	if(req.query.name) name=req.query.name;
+	if(req.query.latitude) lat = req.query.latitude;
+	if(req.query.longitude) lon = req.query.longitude;
+	if(req.query.image) image = req.query.image;
+	if(req.query.fid) fid = req.query.fid;
+	if(req.query.name) name = req.query.name;
 
 
   	var vendor=new Vendor({
@@ -30,7 +30,7 @@ router.get('/create', function (req, res) {
 		fid:fid,
 		date_created:date_created
 	});
-	res.send('create request received : <br>'+JSON.stringify(vendor));
+	res.send({ result : true, vendor : vendor });
 
 	/*vendor.save(function (err){
 		if(err) console.log(err);
@@ -40,7 +40,7 @@ vendor.save();
 
 router.get('/get', function (req,res){
 	var id;
-	if(req.query.id) id=req.query.id;
+	if(req.query.id) id = req.query.id;
 	else{
 		// TODO: THROW ERROR.
 		return;
@@ -79,24 +79,11 @@ router.get('/addoffer',function (req,res){
 });
 
 
-
-/*function filterOffers( offers, criteria, checkstamps ){
-
-	var len=vendor.offers.length;
-	for(var i=0;i<len;i++) {
-		Offer.findOne({
-		_id:vendor.offers[i]
-		},checkstamps );
-	}
-
-}*/
-
-
-router.get('/getnear',function (req,res){
+router.get('/get/near',function (req,res){
 	var lat,lon,distance,access_token,typelist;
 	//var vendor_det_ret_arr = [];
-	if(req.query.latitude) lat=req.query.latitude;
-	if(req.query.longitude) lon=req.query.longitude;
+	if(req.query.latitude) lat = req.query.latitude;
+	if(req.query.longitude) lon = req.query.longitude;
 	if(req.query.distance) distance = req.query.distance;
 	if(req.query.access_token) access_token = req.query.access_token;
 	if(req.query.type) typelist = JSON.parse(type);
