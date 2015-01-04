@@ -1,10 +1,12 @@
 
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 
 <div class="row" ng-controller="current_checkins">
   <div class="col-lg-12">
     <h2>Current CheckIns</h2>
     <div class="table-responsive">
-      <table class="table table-bordered table-hover">
+      <table class="table table-bordered table-hover" id="curr_checkins">
         <thead>
           <tr>
             <th></th>

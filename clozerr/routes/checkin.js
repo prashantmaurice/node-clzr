@@ -9,6 +9,10 @@ var hat = require("hat");
 var rack = hat.rack(10, 10);
 var gcm = require("node-gcm");
 
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
 var Vendor = models.Vendor;
 var Offer = models.Offer;
 var CheckIn = models.CheckIn;
@@ -28,7 +32,7 @@ router.get("/create", function (req, res) {
     */
 
     var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id"]); //,"gcm_id"]);
-    if (!errobj) {
+if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
@@ -54,7 +58,7 @@ router.get("/create", function (req, res) {
         /*
       TODO: Check if offer_id is there in the vendor's current offers.
       */
-        if (!offer) {
+      if (!offer) {
             // error.
         }
         obj.offer = offer;
@@ -88,7 +92,13 @@ router.get("/create", function (req, res) {
       TODO: Send alert to Vendor. SocketIO.
       */
 
-    });
+      io.on('connection', function(socket){
+          socket.on('message', function(msg){
+            io.emit('message', msg);
+        });
+      });
+
+  });
 
 });
 
@@ -98,7 +108,7 @@ function sendPushNotification(checkinobj) {
         delayWhileIdle: true,
         data: {
             "key": "checkin_push",
-                "checkinobj": checkinobj
+            "checkinobj": checkinobj
         }
     });
 
@@ -219,61 +229,61 @@ router.get("/active", function (req, res) {
             if (err) console.log(err);
             /*var checkins_act_filter = _.filter(checkins_list,function(checkin) {
         return check_activeness(checkin);
-      });*/ debugger;
-            console.log( checkins_list );
-            var len = checkins_list.length;
-            var plist = [];
-            for (var i = 0; i < len; i++) {
-                var ch = checkins_list[i];
-                var chfull = {};
+    });*/ debugger;
+console.log( checkins_list );
+var len = checkins_list.length;
+var plist = [];
+for (var i = 0; i < len; i++) {
+    var ch = checkins_list[i];
+    var chfull = {};
 
-                var pr = Vendor.findOne({
-                    _id: ch.vendor
-                }).exec().then(function (vendor) {
-                    chfull.vendor = vendor;
-                    return User.findOne({
-                        _id: ch.user
-                    }).exec();
-                }).then(function (user) {
-                    chfull.user = user;
-                    return Offer.findOne({
-                        _id: ch.offer
-                    }).exec();
-                }).then(function (offer) {
-                    var deferred = Q.defer();
+    var pr = Vendor.findOne({
+        _id: ch.vendor
+    }).exec().then(function (vendor) {
+        chfull.vendor = vendor;
+        return User.findOne({
+            _id: ch.user
+        }).exec();
+    }).then(function (user) {
+        chfull.user = user;
+        return Offer.findOne({
+            _id: ch.offer
+        }).exec();
+    }).then(function (offer) {
+        var deferred = Q.defer();
 
-                    chfull.offer = offer;
-                    chfull._id = ch._id;
-                    chfull.state = ch.state;
-                    chfull.pin = ch.pin;
-                    chfull.date_created = ch.date_created;
-                    chfull.gcm_id = ch.gcm_id;
-                    chdummy_ret_arr.push(chfull);
+        chfull.offer = offer;
+        chfull._id = ch._id;
+        chfull.state = ch.state;
+        chfull.pin = ch.pin;
+        chfull.date_created = ch.date_created;
+        chfull.gcm_id = ch.gcm_id;
+        chdummy_ret_arr.push(chfull);
 
-                    process.nextTick(function () {
-                        deferred.resolve();
-                    });
-                    console.log("DUN");
-                    return deferred.promise;
-                });
-
-                plist.push(pr);
-
-            }
-            Q.all(plist).then(function () {
-                console.log("ALL DUN");
-                res.end(JSON.stringify(chdummy_ret_arr));
-            });
-
+        process.nextTick(function () {
+            deferred.resolve();
         });
-    } else if (ut == "vendor") {
-        debugger;
-        CheckIn.find({
-            vendor: userobj.vendor_id,
-            state: CHECKIN_STATE_ACTIVE
-        }, function (err, checkins_list) {
-            if (err) console.log(err);
-            console.log(checkins_list);
+        console.log("DUN");
+        return deferred.promise;
+    });
+
+    plist.push(pr);
+
+}
+Q.all(plist).then(function () {
+    console.log("ALL DUN");
+    res.end(JSON.stringify(chdummy_ret_arr));
+});
+
+});
+} else if (ut == "vendor") {
+    debugger;
+    CheckIn.find({
+        vendor: userobj.vendor_id,
+        state: CHECKIN_STATE_ACTIVE
+    }, function (err, checkins_list) {
+        if (err) console.log(err);
+        console.log(checkins_list);
 
             //Getting all the active checkins
 
@@ -328,75 +338,75 @@ router.get("/active", function (req, res) {
                 res.end(JSON.stringify(chdummy_ret_arr));
             });
         });
-    }
+}
 });
 
 
-    router.get("/confirmed", function (req, res) {
-        var user = req.user;
-        var userobj = User.findOne({
-            _id: user
-        });
-        var ut = userobj.type;
-
-        if (ut=="vendor") {
-
-            CheckIn.find({
-                vendor: userobj.vendor_id
-            }, function (err, checkins_list) {
-                if (err) console.log(err);
-                var checkins_list = _.filter(checkins_list, function (checkin) {
-                    return check_confirmed(checkin);
-                });
-                console.log(checkins_list);
-                var len = checkins_list.length;
-                var plist = [];
-                for (var i = 0; i < len; i++) {
-                    var ch = checkins_list[i];
-                    var chfull = {};
-
-                    var pr = Vendor.findOne({
-                        _id: ch.vendor
-                    }).exec().then(function (vendor) {
-                        chfull.vendor = vendor;
-                        return User.findOne({
-                            _id: ch.user
-                        })
-                    }).then(function (user) {
-                        chfull.user = user;
-                        return Offer.findOne({
-                            _id: ch.offer
-                        })
-                    }).then(function (offer) {
-                        var deferred = Q.defer();
-
-                        chfull.offer = offer;
-                        chfull._id = ch._id;
-                        chfull.state = ch.state;
-                        chfull.pin = ch.pin;
-                        chfull.date_created = ch.date_created;
-                        chfull.gcm_id = ch.gcm_id;
-                        chdummy_ret_arr.push(chfull);
-
-                        process.nextTick(function () {
-                            deferred.resolve();
-                        });
-                        console.log("DUN");
-                        return deferred.promise;
-                    });
-
-                    plist.push(pr);
-
-                }
-                Q.all(plist).then(function () {
-                    console.log("ALL DUN");
-                    res.end(JSON.stringify(chdummy_ret_arr));
-                });
-            });
-        } 
-        else {
-            error.err(res, "909");
-        }
+router.get("/confirmed", function (req, res) {
+    var user = req.user;
+    var userobj = User.findOne({
+        _id: user
     });
+    var ut = userobj.type;
 
-    module.exports = router;
+    if (ut=="vendor") {
+
+        CheckIn.find({
+            vendor: userobj.vendor_id
+        }, function (err, checkins_list) {
+            if (err) console.log(err);
+            var checkins_list = _.filter(checkins_list, function (checkin) {
+                return check_confirmed(checkin);
+            });
+            console.log(checkins_list);
+            var len = checkins_list.length;
+            var plist = [];
+            for (var i = 0; i < len; i++) {
+                var ch = checkins_list[i];
+                var chfull = {};
+
+                var pr = Vendor.findOne({
+                    _id: ch.vendor
+                }).exec().then(function (vendor) {
+                    chfull.vendor = vendor;
+                    return User.findOne({
+                        _id: ch.user
+                    })
+                }).then(function (user) {
+                    chfull.user = user;
+                    return Offer.findOne({
+                        _id: ch.offer
+                    })
+                }).then(function (offer) {
+                    var deferred = Q.defer();
+
+                    chfull.offer = offer;
+                    chfull._id = ch._id;
+                    chfull.state = ch.state;
+                    chfull.pin = ch.pin;
+                    chfull.date_created = ch.date_created;
+                    chfull.gcm_id = ch.gcm_id;
+                    chdummy_ret_arr.push(chfull);
+
+                    process.nextTick(function () {
+                        deferred.resolve();
+                    });
+                    console.log("DUN");
+                    return deferred.promise;
+                });
+
+                plist.push(pr);
+
+            }
+            Q.all(plist).then(function () {
+                console.log("ALL DUN");
+                res.end(JSON.stringify(chdummy_ret_arr));
+            });
+        });
+} 
+else {
+    error.err(res, "909");
+}
+});
+
+module.exports = router;
