@@ -92,13 +92,11 @@ if (!errobj) {
         /*
       TODO: Send alert to Vendor. SocketIO.
       */
-
       io.on('connection', function(socket){
-          socket.on('message', function(msg){
-            io.emit('message', msg);
+          socket.on('signal', function(){
+            io.emit('signal', "created");
         });
       });
-
   });
 
 });
