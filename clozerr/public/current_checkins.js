@@ -57,9 +57,8 @@ var current_checkins = function( $scope, $http ){
   $scope.reg_socket = function() {
 //TODO : will modify this
     var socket = io();
-    socket.emit('checkin',$scope.update());
     socket.on('checkin',function(checkin) {
-      $scope.checkins.push(checkin);
+      $scope.update();
     });
   }
 

@@ -92,13 +92,11 @@ if (!errobj) {
         /*
       TODO: Send alert to Vendor. SocketIO.
       */
-
       io.on('connection', function(socket){
-          socket.on('message', function(msg){
-            io.emit('message', msg);
+          socket.on('signal', function(){
+            io.emit('signal', "created");
         });
       });
-
   });
 
 });
@@ -273,7 +271,7 @@ for (var i = 0; i < len; i++) {
 }
 Q.all(plist).then(function () {
     console.log("ALL DUN");
-    res.end(JSON.stringify(chdummy_ret_arr));
+    res.end(JSON.stringify( { result:true, data:chdummy_ret_arr } ));
 });
 
 });
@@ -338,22 +336,13 @@ Q.all(plist).then(function () {
             });
             Q.all(plist).then(function () {
                 console.log("ALL DUN");
-                res.end(JSON.stringify(chdummy_ret_arr));
+                res.end(JSON.stringify({ result:true, data:chdummy_ret_arr }));
             });
         });
-<<<<<<< HEAD
+
 }
 });
-=======
-    } else if (ut == "vendor") {
-        //debugger;
-        CheckIn.find({
-            vendor: userobj.vendor_id,
-            state: CHECKIN_STATE_ACTIVE
-        }, function (err, checkins_list) {
-            if (err) console.log(err);
-            console.log(checkins_list);
->>>>>>> 630e70e677d0763e2cc89bbb6dc53acb084f248b
+
 
 
 router.get("/confirmed", function (req, res) {
@@ -375,13 +364,9 @@ router.get("/confirmed", function (req, res) {
             console.log(checkins_list);
             var len = checkins_list.length;
             var plist = [];
-<<<<<<< HEAD
-            for (var i = 0; i < len; i++) {
-                var ch = checkins_list[i];
-=======
             _.each( checkins_filter_exp_arr[1], function( ch, index, arr ){
                 //var ch = checkins_filter_exp_arr[1][i];
->>>>>>> 630e70e677d0763e2cc89bbb6dc53acb084f248b
+
                 var chfull = {};
 
                 var pr = Vendor.findOne({
@@ -429,82 +414,8 @@ router.get("/confirmed", function (req, res) {
             });
 
         });
-} 
+}
 else {
     error.err(res, "909");
 }
 });
-
-<<<<<<< HEAD
-module.exports = router;
-=======
-
-    router.get("/confirmed", function (req, res) {
-        var user = req.user;
-        var userobj = User.findOne({
-            _id: user
-        });
-        var ut = userobj.type;
-
-        if (ut=="vendor") {
-
-            CheckIn.find({
-                vendor: userobj.vendor_id
-            }, function (err, checkins_list) {
-                if (err) console.log(err);
-                var checkins_list = _.filter(checkins_list, function (checkin) {
-                    return check_confirmed(checkin);
-                });
-                console.log(checkins_list);
-                var len = checkins_list.length;
-                var plist = [];
-                for (var i = 0; i < len; i++) {
-                    var ch = checkins_list[i];
-                    var chfull = {};
-
-                    var pr = Vendor.findOne({
-                        _id: ch.vendor
-                    }).exec().then(function (vendor) {
-                        chfull.vendor = vendor;
-                        return User.findOne({
-                            _id: ch.user
-                        })
-                    }).then(function (user) {
-                        chfull.user = user;
-                        return Offer.findOne({
-                            _id: ch.offer
-                        })
-                    }).then(function (offer) {
-                        var deferred = Q.defer();
-
-                        chfull.offer = offer;
-                        chfull._id = ch._id;
-                        chfull.state = ch.state;
-                        chfull.pin = ch.pin;
-                        chfull.date_created = ch.date_created;
-                        chfull.gcm_id = ch.gcm_id;
-                        chdummy_ret_arr.push(chfull);
-
-                        process.nextTick(function () {
-                            deferred.resolve();
-                        });
-                        console.log("DUN");
-                        return deferred.promise;
-                    });
-
-                    plist.push(pr);
-
-                }
-                Q.all(plist).then(function () {
-                    console.log("ALL DUN");
-                    res.end(JSON.stringify(chdummy_ret_arr));
-                });
-            });
-        }
-        else {
-            error.err(res, "909");
-        }
-    });
-
-    module.exports = router;
->>>>>>> 630e70e677d0763e2cc89bbb6dc53acb084f248b
