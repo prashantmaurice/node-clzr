@@ -166,6 +166,9 @@ router.get('/login/password', function( req, res ){
         res.end( JSON.stringify({ result:true, access_token:token.access_token }) );
       });
     }
+    else {
+      error.err(res,"212");
+    }
 
   });
 });
@@ -175,13 +178,17 @@ router.get('/reset/password', function( req, res ){
   /*
   * TODO: allow only users of type VENDOR & ADMIN to reset password.
   */
+  var errobj = error.err_insuff_params(res,req,["new_password"]);
+  if(!errobj) {
+    return;
+  }
 
   var salt = bcrypt.genSaltSync(10);
-  var hash = bcrypt.hashSync( settings.auth.password.default, salt );
+  var hash = bcrypt.hashSync( req.query.new_password, salt );
 
   user.password = hash;
   user.save();
-  res.end({ result:true });
+  res.end(JSON.stringify({ result:true }));
 
 });
 

@@ -10,7 +10,8 @@ error.ERR_DESCRIPTION = {
 	"619":"User not logged in",//try logining again
 	"646":"User not found",//signup again
 	"302":"No such checkin",
-	"568":"Not an upcoming offer for you"
+	"568":"Not an upcoming offer for you",
+	"212":"Incorrect password"
 };
 
 error.err = function( res, code, desc ){
