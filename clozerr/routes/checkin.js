@@ -92,13 +92,11 @@ if (!errobj) {
         /*
       TODO: Send alert to Vendor. SocketIO.
       */
-
       io.on('connection', function(socket){
-          socket.on('message', function(msg){
-            io.emit('message', msg);
+          socket.on('signal', function(){
+            io.emit('signal', "created");
         });
       });
-
   });
 
 });
@@ -273,7 +271,7 @@ for (var i = 0; i < len; i++) {
 }
 Q.all(plist).then(function () {
     console.log("ALL DUN");
-    res.end(JSON.stringify(chdummy_ret_arr));
+    res.end(JSON.stringify( { result:true, data:chdummy_ret_arr } ));
 });
 
 });
@@ -338,14 +336,14 @@ Q.all(plist).then(function () {
             });
             Q.all(plist).then(function () {
                 console.log("ALL DUN");
-                res.end(JSON.stringify(chdummy_ret_arr));
+                res.end(JSON.stringify({ result:true, data:chdummy_ret_arr }));
             });
         });
 
 }
 });
 
-  
+
 
 router.get("/confirmed", function (req, res) {
     var user = req.user;
@@ -366,9 +364,9 @@ router.get("/confirmed", function (req, res) {
             console.log(checkins_list);
             var len = checkins_list.length;
             var plist = [];
-
             _.each( checkins_filter_exp_arr[1], function( ch, index, arr ){
                 //var ch = checkins_filter_exp_arr[1][i];
+
                 var chfull = {};
 
                 var pr = Vendor.findOne({
@@ -416,7 +414,7 @@ router.get("/confirmed", function (req, res) {
             });
 
         });
-} 
+}
 else {
     error.err(res, "909");
 }
@@ -492,4 +490,5 @@ else {
     });
 
     module.exports = router;
+
 
