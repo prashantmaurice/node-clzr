@@ -12,7 +12,6 @@ var current_checkins = function( $scope, $http ){
     $http.get( CLOZERR_CURRENT_CHECKINS_URL + "?access_token=" + access_token ).
     success(function(data, status, headers, config) {
       $scope.checkins = data;
-
     }).error(function(data, status, headers, config) {
       /*
       TODO: Throw error here.
