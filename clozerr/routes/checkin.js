@@ -346,6 +346,7 @@ Q.all(plist).then(function () {
 });
 
 
+
 router.get("/confirmed", function (req, res) {
     var user = req.user;
     var userobj = User.findOne({

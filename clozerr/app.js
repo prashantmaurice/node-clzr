@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', function( req, res, next ){
-  debugger;
+  response.setHeader("Content-Type", "application/JSON");
   if( req.query.access_token ){
     Token.findOne( { access_token: req.query.access_token }, function( err, data ){
       if( err ){
@@ -58,7 +58,8 @@ app.use('/', function( req, res, next ){
     });
 
   });
-  }else{
+  }
+  else{
     // TODO: SUBSTITUTE req.user with a dummy user object with a blank stamplist.
     req.user = { _id:"0", id_type:"Anonymous", auth_type:"None", stamplist:{}, social_id:""  };
     next();
