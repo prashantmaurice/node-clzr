@@ -341,20 +341,11 @@ Q.all(plist).then(function () {
                 res.end(JSON.stringify(chdummy_ret_arr));
             });
         });
-<<<<<<< HEAD
+
 }
 });
-=======
-    } else if (ut == "vendor") {
-        //debugger;
-        CheckIn.find({
-            vendor: userobj.vendor_id,
-            state: CHECKIN_STATE_ACTIVE
-        }, function (err, checkins_list) {
-            if (err) console.log(err);
-            console.log(checkins_list);
->>>>>>> 630e70e677d0763e2cc89bbb6dc53acb084f248b
 
+  
 
 router.get("/confirmed", function (req, res) {
     var user = req.user;
@@ -375,13 +366,9 @@ router.get("/confirmed", function (req, res) {
             console.log(checkins_list);
             var len = checkins_list.length;
             var plist = [];
-<<<<<<< HEAD
-            for (var i = 0; i < len; i++) {
-                var ch = checkins_list[i];
-=======
+
             _.each( checkins_filter_exp_arr[1], function( ch, index, arr ){
                 //var ch = checkins_filter_exp_arr[1][i];
->>>>>>> 630e70e677d0763e2cc89bbb6dc53acb084f248b
                 var chfull = {};
 
                 var pr = Vendor.findOne({
@@ -435,9 +422,7 @@ else {
 }
 });
 
-<<<<<<< HEAD
-module.exports = router;
-=======
+
 
     router.get("/confirmed", function (req, res) {
         var user = req.user;

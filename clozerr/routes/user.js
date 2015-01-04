@@ -21,14 +21,16 @@ function newUser( backend, id ) {
  return nuser;
 }
 
-function loadFacebookDetails( user, access_token ){
+function loadFacebookDetails( user, access_token, cb ){
   https.get("https://graph.facebook.com/me/?access_token=" + access_token, function( response ){
 
       response.on("data", function( dat ){
         var obj = JSON.parse( dat.toString() );
         user.profile = obj;
         user.markModified("profile");
+        cb( user );
       });
+
   });
 }
 
@@ -62,41 +64,37 @@ router.get('/login/facebook', function(req, res) {
       console.log("headers: ", response.headers);
 
       response.on('data', function(dat) {
-    //process.stdout.write(d);
     debugger;
     d=JSON.parse(dat.toString());
     console.log(d);
     if( d.data && d.data.is_valid )
     {
-    //db.collections.find({facebook_user_id:options.user_id});
 
     user.findOne({fb_id:d.data.user_id}, function(err, result) {
       if (err) { console.log("error:") }
-        debugger;
       if (result)
-      {
-            //console.log(result._id);
-            // res.send(result);
+      {         
             var id = hat();
             console.log(id);
-
             newid( id, result._id ).save();
-            //res.redirect('/users/profile/?acc_token='+id)
             res.end( JSON.stringify( {result : true, token : id } ) );
           }
           else
           {
             var nu = newUser( "facebook", d.data.user_id );
-            nu.save();
-            var id=hat();
-
-            console.log(id);
-            newid(id,nu._id).save();
-
-            res.end( JSON.stringify( {result : true, token : id } ) );
+            loadFacebookDetails(nu,req.query.token, function( user ){
+              nu.save();
+              debugger;
+              var id=hat();
+              console.log(id);
+              newid(id,nu._id).save();
+              res.end( JSON.stringify( {result : true, token : id } ) );  
+            });
+            
           }
         });
-  }else{
+  }
+  else{
     error.err( res, "102" );
   }
 
