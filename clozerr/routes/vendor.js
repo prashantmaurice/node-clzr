@@ -111,7 +111,7 @@ router.get('/get/visited', function( req, res ){
 	var user =  req.user;
 	var fid_list =_.keys( user.stamplist );
 	console.log(fid_list);
-	Vendor.find( {fid:{ $in:fid_list }}, function( err, vendors ){
+	Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
 		res.end( JSON.stringify({ result:true, data:vendors }) );
 	});
 });
@@ -155,9 +155,12 @@ router.get('/get/near', function (req, res) {
 								}
             }).exec();
             //debugger;
-            plist.push(pr.then(function (offers) {
+            plist.push(
+							pr.then(
+								(function( vendor ){
+							return function (offers) {
                 var deferred = Q.defer();
-
+								debugger;
                 var offers_new = _.filter(offers, function (offer) {
                     return OfferHandler.qualify(req.user, vendor, offer);
                 });
@@ -169,6 +172,7 @@ router.get('/get/near', function (req, res) {
                 vendor_new.image = vendor.image;
                 vendor_new.fid = vendor.fid;
                 vendor_new._id = vendor._id;
+								console.log( vendor_new );
                 vendor_det_ret_arr.push(vendor_new);
                 //debugger;
                 process.nextTick(function () {
@@ -176,11 +180,10 @@ router.get('/get/near', function (req, res) {
                     deferred.resolve();
                 });
                 return deferred.promise;
-            }, function (err) {
-                /*
-													TODO: SMASH ERROR IN THY FACE.
-													*/
-            }));
+            };
+						})( vendors[i] )
+						));
+
         }
         //debugger;
         Q.all(plist).then(function () {

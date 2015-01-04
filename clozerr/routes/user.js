@@ -27,7 +27,7 @@ function loadFacebookDetails( user, access_token ){
       response.on("data", function( dat ){
         var obj = JSON.parse( dat.toString() );
         user.profile = obj;
-        user.save();
+        user.markModified("profile");
       });
   });
 }
