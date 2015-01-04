@@ -25,19 +25,21 @@ router.get("/create", function( req, res ){
   /*
     TODO: CHECK FOR req.query parameters.
     Throw error if insufficient parameters.
-  */
+    */
 
-  var errobj = error.err_insuff_params( res, req, ["vendor_id","offer_id","gcm_id"]);
-  if(!errobj) {
+    var errobj = error.err_insuff_params( res, req, ["vendor_id","offer_id"]);//,"gcm_id"]);
+if(!errobj) {
     //error.err(res,errobj.code,errobj.params);
     return;
   }
 
+  //TODO : Check for duplicates and handle that
+
   var user = req.user;
-  var gcm_id = req.query.gcm_id;
+  var gcm_id = req.query.gcm_id || 0;
 
   var obj = { user: req.user };
-  Vendor.findOne( {_id:req.query.vendor_id} ).exec().then( function( vendor ){
+  Vendor.findOne( { _id:req.query.vendor_id } ).exec().then( function( vendor ){
     debugger;
     obj.vendor = vendor;
     return Offer.findOne( {_id:req.query.offer_id} ).exec();
@@ -45,35 +47,38 @@ router.get("/create", function( req, res ){
   }).then( function( offer ) {
     /*
       TODO: Check if offer_id is there in the vendor's current offers.
-    */
-    obj.offer = offer;
-    debugger;
-    if( !OfferHandler.qualify( obj.user, obj.vendor, obj.offer ) ){
+      */
+      if( !offer ){
+        // error.
+      }
+      obj.offer = offer;
+      debugger;
+      if( !OfferHandler.qualify( obj.user, obj.vendor, obj.offer ) ){
         // TODO: change error description.
-          error.err( res, "671" );
-          return;
-    }
-    debugger;
-    var checkin = new CheckIn({
-      user: obj.user._id,
-      vendor: obj.vendor._id,
-      offer: obj.offer._id,
-      state: CHECKIN_STATE_ACTIVE,
-      date_created: new Date(),
-      pin: rack(),
-      gcm_id:gcm_id
-    });
+        error.err( res, "568" );
+        return;
+      }
+      debugger;
+      var checkin = new CheckIn({
+        user: obj.user._id,
+        vendor: obj.vendor._id,
+        offer: obj.offer._id,
+        state: CHECKIN_STATE_ACTIVE,
+        date_created: new Date(),
+        pin: rack(),
+        gcm_id:gcm_id
+      });
 
-    checkin.save( function( err, res, num ){
-          console.log("Successfully saved checkin");
-    });
+      checkin.save( function( err, res, num ){
+        console.log("Successfully saved checkin");
+      });
 
-    res.end( JSON.stringify({ result:true, checkin:checkin }) );
+      res.end( JSON.stringify({ result:true, checkin:checkin }) );
     /*
       TODO: Send alert to Vendor. SocketIO.
-    */
+      */
 
-  });
+    });
 
 });
 
@@ -99,50 +104,71 @@ function sendPushNotification( checkinobj ) {
 
 router.get("/validate", function( req, res ){
 
-  var user = req.user;
+  if( !(req.user.type == "vendor") ){
+          //Throw error.
+          error.err(res,"909");
+          return;
+        }
+
+  var userOfVendor = req.user;
+
 
   // Global memory to be used by the Promise chain.
-  var obj = {};
+  var obj = { userOfVendor: userOfVendor };
 
-  if(!req.query.id || !req.query.checkin){
-    // TODO: Change this error code.
-    error.err( res, "435" );
+
+  var errobj = error.err_insuff_params(res,req,["checkin_id"]);
+  if(!errobj) {
+    return;
   }
-
-    var id = req.query.id;
-    var checkin = req.query.checkin;
-    User.findOne({_id:user}).exec().then( function( user ){
-        obj.user = user;
-        return CheckIn.findOne({_id:checkin}).exec();
-    }).then( function(){
-        obj.checkin = checkin;
-        if( !user.type.equals("vendor") ){
-          // TODO: Throw error.
-        }
-        if(obj.checkin.vendor == obj.user.vendor_id) {
+  debugger;
+  //var id = req.query.offer_id;
+  //var checkin = req.query.checkin_id;
+  CheckIn.findOne({_id:req.query.checkin_id}).exec().then( function( checkin ){
+    debugger;
+    obj.checkin = checkin;
+    return User.findOne({_id:checkin.user.toString()}).exec();
+  }, function( err ){
+    // Throw
+    console.log( err );
+  }).then( function( user ){
+    //  if(err) error.err(res,"302");
+    //debugger;
+    obj.user = user;
+    
+        //debugger;
+        if(obj.checkin.vendor.toString() == obj.userOfVendor.vendor_id) {
           // Note: preferably send notification after checkin save in order to make sure the checkin's state is up-to-date.
           obj.checkin.state = CHECKIN_STATE_CONFIRMED;
           obj.checkin.save();
-          sendPushNotification(obj.checkin);
+
+          //Note : There may be a need to modify the parameters to be sent to the notification,
+          //depending on what frontend needs.
+          //sendPushNotification(obj.checkin);
 
           Offer.findOne( { _id : obj.checkin.offer } ).exec().then(function( offer ){
-              obj.offer = offer;
-              return Vendor.findOne( { _id : obj.checkin.vendor } ).exec();
-            }).then( function( vendor ){
-              obj.vendor = vendor;
-              OfferHandler.onCheckin( obj.user, obj.offer, obj.vendor );
-              obj.user.save();
+            obj.offer = offer;
+            return Vendor.findOne( { _id : obj.checkin.vendor } ).exec();
+          }).then( function( vendor ){
+            obj.vendor = vendor;
+            debugger;
+            OfferHandler.onCheckin( obj.user, obj.vendor, obj.offer );
+            debugger;
+            obj.user.save();
 
-              res.end( { result: true } );
-            });
+            res.end( JSON.stringify({ result: true }) );
+          });
 
         }
         else error.err(res,"435");
-    });
+      }, function( err ){
+        // throw.
+        console.log( err );
+      });
 
 });
 
-function check_validity(checkin) {
+function check_expiry(checkin) {
   if(parse(new Date()) - parse(checkin.date_created) < 1000000) return true;
   else return false;
 }
@@ -162,6 +188,8 @@ router.get("/active",function(req, res) {
   var user = req.user;
   var userobj = user;
   var ut = userobj.type;
+  var chdummy = {};
+  var chdummy_ret_arr = [];
 
   if( ut == "user" ) {
     CheckIn.find({user:userobj._id, state:CHECKIN_STATE_ACTIVE},function(err,checkins_list) {
@@ -169,8 +197,27 @@ router.get("/active",function(req, res) {
       /*var checkins_act_filter = _.filter(checkins_list,function(checkin) {
         return check_activeness(checkin);
       });*/
-      res.end(JSON.stringify(checkins_list));
-    });
+    var len = checkins_list.length;
+    for(var i=0;i<len;i++) {
+      var ch = checkins_list[i];
+      chdummy._id = ch._id;
+      chdummy.state = ch.state;
+      chdummy.pin = ch.pin;
+      chdummy.date_created = ch.date_created;
+      chdummy.gcm_id = ch.gcm_id;
+      chdummy.vendor = Vendor.findOne({_id:ch.vendor},function(err) {
+        if(err) console.log(err);
+      });
+      chdummy.user = User.findOne({_id:ch.user},function(err) {
+        if(err) console.log(err);
+      });
+      chdummy.offer = Offer.findOne({_id:ch.offer},function(err) {
+        if(err) console.log(err);
+      });
+      chdummy_ret_arr.push(chdummy);
+    }
+    res.end(JSON.stringify(chdummy_ret_arr));
+  });
   }
   else if( ut == "vendor" ) {
     debugger;
@@ -178,16 +225,46 @@ router.get("/active",function(req, res) {
       if(err) console.log(err);
       console.log( checkins_list );
 
-      // TODO: Use _.partition instead of _.filter and then with the checkins that FAIL the test. iterate through them, set them to cancelled and save them.
-      var checkins_filter = _.filter(checkins_list,function(checkin) {
-        return check_validity(checkin);
+      //Getting all the active checkins
+
+      //Partitioning the active checkins -- based on expiry
+
+      var checkins_filter_exp_arr = _.partition(checkins_list,function(checkin) {
+        return check_expiry(checkin);
       });
-      checkins_filter = _.filter(checkins_filter,function(checkin) {
-        return check_activeness(checkin);
-      });
-      res.end(JSON.stringify(checkins_list));
+      //checkins_filter_exp_arr[1] -- setting state to cancelled
+
+      for(var i =0;i<checkins_filter_exp_arr[1].length;i++) {
+        var ch = checkins_filter_exp_arr[1][i];
+        var chdummy = {};         //object of checkin complete type
+        var chdummy_ret_arr = [];     //array of checkin complete objects to be returned to the frontend.
+        ch.state = CHECKIN_STATE_CANCELLED;
+
+        //updating the checkin
+        ch.save(function(err) {
+          if(err) console.log(err);
+        });
+        chdummy._id = ch._id;
+        chdummy.state = ch.state;
+        chdummy.pin = ch.pin;
+        chdummy.date_created = ch.date_created;
+        chdummy.gcm_id = ch.gcm_id;
+        chdummy.vendor = Vendor.findOne({_id:ch.vendor},function(err) {
+          if(err) console.log(err);
+        });
+        chdummy.user = User.findOne({_id:ch.user},function(err) {
+          if(err) console.log(err);
+        });
+        chdummy.offer = Offer.findOne({_id:ch.offer},function(err) {
+          if(err) console.log(err);
+        });
+
+        chdummy_ret_arr.push(chdummy);
+
+      }
+      res.end(JSON.stringify(chdummy_ret_arr));
     });
-  }
+}
 
 });
 
@@ -200,10 +277,34 @@ router.get("/confirmed",function(req,res) {
 
     CheckIn.find({vendor:userobj.vendor_id},function(err,checkins_list) {
       if(err) console.log(err);
-        var checkins_conf_filter = _.filter(checkins_list,function(checkin) {
-          return check_confirmed( checkin );
+      var checkins_conf_filter = _.filter(checkins_list,function(checkin) {
+        return check_confirmed( checkin );
+      });
+
+      for(var i =0;i<checkins_conf_filter.length;i++) {
+        var ch = checkins_conf_filter;
+        var chdummy = {};             //object of checkin complete type
+        var chdummy_ret_arr = [];     //array of checkin complete objects to be returned to the frontend.
+        
+        chdummy._id = ch._id;
+        chdummy.state = ch.state;
+        chdummy.pin = ch.pin;
+        chdummy.date_created = ch.date_created;
+        chdummy.gcm_id = ch.gcm_id;
+        chdummy.vendor = Vendor.findOnex({_id:ch.vendor},function(err) {
+          if(err) console.log(err);
         });
-      res.send(JSON.stringify(checkins_conf_filter));
+        chdummy.user = User.findOne({_id:ch.user},function(err) {
+          if(err) console.log(err);
+        });
+        chdummy.offer = Offer.findOne({_id:ch.offer},function(err) {
+          if(err) console.log(err);
+        });
+
+        chdummy_ret_arr.push(chdummy);
+
+      }
+      res.end(JSON.stringify(chdummy_ret_arr));
     });
 
   }else{

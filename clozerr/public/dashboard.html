@@ -34,6 +34,9 @@
     var CLOZERR_API = "http://localhost:3000/"
   </script>
   <script type="text/javascript" src="current_checkins.js"></script>
+  <script type="text/javascript" src="all_checkins.js"></script>
+  <script type="text/javascript" src="login.js"></script>
+
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -95,6 +98,8 @@
                 <!-- /.row -->
 
                 <div class="item-wrap" ng-include=" 'current_checkins.html' ">
+                <div class="item-wrap" ng-include=" 'all_checkins.html' ">
+                <div class="item-wrap" ng-include=" 'login.html' ">
                 </div>
 
               </div>
@@ -104,7 +109,9 @@
     </div>
     <!-- /#wrapper -->
 
+    <script>
 
+    </script>
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 

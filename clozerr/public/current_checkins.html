@@ -15,10 +15,11 @@
         </thead>
         <tbody >
             <tr ng-repeat="checkin in checkins">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ checkin.user.name }}</td>
+                <td>{{ checkin.date_created }}</td>
+                <td>{{ checkin.offer.caption }}</td>
+                <td>{{ checkin.offer.stamps }}</td>
+                <td><a href="javascript:void(0)" onclick="validate( checkin )">Validate</a></td>
             </tr>
         </tbody>
       </table>
