@@ -84,11 +84,13 @@ router.get('/update', function (req, res) {
     	_id: id
     }, function (err, data) {
     	if (err) error.err(res, "210");
+        return;
     });
 
     if (req.query.type) {
     	type = req.query.type;
     } else type = offer.type;
+    //debugger;
     if (req.query.stamps) {
     	stamps = req.query.stamps;
     } else stamps = offer.stamps;
