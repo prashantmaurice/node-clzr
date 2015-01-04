@@ -2,6 +2,7 @@
 
 var current_checkins = function( $scope, $http ){
   $scope.checkins = [];
+  $scope.visibility = false;
 
   var CLOZERR_CURRENT_CHECKINS_URL = CLOZERR_API + "/checkin/active";
   // TODO: update this url somewhere.

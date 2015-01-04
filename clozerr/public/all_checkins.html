@@ -1,6 +1,6 @@
 
 
-<div class="row" ng-controller="current_checkins">
+<div class="row" ng-controller="all_checkins">
   <div class="col-lg-12" ng-show="visibility">
     <h2>Current CheckIns</h2>
     <div class="table-responsive">
@@ -19,7 +19,7 @@
                 <td>{{ checkin.date_created }}</td>
                 <td>{{ checkin.offer.caption }}</td>
                 <td>{{ checkin.offer.stamps }}</td>
-                <td><a href="javascript:void(0)" onclick="validate( checkin )">Validate</a></td>
+                <!--<td><a href="javascript:void(0)" onclick="validate( checkin )">Validate</a></td>-->
             </tr>
         </tbody>
       </table>
