@@ -28,6 +28,7 @@ var predicates = {
 
 var handlers = {
   "S1": function( user, vendor, offer ){
+    debugger;
     if( user.stamplist[vendor.fid] )
       user.stamplist[vendor.fid] ++;
     else
@@ -46,6 +47,8 @@ var handlers = {
 }
 module.exports.qualify = function( user, vendor, offer ){
 
+
+  debugger;
   console.log("Calculating: "+user._id + " " + vendor._id + " "+offer._id);
   console.log("Offer type: "+offer.type);
   debugger;
@@ -58,6 +61,7 @@ module.exports.qualify = function( user, vendor, offer ){
 
 module.exports.onCheckin = function( user, vendor, offer ){
 
+  debugger;
   console.log("Checking in: "+user._id + " " + vendor._id + " "+offer._id);
   console.log("Offer type: "+offer.type);
   debugger;

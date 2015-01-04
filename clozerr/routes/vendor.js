@@ -48,13 +48,13 @@ router.get('/create', function (req, res) {
 
 router.get('/get', function (req, res) {
 
-    var errobj = error.err_insuff_params(res, req.query, ["id"]);
+    var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
 
-    var id = req.query.id;
+    var id = req.query.vendor_id;
 
     Vendor.findOne({
         _id: id

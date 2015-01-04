@@ -8,7 +8,9 @@ error.ERR_DESCRIPTION = {
 	"909":"Permission denied",
 	"435":"Vendor IDs don't match",
 	"619":"User not logged in",//try logining again
-	"646":"User not found"//signup again
+	"646":"User not found",//signup again
+	"302":"No such checkin",
+	"568":"Not an upcoming offer for you"
 };
 
 error.err = function( res, code, desc ){
