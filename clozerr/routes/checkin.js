@@ -39,7 +39,7 @@ router.get("/create", function( req, res ){
   var gcm_id = req.query.gcm_id;
 
   var obj = { user: req.user };
-  Vendor.findOne( {_id:req.query.vendor_id} ).exec().then( function( vendor ){
+  Vendor.findOne( { _id:req.query.vendor_id } ).exec().then( function( vendor ){
     debugger;
     obj.vendor = vendor;
     return Offer.findOne( {_id:req.query.offer_id} ).exec();
@@ -186,7 +186,7 @@ router.get("/active",function(req, res) {
       console.log( checkins_list );
 
       //Getting all the active checkins
-      
+
       //Partitioning the active checkins -- based on expiry
 
       var checkins_filter_exp_arr = _.partition(checkins_list,function(checkin) {
@@ -197,7 +197,7 @@ router.get("/active",function(req, res) {
       for(var i =0;i<checkins_filter_exp_arr[1].length;i++) {
         var ch = checkins_filter_exp_arr[1][i];
         ch.state = CHECKIN_STATE_CANCELLED;
-        
+
         //updating the checkin
         ch.save(function(err) {
           if(err) console.log(err);

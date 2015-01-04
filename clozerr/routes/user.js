@@ -13,9 +13,10 @@ var User = user;
 
 function newUser( backend, id ) {
  var nuser=new user({
-  type: backend,
+  auth_type: backend,
   social_id:id,
-  stamplist:{}
+  stamplist:{},
+  type:"user"
 });
  return nuser;
 }
@@ -188,6 +189,7 @@ router.get('/reset/password', function( req, res ){
 // TODO: check this.
 router.get('/create', function(req,res,err) {
   var type = "vendor";
+  var auth_type = "password";
   debugger;
       //if (err) error.err(res,"420");
 
@@ -201,9 +203,9 @@ router.get('/create', function(req,res,err) {
       var salt = bcrypt.genSaltSync(10);
       var hash = bcrypt.hashSync( settings.auth.password.default, salt );
 
-      var vuser = new user({ type:type,vendor_id:vendor_id, password:hash, username: req.query.username });
+      var vuser = new user({ auth_type:auth_type, type:type,vendor_id:vendor_id, password:hash, username: req.query.username });
       vuser.save();
-      debugger;
+      
 
      /* user.save(function(err) {
         if(err) console.log(err);
