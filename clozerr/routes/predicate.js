@@ -9,6 +9,7 @@ var predicates = {
       return true;
     else
       return false;
+
   },
 
   "S0": function( user, vendor, offer ){
@@ -29,6 +30,8 @@ var predicates = {
 var handlers = {
   "S1": function( user, vendor, offer ){
     debugger;
+    console.log("Setting: " + vendor.fid + " of stamplist");
+    user.markModified("stamplist");
     if( user.stamplist[vendor.fid] )
       user.stamplist[vendor.fid] ++;
     else

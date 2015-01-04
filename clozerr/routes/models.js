@@ -34,10 +34,11 @@ Models.User = mongoose.model('User',new Schema({
 	social_id:String,
 	type:String,
 	vendor_id:String,
-	stamplist:Object,
+	stamplist: Schema.Types.Mixed,
 	username:String,
 	password:String,
-	auth_type:String
+	auth_type:String,
+	profile: Schema.Types.Mixed
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
