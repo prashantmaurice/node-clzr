@@ -119,7 +119,7 @@ router.get("/validate", function( req, res ){
   }).then( function(){
     obj.checkin = checkin;
     if( !user.type.equals("vendor") ){
-          // TODO: Throw error.
+          //Throw error.
           error.err(res,"909");
           return;
         }
@@ -187,20 +187,21 @@ router.get("/active",function(req, res) {
 
       //Getting all the active checkins
       
-      // TODO: Use _.partition instead of _.filter and then with the checkins that FAIL the test. iterate through them, set them to cancelled and save them.
-
       //Partitioning the active checkins -- based on expiry
 
       var checkins_filter_exp_arr = _.partition(checkins_list,function(checkin) {
         return check_expiry(checkin);
       });
-      //TODO : checkins_filter_exp_arr[1] -- set state to cancelled
+      //checkins_filter_exp_arr[1] -- setting state to cancelled
 
       for(var i =0;i<checkins_filter_exp_arr[1].length;i++) {
         var ch = checkins_filter_exp_arr[1][i];
         ch.state = CHECKIN_STATE_CANCELLED;
-        //TODO : update the checkin
-        //CheckIn.update({_id:ch._id,g});
+        
+        //updating the checkin
+        ch.save(function(err) {
+          if(err) console.log(err);
+        });
       }
 
       res.end(JSON.stringify(checkins_list));

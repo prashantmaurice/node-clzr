@@ -12,9 +12,9 @@ error.ERR_DESCRIPTION = {
 };
 
 error.err = function( res, code, desc ){
-  res.end(JSON.stringify(
-    { result:false, err:{ code:code, description: ( desc || error.ERR_DESCRIPTION[code] || "No description" ) } }
-    ));
+	res.end(JSON.stringify(
+		{ result:false, err:{ code:code, description: ( desc || error.ERR_DESCRIPTION[code] || "No description" ) } }
+		));
 }
 
 error.err_insuff_params = function( res, req,  arr ) {
@@ -27,8 +27,8 @@ error.err_insuff_params = function( res, req,  arr ) {
 
 	if( errobj.params.length ){
 		res.end(JSON.stringify(
-		{ result:false, err:{ code:420, description: errobj.params } }
-		));
+			{ result:false, err:{ code:420, description: errobj.params } }
+			));
 		return false;
 	}
 

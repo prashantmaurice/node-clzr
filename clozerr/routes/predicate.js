@@ -36,7 +36,7 @@ var handlers = {
   "S0": function( user, vendor, offer) {
     if( !user.stamplist[vendor.fid] )
       user.stamplist[vendor.fid] = 0;
-  }
+  },
   "SX": function( user, vendor, offer) {
     if( user.stamplist[vendor.fid] )
       user.stamplist[vendor.fid] += parseInt(offer.stamps);

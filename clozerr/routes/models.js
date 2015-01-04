@@ -31,18 +31,18 @@ Models.CheckIn = mongoose.model('CheckIn',new Schema({
 } ));
 
 Models.User = mongoose.model('User',new Schema({
-    id_type:String,
-    social_id:String,
-    type:String,
-    vendor_id:String,
-    stamplist:Object,
-    username:String,
-    password:String
+	id_type:String,
+	social_id:String,
+	type:String,
+	vendor_id:String,
+	stamplist:Object,
+	username:String,
+	password:String
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
-  access_token:String,
-  account:ObjectId
+	access_token:String,
+	account:ObjectId
 }));
 
 Models.Offer = mongoose.model('Offer',new Schema({

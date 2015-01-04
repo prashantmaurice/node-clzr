@@ -34,29 +34,29 @@ app.use('/', function( req, res, next ){
   if( req.query.access_token ){
     Token.findOne( { access_token: req.query.access_token }, function( err, data ){
       if( err ){
-         error.err(res,"102");
+       error.err(res,"102");
+       return;
+     }
+     if( !data ){
+
+      error.err(res,"619");
+      return;
+    }
+    debugger;
+    User.findOne({ _id: data.account }, function( err, data ){
+      if( err ){
+        error.err(res,"102");
         return;
       }
       if( !data ){
-
-        error.err(res,"619");
+        error.err(res,"646");
         return;
       }
-      debugger;
-      User.findOne({ _id: data.account }, function( err, data ){
-          if( err ){
-            error.err(res,"102");
-            return;
-          }
-          if( !data ){
-            error.err(res,"646");
-            return;
-          }
-          req.user = data;
-          next();
-      });
-
+      req.user = data;
+      next();
     });
+
+  });
   }else{
     // TODO: SUBSTITUTE req.user with a dummy user object with a blank stamplist.
     req.user = { _id:"0", id_type:"Anonymous", auth_type:"None", stamplist:{}, social_id:""  };
@@ -76,9 +76,9 @@ db.open('mongodb://'+settings.db.mongo.host+'/'+settings.db.mongo.name);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 // error handlers
@@ -86,25 +86,25 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        throw err;
-        res.status(err.status || 500);
-        res.end( JSON.stringify({
-            message: err.message,
-            error: err
-        }));
-    });
+  app.use(function(err, req, res, next) {
+    throw err;
+    res.status(err.status || 500);
+    res.end( JSON.stringify({
+      message: err.message,
+      error: err
+    }));
+  });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   throw err;
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
 });
 
 
