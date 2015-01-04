@@ -224,8 +224,8 @@ router.get("/active", function ( req, res ) {
             console.log( checkins_list );
             var len = checkins_list.length;
             var plist = [];
-            for (var i = 0; i < len; i++) {
-                var ch = checkins_list[i];
+            _.each( checkins_list, function( ch, index, array ){
+                //var ch = checkins_list[i];
                 var chfull = {};
 
                 var pr = Vendor.findOne({
@@ -260,7 +260,7 @@ router.get("/active", function ( req, res ) {
 
                 plist.push(pr);
 
-            }
+            });
             Q.all(plist).then(function () {
                 console.log("ALL DUN");
                 res.end(JSON.stringify(chdummy_ret_arr));
@@ -287,8 +287,8 @@ router.get("/active", function ( req, res ) {
             console.log(checkins_list);
             var len = checkins_filter_exp_arr[1].length;
             var plist = [];
-            for (var i = 0; i < len; i++) {
-                var ch = checkins_filter_exp_arr[1][i];
+            _.each( checkins_filter_exp_arr[1], function( ch, index, arr ){
+                //var ch = checkins_filter_exp_arr[1][i];
                 var chfull = {};
 
                 var pr = Vendor.findOne({
@@ -328,8 +328,7 @@ router.get("/active", function ( req, res ) {
                 });
 
                 plist.push(pr);
-
-            }
+              });
             Q.all(plist).then(function () {
                 console.log("ALL DUN");
                 //debugger;

@@ -3,16 +3,14 @@
 var login = function( $rootScope, $scope, $http ){
 
   var PAGE_ID = "login";
-  var CLOZERR_LOGIN_URL = CLOZERR_API + "/auth/login/password";
+  var CLOZERR_LOGIN_URL = CLOZERR_API + "auth/login/password";
   // TODO: update this url somewhere.
-
+  $scope.visibility = false;
   $scope.login = function(){
 
     $http.get( CLOZERR_LOGIN_URL + "?username=" + $("#username").val() + "&password=" + $("#password").val() ).
     success(function(data, status, headers, config) {
-      /*
-      TODO: Store access_token in localStorage. Change the page to current checkins.
-      */
+      localStorage.token = data.access_token;
       $rootScope.$broadcast("page-close");
       $rootScope.$broadcast("page-current-checkins");
     }).error(function(data, status, headers, config) {
