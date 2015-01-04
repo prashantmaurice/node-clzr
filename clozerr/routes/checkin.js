@@ -64,6 +64,7 @@ router.get("/create", function (req, res) {
             error.err(res, "568");
             return;
         }
+
         debugger;
         var checkin = new CheckIn({
             user: obj.user._id,
@@ -190,7 +191,7 @@ router.get("/validate", function (req, res) {
 });
 
 function check_expiry(checkin) {
-    if (parse(new Date()) - parse(checkin.date_created) < 1000000) return true;
+    if ( (new Date()).getTime() - (checkin.date_created).getTime() < 1000000 ) return true;
     else return false;
 }
 
@@ -205,7 +206,7 @@ function check_confirmed(checkin) {
 }
 
 
-router.get("/active", function (req, res) {
+router.get("/active", function ( req, res ) {
     var user = req.user;
     var userobj = user;
     var ut = userobj.type;
@@ -267,7 +268,7 @@ router.get("/active", function (req, res) {
 
         });
     } else if (ut == "vendor") {
-        debugger;
+        //debugger;
         CheckIn.find({
             vendor: userobj.vendor_id,
             state: CHECKIN_STATE_ACTIVE
@@ -293,19 +294,25 @@ router.get("/active", function (req, res) {
                 var pr = Vendor.findOne({
                     _id: ch.vendor
                 }).exec().then(function (vendor) {
-                    chfull.vendor = vendor;
+
+                  //debugger;
+                    chfull.vendor = vendor.toJSON();
                     return User.findOne({
                         _id: ch.user
-                    })
+                    }).exec();
+
                 }).then(function (user) {
-                    chfull.user = user;
+
+                  //debugger;
+                    chfull.user = user.toJSON();
                     return Offer.findOne({
                         _id: ch.offer
-                    })
+                    }).exec();
+
                 }).then(function (offer) {
                     var deferred = Q.defer();
-
-                    chfull.offer = offer;
+                    //debugger;
+                    chfull.offer = offer.toJSON();
                     chfull._id = ch._id;
                     chfull.state = CHECKIN_STATE_CANCELLED;
                     chfull.pin = ch.pin;
@@ -325,8 +332,10 @@ router.get("/active", function (req, res) {
             }
             Q.all(plist).then(function () {
                 console.log("ALL DUN");
+                //debugger;
                 res.end(JSON.stringify(chdummy_ret_arr));
             });
+
         });
     }
 });
@@ -393,7 +402,7 @@ router.get("/active", function (req, res) {
                     res.end(JSON.stringify(chdummy_ret_arr));
                 });
             });
-        } 
+        }
         else {
             error.err(res, "909");
         }

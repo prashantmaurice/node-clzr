@@ -111,7 +111,7 @@ router.get('/get/visited', function( req, res ){
 	var user =  req.user;
 	var fid_list =_.keys( user.stamplist );
 	console.log(fid_list);
-	Vendor.find( {fid:{ $in:fid_list }}, function( err, vendors ){
+	Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
 		res.end( JSON.stringify({ result:true, data:vendors }) );
 	});
 });
