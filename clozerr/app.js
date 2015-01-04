@@ -31,7 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', function( req, res, next ){
-  response.setHeader("Content-Type", "application/JSON");
+  res.setHeader("Content-Type", "application/JSON");
   if( req.query.access_token ){
     Token.findOne( { access_token: req.query.access_token }, function( err, data ){
       if( err ){
