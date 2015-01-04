@@ -40,9 +40,6 @@ module.exports.qualify = function( user, vendor, offer ){
   console.log("Offer type: "+offer.type);
   debugger;
   if( !predicates[offer.type] ){
-    /**
-      TODO: Log an error here. we have an offer of unsupported type.
-    **/
     console.log("Type of offer is unsupported");
     return false;
   }
@@ -55,9 +52,6 @@ module.exports.onCheckin = function( user, vendor, offer ){
   console.log("Offer type: "+offer.type);
   debugger;
   if( !handlers[offer.type] ){
-    /**
-    TODO: Log an error here. we have an offer of unsupported type.
-    **/
     console.log("Type of offer is unsupported");
     return false;
   }

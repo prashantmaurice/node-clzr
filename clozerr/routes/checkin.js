@@ -106,9 +106,9 @@ router.get("/validate", function( req, res ){
   // Global memory to be used by the Promise chain.
   var obj = {};
 
-  if(!req.query.id || !req.query.checkin){
-    // TODO: Change this error code.
-    error.err( res, "435" );
+  var errobj = error.err_insuff_params(res,req,["checkin","offer_id"]);
+  if(!errobj) {
+    return;
   }
 
     var id = req.query.id;
@@ -120,11 +120,16 @@ router.get("/validate", function( req, res ){
         obj.checkin = checkin;
         if( !user.type.equals("vendor") ){
           // TODO: Throw error.
+          error.err(res,"909");
+          return;
         }
         if(obj.checkin.vendor == obj.user.vendor_id) {
           // Note: preferably send notification after checkin save in order to make sure the checkin's state is up-to-date.
           obj.checkin.state = CHECKIN_STATE_CONFIRMED;
           obj.checkin.save();
+
+          //Note : There may be a need to modify the parameters to be sent to the notification,
+          //depending on what frontend needs.
           sendPushNotification(obj.checkin);
 
           Offer.findOne( { _id : obj.checkin.offer } ).exec().then(function( offer ){
@@ -144,7 +149,7 @@ router.get("/validate", function( req, res ){
 
 });
 
-function check_validity(checkin) {
+function check_expiry(checkin) {
   if(parse(new Date()) - parse(checkin.date_created) < 1000000) return true;
   else return false;
 }
@@ -180,13 +185,24 @@ router.get("/active",function(req, res) {
       if(err) console.log(err);
       console.log( checkins_list );
 
+      //Getting all the active checkins
+      
       // TODO: Use _.partition instead of _.filter and then with the checkins that FAIL the test. iterate through them, set them to cancelled and save them.
-      var checkins_filter = _.filter(checkins_list,function(checkin) {
-        return check_validity(checkin);
+
+      //Partitioning the active checkins -- based on expiry
+
+      var checkins_filter_exp_arr = _.partition(checkins_list,function(checkin) {
+        return check_expiry(checkin);
       });
-      checkins_filter = _.filter(checkins_filter,function(checkin) {
-        return check_activeness(checkin);
-      });
+      //TODO : checkins_filter_exp_arr[1] -- set state to cancelled
+
+      for(var i =0;i<checkins_filter_exp_arr[1].length;i++) {
+        var ch = checkins_filter_exp_arr[1][i];
+        ch.state = CHECKIN_STATE_CANCELLED;
+        //TODO : update the checkin
+        //CheckIn.update({_id:ch._id,g});
+      }
+
       res.end(JSON.stringify(checkins_list));
     });
   }
