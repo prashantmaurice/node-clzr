@@ -122,7 +122,7 @@ router.get('/get/near', function (req, res) {
     var distance = req.query.distance;
     var access_token = req.query.access_token;
     var typelist = JSON.parse(req.query.type);
-
+		console.log( typelist );
     Vendor.find({
         location: {
             $near: [lat, lon]
@@ -141,7 +141,10 @@ router.get('/get/near', function (req, res) {
             var pr = Offer.find({
                 _id: {
                     $in: vendor.offers
-                }
+                },
+								type:{
+									$in: typelist
+								}
             }).exec();
             //debugger;
             plist.push(pr.then(function (offers) {
