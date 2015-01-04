@@ -23,7 +23,7 @@ var predicates = {
     else
       return false;
 
-    }
+  }
 };
 
 var handlers = {
@@ -31,8 +31,18 @@ var handlers = {
     if( user.stamplist[vendor.fid] )
       user.stamplist[vendor.fid] ++;
     else
-      user.stamplist[vendor.fid]  = 0;
+      user.stamplist[vendor.fid] = 0;
   },
+  "S0": function( user, vendor, offer) {
+    if( !user.stamplist[vendor.fid] )
+      user.stamplist[vendor.fid] = 0;
+  }
+  "SX": function( user, vendor, offer) {
+    if( user.stamplist[vendor.fid] )
+      user.stamplist[vendor.fid] += parseInt(offer.stamps);
+    else
+      user.stamplist[vendor.fid] = 0;
+  }
 }
 module.exports.qualify = function( user, vendor, offer ){
 

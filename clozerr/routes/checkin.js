@@ -25,10 +25,10 @@ router.get("/create", function( req, res ){
   /*
     TODO: CHECK FOR req.query parameters.
     Throw error if insufficient parameters.
-  */
+    */
 
-  var errobj = error.err_insuff_params( res, req, ["vendor_id","offer_id","gcm_id"]);
-  if(!errobj) {
+    var errobj = error.err_insuff_params( res, req, ["vendor_id","offer_id","gcm_id"]);
+    if(!errobj) {
     //error.err(res,errobj.code,errobj.params);
     return;
   }
@@ -47,35 +47,35 @@ router.get("/create", function( req, res ){
   }).then( function( offer ) {
     /*
       TODO: Check if offer_id is there in the vendor's current offers.
-    */
-    obj.offer = offer;
-    debugger;
-    if( !OfferHandler.qualify( obj.user, obj.vendor, obj.offer ) ){
+      */
+      obj.offer = offer;
+      debugger;
+      if( !OfferHandler.qualify( obj.user, obj.vendor, obj.offer ) ){
         // TODO: change error description.
-          error.err( res, "671" );
-          return;
-    }
-    debugger;
-    var checkin = new CheckIn({
-      user: obj.user._id,
-      vendor: obj.vendor._id,
-      offer: obj.offer._id,
-      state: CHECKIN_STATE_ACTIVE,
-      date_created: new Date(),
-      pin: rack(),
-      gcm_id:gcm_id
-    });
+        error.err( res, "671" );
+        return;
+      }
+      debugger;
+      var checkin = new CheckIn({
+        user: obj.user._id,
+        vendor: obj.vendor._id,
+        offer: obj.offer._id,
+        state: CHECKIN_STATE_ACTIVE,
+        date_created: new Date(),
+        pin: rack(),
+        gcm_id:gcm_id
+      });
 
-    checkin.save( function( err, res, num ){
-          console.log("Successfully saved checkin");
-    });
+      checkin.save( function( err, res, num ){
+        console.log("Successfully saved checkin");
+      });
 
-    res.end( JSON.stringify({ result:true, checkin:checkin }) );
+      res.end( JSON.stringify({ result:true, checkin:checkin }) );
     /*
       TODO: Send alert to Vendor. SocketIO.
-    */
+      */
 
-  });
+    });
 
 });
 
@@ -111,14 +111,14 @@ router.get("/validate", function( req, res ){
     return;
   }
 
-    var id = req.query.id;
-    var checkin = req.query.checkin;
-    User.findOne({_id:user}).exec().then( function( user ){
-        obj.user = user;
-        return CheckIn.findOne({_id:checkin}).exec();
-    }).then( function(){
-        obj.checkin = checkin;
-        if( !user.type.equals("vendor") ){
+  var id = req.query.id;
+  var checkin = req.query.checkin;
+  User.findOne({_id:user}).exec().then( function( user ){
+    obj.user = user;
+    return CheckIn.findOne({_id:checkin}).exec();
+  }).then( function(){
+    obj.checkin = checkin;
+    if( !user.type.equals("vendor") ){
           // TODO: Throw error.
           error.err(res,"909");
           return;
@@ -133,19 +133,19 @@ router.get("/validate", function( req, res ){
           sendPushNotification(obj.checkin);
 
           Offer.findOne( { _id : obj.checkin.offer } ).exec().then(function( offer ){
-              obj.offer = offer;
-              return Vendor.findOne( { _id : obj.checkin.vendor } ).exec();
-            }).then( function( vendor ){
-              obj.vendor = vendor;
-              OfferHandler.onCheckin( obj.user, obj.offer, obj.vendor );
-              obj.user.save();
+            obj.offer = offer;
+            return Vendor.findOne( { _id : obj.checkin.vendor } ).exec();
+          }).then( function( vendor ){
+            obj.vendor = vendor;
+            OfferHandler.onCheckin( obj.user, obj.offer, obj.vendor );
+            obj.user.save();
 
-              res.end( { result: true } );
-            });
+            res.end( { result: true } );
+          });
 
         }
         else error.err(res,"435");
-    });
+      });
 
 });
 
@@ -176,8 +176,8 @@ router.get("/active",function(req, res) {
       /*var checkins_act_filter = _.filter(checkins_list,function(checkin) {
         return check_activeness(checkin);
       });*/
-      res.end(JSON.stringify(checkins_list));
-    });
+    res.end(JSON.stringify(checkins_list));
+  });
   }
   else if( ut == "vendor" ) {
     debugger;
@@ -218,9 +218,9 @@ router.get("/confirmed",function(req,res) {
 
     CheckIn.find({vendor:userobj.vendor_id},function(err,checkins_list) {
       if(err) console.log(err);
-        var checkins_conf_filter = _.filter(checkins_list,function(checkin) {
-          return check_confirmed( checkin );
-        });
+      var checkins_conf_filter = _.filter(checkins_list,function(checkin) {
+        return check_confirmed( checkin );
+      });
       res.send(JSON.stringify(checkins_conf_filter));
     });
 
