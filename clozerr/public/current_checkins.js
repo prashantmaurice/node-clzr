@@ -11,9 +11,7 @@ var current_checkins = function( $scope, $http ){
     var access_token = localStorage.token;
     $http.get( CLOZERR_CURRENT_CHECKINS_URL + "?access_token=" + access_token ).
     success(function(data, status, headers, config) {
-      /*
-      TODO: Update checkins object here.
-      */
+      $scope.checkins = data;
 
     }).error(function(data, status, headers, config) {
       /*
