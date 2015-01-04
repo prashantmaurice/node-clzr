@@ -31,6 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', function( req, res, next ){
+  debugger;
   if( req.query.access_token ){
     Token.findOne( { access_token: req.query.access_token }, function( err, data ){
       if( err ){
@@ -76,9 +77,7 @@ db.open('mongodb://'+settings.db.mongo.host+'/'+settings.db.mongo.name);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+  res.end(JSON.stringify({ result:false, err:{ code:404, description:"Not found"} }));
 });
 
 // error handlers
