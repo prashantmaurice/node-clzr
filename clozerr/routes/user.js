@@ -21,6 +21,20 @@ function newUser( backend, id ) {
  return nuser;
 }
 
+function loadFacebookDetails( user, access_token ){
+  https.get("https://graph.facebook.com/me/?access_token=" + access_token, function( response ){
+
+      response.on("data", function( dat ){
+        var obj = JSON.parse( dat.toString() );
+        user.profile = obj;
+        user.save();
+      });
+  });
+}
+
+function loadGoogleDetails(){
+
+}
 
 var token = models.Token;
 
@@ -192,7 +206,6 @@ router.get('/reset/password', function( req, res ){
 
 });
 
-
 // TODO: check this.
 router.get('/create', function(req,res,err) {
   var type = "vendor";
@@ -212,7 +225,7 @@ router.get('/create', function(req,res,err) {
 
       var vuser = new user({ auth_type:auth_type, type:type,vendor_id:vendor_id, password:hash, username: req.query.username });
       vuser.save();
-      
+
 
      /* user.save(function(err) {
         if(err) console.log(err);
