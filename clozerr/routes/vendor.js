@@ -110,7 +110,7 @@ router.get('/addoffer', function (req, res) {
 
 router.get('/get/near', function (req, res) {
 
-    var errobj = error.err_insuff_params(res, req.query, ["latitude", "longitude", "access_token", "type"]);
+    var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "type"]);
 
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);

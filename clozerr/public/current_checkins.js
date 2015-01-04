@@ -22,13 +22,12 @@ var current_checkins = function( $scope, $http ){
   }
 
   var CLOZERR_VALIDATE_URL = CLOZERR_API + "/checkin/validate";
-  $scope.validate = function( checkin_id ){
+  $scope.validate = function( checkin ){
 
-    /*
-      TODO: Start spinner.
-    */
+    $scope.spinner = true;
+
     var access_token = localStorage.token;
-    $http.get( CLOZERR_VALIDATE_URL + "?access_token=" + access_token ).
+    $http.get( CLOZERR_VALIDATE_URL + "?access_token=" + access_token + "&checkin=" + checkin._id ).
     success(function(data, status, headers, config) {
       /*
       TODO: Give green signal to vendor.
@@ -38,6 +37,7 @@ var current_checkins = function( $scope, $http ){
       TODO: Red signal to vendor.
       */
     });
+
   }
 
   $scope.$on("page-current-checkins", function(){
