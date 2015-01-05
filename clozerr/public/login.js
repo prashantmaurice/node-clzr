@@ -5,12 +5,14 @@ var login = function( $rootScope, $scope, $http ){
   var PAGE_ID = "login";
   var CLOZERR_LOGIN_URL = CLOZERR_API + "auth/login/password";
   // TODO: update this url somewhere.
-  $scope.visibility = false;
+  $scope.visibility = true;
   $scope.login = function(){
+    $scope.spinner = false;
 
     $http.get( CLOZERR_LOGIN_URL + "?username=" + $("#username").val() + "&password=" + $("#password").val() ).
     success(function(data, status, headers, config) {
       localStorage.token = data.access_token;
+      $scope.spinner = true;
       $rootScope.$broadcast("page-close");
       $rootScope.$broadcast("page-current-checkins");
       $scope.getDetails();
@@ -19,6 +21,7 @@ var login = function( $rootScope, $scope, $http ){
       TODO: Throw error here.
       */
     });
+
   }
 
   $scope.$on("page-login", function(){
