@@ -60,13 +60,13 @@ router.get('/login/facebook', function(req, res) {
 
     var request = https.get('https://graph.facebook.com/debug_token?input_token=' + req.query.token + '&access_token='+settings.auth.facebook.app_token, function(response) {
       debugger;
-      console.log("Statuscode: ", response.statusCode);
-      console.log("headers: ", response.headers);
+     // console.log("Statuscode: ", response.statusCode);
+     // console.log("headers: ", response.headers);
 
       response.on('data', function(dat) {
     debugger;
     d=JSON.parse(dat.toString());
-    console.log(d);
+    //console.log(d);
     if( d.data && d.data.is_valid )
     {
 
@@ -86,7 +86,7 @@ router.get('/login/facebook', function(req, res) {
               nu.save();
               debugger;
               var id=hat();
-              console.log(id);
+              //console.log(id);
               newid(id,nu._id).save();
               res.end( JSON.stringify( {result : true, token : id } ) );  
             });
