@@ -107,7 +107,7 @@ function sendPushNotification(checkinobj) {
         delayWhileIdle: true,
         data: {
             "key": "checkin_push",
-            "checkinobj": checkinobj
+           "checkinobj": checkinobj
         }
     });
 
