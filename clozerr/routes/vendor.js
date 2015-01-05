@@ -9,6 +9,9 @@ var Promise = mongoose.Promise;
 var Q = require("q");
 var OfferHandler = require("./predicate");
 var error = require("./error");
+var s3 = require("s3policy");
+var policy = require("s3-policy");
+var settings = require("./settings");
 
 router.get('/create', function (req, res) {
 
@@ -118,6 +121,31 @@ router.get('/addoffer', function (req, res) {
     })
 });
 
+router.get('/upload-policy', function( req, res ){
+		/*
+			TODO: Only allow if the user is linked to this vendor.
+		*/
+		/*
+			TODO: Check input parameters for id & access_token.
+		*/
+
+		var p = policy({
+			secret: settings.s3.secret_key,
+			length: 5000000,
+			bucket: settings.s3.bucket,
+			key: settings.s3.base_path + "/" + req.user.username,
+			expires: new Date(Date.now() + 60000),
+			acl: 'public-read'
+		});
+
+		//var myS3Account = new s3( settings.s3.access_key, settings.s3.secret_key );
+		//var policy = myS3Account.writePolicy( settings.s3.base_path + "/" + req.user.username, settings.s3.bucket, 60, 10, 'public-read', function( a ){
+		//	console.log( a );
+		//});
+		res.end( JSON.stringify({ result:true, data:p }) );
+
+});
+
 router.get('/get/visited', function( req, res ){
 	var user =  req.user;
 	var fid_list =_.keys( user.stamplist );
@@ -125,6 +153,11 @@ router.get('/get/visited', function( req, res ){
 	Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
 		res.end( JSON.stringify({ result:true, data:vendors }) );
 	});
+});
+
+router.get("/request", function( req, res ){
+	var user = req.user;
+	
 });
 
 router.get('/get/near', function (req, res) {

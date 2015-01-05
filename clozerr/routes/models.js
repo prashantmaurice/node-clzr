@@ -46,6 +46,11 @@ Models.Token = mongoose.model('Token',new Schema({
 	account:ObjectId
 }));
 
+Models.VendorRequest = mongoose.model('VendorRequest', new Schema({
+	access_token:String,
+	account:ObjectId
+}));
+
 Models.Offer = mongoose.model('Offer',new Schema({
 
 	type:String,

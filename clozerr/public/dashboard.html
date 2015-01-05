@@ -26,10 +26,23 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+    a{
+      color:#FFF;
+    }
+    .nav-button{
+      color:#FFF;
+    }
+    .whitebox{
+      background-color:#FFF;
+      border-radius:10px;
+      padding:30px;
+    }
+    </style>
 
 </head>
 
-<body ng-app>
+<body ng-app="clozerr">
   <script>
     var CLOZERR_API = location.origin + "/";
   </script>
@@ -40,7 +53,7 @@
     <div id="wrapper">
 
         <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-fixed-top" role="navigation" style="background-color:rgba(0,0,0,0);border-color:rgba(0,0,0,0)">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -49,7 +62,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Clozerr Dashboard</a>
+                <a class="nav-button navbar-brand" href="index.html">Clozerr Dashboard</a>
 
             </div>
             <!-- Top Menu Items -->
@@ -74,15 +87,7 @@
                     </ul>
                 </li>
             </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <ul class="nav navbar-nav side-nav">
-                    <li>
-                        <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Current Checkins</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+
         </nav>
 
         <div id="page-wrapper">
@@ -91,7 +96,7 @@
 
                 <!-- Page Heading -->
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-10">
 
                     </div>
                 </div>
@@ -109,9 +114,7 @@
     </div>
     <!-- /#wrapper -->
 
-    <script>
 
-    </script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 
@@ -121,6 +124,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 
+    <script>
+    var app = angular.module("clozerr",[]);
+    app.filter("humanize_date", function(){
+      return function( input ){
+        return new Date( input ).toLocaleString()
+      }
+    });
+    </script>
 </body>
 
 </html>
