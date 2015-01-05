@@ -21,7 +21,7 @@ var login = function( $rootScope, $scope, $http ){
     });
   }
 
-  $scope.$on("page-"+PAGE_ID, function(){
+  $scope.$on("page-login", function(){
     $scope.visibility = true;
   });
 
@@ -42,7 +42,7 @@ var login = function( $rootScope, $scope, $http ){
       $rootScope.$broadcast("page-current-checkins");
       $scope.getDetails();
     }
-  }, 0);
+  }, 10);
 
   $scope.getDetails = function(){
     var CLOZERR_PROFILE_URL = CLOZERR_API + "auth/profile";
