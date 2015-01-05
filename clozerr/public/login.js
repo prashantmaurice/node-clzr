@@ -13,6 +13,7 @@ var login = function( $rootScope, $scope, $http ){
     success(function(data, status, headers, config) {
       localStorage.token = data.access_token;
       $scope.spinner = true;
+
       $rootScope.$broadcast("page-close");
       $rootScope.$broadcast("page-current-checkins");
       $scope.getDetails();
@@ -31,23 +32,6 @@ var login = function( $rootScope, $scope, $http ){
   $scope.$on("page-close", function(){
     $scope.visibility = false;
   });
-
-  //$scope.update();
-  angular.element(document).ready(function () {
-    //console.log('Hello World');
-    console.log( localStorage.token );
-    if( !localStorage.token ){
-      console.log("Not logged in.");
-      $rootScope.$broadcast("page-close");
-      $rootScope.$broadcast("page-login");
-    }else{
-      console.log('Logged in');
-      $rootScope.$broadcast("page-close");
-      $rootScope.$broadcast("page-current-checkins");
-      $scope.getDetails();
-    }
-  });
-
 
   $scope.getDetails = function(){
     var CLOZERR_PROFILE_URL = CLOZERR_API + "auth/profile";
@@ -73,6 +57,25 @@ var login = function( $rootScope, $scope, $http ){
       */
     });
   }
+  
+  //$scope.update();
+  angular.element(document).ready(function () {
+    //console.log('Hello World');
+    console.log( localStorage.token );
+    if( !localStorage.token ){
+      console.log("Not logged in.");
+      $rootScope.$broadcast("page-close");
+      $rootScope.$broadcast("page-login");
+    }else{
+      console.log('Logged in');
+      $rootScope.$broadcast("page-close");
+      $rootScope.$broadcast("page-current-checkins");
+      $scope.getDetails();
+    }
+  });
+
+
+
 
   $rootScope.logout = function(){
     var CLOZERR_LOGOUT_URL = CLOZERR_API + "auth/logout"
