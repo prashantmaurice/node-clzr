@@ -225,7 +225,7 @@ router.get('/logout', function( req, res ){
 
 // TODO: check this.
 router.get('/create', function(req,res,err) {
-  var type = "vendor";
+  var type = "Vendor";
   var auth_type = "password";
   debugger;
       //if (err) error.err(res,"420");

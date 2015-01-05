@@ -122,7 +122,7 @@ function sendPushNotification(checkinobj) {
 
 router.get("/validate", function (req, res) {
 
-    if (!(req.user.type == "vendor")) {
+    if (!(req.user.type == "Vendor")) {
         //Throw error.
         error.err(res, "909");
         return;
@@ -353,7 +353,7 @@ router.get("/confirmed", function (req, res) {
     });
     var ut = userobj.type;
 
-    if (ut=="vendor") {
+    if (ut=="Vendor") {
 
         CheckIn.find({
             vendor: userobj.vendor_id
