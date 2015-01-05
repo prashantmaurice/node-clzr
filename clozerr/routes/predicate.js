@@ -2,8 +2,8 @@ module.exports = {};
 
 var predicates = {
   "S1": function( user, vendor, offer ){
-    
-    if( user.stamplist && user.stamplist[vendor.fid] && user.stamplist[vendor.fid] == parseInt( offer.stamps ) )
+
+    if( user.stamplist && user.stamplist[vendor.fid] && user.stamplist[vendor.fid] == parseInt( offer.stamps ) - 1 )
       return true;
     else if( user.stamplist && !user.stamplist[vendor.fid] && offer.stamps == "1" )
       return true;
