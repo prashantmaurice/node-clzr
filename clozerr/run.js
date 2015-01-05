@@ -41,11 +41,20 @@ var ary=JSON.parse(dat.toString()).results;
 
 for(var i=0;i<ary.length;i++)
 {
-	var desp={};
-	for(var j=0;j<ary[i].offer.length;j++)
-		desp[j]=ary[i].offer[j].caption;
-	var offer=new Offer({type:"S1",stamps:ary[i].visitCount,dateCreated:ary[i].createdAt,caption:ary[i].caption,description:desp});
-	offer.save();
+	console.log("OFFERS");
+	console.log(i);
+	var desp=[];
+	for(var j=0;j<ary[i].offer.length;j++){
+		if(ary[i].offer[j]["$$hashKey"])
+			delete ary[i].offer[j]["$$hashKey"];
+	}
+	var offer=new Offer({type:"S1",stamps:ary[i].visitCount,dateCreated:ary[i].createdAt,caption:ary[i].caption,description:ary[i].offer });
+	offer.markModified("description");
+	offer.save(function( err, data ){
+		if(err){
+			console.log(err);
+		}
+	});
 	links[ary[i].objectId] = offer._id;
 }
 
@@ -95,7 +104,8 @@ for(var i=0;i<k;i++)
   	type:"User",
   	auth_type:"facebook",
   	social_id:user[i].profile.fb_socialId,
-  	username:user[i].profile.first_name
+  	username:user[i].profile.first_name,
+		stamplist: {DEFAULT:0}
   });
   nuser.save();
 }

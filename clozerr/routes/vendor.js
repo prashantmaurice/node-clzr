@@ -205,7 +205,7 @@ router.get('/get/near', function (req, res) {
             //debugger;
             plist.push(
 							pr.then(
-								(function( vendor ){
+								(function( vendor, index ){
 							return function (offers) {
                 var deferred = Q.defer();
 								debugger;
@@ -221,7 +221,7 @@ router.get('/get/near', function (req, res) {
                 vendor_new.fid = vendor.fid;
                 vendor_new._id = vendor._id;
 								console.log( vendor_new );
-                vendor_det_ret_arr.push(vendor_new);
+                vendor_det_ret_arr[index] = (vendor_new);
                 //debugger;
                 process.nextTick(function () {
                     console.log("resolving.");
@@ -229,7 +229,7 @@ router.get('/get/near', function (req, res) {
                 });
                 return deferred.promise;
             };
-						})( vendors[i] )
+					})( vendors[i], i )
 						));
 
         }
