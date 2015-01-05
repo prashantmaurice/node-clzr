@@ -15,19 +15,19 @@ var dat=fs.readFileSync('/home/raakesh/Documents/Clozerr data/Vendor.json' );
 var ary = JSON.parse(data.toString()).results;
 for(var i=0;i<ary.length;i++)
 {
-	
+
 }
 var user={};
 var k=0;
 for(var i=0;i<arr.length;i++)
-{   
+{
 	if(arr[i].associatedFlows&&arr[i].associatedFlows.length==2&&arr[i].role=='User')
 	user[k++]=arr[i];
 }
 var vendor={};
 var v=0;
 for(var i=0;i<arr.length;i++)
-{   
+{
 	if(arr[i].associatedFlows&&arr[i].associatedFlows.length==1&&arr[i].role=='Vendor')
 	vendor[v++]=arr[i];
 	}
@@ -42,7 +42,7 @@ for(var i=0;i<k;i++)
   nuser.save();
 }
 for(var i=0;i<v;i++)
-{   
+{
 	var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync( settings.auth.password.default, salt );
 	var nuser = new User({
@@ -50,6 +50,6 @@ for(var i=0;i<v;i++)
      auth_type:"password",
      username:vendor[i].username,
      password:hash,
-     Vendor_id:
+     vendor_id:
 	});
 }

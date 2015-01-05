@@ -2,7 +2,7 @@
 
 <div class="row" ng-controller="login">
   <div class="col-lg-6 col-sm-8 col-lg-offset-3 whitebox" ng-show="visibility">
-    <h2>Login</h2>
+    <h2 class="box-title">Login</h2>
     <div class="form" ng-show="login_form">
       <label>Username:</label>
       <input type=text class="form-control" id="username"></input>
@@ -11,7 +11,7 @@
       <a class="btn btn-primary" style="margin: 10px 0px" href="javascript:void(0)" id="login-btn" ng-click="login()">Log In</a>
     </div>
     <div class="spinner"ng-show="spinner">
-      <img src="loader.gif">
+      <img src="loader.gif" class="spinner-img">
     </div>
   </div>
 </div>

@@ -167,6 +167,9 @@ request.on('error', function(e) {
 
 router.get('/login/password', function( req, res ){
   User.findOne( {username: req.query.username}, function( err, user ){
+    if( !user ){
+      error.err(res,"102");
+    }
     if( err ){
       error.err(res,"102");
     }

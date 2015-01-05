@@ -6,13 +6,16 @@ var login = function( $rootScope, $scope, $http ){
   var CLOZERR_LOGIN_URL = CLOZERR_API + "auth/login/password";
   // TODO: update this url somewhere.
   $scope.visibility = true;
+  $scope.spinner = false;
+  $scope.login_form = true;
   $scope.login = function(){
-    $scope.spinner = false;
-
+    $scope.spinner = true;
+    $scope.login_form = false;
     $http.get( CLOZERR_LOGIN_URL + "?username=" + $("#username").val() + "&password=" + $("#password").val() ).
     success(function(data, status, headers, config) {
       localStorage.token = data.access_token;
-      $scope.spinner = true;
+      $scope.spinner = false;
+      $scope.login_form = true;
 
       $rootScope.$broadcast("page-close");
       $rootScope.$broadcast("page-current-checkins");
@@ -57,7 +60,7 @@ var login = function( $rootScope, $scope, $http ){
       */
     });
   }
-  
+
   //$scope.update();
   angular.element(document).ready(function () {
     //console.log('Hello World');

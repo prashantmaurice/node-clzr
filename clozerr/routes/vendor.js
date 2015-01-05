@@ -5,6 +5,7 @@ var models = require("./models");
 var _ = require("underscore");
 var Vendor = models.Vendor;
 var Offer = models.Offer;
+var VendorRequest = models.VendorRequest;
 var Promise = mongoose.Promise;
 var Q = require("q");
 var OfferHandler = require("./predicate");
@@ -74,8 +75,9 @@ router.get('/get', function (req, res) {
         _id: id
     }, function (err, vendor) {
         if (err) console.log(err);
-        if (!vendor) {
+        if ( !vendor ) {
             // TODO: Throw error.
+						error.err( res, "845" );
         }
 
         Offer.find({
@@ -157,7 +159,9 @@ router.get('/get/visited', function( req, res ){
 
 router.get("/request", function( req, res ){
 	var user = req.user;
-
+	var request = new VendorRequest( {account:user._id, name:req.query.name, remarks:req.query.remarks } );
+	request.save();
+	res.end(JSON.stringify( {result:true} ) ) ;
 });
 
 router.get('/get/near', function (req, res) {

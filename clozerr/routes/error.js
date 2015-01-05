@@ -11,7 +11,8 @@ error.ERR_DESCRIPTION = {
 	"646":"User not found",//signup again
 	"302":"No such checkin",
 	"568":"Not an upcoming offer for you",
-	"212":"Incorrect password"
+	"212":"Incorrect password",
+	"845":"No such vendor"
 };
 
 error.err = function( res, code, desc ){
