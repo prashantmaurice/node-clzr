@@ -30,7 +30,8 @@ var login = function( $rootScope, $scope, $http ){
   });
 
   //$scope.update();
-  setTimeout( function(){
+  angular.element(document).ready(function () {
+    //console.log('Hello World');
     console.log( localStorage.token );
     if( !localStorage.token ){
       console.log("Not logged in.");
@@ -42,7 +43,8 @@ var login = function( $rootScope, $scope, $http ){
       $rootScope.$broadcast("page-current-checkins");
       $scope.getDetails();
     }
-  }, 10);
+  });
+
 
   $scope.getDetails = function(){
     var CLOZERR_PROFILE_URL = CLOZERR_API + "auth/profile";
