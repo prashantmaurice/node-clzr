@@ -10,8 +10,8 @@ var rack = hat.rack(10, 10);
 var gcm = require("node-gcm");
 
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+//var http = require('http').Server(app);
+
 
 var Vendor = models.Vendor;
 var Offer = models.Offer;
@@ -19,6 +19,7 @@ var CheckIn = models.CheckIn;
 var User = models.User;
 
 var OfferHandler = require("./predicate");
+
 
 
 var CHECKIN_STATE_ACTIVE = 0;
@@ -92,11 +93,9 @@ if (!errobj) {
         /*
       TODO: Send alert to Vendor. SocketIO.
       */
-      io.on('connection', function(socket){
-          socket.on('signal', function(){
-            io.emit('signal', "created");
-        });
-      });
+      
+      global.io.emit('signal', JSON.stringify({vendor_id:obj.vendor._id}) );
+
   });
 
 });
@@ -307,12 +306,12 @@ Q.all(plist).then(function () {
                     chfull.vendor = vendor;
                     return User.findOne({
                         _id: ch.user
-                    })
+                    }).exec();
                 }).then(function (user) {
                     chfull.user = user;
                     return Offer.findOne({
                         _id: ch.offer
-                    })
+                    }).exec();
                 }).then(function (offer) {
                     var deferred = Q.defer();
 
