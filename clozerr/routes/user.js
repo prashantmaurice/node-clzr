@@ -15,9 +15,10 @@ function newUser( backend, id ) {
  var nuser=new user({
   auth_type: backend,
   social_id:id,
-  stamplist:{},
-  type:"user"
+  stamplist:{ STANDARD:0 },
+  type:"User"
 });
+nuser.markModified("stamplist");
  return nuser;
 }
 
@@ -70,7 +71,7 @@ router.get('/login/facebook', function(req, res) {
     if( d.data && d.data.is_valid )
     {
 
-    user.findOne({fb_id:d.data.user_id}, function(err, result) {
+    user.findOne({social_id:d.data.user_id}, function(err, result) {
       if (err) { console.log("error:") }
       if (result)
       {

@@ -10,7 +10,7 @@ var db=mongoose.connection;
 var User = models.User;
 var bcrypt = require("bcrypt-nodejs");
 
-db.open('mongodb://'+settings.db.mongo.host+'/fin');
+db.open('mongodb://'+settings.db.mongo.host+'/fin2');
 function random (howMany, chars) {
 	chars = chars
 	|| "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
@@ -26,17 +26,17 @@ function random (howMany, chars) {
 }
 
 var links={};
-var join=fs.readFileSync('/home/raakesh/Documents/Clozerr data/CouponVendorJoin.json');
+var join=fs.readFileSync('CouponVendorJoin.json');
 var arry=JSON.parse(join.toString()).results;
 
-var datu=fs.readFileSync('/home/raakesh/Documents/Clozerr data/Account.json' );
+var datu=fs.readFileSync('Account.json' );
 var aray = JSON.parse(datu.toString()).results;
 
-var data=fs.readFileSync('/home/raakesh/Documents/Clozerr data/Vendor.json' );
+var data=fs.readFileSync('Vendor.json' );
 var arr = JSON.parse(data.toString()).results;
 var help={};
 
-var dat=fs.readFileSync('/home/raakesh/Documents/Clozerr data/Coupon.json');
+var dat=fs.readFileSync('Coupon.json');
 var ary=JSON.parse(dat.toString()).results;
 
 for(var i=0;i<ary.length;i++)
@@ -90,7 +90,7 @@ for(var i=0;i<aray.length;i++)
 	}
 for(var i=0;i<k;i++)
 {
-	debugger;
+	//debugger;
   var nuser = new User({
   	type:"User",
   	auth_type:"facebook",
@@ -103,12 +103,13 @@ for(var i=0;i<v;i++)
 {
 	var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync( settings.auth.password.default, salt );
+		debugger;
 	var nuser = new User({
      type:"Vendor",
      auth_type:"password",
      username:vendor[i].username,
      password:hash,
-     Vendor_id:help[vendor[i].objectId]
+     vendor_id:help[vendor[i].vendor.objectId]
 	});
 	nuser.save();
 }

@@ -3,15 +3,17 @@
 
 <div class="row" ng-controller="current_checkins">
   <div class="col-lg-8 col-sm-12 col-lg-offset-2 whitebox" ng-show="visibility">
-    <h2>Current CheckIns</h2>
+    <h2 class="box-title">THE VALIDATOR</h2>
     <div class="table-responsive">
       <table class="table table-bordered table-hover" id="curr_checkins">
         <thead>
           <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th>USERNAME</th>
+            <th>PIN</th>
+            <th>TIME</th>
+            <th>OFFER</th>
+            <th>OFFER-LEVEL</th>
+            <th>ACTION</th>
           </tr>
         </thead>
         <tbody >
@@ -21,7 +23,7 @@
                 <td>{{ checkin.date_created | humanize_date }}</td>
                 <td>{{ checkin.offer.caption }}</td>
                 <td>{{ checkin.offer.stamps }}</td>
-                <td><a href="javascript:void(0)" ng-click="validate( checkin )">Validate</a></td>
+                <td><a href="javascript:void(0)" ng-click="validate( checkin )" class="btn btn-primary">VALIDATE</a></td>
             </tr>
         </tbody>
       </table>
