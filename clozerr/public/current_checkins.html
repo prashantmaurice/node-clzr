@@ -2,7 +2,7 @@
 
 
 <div class="row" ng-controller="current_checkins">
-  <div class="col-lg-12" ng-show="visibility">
+  <div class="col-lg-8 col-sm-12 col-lg-offset-2 whitebox" ng-show="visibility">
     <h2>Current CheckIns</h2>
     <div class="table-responsive">
       <table class="table table-bordered table-hover" id="curr_checkins">
@@ -17,7 +17,8 @@
         <tbody >
             <tr ng-repeat="checkin in checkins">
                 <td>{{ checkin.user.profile.name }}</td>
-                <td>{{ checkin.date_created }}</td>
+                <td>{{ checkin.pin }}</td>
+                <td>{{ checkin.date_created | humanize_date }}</td>
                 <td>{{ checkin.offer.caption }}</td>
                 <td>{{ checkin.offer.stamps }}</td>
                 <td><a href="javascript:void(0)" ng-click="validate( checkin )">Validate</a></td>

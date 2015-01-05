@@ -144,6 +144,11 @@ router.get('/get/visited', function( req, res ){
 	});
 });
 
+router.get("/request", function( req, res ){
+	var user = req.user;
+	
+});
+
 router.get('/get/near', function (req, res) {
 
     var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "type"]);

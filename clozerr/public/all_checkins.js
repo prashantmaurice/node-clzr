@@ -10,16 +10,14 @@ var all_checkins = function( $rootScope, $scope, $http ){
   $scope.update = function(){
     var access_token = localStorage.token;
 
+    $scope.err = false;
+    $scope.spinner = true;
     $http.get( CLOZERR_ALL_CHECKINS_URL + "?access_token=" + access_token ).
-    success(function(data, status, headers, config) {
-      /*
-      TODO: Update checkins object here.
-      */
-
-    }).error(function(data, status, headers, config) {
-      /*
-      TODO: Throw error here.
-      */
+    success( function( data, status, headers, config ) {
+      $scope.checkins = true;
+      $scope.spinner = false;
+    }).error( function( data, status, headers, config ) {
+      $scope.err = true;
     });
 
   }
