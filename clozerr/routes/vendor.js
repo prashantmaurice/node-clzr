@@ -1,4 +1,4 @@
-xvar express = require('express');
+var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 var models = require("./models");
@@ -157,7 +157,7 @@ router.get('/get/visited', function( req, res ){
 
 router.get("/request", function( req, res ){
 	var user = req.user;
-	
+
 });
 
 router.get('/get/near', function (req, res) {
