@@ -2,8 +2,7 @@ module.exports = {};
 
 var predicates = {
   "S1": function( user, vendor, offer ){
-    console.log("Evaluating S1");
-
+    
     if( user.stamplist && user.stamplist[vendor.fid] && user.stamplist[vendor.fid] == parseInt( offer.stamps ) )
       return true;
     else if( user.stamplist && !user.stamplist[vendor.fid] && offer.stamps == "1" )
@@ -32,30 +31,31 @@ var handlers = {
   "S1": function( user, vendor, offer ){
     debugger;
     console.log("Setting: " + vendor.fid + " of stamplist");
-    user.markModified("stamplist");
+
     if( user.stamplist[vendor.fid] )
       user.stamplist[vendor.fid] ++;
     else
-      user.stamplist[vendor.fid] = 0;
+      user.stamplist[vendor.fid] = 1;
+    user.markModified("stamplist");
   },
   "S0": function( user, vendor, offer) {
     if( !user.stamplist[vendor.fid] )
       user.stamplist[vendor.fid] = 0;
   },
-  "SX": function( user, vendor, offer) {
+  "SX": function( user, vendor, offer, validator ) {
     if( user.stamplist[vendor.fid] )
-      user.stamplist[vendor.fid] += parseInt(offer.stamps);
+      user.stamplist[vendor.fid] += parseInt(validator.stamps);
     else
-      user.stamplist[vendor.fid] = 0;
+      user.stamplist[vendor.fid] = parseInt(validator.stamps);
   }
 }
 module.exports.qualify = function( user, vendor, offer ){
 
 
-  //debugger;
+  debugger;
   console.log("Calculating: "+user._id + " " + vendor._id + " "+offer._id);
   console.log("Offer type: "+offer.type);
-  //debugger;
+  debugger;
   if( !predicates[offer.type] ){
     console.log("Type of offer is unsupported");
     return false;
@@ -65,10 +65,10 @@ module.exports.qualify = function( user, vendor, offer ){
 
 module.exports.onCheckin = function( user, vendor, offer ){
 
-  //debugger;
+  debugger;
   console.log("Checking in: "+user._id + " " + vendor._id + " "+offer._id);
   console.log("Offer type: "+offer.type);
-  //debugger;
+  debugger;
   if( !handlers[offer.type] ){
     console.log("Type of offer is unsupported");
     return false;

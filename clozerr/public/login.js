@@ -13,6 +13,7 @@ var login = function( $rootScope, $scope, $http ){
       localStorage.token = data.access_token;
       $rootScope.$broadcast("page-close");
       $rootScope.$broadcast("page-current-checkins");
+      $scope.getDetails();
     }).error(function(data, status, headers, config) {
       /*
       TODO: Throw error here.
@@ -20,7 +21,7 @@ var login = function( $rootScope, $scope, $http ){
     });
   }
 
-  $scope.$on("page-"+PAGE_ID, function(){
+  $scope.$on("page-login", function(){
     $scope.visibility = true;
   });
 
@@ -29,7 +30,57 @@ var login = function( $rootScope, $scope, $http ){
   });
 
   //$scope.update();
-  if( !localStorage.access_token ){
+  setTimeout( function(){
+    console.log( localStorage.token );
+    if( !localStorage.token ){
+      console.log("Not logged in.");
+      $rootScope.$broadcast("page-close");
+      $rootScope.$broadcast("page-login");
+    }else{
+      console.log('Logged in');
+      $rootScope.$broadcast("page-close");
+      $rootScope.$broadcast("page-current-checkins");
+      $scope.getDetails();
+    }
+  }, 10);
+
+  $scope.getDetails = function(){
+    var CLOZERR_PROFILE_URL = CLOZERR_API + "auth/profile";
+    var CLOZERR_VENDOR_URL = CLOZERR_API + "vendor/get";
+
+    $http.get(CLOZERR_PROFILE_URL + "?access_token=" + localStorage.token).
+    success(function(data, status, headers, config) {
+      console.log( data );
+      $rootScope.user = data;
+
+      $http.get(CLOZERR_VENDOR_URL + "?vendor_id=" + $rootScope.user.vendor_id).
+      success(function(data, status, headers, config) {
+        console.log( data );
+        $rootScope.vendor = data;
+      }).error(function(data, status, headers, config) {
+        /*
+        TODO: Throw error here.
+        */
+      });
+    }).error(function(data, status, headers, config) {
+      /*
+      TODO: Throw error here.
+      */
+    });
+  }
+
+  $rootScope.logout = function(){
+    var CLOZERR_LOGOUT_URL = CLOZERR_API + "auth/logout"
+    $http.get( CLOZERR_LOGOUT_URL + "?access_token=" + localStorage.token ).
+    success(function(data, status, headers, config) {
+      console.log( data );
+      $rootScope.vendor = data;
+    }).error(function(data, status, headers, config) {
+      /*
+      TODO: Throw error here.
+      */
+    });
+    delete localStorage["token"];
     $rootScope.$broadcast("page-close");
     $rootScope.$broadcast("page-login");
   }

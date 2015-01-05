@@ -4,7 +4,7 @@ var all_checkins = function( $rootScope, $scope, $http ){
   $scope.checkins = [];
   $scope.visibility = false;
 
-  var CLOZERR_ALL_CHECKINS_URL = CLOZERR_API + "/checkin/confirmed";
+  var CLOZERR_ALL_CHECKINS_URL = CLOZERR_API + "checkin/confirmed";
   // TODO: update this url somewhere.
 
   $scope.update = function(){
@@ -32,7 +32,7 @@ var all_checkins = function( $rootScope, $scope, $http ){
     $scope.visibility = false;
   });
 
-  $scope.update();
+  //$scope.update();
   /*
     TODO: Register for SocketIO messages here.
   */

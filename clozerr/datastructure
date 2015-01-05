@@ -1,13 +1,13 @@
 Offer 
 {
-	offerid:Number
+offerid:Number
 }
 
 Vendor
 {
-	vendorid : Number,
-	location : {type:[Number],index:'2dsphere'}, //2dpoint
-	offers : [Number]
+vendorid : Number,
+location : {type:[Number],index:'2dsphere'}, //2dpoint
+offers : [Number]
 }
 
 /vendor/create?vendorid=(.)&lat=(.)&lon=(.)
@@ -17,3 +17,45 @@ Vendor
 
 /offer/create?offerid=(.)
 /offer/get?offerid=(.)
+
+/////*****CHECK THIS PART ALONE******//////
+
+/auth/login/facebook/?token=(.)   //"user's fb access token"
+
+/auth/login/google/?token=(.)   //"user's google access token"
+
+/auth/login/password/?username=(.)&password=(.)   //"setting password for the vendor"
+
+/auth/reset/password/?access_token=(.)  //"reset the user's password to some default value"
+
+/auth/create/?vendor_id=(.)&username=(.)  //"create a vendor username"
+
+/offer/get/?offer_id=(.)   //"get info about the offer "
+
+/offer/create/?type=(.)&stamps=(.)&caption=(.)&description=(.)   //"create a new offer with type='S1'or'S0'or'SX',stamps=prerequisite to be eligible for the offer"//
+
+/offer/update/?offer_id=(.)&type=(.)&stamps=(.)&caption=(.)&description=(.)  //"update the given offerid"
+
+/offer/delete/?offer_id=(.)&vendor_id=(.)   //"delete the offer and push it to old offers of the particular vendor"
+
+/vendor/create/?latitude=(.)&longitude=(.)&image=(.)&fid=(.)&name=(.) //"all parameters are compulsory"
+
+/vendor/get/?vendor_id=(.)   //"get the vendor info"
+
+/vendor/addoffer/?vendor_id=(.)&offer_id=(.) //"add the offer (its id) to the list of offers in vendor id"
+
+/vendor/get/visited/?access_token=(.)   //"get the vendors and stamplist for each"
+
+/vendor/get/near/?latitude=(.)&longitude=(.)&access_token=(.)&type=(.) //"get the near by vendors and the offers that come under the type specified in type params" 
+
+/checkin/create/?vendor_id=(.)&offer_id=(.)&access_token=(.) //"create a checkin of the particular vendor and the offer"
+
+/checkin/validate/?checkin_id=(.)&access_token=(.)  //"validate the checkin object"
+
+/checkin/active/access_token=(.)   //"returns the active checkins for the user(access_token) who can be either a      vendor user or a normal user for the normal user it comes in my checkins page"
+
+/checkin/confirmed/?access_token=(.)  //"returns the list of confirmed checkins"
+
+
+////////*****PLEASE CHECK THE CODE FOR RESPONSES******//////////
+////////*****THERE IS ONLY JSON PARSING TO BE DONE I GUESS*****/////// 

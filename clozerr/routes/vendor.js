@@ -1,4 +1,4 @@
-var express = require('express');
+ var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
 var models = require("./models");
@@ -12,7 +12,7 @@ var error = require("./error");
 
 router.get('/create', function (req, res) {
 
-    var errobj = error.err_insuff_params(res, req.query, ["latitude", "longitude", "image", "fid", "name"]);
+    var errobj = error.err_insuff_params(res, req.query, ["latitude", "longitude", "image","fid","name"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
@@ -127,7 +127,7 @@ router.get('/get/near', function (req, res) {
 
     var lat = req.query.latitude;
     var lon = req.query.longitude;
-    var distance = req.query.distance;
+    //var distance = req.query.distance;
     var access_token = req.query.access_token;
     var typelist = JSON.parse(req.query.type);
 		console.log( typelist );
