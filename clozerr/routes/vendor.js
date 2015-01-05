@@ -49,7 +49,7 @@ router.get('/create', function (req, res) {
     vendor.save();
 });
 
-router.getall('/get_all',function(req,res) {
+router.get('/get/all',function(req,res) {
 
     Vendor.find({},function(err,data) {
         if(err) {
