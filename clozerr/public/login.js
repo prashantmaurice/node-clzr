@@ -68,6 +68,22 @@ var login = function( $rootScope, $scope, $http ){
       */
     });
   }
+
+  $rootScope.logout = function(){
+    var CLOZERR_LOGOUT_URL = CLOZERR_API + "auth/logout"
+    $http.get( CLOZERR_LOGOUT_URL + "?access_token=" + localStorage.token ).
+    success(function(data, status, headers, config) {
+      console.log( data );
+      $rootScope.vendor = data;
+    }).error(function(data, status, headers, config) {
+      /*
+      TODO: Throw error here.
+      */
+    });
+    delete localStorage["token"];
+    $rootScope.$broadcast("page-close");
+    $rootScope.$broadcast("page-login");
+  }
   /*
     TODO: Register for SocketIO messages here.
   */

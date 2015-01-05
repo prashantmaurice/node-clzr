@@ -73,7 +73,7 @@ router.get('/login/facebook', function(req, res) {
     user.findOne({fb_id:d.data.user_id}, function(err, result) {
       if (err) { console.log("error:") }
       if (result)
-      {         
+      {
             var id = hat();
             console.log(id);
             newid( id, result._id ).save();
@@ -88,9 +88,9 @@ router.get('/login/facebook', function(req, res) {
               var id=hat();
               //console.log(id);
               newid(id,nu._id).save();
-              res.end( JSON.stringify( {result : true, token : id } ) );  
+              res.end( JSON.stringify( {result : true, token : id } ) );
             });
-            
+
           }
         });
   }
@@ -202,6 +202,21 @@ router.get('/reset/password', function( req, res ){
   user.save();
   res.end(JSON.stringify({ result:true }));
 
+});
+
+router.get('/logout', function( req, res ){
+  var user = req.user;
+
+  var errobj = error.err_insuff_params( res, req, ["access_token"] );
+  if( !errobj ) {
+    return;
+  }
+  debugger;
+  token.remove({ account: user._id }, function( err, data ){
+    console.log( err );
+    console.log( data );
+  });
+  res.end(JSON.stringify({ result:true }));
 });
 
 // TODO: check this.
