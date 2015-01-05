@@ -219,7 +219,7 @@ router.get("/active", function ( req, res ) {
     var ut = userobj.type;
     var chdummy_ret_arr = [];
 
-    if (ut == "user") {
+    if (ut == "User") {
         CheckIn.find({
             user: userobj._id,
             state: CHECKIN_STATE_ACTIVE
@@ -274,7 +274,7 @@ Q.all(plist).then(function () {
 });
 
 });
-} else if (ut == "vendor") {
+} else if (ut == "Vendor") {
     debugger;
     CheckIn.find({
         vendor: userobj.vendor_id,
@@ -339,6 +339,8 @@ Q.all(plist).then(function () {
             });
         });
 
+}else{
+  //TODO: THROW ERROR;
 }
 });
 
