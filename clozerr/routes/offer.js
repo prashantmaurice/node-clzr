@@ -30,7 +30,19 @@ router.get('/get', function (req, res) {
     	}
     })
 });
-
+router.get('/getmyoff',function(req,res){
+    var user=req.user;
+    Offer.findone({},
+        function(err,data){
+          if(err) console.log(err);
+          if(data){
+            res.send(JSON.stringify(data));
+          }
+          else{
+            error.err(res,"210");
+          }
+        })
+});
 router.get('/create', function (req, res) {
 
 	var errobj = error.err_insuff_params(res, req, ["type", "caption", "description"]);
@@ -71,14 +83,14 @@ router.get('/create', function (req, res) {
     })
 });
 router.get('/update', function (req, res) {
-	var type, stamps, dateCreated, caption, description;
+	var type, stamps, caption, description;
 
 	var errobj = error.err_insuff_params(res, req, ["offer_id"]);
 	if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
-
+if(req.query.user="admin"){
     var id = req.query.offer_id;
     var offer = Offer.findOne({
     	_id: id
@@ -114,6 +126,7 @@ router.get('/update', function (req, res) {
             offer.caption = caption;
             offer.description = description;
             offer.date_created = date_created;
+            offer.dateUpdated = new Date();
             offer.save(function (err) {
             	if (err) console.log(err);
             });
@@ -126,6 +139,9 @@ router.get('/update', function (req, res) {
     
         res.end();
     });
+}
+else
+   res.end();
 });
 
     router.get('/delete', function (req, res) {
