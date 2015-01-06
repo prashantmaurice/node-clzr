@@ -21,7 +21,7 @@ router.get('/create', function (req, res) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
-
+    if(req.query.user="admin"){
     var lat = req.query.latitude;
     var lon = req.query.longitude;
     var image = req.query.image;
@@ -39,7 +39,8 @@ router.get('/create', function (req, res) {
         image: image,
         offers_old: offers_old,
         fid: fid,
-        date_created: date_created
+        date_created: date_created,
+        dateUpdated:date_created
     });
 
     res.send({
@@ -48,6 +49,7 @@ router.get('/create', function (req, res) {
     });
 
     vendor.save();
+}
 });
 
 router.get('/get/all',function(req,res) {
@@ -242,4 +244,67 @@ router.get('/get/near', function (req, res) {
 
     });
 })
+router.get('/update', function (req, res) {
+    var latitude,longitude,image,fid,name;
+    var user=req.user;
+    var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
+    if (!errobj) {
+        //error.err(res,errobj.code,errobj.params);
+        return;
+    }
+    
+    var id = req.query.vendor_id;
+    var vendor = Vendor.findOne({
+        _id: id
+    }, function (err, data) {
+        if (err) error.err(res, "210");
+        return;
+    });
+if(user.type="admin"){
+    if (req.query.latitude) {
+        latitude = req.query.latitude;
+    } else latitude = vendor.latitude;
+    //debugger;
+    if (req.query.longitude) {
+        longitude = req.query.longitude;
+    } else longitude = vendor.latitude;
+    dateUpdated = new Date();
+    if (req.query.image) {
+        image = req.query.image;
+    } else image = vendor.image;
+    if (req.query.fid) {
+        fid = req.query.fid;
+    } else fid = vendor.fid;
+    if(req.query.vendor_name){
+        name=req.query.vendor_name;
+    }else name=vendor.name;
+
+    var date_created = vendor.date_created;
+
+    Vendor.findOne({
+        _id: id
+    }, function (err, vendor) {
+        if (err) console.log(err);
+        if (vendor) {
+            vendor.latitude = latitude;
+            vendor.longitude = longitude;
+            vendor.image = image;
+            vendor.fid = fid;
+            vendor.date_created = date_created;
+            vendor.dateUpdated = new Date();
+            vendor.name=name;
+            vendor.save(function (err) {
+                if (err) console.log(err);
+            });
+            res.send(JSON.stringify(offer));
+        }
+        else {
+            //Throw error - no such offer
+            error.err(res,"210");
+        }
+    
+        res.end();
+    });
+}
+});
 module.exports = router;

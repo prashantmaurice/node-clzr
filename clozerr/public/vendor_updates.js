@@ -6,7 +6,7 @@ var vendor_list = function( $scope, $http) {
 
 	$scope.load_vendors = function() {
 		var access_token = localStorage.token;
-		$http.get( CLOZERR_VENDORS_URL + "/get_all" + "?access_token=" + access_token).
+		$http.get( CLOZERR_VENDORS_URL + "/get/all" + "?access_token=" + access_token).
 		success(function(data, status, headers, config) {
 			$scope.vendors = data;
 		}).error(function(data, status, headers, config) {
@@ -32,7 +32,7 @@ var vendor_update = function( $scope, $http) {
 	$scope.update_vendor = function(vendor) {
 
 		var access_token = localStorage.token;
-		$http.get(CLOZERR_VENDORS_URL + "/update?access_token=" + access_token + "&vendor.\_id=" + vendor._id + "&vendor_name=" + vendor.name + "&latitude=" + vendor.latitude + "&longitude=" + vendor.longitude +"&fid=" + vendor.fid + "&image=" + vendor.image).
+		$http.get(CLOZERR_VENDORS_URL + "/update?access_token=" + access_token + "&vendor_id=" + vendor._id + "&vendor_name=" + vendor.name + "&latitude=" + vendor.latitude + "&longitude=" + vendor.longitude +"&fid=" + vendor.fid + "&image=" + vendor.image).
 		success(function(data, status, headers, config) {
 			//redirect
 			$('#vendor_list').attr('style','display:inline');
