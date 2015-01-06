@@ -8,6 +8,7 @@ var error = require("./error");
 var hat = require("hat");
 var rack = hat.rack(10, 10);
 var gcm = require("node-gcm");
+var settings = require("settings");
 
 var app = express();
 //var http = require('http').Server(app);
@@ -20,11 +21,16 @@ var User = models.User;
 
 var OfferHandler = require("./predicate");
 
-
-
 var CHECKIN_STATE_ACTIVE = 0;
 var CHECKIN_STATE_CONFIRMED = 1;
 var CHECKIN_STATE_CANCELLED = 2;
+
+function policyCheckTimeDelayBetweenCheckins(res,data,checkin) {
+    if(Math.abs(data.getTime()-checkin.getTime())<settings.checkin.delay_between_checkins) {
+        error.err(res,"204");           //throw error
+    }
+    else res.send(JSON.stringify(checkin));
+}
 
 router.get("/create", function (req, res) {
     /*
@@ -71,25 +77,43 @@ if (!errobj) {
         }
 
         debugger;
-        var checkin = new CheckIn({
-            user: obj.user._id,
-            vendor: obj.vendor._id,
-            offer: obj.offer._id,
-            state: CHECKIN_STATE_ACTIVE,
-            date_created: new Date(),
-            pin: rack(),
-            gcm_id: gcm_id
-        });
-        debugger;
 
-        checkin.save(function (err, res, num) {
-            console.log("Successfully saved checkin");
-        });
+        Checkin.findOne({user:obj.user._id,vendor:obj.vendor._id,offer:obj.offer._id},function(err,data) {
+            if(err) {
+                console.log(err);
+                return;
+            }
+            if(data==null) {
+               var checkin = new CheckIn({
+                user: obj.user._id,
+                vendor: obj.vendor._id,
+                offer: obj.offer._id,
+                state: CHECKIN_STATE_ACTIVE,
+                date_created: new Date(),
+                pin: rack(),
+                gcm_id: gcm_id
+            });
+               debugger;
 
-        res.end(JSON.stringify({
-            result: true,
-            checkin: checkin
-        }));
+               checkin.save(function (err, res, num) {
+                console.log("Successfully saved checkin");
+            });
+
+               res.end(JSON.stringify({
+                result: true,
+                checkin: checkin
+            }));
+           }
+           else {
+            if(data.state == CHECKIN_STATE_ACTIVE) {
+                res.end(JSON.stringify(data));
+            }
+            else if(data.state == CHECKIN_STATE_CONFIRMED) {
+               policyCheckTimeDelayBetweenCheckins(res,data,checkin); 
+            }
+        }
+    });
+        
         /*
       TODO: Send alert to Vendor. SocketIO.
       */
@@ -106,7 +130,7 @@ function sendPushNotification(checkinobj) {
         delayWhileIdle: true,
         data: {
             "key": "checkin_push",
-           "checkinobj": checkinobj
+            "checkinobj": checkinobj
         }
     });
 
@@ -333,24 +357,19 @@ Q.all(plist).then(function () {
                 plist.push(pr);
 
             });
-            Q.all(plist).then(function () {
-                console.log("ALL DUN");
-                res.end(JSON.stringify({ result:true, data:chdummy_ret_arr }));
-            });
-        });
+Q.all(plist).then(function () {
+    console.log("ALL DUN");
+    res.end(JSON.stringify({ result:true, data:chdummy_ret_arr }));
+});
+});
 
 }else{
   //TODO: THROW ERROR;
 }
 });
 
-
-
 router.get("/confirmed", function (req, res) {
-    var user = req.user;
-    var userobj = User.findOne({
-        _id: user
-    });
+    var userobj = req.user;
     var ut = userobj.type;
 
     if (ut=="Vendor") {
@@ -375,21 +394,21 @@ router.get("/confirmed", function (req, res) {
                 }).exec().then(function (vendor) {
 
                   //debugger;
-                    chfull.vendor = vendor.toJSON();
-                    return User.findOne({
-                        _id: ch.user
-                    }).exec();
+                  chfull.vendor = vendor.toJSON();
+                  return User.findOne({
+                    _id: ch.user
+                }).exec();
 
-                }).then(function (user) {
+              }).then(function (user) {
 
                   //debugger;
-                    chfull.user = user.toJSON();
-                    return Offer.findOne({
-                        _id: ch.offer
-                    }).exec();
+                  chfull.user = user.toJSON();
+                  return Offer.findOne({
+                    _id: ch.offer
+                }).exec();
 
-                }).then(function (offer) {
-                    var deferred = Q.defer();
+              }).then(function (offer) {
+                var deferred = Q.defer();
                     //debugger;
                     chfull.offer = offer.toJSON();
                     chfull._id = ch._id;
@@ -406,15 +425,15 @@ router.get("/confirmed", function (req, res) {
                     return deferred.promise;
                 });
 
-                plist.push(pr);
-              });
-            Q.all(plist).then(function () {
-                console.log("ALL DUN");
+              plist.push(pr);
+          });
+Q.all(plist).then(function () {
+    console.log("ALL DUN");
                 //debugger;
                 res.end(JSON.stringify(chdummy_ret_arr));
             });
 
-        });
+});
 }
 else {
     error.err(res, "909");
