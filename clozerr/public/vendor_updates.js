@@ -34,9 +34,9 @@ var vendor_update = function( $scope, $http) {
 		var access_token = localStorage.token;
 		$http.get(CLOZERR_VENDORS_URL + "/update?access_token=" + access_token + "&vendor_id=" + vendor._id + "&vendor_name=" + vendor.name + "&latitude=" + vendor.latitude + "&longitude=" + vendor.longitude +"&fid=" + vendor.fid + "&image=" + vendor.image).
 		success(function(data, status, headers, config) {
-			//redirect
+			
 			$('#vendor_list').attr('style','display:inline');
-			$('#create_form').attr('style','display:none');
+			$('#create_form').css('display','none');
 			$('#update_form').attr('style','display:none');
 
 		}).error(function(data, status, headers, config) {
@@ -58,9 +58,9 @@ var vendor_update = function( $scope, $http) {
 var vendor_create = function( $scope, $http) {
 
 	$scope.create_vendor = function() {
-		$http.get( CLOZERR_VENDORS_URL + "/create" + "?access_token=" + access_token).
+		$http.get( CLOZERR_VENDORS_URL + "/create" + "?access_token=" + access_token + "&vendor_name=" + "" + "&latitude=" + 0 + "&longitude=" + 0 +"&fid=" + 0 + "&image=" + "").
 		success(function(data, status, headers, config) {
-			$scope.update_vendor(data.vendor_id);
+			$scope.update_vendor(data);
 		}).error(function(data, status, headers, config) {
      	/*
       		TODO: Throw error here.

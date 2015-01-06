@@ -9,9 +9,9 @@ angular.module('bind_offers', [])
 
 <div class="row" ng-controller="offer_list">
   <div class="col-lg-12" ng-show="visibility">
-    <h2>List of vendors</h2>
+    <h2>List of offers</h2>
     <div class="table-responsive">
-      <table class="table table-bordered table-hover" id="list_vendors">
+      <table class="table table-bordered table-hover" id="list_offers">
         <thead>
           <tr>
             <th></th>
@@ -26,16 +26,13 @@ angular.module('bind_offers', [])
           </tr>
         </thead>
         <tbody >
-          <tr ng-repeat="vendor in vendors">
-            <td>{{ vendor._id }}</td>
-            <td>{{ vendor.name }}</td>
-            <td>{{ vendor.location[0] }}</td>
-            <td>{{ vendor.location[1] }}</td>
-            <td>{{ vendor.image }}</td>
-            <td>{{ vendor.fid }}</td>                
-            <td>{{ vendor.offers }}</td>
-            <td>{{ vendor.offers_list }}</td>
-            <td><a href="javascript:void(0)" ng-click="update(vendor)">Edit</a></td>
+          <tr ng-repeat="offer in offers">
+            <td>{{ offer._id }}</td>
+            <td>{{ offer.type }}</td>
+            <td>{{ offer.stamps }}</td>
+            <td>{{ offer.caption }}</td>
+            <td>{{ offer.description }}</td>
+            <td><a href="javascript:void(0)" ng-click="update_offer(offer)">Edit</a></td>
           </tr>
         </tbody>
       </table>
@@ -43,24 +40,22 @@ angular.module('bind_offers', [])
   </div>
 </div>
 
-<div ng-controller="vendor_update" id="update_form" style="display:none;" ng-show="visibility">
-  <h2>Update vendors</h2>
-  <input type="text" name="_id" ng-bind="vendor._id"></input>
-  <input type="text" name="name" ng-bind="vendor.name"></input>
-  <input type="text" name="latitude" ng-bind="vendor.latitude"></input>
-  <input type="text" name="longitude" ng-bind="vendor.longitude"></input>
-  <input type="text" name="image" ng-bind="vendor.image"></input>
-  <input type="text" name="fid" ng-bind="vendor.fid"></input>
-  <button ng-click="update_vendor(vendor)"></button>
+<div ng-controller="offer_update" id="update_form" style="display:none;" ng-show="visibility">
+  <h2>Update offers</h2>
+  <input type="text" name="_id" ng-bind="offer._id"></input>
+  <input type="text" name="type" ng-bind="offer.type"></input>
+  <input type="text" name="stamps" ng-bind="offer.stamps"></input>
+  <input type="text" name="caption" ng-bind="offer.caption"></input>
+  <input type="text" name="description" ng-bind="offer.description"></input>
+  <button ng-click="update_offer(offer)"></button>
 </div>
 
 <div ng-controller="vendor_create" id="create_form" style="display:none;" ng-show="visibility">
     <h2>Create vendors</h2>
-    <input type="text" name="name" ng-bind="vendor.name"></input>
-    <input type="text" name="latitude" ng-bind="vendor.latitude"></input>
-    <input type="text" name="longitude" ng-bind="vendor.longitude"></input>
-    <input type="text" name="image" ng-bind="vendor.image"></input>
-    <input type="text" name="fid" ng-bind="vendor.fid"></input>
+    <input type="text" name="type" ng-bind="offer.type"></input>
+    <input type="text" name="stamps" ng-bind="offer.stamps"></input>
+    <input type="text" name="caption" ng-bind="offer.caption"></input>
+    <input type="text" name="description" ng-bind="offer.description"></input>
     <button ng-click="create_vendor(vendor)"></button>
 </div>
 
