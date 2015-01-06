@@ -36,6 +36,11 @@ var login = function( $rootScope, $scope, $http ){
     $scope.visibility = false;
   });
 
+  $rootScope.pageChange = function( page ){
+    $rootScope.$broadcast("page-close");
+    $rootScope.$broadcast("page-" + page );
+  }
+
   $scope.getDetails = function(){
     var CLOZERR_PROFILE_URL = CLOZERR_API + "auth/profile";
     var CLOZERR_VENDOR_URL = CLOZERR_API + "vendor/get";

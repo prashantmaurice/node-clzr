@@ -347,11 +347,10 @@ Q.all(plist).then(function () {
 
 
 router.get("/confirmed", function (req, res) {
-    var user = req.user;
-    var userobj = User.findOne({
-        _id: user
-    });
+    var userobj = req.user;
     var ut = userobj.type;
+
+
 
     if (ut=="Vendor") {
 
@@ -365,7 +364,8 @@ router.get("/confirmed", function (req, res) {
             console.log(checkins_list);
             var len = checkins_list.length;
             var plist = [];
-            _.each( checkins_filter_exp_arr[1], function( ch, index, arr ){
+            var chdummy_ret_arr = [];
+            _.each( checkins_list, function( ch, index, arr ){
                 //var ch = checkins_filter_exp_arr[1][i];
 
                 var chfull = {};
@@ -374,7 +374,7 @@ router.get("/confirmed", function (req, res) {
                     _id: ch.vendor
                 }).exec().then(function (vendor) {
 
-                  //debugger;
+                    debugger;
                     chfull.vendor = vendor.toJSON();
                     return User.findOne({
                         _id: ch.user
@@ -382,7 +382,7 @@ router.get("/confirmed", function (req, res) {
 
                 }).then(function (user) {
 
-                  //debugger;
+                    debugger;
                     chfull.user = user.toJSON();
                     return Offer.findOne({
                         _id: ch.offer
@@ -390,7 +390,7 @@ router.get("/confirmed", function (req, res) {
 
                 }).then(function (offer) {
                     var deferred = Q.defer();
-                    //debugger;
+                    debugger;
                     chfull.offer = offer.toJSON();
                     chfull._id = ch._id;
                     chfull.state = ch.state;

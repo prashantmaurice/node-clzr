@@ -33,10 +33,23 @@
     .nav-button{
       color:#FFF;
     }
+    .nav-btn:hover{
+      background-color:#d79a47;
+      color: #FFF;
+      text-decoration:none;
+    }
     .whitebox{
       background-color:#FFF;
       border-radius:10px;
       padding:30px;
+    }
+
+    .whitenavbox{
+      background-color:#FFF;
+      border-radius:10px;
+      padding:0px;
+      margin-bottom:10px;
+      text-align:center;
     }
     .spinner{
       text-align:center;
@@ -53,6 +66,22 @@
     body{
       font-family:'Raleway';
     }
+    .nav-btn{
+      color:#d79a47;
+      padding:10px;
+      font-size:17px;
+    }
+
+    #dropdown:hover{
+      background-color:#FFF;
+      color:#d79a47;
+    }
+
+    #dropdown:focus{
+      background-color:#FFF;
+      color:#d79a47;
+    }
+
     </style>
 
 </head>
@@ -77,14 +106,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="nav-button navbar-brand" href="index.html">Clozerr Dashboard</a>
+                <a class="nav-button navbar-brand" href="index.html">Clozerr Quickboard</a>
 
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ vendor.name }} <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" id="dropdown" data-toggle="dropdown"><i class="fa fa-user"></i> {{ vendor.name }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
@@ -106,6 +135,17 @@
         </nav>
 
         <div id="page-wrapper">
+            <div class="item-wrap">
+              <div class="container-fluid nav-container">
+                <div class="row">
+                  <div class="col-lg-8 col-lg-offset-2 whitenavbox">
+                    <a href="javascipt:void(0)" class="nav-btn" style="border:1px solid #d79a47" ng-click="pageChange( 'current-checkins' )">STAMPBOARD</a>
+                    <a href="javascipt:void(0)" class="nav-btn" style="border:1px solid #d79a47" ng-click="pageChange( 'all-checkins' ) ">PAST-VISITS</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
 
             <div class="container-fluid">
 
