@@ -8,7 +8,7 @@ var error = require("./error");
 var hat = require("hat");
 var rack = hat.rack(10, 10);
 var gcm = require("node-gcm");
-var settings = require("settings");
+var settings = require("./settings");
 
 var app = express();
 //var http = require('http').Server(app);
