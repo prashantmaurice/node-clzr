@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Clozerr Dashboard</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+    a{
+      color:#FFF;
+    }
+    .nav-button{
+      color:#FFF;
+    }
+    .nav-btn:hover{
+      background-color:#d79a47;
+      color: #FFF;
+      text-decoration:none;
+    }
+    .whitebox{
+      background-color:#FFF;
+      border-radius:10px;
+      padding:30px;
+    }
+
+    .whitenavbox{
+      background-color:#FFF;
+      border-radius:10px;
+      padding:0px;
+      margin-bottom:10px;
+      text-align:center;
+    }
+    .spinner{
+      text-align:center;
+    }
+    .spinner-img{
+      height:28px;
+    }
+
+    .box-title{
+      width:100%;
+      text-align:center;
+      font-family:'Raleway';
+    }
+    body{
+      font-family:'Raleway';
+    }
+    .nav-btn{
+      color:#d79a47;
+      padding:10px;
+      font-size:17px;
+    }
+
+    #dropdown:hover{
+      background-color:#FFF;
+      color:#d79a47;
+    }
+
+    #dropdown:focus{
+      background-color:#FFF;
+      color:#d79a47;
+    }
+
+    </style>
+
+</head>
+
+<body ng-app="clozerr">
+  <script>
+    var CLOZERR_API = location.origin + "/";
+  </script>
+  <script type="text/javascript" src="vendors.js"></script>
+  <script type="text/javascript" src="admin_login.js"></script>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-fixed-top" role="navigation" style="background-color:rgba(0,0,0,0);border-color:rgba(0,0,0,0)">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="nav-button navbar-brand" href="index.html">Clozerr Quickboard</a>
+
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" id="dropdown" data-toggle="dropdown"><i class="fa fa-user"></i> {{ user.username }} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0)" ng-click="logout()"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="item-wrap" ng-show="loggedIn">
+              <div class="container-fluid nav-container">
+                <div class="row">
+                  <div class="col-lg-8 col-lg-offset-2 whitenavbox">
+                    <a href="javascipt:void(0)" class="nav-btn" style="border:1px solid #d79a47" ng-click="pageChange( 'vendors' )">VENDORS</a>
+                    <a href="javascipt:void(0)" class="nav-btn" style="border:1px solid #d79a47" ng-click="pageChange( 'offers' ) ">OFFERs</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-10">
+
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="item-wrap" ng-include=" 'vendors.html' "></div>
+                <div class="item-wrap" ng-include=" 'admin_login.html' "></div>
+
+              </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+
+    <script>
+    var app = angular.module("clozerr",[]);
+    app.filter("humanize_date", function(){
+      return function( input ){
+        return new Date( input ).toLocaleString()
+      }
+    });
+    </script>
+</body>
+
+</html>
