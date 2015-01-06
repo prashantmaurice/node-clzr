@@ -34,9 +34,9 @@ function policyCheckTimeDelayBetweenCheckins(res,data,checkin) {
 
 router.get("/create", function (req, res) {
 
-    var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id"]); //,"gcm_id"]);
-if (!errobj) {
-        //error.err(res,errobj.code,errobj.params);
+
+    var errobj = error.err_insuff_params( res, req, ["vendor_id", "offer_id"] ); //,"gcm_id"]);
+    if ( !errobj ) {
         return;
     }
 
@@ -64,7 +64,7 @@ if (!errobj) {
         error.err(res,"802");
     }
     obj.offer = offer;
-    
+
     var d = obj.vendor.offers.indexOf(obj.offer._id);
     if(d==-1) {
         error.err(res,"671");
@@ -110,10 +110,11 @@ if (!errobj) {
             res.end(JSON.stringify(data));
         }
         else if(data.state == CHECKIN_STATE_CONFIRMED) {
-         policyCheckTimeDelayBetweenCheckins(res,data,checkin); 
+         policyCheckTimeDelayBetweenCheckins(res,data,checkin);
      }
  }
 });
+
 
       global.io.emit('signal', JSON.stringify({vendor_id:obj.vendor._id}) );
 

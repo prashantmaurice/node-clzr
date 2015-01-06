@@ -128,7 +128,7 @@ router.get('/upload-policy', function( req, res ){
 		/*
 			TODO: Only allow if the user is linked to this vendor.
 		*/
-		
+
         var errobj = error.err_insuff_params(res,req,["id","access_token"]);
         if(!errobj) {
             return;
@@ -169,27 +169,41 @@ router.get("/request", function( req, res ){
 
 router.get('/get/near', function (req, res) {
 
-    var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "type"]);
+    var errobj = error.err_insuff_params(res, req, ["latitude", "longitude"]);
 
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
 
+		var type = req.query.type;
+
+		if( !type )
+			type = JSON.stringify(["S0","S1","SX"]);
+
+		var limit = req.query.limit;
+
+		if( !limit )
+			limit = 6;
+
+		var offset = req.query.offset;
+
+		if( !offset )
+			offset = 0;
+
     var lat = req.query.latitude;
     var lon = req.query.longitude;
     var distance = req.query.distance;
     var access_token = req.query.access_token;
-    var typelist = JSON.parse(req.query.type);
+    var typelist = JSON.parse( type );
+
 		console.log( typelist );
     Vendor.find({
         location: {
             $near: [lat, lon]
         }
-    }, function (err, vendors) {
-        if (err) {
-            console.log(err);
-        }
+    }).limit( limit ).skip( offset ).exec().then(function (vendors) {
+
         //console.log( vendors );
         var vendor_det_ret_arr = [];
         var plist = [];
@@ -238,7 +252,8 @@ router.get('/get/near', function (req, res) {
         }
         //debugger;
         Q.all(plist).then(function () {
-            //debugger;
+            debugger;
+						//console.log("RESOLVED.");
             res.send(JSON.stringify(vendor_det_ret_arr));
             res.end();
         });
@@ -253,7 +268,7 @@ router.get('/update', function (req, res) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
-    
+
     var id = req.query.vendor_id;
     var vendor = Vendor.findOne({
         _id: id
@@ -271,13 +286,19 @@ if(user.type="admin"){
     } else longitude = vendor.latitude;
     dateUpdated = new Date();
     if (req.query.image) {
+
         image = req.query.image;
+
     } else image = vendor.image;
     if (req.query.fid) {
+
         fid = req.query.fid;
+
     } else fid = vendor.fid;
     if(req.query.vendor_name){
+
         name=req.query.vendor_name;
+
     }else name=vendor.name;
 
     var date_created = vendor.date_created;
@@ -303,7 +324,7 @@ if(user.type="admin"){
             //Throw error - no such offer
             error.err(res,"210");
         }
-    
+
         res.end();
     });
 }

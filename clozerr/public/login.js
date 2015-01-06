@@ -19,6 +19,7 @@ var login = function( $rootScope, $scope, $http ){
 
       $rootScope.$broadcast("page-close");
       $rootScope.$broadcast("page-current-checkins");
+      $rootScope.loggedIn = true;
       $scope.getDetails();
     }).error(function(data, status, headers, config) {
       /*
@@ -74,11 +75,13 @@ var login = function( $rootScope, $scope, $http ){
       console.log("Not logged in.");
       $rootScope.$broadcast("page-close");
       $rootScope.$broadcast("page-login");
+      $rootScope.loggedIn = false;
     }else{
       console.log('Logged in');
       $rootScope.$broadcast("page-close");
       $rootScope.$broadcast("page-current-checkins");
       $scope.getDetails();
+      $rootScope.loggedIn = true;
     }
   });
 
@@ -99,6 +102,7 @@ var login = function( $rootScope, $scope, $http ){
     delete localStorage["token"];
     $rootScope.$broadcast("page-close");
     $rootScope.$broadcast("page-login");
+    $rootScope.loggedIn = false;
   }
   /*
     TODO: Register for SocketIO messages here.

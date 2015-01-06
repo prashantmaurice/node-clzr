@@ -58,9 +58,9 @@ var offer_update = function( $scope, $http) {
 var offer_create = function( $scope, $http) {
 
   $scope.create_offer = function() {
-    $http.get( CLOZERR_OFFERS_URL + "/create" + "?access_token=" + access_token).
+    $http.get( CLOZERR_OFFERS_URL + "/create" + "?access_token=" + access_token + "&offer_id=" + offer._id + "&type=" + offer.type + "&caption=" + offer.caption + "&stamps" + offer.stamps +"&description=" + offer.description ).
     success(function(data, status, headers, config) {
-      $scope.update_vendor(data.vendor_id);
+      $scope.update_vendor(data);
     }).error(function(data, status, headers, config) {
       /*
           TODO: Throw error here.
