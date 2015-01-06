@@ -181,6 +181,16 @@ router.get('/get/near', function (req, res) {
 		if( !type )
 			type = JSON.stringify(["S0","S1","SX"]);
 
+		var limit = req.query.limit;
+
+		if( !limit )
+			limit = 6;
+
+		var offset = req.query.offset;
+
+		if( !offset )
+			offset = 0;
+
     var lat = req.query.latitude;
     var lon = req.query.longitude;
     var distance = req.query.distance;
@@ -192,10 +202,8 @@ router.get('/get/near', function (req, res) {
         location: {
             $near: [lat, lon]
         }
-    }, function (err, vendors) {
-        if (err) {
-            console.log(err);
-        }
+    }).limit( limit ).skip( offset ).exec().then(function (vendors) {
+
         //console.log( vendors );
         var vendor_det_ret_arr = [];
         var plist = [];
@@ -244,7 +252,8 @@ router.get('/get/near', function (req, res) {
         }
         //debugger;
         Q.all(plist).then(function () {
-            //debugger;
+            debugger;
+						//console.log("RESOLVED.");
             res.send(JSON.stringify(vendor_det_ret_arr));
             res.end();
         });
@@ -277,13 +286,19 @@ if(user.type="admin"){
     } else longitude = vendor.latitude;
     dateUpdated = new Date();
     if (req.query.image) {
+
         image = req.query.image;
+
     } else image = vendor.image;
     if (req.query.fid) {
+
         fid = req.query.fid;
+
     } else fid = vendor.fid;
     if(req.query.vendor_name){
+
         name=req.query.vendor_name;
+
     }else name=vendor.name;
 
     var date_created = vendor.date_created;
