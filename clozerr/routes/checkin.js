@@ -33,14 +33,9 @@ function policyCheckTimeDelayBetweenCheckins(res,data,checkin) {
 }
 
 router.get("/create", function (req, res) {
-    /*
-    TODO: CHECK FOR req.query parameters.
-    Throw error if insufficient parameters.
-    */
 
-    var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id"]); //,"gcm_id"]);
-if (!errobj) {
-        //error.err(res,errobj.code,errobj.params);
+    var errobj = error.err_insuff_params( res, req, ["vendor_id", "offer_id"] ); //,"gcm_id"]);
+    if ( !errobj ) {
         return;
     }
 
@@ -109,11 +104,11 @@ if (!errobj) {
                 res.end(JSON.stringify(data));
             }
             else if(data.state == CHECKIN_STATE_CONFIRMED) {
-               policyCheckTimeDelayBetweenCheckins(res,data,checkin); 
+               policyCheckTimeDelayBetweenCheckins(res,data,checkin);
             }
         }
     });
-        
+
         /*
       TODO: Send alert to Vendor. SocketIO.
       */

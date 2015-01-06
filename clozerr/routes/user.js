@@ -61,8 +61,7 @@ router.get('/login/facebook', function(req, res) {
 
     var request = https.get('https://graph.facebook.com/debug_token?input_token=' + req.query.token + '&access_token='+settings.auth.facebook.app_token, function(response) {
       debugger;
-     // console.log("Statuscode: ", response.statusCode);
-     // console.log("headers: ", response.headers);
+
 
       response.on('data', function(dat) {
     debugger;
@@ -75,10 +74,27 @@ router.get('/login/facebook', function(req, res) {
       if (err) { console.log("error:") }
       if (result)
       {
-            var id = hat();
-            console.log(id);
-            newid( id, result._id ).save();
-            res.end( JSON.stringify( {result : true, token : id } ) );
+
+            if( !result.profile ){
+
+              loadFacebookDetails( result, req.query.token, function( user ){
+                user.save();
+                debugger;
+                var id = hat();
+                //console.log(id);
+                newid( id, user._id ).save();
+                res.end( JSON.stringify( {result : true, token : id } ) );
+              });
+
+            }else{
+
+              var id = hat();
+              console.log(id);
+
+              newid( id, result._id ).save();
+              res.end( JSON.stringify( {result : true, token : id } ) );
+
+            }
           }
           else
           {
@@ -168,6 +184,7 @@ request.on('error', function(e) {
 
 router.get('/login/password', function( req, res ){
   User.findOne( {username: req.query.username}, function( err, user ){
+    console.log(user);
     if( !user ){
       error.err(res,"102");
     }

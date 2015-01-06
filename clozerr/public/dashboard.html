@@ -94,6 +94,7 @@
   <script type="text/javascript" src="all_checkins.js"></script>
   <script type="text/javascript" src="login.js"></script>
 
+
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -135,7 +136,7 @@
         </nav>
 
         <div id="page-wrapper">
-            <div class="item-wrap">
+            <div class="item-wrap" ng-show="loggedIn">
               <div class="container-fluid nav-container">
                 <div class="row">
                   <div class="col-lg-8 col-lg-offset-2 whitenavbox">
@@ -157,9 +158,10 @@
                 </div>
                 <!-- /.row -->
 
-                <div class="item-wrap" ng-include=" 'current_checkins.html' ">
-                <div class="item-wrap" ng-include=" 'all_checkins.html' ">
+                <div class="item-wrap" ng-include=" 'current_checkins.html' "></div>
+                <div class="item-wrap" ng-include=" 'all_checkins.html' "></div>
                 <div class="item-wrap" ng-include=" 'login.html' ">
+
                 </div>
 
               </div>
@@ -178,14 +180,16 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-
+    <script type="text/javascript" src="js/countdown.js"></script>
     <script>
+    countdown( "timer" );
     var app = angular.module("clozerr",[]);
     app.filter("humanize_date", function(){
       return function( input ){
         return new Date( input ).toLocaleString()
       }
     });
+
     </script>
 </body>
 
