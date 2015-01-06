@@ -33,18 +33,12 @@ function policyCheckTimeDelayBetweenCheckins(res,data,checkin) {
 }
 
 router.get("/create", function (req, res) {
-    /*
-    TODO: CHECK FOR req.query parameters.
-    Throw error if insufficient parameters.
-    */
 
     var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id"]); //,"gcm_id"]);
 if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
-
-    //TODO : Check for duplicates and handle that
 
     var user = req.user;
     var gcm_id = req.query.gcm_id || 0;
@@ -56,67 +50,70 @@ if (!errobj) {
         _id: req.query.vendor_id
     }).exec().then(function (vendor) {
         debugger;
+        if(!vendor) {
+            error.err(res,"801");
+        }
         obj.vendor = vendor;
         return Offer.findOne({
             _id: req.query.offer_id
         }).exec();
 
     }).then(function (offer) {
-        /*
-      TODO: Check if offer_id is there in the vendor's current offers.
-      */
+
       if (!offer) {
-            // error.
-        }
-        obj.offer = offer;
-        debugger;
-        if (!OfferHandler.qualify(obj.user, obj.vendor, obj.offer)) {
-            // TODO: change error description.
-            error.err(res, "568");
+        error.err(res,"802");
+    }
+    obj.offer = offer;
+    
+    var d = obj.vendor.offers.indexOf(obj.offer._id);
+    if(d==-1) {
+        error.err(res,"671");
+    }
+
+    debugger;
+    if (!OfferHandler.qualify(obj.user, obj.vendor, obj.offer)) {
+
+        error.err(res, "568");
+        return;
+    }
+
+    debugger;
+
+    Checkin.findOne({user:obj.user._id,vendor:obj.vendor._id,offer:obj.offer._id},function(err,data) {
+        if(err) {
+            console.log(err);
             return;
         }
+        if(data==null) {
+         var checkin = new CheckIn({
+            user: obj.user._id,
+            vendor: obj.vendor._id,
+            offer: obj.offer._id,
+            state: CHECKIN_STATE_ACTIVE,
+            date_created: new Date(),
+            pin: rack(),
+            gcm_id: gcm_id
+        });
+         debugger;
 
-        debugger;
+         checkin.save(function (err, res, num) {
+            console.log("Successfully saved checkin");
+        });
 
-        Checkin.findOne({user:obj.user._id,vendor:obj.vendor._id,offer:obj.offer._id},function(err,data) {
-            if(err) {
-                console.log(err);
-                return;
-            }
-            if(data==null) {
-               var checkin = new CheckIn({
-                user: obj.user._id,
-                vendor: obj.vendor._id,
-                offer: obj.offer._id,
-                state: CHECKIN_STATE_ACTIVE,
-                date_created: new Date(),
-                pin: rack(),
-                gcm_id: gcm_id
-            });
-               debugger;
-
-               checkin.save(function (err, res, num) {
-                console.log("Successfully saved checkin");
-            });
-
-               res.end(JSON.stringify({
-                result: true,
-                checkin: checkin
-            }));
-           }
-           else {
-            if(data.state == CHECKIN_STATE_ACTIVE) {
-                res.end(JSON.stringify(data));
-            }
-            else if(data.state == CHECKIN_STATE_CONFIRMED) {
-               policyCheckTimeDelayBetweenCheckins(res,data,checkin); 
-            }
+         res.end(JSON.stringify({
+            result: true,
+            checkin: checkin
+        }));
+     }
+     else {
+        if(data.state == CHECKIN_STATE_ACTIVE) {
+            res.end(JSON.stringify(data));
         }
-    });
-        
-        /*
-      TODO: Send alert to Vendor. SocketIO.
-      */
+        else if(data.state == CHECKIN_STATE_CONFIRMED) {
+         policyCheckTimeDelayBetweenCheckins(res,data,checkin); 
+     }
+ }
+});
 
       global.io.emit('signal', JSON.stringify({vendor_id:obj.vendor._id}) );
 
@@ -364,7 +361,8 @@ Q.all(plist).then(function () {
 });
 
 }else{
-  //TODO: THROW ERROR;
+  //throw error
+  error.err(res,"909");
 }
 });
 
@@ -403,7 +401,7 @@ router.get("/confirmed", function (req, res) {
                         _id: ch.user
                     }).exec();
 
-              }).then(function (user) {
+                }).then(function (user) {
 
                     debugger;
                     chfull.user = user.toJSON();
@@ -429,8 +427,8 @@ router.get("/confirmed", function (req, res) {
                     return deferred.promise;
                 });
 
-              plist.push(pr);
-          });
+                plist.push(pr);
+            });
 Q.all(plist).then(function () {
     console.log("ALL DUN");
                 //debugger;
