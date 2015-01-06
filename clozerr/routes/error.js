@@ -13,7 +13,10 @@ error.ERR_DESCRIPTION = {
 	"568":"Not an upcoming offer for you",
 	"212":"Incorrect password",
 	"845":"No such vendor",
-	"204":"Cannot approve the checkin"
+	"204":"Cannot approve the checkin",
+	"801":"Vendor doesn't exist",
+	"802":"Offer doesn't exist",
+	"709":"No such content"
 };
 
 error.err = function( res, code, desc ){

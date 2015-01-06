@@ -13,10 +13,15 @@ var vendorSchema = new Schema({
 	image : String,
 	offers_old : [ObjectId],
 	fid:String,
-	date_created:Date
-
+	date_created:Date,
+    dateUpdated:Date
 });
 vendorSchema.index({ location: '2d' });
+
+Models.Content = mongoose.model('Content',new Schema({
+	key:String,
+	value:String
+}));
 
 Models.Vendor = mongoose.model('Vendor', vendorSchema );
 
@@ -59,6 +64,7 @@ Models.Offer = mongoose.model('Offer',new Schema({
 	date_created:Date,
 	caption:String,
 	description:Schema.Types.Mixed,
+	dateUpdated:Date
 }));;
 
 module.exports = Models;
