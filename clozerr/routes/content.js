@@ -5,7 +5,7 @@ var _ = require("underscore");
 var error = require("./error");
 var Content = models.Content;
 
-router.get('/content', function(req,res) {
+router.get('/', function (req, res) {
 	var errobj = error.err_insuff_params(res, req, ["key"]);
 	if(!errobj) {
 		return;
@@ -16,6 +16,12 @@ router.get('/content', function(req,res) {
 			console.log(err);
 			return;
 		}
-		res.send(JSON.stringify(content.value));
+		if(content==null) {
+			error.err(res,"709");
+		}
+		var value = content.value;
+		res.end(JSON.stringify({result:true,data:value}));
 	});
 });
+
+module.exports = router;

@@ -18,10 +18,10 @@ module.exports = {
 		"secret_key":"EC8N8TlAQuIIhlSi5b4S8vGvnUnjYQnOd3OINHlU",
 		"bucket":"clozerr",
 		"base_path":"app/coupons-alpha"
-	}
+	},
 	"checkin":{
-		"expiry_time":1000000;
-		"delay_between_checkins":1000000;
+		"expiry_time":1000000,
+		"delay_between_checkins":1000000
 	}
 
 };
