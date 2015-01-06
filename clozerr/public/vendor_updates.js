@@ -3,18 +3,16 @@ var vendor_list = function( $scope, $http) {
 	$scope.visibility = false;
 
 	var CLOZERR_VENDORS_URL = CLOZERR_API + "/vendor";
-
-	$scope.load_vendors = function() {
-		var access_token = localStorage.token;
-		$http.get( CLOZERR_VENDORS_URL + "/get/all" + "?access_token=" + access_token).
-		success(function(data, status, headers, config) {
-			$scope.vendors = data;
-		}).error(function(data, status, headers, config) {
+	var access_token = localStorage.token;
+	$http.get( CLOZERR_VENDORS_URL + "/get/all" + "?access_token=" + access_token).
+	success(function(data, status, headers, config) {
+		$scope.vendors = data;
+	}).error(function(data, status, headers, config) {
      	/*
       		TODO: Throw error here.
       		*/
       	});
-	}
+	
 
 	$scope.$on("page-vendor-list", function(){
 		$scope.visibility = true;
@@ -42,8 +40,8 @@ var vendor_update = function( $scope, $http) {
 		}).error(function(data, status, headers, config) {
      		/*
       			TODO: Throw error here.
-      		*/
-      	});
+      			*/
+      		});
 	}
 
 	$scope.$on("page-vendor-update", function(){

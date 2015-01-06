@@ -24,4 +24,25 @@ router.get('/', function (req, res) {
 	});
 });
 
+router.get('/create',function (req, res) {
+	
+	var user = req.user;
+	if(!(user.type=="Admin")) {
+		error.err(res,"909");
+	}
+
+	var errobj = error.err_insuff_params(res, req, ["key","value"]);
+	if(!errobj) {
+		return;
+	}
+	var key = req.query.key;
+	var value = req.query.value;
+
+	var content = new Content({key:key,value:value});
+	content.save(function (err) {
+		if(err)	console.log(err);
+	});
+	res.end(JSON.stringify({result:true}));
+});
+
 module.exports = router;
