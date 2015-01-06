@@ -16,7 +16,7 @@ var settings = require("./settings");
 
 router.get('/create', function (req, res) {
 
-    var errobj = error.err_insuff_params(res, req.query, ["latitude", "longitude", "image", "fid", "name"]);
+    var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
@@ -78,8 +78,7 @@ router.get('/get', function (req, res) {
     }, function (err, vendor) {
         if (err) console.log(err);
         if ( !vendor ) {
-            // TODO: Throw error.
-						error.err( res, "845" );
+            error.err( res, "845" );
         }
 
         Offer.find({
@@ -129,9 +128,11 @@ router.get('/upload-policy', function( req, res ){
 		/*
 			TODO: Only allow if the user is linked to this vendor.
 		*/
-		/*
-			TODO: Check input parameters for id & access_token.
-		*/
+		
+        var errobj = error.err_insuff_params(res,req,["id","access_token"]);
+        if(!errobj) {
+            return;
+        }
 
 		var p = policy({
 			secret: settings.s3.secret_key,

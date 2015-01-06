@@ -5,7 +5,6 @@ var all_checkins = function( $rootScope, $scope, $http ){
   $scope.visibility = false;
 
   var CLOZERR_ALL_CHECKINS_URL = CLOZERR_API + "checkin/confirmed";
-  // TODO: update this url somewhere.
 
   $scope.update = function(){
     var access_token = localStorage.token;
@@ -14,7 +13,7 @@ var all_checkins = function( $rootScope, $scope, $http ){
     $scope.spinner = true;
     $http.get( CLOZERR_ALL_CHECKINS_URL + "?access_token=" + access_token ).
     success( function( data, status, headers, config ) {
-      $scope.checkins = true;
+      $scope.checkins = data;
       $scope.spinner = false;
     }).error( function( data, status, headers, config ) {
       $scope.err = true;
@@ -24,6 +23,7 @@ var all_checkins = function( $rootScope, $scope, $http ){
 
   $scope.$on("page-all-checkins", function(){
     $scope.visibility = true;
+    $scope.update();
   });
 
   $scope.$on("page-close", function(){

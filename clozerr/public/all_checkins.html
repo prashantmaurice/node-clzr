@@ -2,26 +2,27 @@
 
 <div class="row" ng-controller="all_checkins">
   <div class="col-lg-8 col-sm-12 col-lg-offset-2 whitebox" ng-show="visibility">
-    <h2>Current CheckIns</h2>
+    <h2 class="box-title">VISITS SO FAR</h2>
     <div class="table-responsive">
       <table class="table table-bordered table-hover">
         <thead>
           <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
+            <th>USERNAME</th>
+            <th>TIME</th>
+            <th>OFFER</th>
+            <th>OFFER-LEVEL</th>
           </tr>
         </thead>
+
         <tbody >
-            <tr ng-repeat="checkin in checkins">
-                <td>{{ checkin.user.name }}</td>
-                <td>{{ checkin.date_created }}</td>
-                <td>{{ checkin.offer.caption }}</td>
-                <td>{{ checkin.offer.stamps }}</td>
-                <!--<td><a href="javascript:void(0)" onclick="validate( checkin )">Validate</a></td>-->
-            </tr>
+          <tr ng-repeat="checkin in checkins">
+            <td>{{ checkin.user.profile.name }}</td>
+            <td>{{ checkin.date_created | humanize_date }}</td>
+            <td>{{ checkin.offer.caption }}</td>
+            <td>{{ checkin.offer.stamps }}</td>
+          </tr>
         </tbody>
+
       </table>
     </div>
   </div>

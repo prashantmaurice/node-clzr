@@ -55,9 +55,11 @@ function loginUser( user ){
 }
 
 router.get('/login/facebook', function(req, res) {
-  /*
-    TODO: check req parameters.
-    */
+  
+    var errobj = error.err_insuff_params(res,req,["access_token"]);
+    if(!errobj) {
+      return;
+    }
 
     var request = https.get('https://graph.facebook.com/debug_token?input_token=' + req.query.token + '&access_token='+settings.auth.facebook.app_token, function(response) {
       debugger;
@@ -174,7 +176,7 @@ router.get('/login/password', function( req, res ){
     if( err ){
       error.err(res,"102");
     }
-    // TODO: Test this.
+
     if( bcrypt.compareSync( req.query.password, user.password ) ){
       var token = newid( hat(), user );
       token.save( function( err, token, num ){
@@ -191,9 +193,7 @@ router.get('/login/password', function( req, res ){
 
 router.get('/reset/password', function( req, res ){
   var user = req.user;
-  /*
-  * TODO: allow only users of type VENDOR & ADMIN to reset password.
-  */
+  
   var errobj = error.err_insuff_params(res,req,["new_password"]);
   if(!errobj) {
     return;
@@ -223,7 +223,6 @@ router.get('/logout', function( req, res ){
   res.end(JSON.stringify({ result:true }));
 });
 
-// TODO: check this.
 router.get('/create', function(req,res,err) {
   var type = "Vendor";
   var auth_type = "password";
@@ -256,7 +255,7 @@ router.get('/profile',function(req,res){
 
 
   if( req.user.type == "Anonymous" ){
-      // TODO: throw error.
+      error.err(res,"909");
     }
     //  TODO: Remove user private details.. remove password.
     res.end( JSON.stringify( req.user ) );
