@@ -128,7 +128,7 @@ router.get('/upload-policy', function( req, res ){
 		/*
 			TODO: Only allow if the user is linked to this vendor.
 		*/
-		
+
         var errobj = error.err_insuff_params(res,req,["id","access_token"]);
         if(!errobj) {
             return;
@@ -169,18 +169,24 @@ router.get("/request", function( req, res ){
 
 router.get('/get/near', function (req, res) {
 
-    var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "type"]);
+    var errobj = error.err_insuff_params(res, req, ["latitude", "longitude"]);
 
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
 
+		var type = req.query.type;
+
+		if( !type )
+			type = JSON.stringify(["S0","S1","SX"]);
+
     var lat = req.query.latitude;
     var lon = req.query.longitude;
     var distance = req.query.distance;
     var access_token = req.query.access_token;
-    var typelist = JSON.parse(req.query.type);
+    var typelist = JSON.parse( type );
+
 		console.log( typelist );
     Vendor.find({
         location: {
@@ -253,7 +259,7 @@ router.get('/update', function (req, res) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
-    
+
     var id = req.query.vendor_id;
     var vendor = Vendor.findOne({
         _id: id
@@ -303,7 +309,7 @@ if(user.type="admin"){
             //Throw error - no such offer
             error.err(res,"210");
         }
-    
+
         res.end();
     });
 }
