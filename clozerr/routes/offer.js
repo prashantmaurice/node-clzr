@@ -45,11 +45,6 @@ router.get('/getmyoff',function(req,res){
 });
 router.get('/create', function (req, res) {
 	// TODO: only admin allowed.
-	//var errobj = error.err_insuff_params(res, req, ["type", "caption", "description"]);
-	//if (!errobj) {
-        //error.err(res,errobj.code,errobj.params);
-    //    return;
-  //  }
 
     var type = req.query.type;
 		if( !type ) type="S1";
@@ -58,8 +53,8 @@ router.get('/create', function (req, res) {
 
 		var caption = "default";
 		var description = "default";
-    if (req.query.caption) caption = req.query.caption;
-    if (req.query.description) description = req.query.description;
+    if ( req.query.caption ) caption = req.query.caption;
+    if ( req.query.description ) description = req.query.description;
 
     var dateCreated = new Date();
 
@@ -81,10 +76,9 @@ router.get('/update', function (req, res) {
 
 	var errobj = error.err_insuff_params(res, req, ["offer_id"]);
 	if (!errobj) {
-        //error.err(res,errobj.code,errobj.params);
         return;
-    }
-if(req.query.user="admin"){
+  }
+	if(req.query.user="admin"){
     var id = req.query.offer_id;
     var offer = Offer.findOne({
     	_id: id
@@ -124,7 +118,7 @@ if(req.query.user="admin"){
             offer.save(function (err) {
             	if (err) console.log(err);
             });
-            res.send(JSON.stringify({ result:true, data:offer }));
+            res.send(JSON.stringify({ result:true, data:offer }	));
         }
         else {
         	//Throw error - no such offer

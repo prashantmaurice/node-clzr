@@ -51,7 +51,7 @@ function policyCheckTimeDelayBetweenCheckins( user, vendor, offer ) {
 function policyCheckDuplicateCheckins( user, vendor, offer ) {
 
 
-  return CheckIn.findOne( { user:user._id, vendor:vendor._id, offer:offer._id, state:CHECKIN_STATE_CONFIRMED} ).exec().then(function( checkin ){
+  return CheckIn.findOne( { user:user._id, vendor:vendor._id, offer:offer._id, state:CHECKIN_STATE_ACTIVE} ).exec().then(function( checkin ){
     var deferred = Q.defer();
     debugger;
     if( checkin ) {

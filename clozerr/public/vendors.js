@@ -35,7 +35,7 @@ var vendor_list = function( $rootScope, $scope, $http) {
 		var access_token = localStorage.admin_token;
 		$http.get( CLOZERR_VENDORS_URL + "/create" + "?access_token=" + access_token  + "&latitude=0&longitude=0&image=default&fid=0&name=default").
 		success(function(data, status, headers, config) {
-			$http.get( CLOZERR_API +  "user/create" + "?access_token=" + access_token  + "&vendor_id=" + data._id + "&username=" = $("vendor_username").val() ).
+			$http.get( CLOZERR_API +  "user/create" + "?access_token=" + access_token  + "&vendor_id=" + data._id + "&username=" + $("#vendor_username").val() ).
 			success(function(data, status, headers, config) {
 				$scope.load_vendors();
 			}).error(function(data, status, headers, config) {
