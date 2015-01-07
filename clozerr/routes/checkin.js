@@ -52,6 +52,7 @@ router.get("/create", function (req, res) {
         debugger;
         if(!vendor) {
             error.err(res,"801");
+            return;
         }
         obj.vendor = vendor;
         return Offer.findOne({
@@ -62,7 +63,8 @@ router.get("/create", function (req, res) {
 
       if (!offer) {
         error.err(res,"802");
-    }
+        return;
+      }
     obj.offer = offer;
 
     var d = obj.vendor.offers.indexOf(obj.offer._id);
@@ -79,12 +81,13 @@ router.get("/create", function (req, res) {
 
     debugger;
 
-    Checkin.findOne({user:obj.user._id,vendor:obj.vendor._id,offer:obj.offer._id},function(err,data) {
+    CheckIn.findOne({user:obj.user._id,vendor:obj.vendor._id,offer:obj.offer._id},function(err,data) {
+      debugger;
         if(err) {
             console.log(err);
             return;
         }
-        if(data==null) {
+        if( data == null ) {
          var checkin = new CheckIn({
             user: obj.user._id,
             vendor: obj.vendor._id,
@@ -106,13 +109,15 @@ router.get("/create", function (req, res) {
         }));
      }
      else {
-        if(data.state == CHECKIN_STATE_ACTIVE) {
+
+        /*if(data.state == CHECKIN_STATE_ACTIVE) {
             res.end(JSON.stringify(data));
         }
         else if(data.state == CHECKIN_STATE_CONFIRMED) {
          policyCheckTimeDelayBetweenCheckins(res,data,checkin);
+       }*/
+
      }
- }
 });
 
 
