@@ -32,7 +32,8 @@ Models.CheckIn = mongoose.model('CheckIn',new Schema({
 	state:Number,
 	date_created:Date,
 	pin:String,
-	gcm_id:String
+	gcm_id:String,
+	validate_data:Schema.Types.Mixed
 } ));
 
 Models.User = mongoose.model('User',new Schema({

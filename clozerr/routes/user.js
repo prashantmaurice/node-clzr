@@ -189,9 +189,11 @@ router.get('/login/password', function( req, res ){
     console.log(user);
     if( !user ){
       error.err(res,"102");
+      return;
     }
     if( err ){
       error.err(res,"102");
+      return;
     }
 
     if( bcrypt.compareSync( req.query.password, user.password ) ){
@@ -241,6 +243,8 @@ router.get('/logout', function( req, res ){
 });
 
 router.get('/create', function(req,res,err) {
+
+  // TODO: Only Admin allowed.
   var type = "Vendor";
   var auth_type = "password";
   debugger;

@@ -42,11 +42,11 @@ var handlers = {
     if( !user.stamplist[vendor.fid] )
       user.stamplist[vendor.fid] = 0;
   },
-  "SX": function( user, vendor, offer, validator ) {
+  "SX": function( user, vendor, offer, validate_data ) {
     if( user.stamplist[vendor.fid] )
-      user.stamplist[vendor.fid] += parseInt(validator.stamps);
+      user.stamplist[vendor.fid] += parseInt(validate_data.stamps);
     else
-      user.stamplist[vendor.fid] = parseInt(validator.stamps);
+      user.stamplist[vendor.fid] = parseInt(validate_data.stamps);
   }
 }
 module.exports.qualify = function( user, vendor, offer ){
@@ -61,9 +61,10 @@ module.exports.qualify = function( user, vendor, offer ){
     return false;
   }
   return predicates[offer.type]( user, vendor, offer );
+  
 }
 
-module.exports.onCheckin = function( user, vendor, offer ){
+module.exports.onCheckin = function( user, vendor, offer, validate_data ){
 
   debugger;
   console.log("Checking in: "+user._id + " " + vendor._id + " "+offer._id);
@@ -73,5 +74,5 @@ module.exports.onCheckin = function( user, vendor, offer ){
     console.log("Type of offer is unsupported");
     return false;
   }
-  return handlers[offer.type]( user, vendor, offer );
+  return handlers[offer.type]( user, vendor, offer, validate_data );
 }

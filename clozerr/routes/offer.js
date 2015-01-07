@@ -22,7 +22,12 @@ router.get('/get', function (req, res) {
     }, function (err, data) {
     	if (err) console.log(err);
     	if (data) {
-    		res.send('offer:_id : ' + data._id);
+
+    		res.send(JSON.stringify({
+					result:true,
+					data:data
+				}));
+
     		res.end();
     	} else {
     		error.err(res, "210");

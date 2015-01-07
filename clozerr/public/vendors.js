@@ -1,19 +1,23 @@
-var vendor_list = function( $rootScope, $scope, $http) {
+var vendor_list = function( $rootScope, $scope, $http ){
+
 	$scope.vendors = [];
 	$scope.visibility = false;
 
 	var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
 
 	$scope.load_vendors = function() {
+
 		var access_token = localStorage.admin_token;
+
 		$http.get( CLOZERR_VENDORS_URL + "/get/all" + "?access_token=" + access_token).
 		success(function(data, status, headers, config) {
 			$scope.vendors = data;
 		}).error(function(data, status, headers, config) {
-     	/*
-      	TODO: Throw error here.
-      */
-  	});
+			/*
+			TODO: Throw error here.
+			*/
+		});
+
 	}
 
 	$scope.edit = function( vendor ){
@@ -25,7 +29,7 @@ var vendor_list = function( $rootScope, $scope, $http) {
 	$scope.$on("page-vendor-list", function(){
 		$scope.visibility = true;
 		$scope.load_vendors();
-;	});
+	});
 
 	$scope.$on("page-close", function(){
 		$scope.visibility = false;
@@ -67,10 +71,10 @@ var vendor_update = function( $rootScope, $scope, $http) {
 
 
 		}).error(function(data, status, headers, config) {
-     		/*
-      			TODO: Throw error here.
-      		*/
-    });
+			/*
+			TODO: Throw error here.
+			*/
+		});
 
 	}
 
@@ -155,7 +159,7 @@ var offers = function( $rootScope, $scope, $http) {
 		$http.get(CLOZERR_OFFERS_URL + "/get?offer_id=" + $scope.offer._id ).
 		success(function(data, status, headers, config) {
 			//redirect
-			$scope.offer = data;
+			$scope.offer = data.data;
 
 		}).error(function(data, status, headers, config) {
 			/*
@@ -174,5 +178,3 @@ var offers = function( $rootScope, $scope, $http) {
 		$scope.visibility = false;
 	});
 }
-
-$scope.

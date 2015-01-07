@@ -264,6 +264,18 @@ router.get("/validate", function (req, res) {
         if (obj.checkin.vendor.toString() == obj.userOfVendor.vendor_id) {
             // Note: preferably send notification after checkin save in order to make sure the checkin's state is up-to-date.
             obj.checkin.state = CHECKIN_STATE_CONFIRMED;
+
+            var validate_data = {};
+            if( req.query.validate_data ){
+              try{
+                validate_data = JSON.parse( req.query.validate_data );
+              }catch( e ){
+
+              }
+            }
+
+            obj.checkin.validate_data = validate_data;
+            obj.checkin.markModified("validate_data");
             obj.checkin.save();
 
             //Note : There may be a need to modify the parameters to be sent to the notification,
@@ -280,7 +292,7 @@ router.get("/validate", function (req, res) {
             }).then(function (vendor) {
                 obj.vendor = vendor;
                 //debugger;
-                OfferHandler.onCheckin(obj.user, obj.vendor, obj.offer);
+                OfferHandler.onCheckin( obj.user, obj.vendor, obj.offer, validate_data );
                 //debugger;
                 obj.user.save();
 
@@ -298,7 +310,9 @@ router.get("/validate", function (req, res) {
 });
 
 function check_expiry(checkin) {
-    if ( (new Date()).getTime() - (checkin.date_created).getTime() < 1000000 ) return true;
+    var time_delta = (new Date()).getTime() - (checkin.date_created).getTime();
+    console.log( time_delta );
+    if ( time_delta < 1000000 ) return true;
     else return false;
 }
 
@@ -312,6 +326,9 @@ function check_confirmed(checkin) {
     else return false;
 }
 
+function cancelCheckins( checkins ){
+  return;
+}
 
 router.get("/active", function ( req, res ) {
     var user = req.user;
@@ -392,10 +409,12 @@ Q.all(plist).then(function () {
             });
             //checkins_filter_exp_arr[1] -- setting state to cancelled
             console.log(checkins_list);
-            var len = checkins_filter_exp_arr[1].length;
+            var len = checkins_filter_exp_arr[0].length;
             var plist = [];
 
-            _.each( checkins_list, function( ch, index, array ){
+            cancelCheckins( checkins_filter_exp_arr[1] );
+
+            _.each( checkins_filter_exp_arr[0], function( ch, index, array ){
                 //var ch = checkins_list[i];
 
                 var chfull = {};
@@ -417,7 +436,7 @@ Q.all(plist).then(function () {
 
                     chfull.offer = offer;
                     chfull._id = ch._id;
-                    chfull.state = CHECKIN_STATE_CANCELLED;
+                    chfull.state = ch.state;
                     chfull.pin = ch.pin;
                     chfull.date_created = ch.date_created;
                     chfull.gcm_id = ch.gcm_id;

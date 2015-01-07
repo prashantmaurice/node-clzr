@@ -152,6 +152,14 @@ router.get('/upload-policy', function( req, res ){
 
 });
 
+function attachStamps( user, vendors ){
+	return _.map( vendors, function( vendor ){
+		var new_vendor = vendor.toJSON();
+		new_vendor.stamps = user.stamplist[new_vendor.fid] || 0;
+		return new_vendor;
+	});
+}
+
 router.get('/get/visited', function( req, res ){
 	var user =  req.user;
 	var fid_list =_.keys( user.stamplist );
@@ -160,8 +168,7 @@ router.get('/get/visited', function( req, res ){
 		if( !err ){
 			//TODO: Put error.
 		}
-
-		res.end( JSON.stringify({ result:true, data:vendors }) );
+		res.end( JSON.stringify({ result:true, data:attachStamps( user, vendors ) }) );
 	});
 });
 

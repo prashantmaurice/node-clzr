@@ -21,18 +21,29 @@ var current_checkins = function( $rootScope, $scope, $http ){
   }
 
   var CLOZERR_VALIDATE_URL = CLOZERR_API + "checkin/validate";
-  $scope.validate = function( checkin ){
-
+  $rootScope.validate = function( checkin, validate_data ){
+    console.log("Validating: ");
+    console.log( checkin );
+    console.log( validate_data );
     $scope.spinner = true;
+    //$scope.invokeTypeRequirement( checkin );
 
     var access_token = localStorage.token;
-    $http.get( CLOZERR_VALIDATE_URL + "?access_token=" + access_token + "&checkin_id=" + checkin._id ).
+    $http.get( CLOZERR_VALIDATE_URL + "?access_token=" + access_token + "&checkin_id=" + checkin._id + "&validate_data=" + encodeURIComponent( JSON.stringify(validate_data) ) ).
     success(function(data, status, headers, config) {
       console.log( data );
     }).error(function(data, status, headers, config) {
       console.log( data );
     });
 
+  }
+
+  $scope.invokeTypeRequirement = function( checkin ){
+    /*if( checkin.offer.type == "SX" ){
+      $("#SX-Modal").modal();
+    }*/
+    $rootScope.checkin = checkin;
+    $rootScope.$broadcast( "page-ctype-"+checkin.offer.type );
   }
 
   $scope.$on("page-current-checkins", function(){
