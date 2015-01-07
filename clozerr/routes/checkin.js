@@ -25,11 +25,82 @@ var CHECKIN_STATE_ACTIVE = 0;
 var CHECKIN_STATE_CONFIRMED = 1;
 var CHECKIN_STATE_CANCELLED = 2;
 
-function policyCheckTimeDelayBetweenCheckins(res,data,checkin) {
-    if(Math.abs(data.getTime()-checkin.getTime())<settings.checkin.delay_between_checkins) {
-        error.err(res,"204");           //throw error
+function policyCheckTimeDelayBetweenCheckins( user, vendor, offer ) {
+
+
+  return CheckIn.findOne( { user:user._id, vendor:vendor._id, offer:offer._id } ).exec().then(function( res, checkin ){
+    var deferred = Q.defer();
+
+    if( Math.abs( new Date().getTime() - checkin.date_created.getTime() ) < settings.checkin.delay_between_checkins ) {
+      process.nextTick( function(){
+        deferred.resolve( false );
+      });
     }
-    else res.send(JSON.stringify(checkin));
+    else{
+      process.nextTick( function(){
+        deferred.resolve( true );
+      });
+    }
+
+    return deferred.promise;
+
+  });
+
+}
+
+function policyCheckDuplicateCheckins( user, vendor, offer ) {
+
+
+  return CheckIn.findOne( { user:user._id, vendor:vendor._id, offer:offer._id, state:CHECKIN_STATE_CONFIRMED} ).exec().then(function( checkin ){
+    var deferred = Q.defer();
+    debugger;
+    if( checkin ) {
+      process.nextTick( function(){
+        deferred.resolve( checkin );
+      });
+    }
+    else{
+      process.nextTick( function(){
+        deferred.resolve( );
+      });
+    }
+
+    return deferred.promise;
+
+  });
+
+}
+
+function policyCheckTimeDelayBetweenCheckins( user, vendor, offer ) {
+
+
+  return CheckIn.findOne( { user:user._id, vendor:vendor._id, state:CHECKIN_STATE_CONFIRMED} ).sort("date_created").exec().then(function( checkin ){
+    var deferred = Q.defer();
+    debugger;
+
+    if( !checkin ){
+      process.nextTick( function(){
+        deferred.resolve( true );
+      });
+      return deferred.promise;
+    }
+
+
+    if( Math.abs( new Date().getTime() - checkin.date_created.getTime() ) < settings.checkin.delay_between_checkins ) {
+      process.nextTick( function(){
+        deferred.resolve( false );
+      });
+    }
+    else{
+      process.nextTick( function(){
+        deferred.resolve( true );
+      });
+    }
+
+    return deferred.promise;
+
+  });
+
 }
 
 router.get("/create", function (req, res) {
@@ -70,6 +141,7 @@ router.get("/create", function (req, res) {
     var d = obj.vendor.offers.indexOf(obj.offer._id);
     if(d==-1) {
         error.err(res,"671");
+        return;
     }
 
     debugger;
@@ -81,14 +153,26 @@ router.get("/create", function (req, res) {
 
     debugger;
 
-    CheckIn.findOne({user:obj.user._id,vendor:obj.vendor._id,offer:obj.offer._id},function(err,data) {
-      debugger;
-        if(err) {
-            console.log(err);
-            return;
+    policyCheckDuplicateCheckins( obj.user, obj.vendor, obj.offer ).then( function( result ) {
+      console.log("Detecting duplicates");
+      if( result ){
+        console.log("Duplicate detected:");
+        res.end( JSON.stringify({ result:true, checkin:result }) );
+        return;
+      }
+
+      return policyCheckTimeDelayBetweenCheckins( obj.user, obj.vendor, obj.offer );
+
+    }).then(function( result ){
+        console.log("Validating timedelay");
+        if( !result ){
+          console.log("Time delay not sufficient");
+          error.err( res, "100" );
+          return;
         }
-        if( data == null ) {
-         var checkin = new CheckIn({
+        debugger;
+
+          var checkin = new CheckIn({
             user: obj.user._id,
             vendor: obj.vendor._id,
             offer: obj.offer._id,
@@ -96,28 +180,18 @@ router.get("/create", function (req, res) {
             date_created: new Date(),
             pin: rack(),
             gcm_id: gcm_id
-        });
-         debugger;
+          });
+          debugger;
 
          checkin.save(function (err, res, num) {
             console.log("Successfully saved checkin");
-        });
+          });
 
-         res.end(JSON.stringify({
-            result: true,
-            checkin: checkin
-        }));
-     }
-     else {
+          res.end(JSON.stringify({
+              result: true,
+              checkin: checkin
+          }));
 
-        /*if(data.state == CHECKIN_STATE_ACTIVE) {
-            res.end(JSON.stringify(data));
-        }
-        else if(data.state == CHECKIN_STATE_CONFIRMED) {
-         policyCheckTimeDelayBetweenCheckins(res,data,checkin);
-       }*/
-
-     }
 });
 
 
@@ -156,7 +230,6 @@ router.get("/validate", function (req, res) {
     }
 
     var userOfVendor = req.user;
-
 
     // Global memory to be used by the Promise chain.
     var obj = {
