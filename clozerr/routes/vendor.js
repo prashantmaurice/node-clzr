@@ -161,6 +161,7 @@ function attachStamps( user, vendors ){
 }
 
 router.get('/get/visited', function( req, res ){
+	
 	var user =  req.user;
 	var fid_list =_.keys( user.stamplist );
 	console.log(fid_list);
@@ -170,6 +171,7 @@ router.get('/get/visited', function( req, res ){
 		}
 		res.end( JSON.stringify({ result:true, data:attachStamps( user, vendors ) }) );
 	});
+
 });
 
 router.get("/request", function( req, res ){

@@ -43,6 +43,7 @@ var current_checkins = function( $rootScope, $scope, $http ){
       $("#SX-Modal").modal();
     }*/
     $rootScope.checkin = checkin;
+    console.log( checkin );
     $rootScope.$broadcast( "page-ctype-"+checkin.offer.type );
   }
 
