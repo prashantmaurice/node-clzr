@@ -98,6 +98,7 @@ router.get('/get', function (req, res) {
 
 router.get('/addoffer', function (req, res) {
 
+	// TODO: Only admin allowed.
     var errobj = error.err_insuff_params(res, req.query, ["vendor_id", "offer_id"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
@@ -308,8 +309,8 @@ if(user.type="admin"){
     }, function (err, vendor) {
         if (err) console.log(err);
         if (vendor) {
-            vendor.latitude = latitude;
-            vendor.longitude = longitude;
+
+            vendor.location = [latitude, longitude];
             vendor.image = image;
             vendor.fid = fid;
             vendor.date_created = date_created;
@@ -318,7 +319,7 @@ if(user.type="admin"){
             vendor.save(function (err) {
                 if (err) console.log(err);
             });
-            res.send(JSON.stringify(offer));
+            res.send(JSON.stringify({result:true}));
         }
         else {
             //Throw error - no such offer

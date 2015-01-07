@@ -18,39 +18,75 @@ angular.module('bind_vendors', [])
             <th></th>
             <th></th>
             <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
           </tr>
         </thead>
         <tbody >
           <tr ng-repeat="vendor in vendors">
-            <td>{{ vendor._id }}</td>
             <td>{{ vendor.name }}</td>
-            <td>{{ vendor.location[0] }}</td>
-            <td>{{ vendor.location[1] }}</td>
-            <td>{{ vendor.image }}</td>
+            <td><img src="{{ vendor.image }}" class="vendor-img"></td>
             <td>{{ vendor.fid }}</td>
-            <td>{{ vendor.offers }}</td>
-            <td>{{ vendor.offers_list }}</td>
-            <td><a href="javascript:void(0)" ng-click="update(vendor)">Edit</a></td>
+            <td><a href="javascript:void(0)" ng-click="edit(vendor)">Edit</a></td>
           </tr>
         </tbody>
       </table>
     </div>
+    <input type=text id="vendor_username"></input>
     <button ng-click="create_vendor()">Add</button>
   </div>
 </div>
 
-<div ng-controller="vendor_update" id="update_form" style="display:none;" ng-show="visibility">
-  <h2>Update vendors</h2>
-  <input type="text" name="_id" ng-bind="vendor._id"></input>
-  <input type="text" name="name" ng-bind="vendor.name"></input>
-  <input type="text" name="latitude" ng-bind="vendor.latitude"></input>
-  <input type="text" name="longitude" ng-bind="vendor.longitude"></input>
-  <input type="text" name="image" ng-bind="vendor.image"></input>
-  <input type="text" name="fid" ng-bind="vendor.fid"></input>
-  <button ng-click="update_vendor(vendor)"></button>
+<div ng-controller="vendor_update" id="update_form">
+  <div ng-show="visibility">
+    <h2>Update vendors</h2>
+    <div class="vendorbox">
+      <label>ID:</label>
+      <input type="text" name="_id" class="form-control" ng-model="vendor._id"></input>
+      <label>Name:</label>
+      <input type="text" name="name" class="form-control" ng-model="vendor.name"></input>
+      <label>Latitude:</label>
+      <input type="text" name="latitude" class="form-control" ng-model="vendor.location[0]"></input>
+      <label>Longitude:</label>
+      <input type="text" name="longitude" class="form-control" ng-model="vendor.location[1]"></input>
+      <label>Image:</label>
+      <input type="text" name="image" class="form-control" ng-model="vendor.image"></input>
+      <label>Franchise ID:</label>
+      <input type="text" name="fid" class="form-control" ng-model="vendor.fid"></input>
+      <a class="btn btn-primary" ng-click="update_vendor(vendor)"></a>
+    </div>
+
+      <div class="offerbox-container">
+        <table>
+          <thead>
+            <th>
+              STAMPS
+            </th>
+            <th>
+              CAPTION
+            </th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="offer in vendor.offers" ng-click="edit_offer( offer )">
+              <td>{{ offer.stamps }}</td>
+              <td>{{ offer.caption }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <a href="javascript:void(0)" ng-click="new_offer( vendor )"></a>
+      </div>
+
+    </div>
+</div>
+
+<div class="offerbox-full" ng-show="visibility" ng-controller="offers">
+  <label>Caption:</label>
+  <input type="text" class="form-control" ng-model="offer.caption">
+  <label>Stamps:</label>
+  <input type="text" class="form-control" ng-model="offer.stamps">
+  <label>Type:</label>
+  <input type="text" class="form-control" ng-model="offer.type">
+  <label>Description:</label>
+  <textarea class="form-control" ng-model="offer.description">
+  </textarea>
+  <a href="javascript:void(0)" class="btn btn-primary" ng-click="update_offer()">Save</a>
+
 </div>

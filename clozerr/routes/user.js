@@ -55,8 +55,8 @@ function loginUser( user ){
 }
 
 router.get('/login/facebook', function(req, res) {
-  
-    var errobj = error.err_insuff_params(res,req,["access_token"]);
+
+    var errobj = error.err_insuff_params(res,req,["token"]);
     if(!errobj) {
       return;
     }
@@ -210,7 +210,7 @@ router.get('/login/password', function( req, res ){
 
 router.get('/reset/password', function( req, res ){
   var user = req.user;
-  
+
   var errobj = error.err_insuff_params(res,req,["new_password"]);
   if(!errobj) {
     return;

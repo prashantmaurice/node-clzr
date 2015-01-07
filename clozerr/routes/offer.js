@@ -44,31 +44,24 @@ router.get('/getmyoff',function(req,res){
         })
 });
 router.get('/create', function (req, res) {
-
-	var errobj = error.err_insuff_params(res, req, ["type", "caption", "description"]);
-	if (!errobj) {
+	// TODO: only admin allowed.
+	//var errobj = error.err_insuff_params(res, req, ["type", "caption", "description"]);
+	//if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
-        return;
-    }
+    //    return;
+  //  }
 
     var type = req.query.type;
+		if( !type ) type="S1";
     if (req.query.stamps) stamps = req.query.stamps;
     else stamps = 1;
-    dateCreated = new Date();
+
+		var caption = "default";
+		var description = "default";
     if (req.query.caption) caption = req.query.caption;
     if (req.query.description) description = req.query.description;
-    var offer = new Offer({
-    	type: type,
-    	stamps: stamps,
-    	dateCreated: dateCreated,
-    	caption: caption,
-    	description: description,
-    	dateUpdated: dateCreated
-    });
 
     var dateCreated = new Date();
-    var caption = req.query.caption;
-    var description = req.query.description;
 
     var offer = new Offer({
     	type: type,
@@ -77,7 +70,8 @@ router.get('/create', function (req, res) {
     	caption: caption,
     	description: description
     });
-    res.send('create request recieved for ' + JSON.stringify(offer));
+
+    res.send( JSON.stringify( { result:true, data:offer } ) );
     offer.save(function (err) {
     	if (err) console.log(err);
     })
@@ -130,13 +124,13 @@ if(req.query.user="admin"){
             offer.save(function (err) {
             	if (err) console.log(err);
             });
-            res.send(JSON.stringify(offer));
+            res.send(JSON.stringify({ result:true, data:offer }));
         }
         else {
         	//Throw error - no such offer
         	error.err(res,"210");
         }
-    
+
         res.end();
     });
 }
@@ -176,7 +170,7 @@ else
         	vendor.offers = arr_updated_offers;
             vendor.save(function(err) {
             	if(err)	console.log(err);
-            });            
+            });
             res.send(JSON.stringify(vendor));
         });
     });

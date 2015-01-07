@@ -63,7 +63,7 @@ Models.Offer = mongoose.model('Offer',new Schema({
 	stamps:String,
 	date_created:Date,
 	caption:String,
-	description:Schema.Types.Mixed,
+	description:String,
 	dateUpdated:Date
 }));;
 

@@ -10,7 +10,7 @@ var db=mongoose.connection;
 var User = models.User;
 var bcrypt = require("bcrypt-nodejs");
 
-db.open('mongodb://'+settings.db.mongo.host+'/fin2');
+db.open('mongodb://'+settings.db.mongo.host+'/fin3');
 function random (howMany, chars) {
 	chars = chars
 	|| "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
@@ -48,7 +48,7 @@ for(var i=0;i<ary.length;i++)
 		if(ary[i].offer[j]["$$hashKey"])
 			delete ary[i].offer[j]["$$hashKey"];
 	}
-	var offer=new Offer({type:"S1",stamps:ary[i].visitCount,dateCreated:ary[i].createdAt,caption:ary[i].caption,description:ary[i].offer });
+	var offer=new Offer({type:"S1",stamps:ary[i].visitCount,dateCreated:ary[i].createdAt,caption:ary[i].caption,description:ary[i].offer[0].caption });
 	offer.markModified("description");
 	offer.save(function( err, data ){
 		if(err){
