@@ -242,7 +242,7 @@ router.get('/logout', function( req, res ){
   res.end(JSON.stringify({ result:true }));
 });
 
-router.get('/create', function(req,res,err) {
+router.get('/create', function( req, res ) {
 
   // TODO: Only Admin allowed.
   var type = "Vendor";
@@ -263,6 +263,9 @@ router.get('/create', function(req,res,err) {
       var vuser = new user({ auth_type:auth_type, type:type,vendor_id:vendor_id, password:hash, username: req.query.username });
       vuser.save();
 
+      res.end( JSON.stringify({
+        result:true,
+      }) );
 
      /* user.save(function(err) {
         if(err) console.log(err);

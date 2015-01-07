@@ -11,10 +11,12 @@ var all_checkins = function( $rootScope, $scope, $http ){
 
     $scope.err = false;
     $scope.spinner = true;
+    $scope.showData = false;
     $http.get( CLOZERR_ALL_CHECKINS_URL + "?access_token=" + access_token ).
     success( function( data, status, headers, config ) {
       $scope.checkins = data;
       $scope.spinner = false;
+      $scope.showData = true;
     }).error( function( data, status, headers, config ) {
       $scope.err = true;
     });

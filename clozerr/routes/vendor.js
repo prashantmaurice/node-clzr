@@ -45,7 +45,7 @@ router.get('/create', function (req, res) {
 
     res.send({
         result: true,
-        vendor: vendor
+        data: vendor
     });
 
     vendor.save();
@@ -79,6 +79,7 @@ router.get('/get', function (req, res) {
         if (err) console.log(err);
         if ( !vendor ) {
             error.err( res, "845" );
+						return;
         }
 
         Offer.find({
@@ -99,7 +100,7 @@ router.get('/get', function (req, res) {
 router.get('/addoffer', function (req, res) {
 
 	// TODO: Only admin allowed.
-    var errobj = error.err_insuff_params(res, req.query, ["vendor_id", "offer_id"]);
+    var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
@@ -119,7 +120,8 @@ router.get('/addoffer', function (req, res) {
         if (err) console.log(err + ' num : ' + num + ' raw : ' + raw);
         else {
             res.send({
-                result: true
+                result: true,
+								data:raw
             });
         }
     })
@@ -161,12 +163,12 @@ function attachStamps( user, vendors ){
 }
 
 router.get('/get/visited', function( req, res ){
-	
+
 	var user =  req.user;
 	var fid_list =_.keys( user.stamplist );
 	console.log(fid_list);
 	Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
-		if( !err ){
+		if( err ){
 			//TODO: Put error.
 		}
 		res.end( JSON.stringify({ result:true, data:attachStamps( user, vendors ) }) );
@@ -337,6 +339,8 @@ if(user.type="admin"){
         else {
             //Throw error - no such offer
             error.err(res,"210");
+						return;
+
         }
 
         res.end();

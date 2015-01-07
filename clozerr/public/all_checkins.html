@@ -3,7 +3,7 @@
 <div class="row" ng-controller="all_checkins">
   <div class="col-lg-8 col-sm-12 col-lg-offset-2 whitebox" ng-show="visibility">
     <h2 class="box-title">VISITS SO FAR</h2>
-    <div class="table-responsive">
+    <div class="table-responsive" ng-show="showData">
       <table class="table table-bordered table-hover">
         <thead>
           <tr>
@@ -24,6 +24,9 @@
         </tbody>
 
       </table>
+    </div>
+    <div class="spinner"ng-show="spinner">
+      <img src="loader.gif" class="spinner-img">
     </div>
   </div>
 </div>

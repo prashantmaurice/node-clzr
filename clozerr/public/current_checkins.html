@@ -1,36 +1,12 @@
 
-<div class="modal fade" id="SX-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="exampleModalLabel">New message</h4>
-      </div>
-      <div class="modal-body">
-        <h5>Hey! It seems this checkin has a varyng number of stamps as per your policy. Enter stamps to continue, Leave blank for 1 Stamp.</h5>
-        <form>
-          <div class="form-group">
-            <label for="message-text" class="control-label">Stamps:</label>
-            <textarea class="form-control" id="message-text"></textarea>
-          </div>
-        </form>
-      </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Confirm</button>
-      </div>
-
-    </div>
-  </div>
-</div>
 
 
 
 <div class="row" ng-controller="current_checkins">
   <div class="col-lg-8 col-sm-12 col-lg-offset-2 whitebox" ng-show="visibility">
     <h2 class="box-title">STAMPBOARD</h2>
-    <div class="table-responsive">
+    <div class="table-responsive" ng-show="showData">
       <table class="table table-bordered table-hover" id="curr_checkins">
         <thead>
           <tr>
@@ -43,7 +19,7 @@
             <th>ACTION</th>
           </tr>
         </thead>
-        <tbody >
+        <tbody>
             <tr ng-repeat="checkin in checkins">
                 <td>{{ checkin.user.profile.name }}</td>
                 <td>{{ checkin.pin }}</td>
@@ -56,5 +32,10 @@
         </tbody>
       </table>
     </div>
+
+    <div class="spinner"ng-show="spinner">
+      <img src="loader.gif" class="spinner-img">
+    </div>
+
   </div>
 </div>

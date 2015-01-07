@@ -155,11 +155,7 @@ else
         	vendor.offers_old.push(offer_id);
         	var arr_offers = vendor.offers;
         	var arr_updated_offers = [];
-        	/*var index = arr_offers.indexOf(offer_id);
 
-        	if (index > -1) {
-        		arr_offers.splice(index, 1);
-        	}*/
         	var len = arr_offers.length;
         	for(var i=0;i<len;i++) {
         		if(arr_offers[i] != offer_id) {
@@ -167,10 +163,10 @@ else
         		}
         	}
         	vendor.offers = arr_updated_offers;
-            vendor.save(function(err) {
-            	if(err)	console.log(err);
-            });
-            res.send(JSON.stringify(vendor));
+          vendor.save(function(err) {
+          	if(err)	console.log(err);
+          });
+          res.send(JSON.stringify(vendor));
         });
     });
 

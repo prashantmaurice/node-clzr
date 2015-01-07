@@ -13,9 +13,17 @@ var login = function( $rootScope, $scope, $http ){
     $scope.login_form = false;
     $http.get( CLOZERR_LOGIN_URL + "?username=" + $("#username").val() + "&password=" + $("#password").val() ).
     success(function(data, status, headers, config) {
+
+      if( !data.result ){
+        $scope.wrongData = true;
+        $scope.spinner = false;
+        $scope.login_form = true;
+        return;
+      }
       localStorage.token = data.access_token;
       $scope.spinner = false;
       $scope.login_form = true;
+      $scope.wrongData = false;
 
       $rootScope.$broadcast("page-close");
       $rootScope.$broadcast("page-current-checkins");

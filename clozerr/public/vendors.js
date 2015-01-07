@@ -39,7 +39,7 @@ var vendor_list = function( $rootScope, $scope, $http ){
 		var access_token = localStorage.admin_token;
 		$http.get( CLOZERR_VENDORS_URL + "/create" + "?access_token=" + access_token  + "&latitude=0&longitude=0&image=default&fid=0&name=default").
 		success(function(data, status, headers, config) {
-			$http.get( CLOZERR_API +  "user/create" + "?access_token=" + access_token  + "&vendor_id=" + data._id + "&username=" + $("#vendor_username").val() ).
+			$http.get( CLOZERR_API +  "auth/create" + "?access_token=" + access_token  + "&vendor_id=" + data.data._id + "&username=" + $("#vendor_username").val() ).
 			success(function(data, status, headers, config) {
 				$scope.load_vendors();
 			}).error(function(data, status, headers, config) {
@@ -96,10 +96,10 @@ var vendor_update = function( $rootScope, $scope, $http) {
 		$http.get(CLOZERR_API + "offer/create?vendor_id=" + $scope.vendor._id + "&access_token=" + localStorage.admin_token ).
 		success(function(data, status, headers, config) {
 			//redirect
-			$http.get(CLOZERR_VENDORS_URL + "/addoffer?vendor_id=" + $scope.vendor._id + "&access_token=" + localStorage.admin_token + "offer_id=" + data._id ).
+			$http.get(CLOZERR_VENDORS_URL + "/addoffer?vendor_id=" + $scope.vendor._id + "&access_token=" + localStorage.admin_token + "&offer_id=" + data.data._id ).
 			success(function(data, status, headers, config) {
 				//redirect
-				$scope.vendor = data;
+				$scope.vendor = data.data;
 
 			}).error(function(data, status, headers, config) {
 				/*
@@ -142,7 +142,7 @@ var offers = function( $rootScope, $scope, $http) {
 
 		var access_token = localStorage.admin_token;
 		var offer = $scope.offer;
-		$http.get(CLOZERR_OFFERS_URL + "/update?access_token=" + access_token + "&offer_id=" + offer._id + "&type=" + offer.type + "&description=" + offer.description + "&caption=" + offer.caption ).
+		$http.get(CLOZERR_OFFERS_URL + "/update?access_token=" + access_token + "&offer_id=" + offer._id + "&type=" + offer.type + "&description=" + offer.description + "&caption=" + offer.caption + "&stamps=" + offer.stamps ).
 		success(function(data, status, headers, config) {
 			//redirect
 

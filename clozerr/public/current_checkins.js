@@ -6,12 +6,18 @@ var current_checkins = function( $rootScope, $scope, $http ){
 
   var CLOZERR_CURRENT_CHECKINS_URL = CLOZERR_API + "checkin/active";
   // TODO: update this url somewhere.
-
+  $scope.showData = true;
   $scope.update = function(){
     var access_token = localStorage.token;
+    $scope.spinner = true;
+    $scope.showData = false;
+
     $http.get( CLOZERR_CURRENT_CHECKINS_URL + "?access_token=" + access_token ).
     success(function(data, status, headers, config) {
       console.log( data );
+      $scope.spinner = false;
+      $scope.showData = true;
+
       $scope.checkins = data.data;
     }).error(function(data, status, headers, config) {
       /*
@@ -19,7 +25,7 @@ var current_checkins = function( $rootScope, $scope, $http ){
       */
     });
   }
-
+  $rootScope.validating = false;
   var CLOZERR_VALIDATE_URL = CLOZERR_API + "checkin/validate";
   $rootScope.validate = function( checkin, validate_data ){
     console.log("Validating: ");
@@ -27,10 +33,12 @@ var current_checkins = function( $rootScope, $scope, $http ){
     console.log( validate_data );
     $scope.spinner = true;
     //$scope.invokeTypeRequirement( checkin );
-
+    $rootScope.validating = true;
     var access_token = localStorage.token;
     $http.get( CLOZERR_VALIDATE_URL + "?access_token=" + access_token + "&checkin_id=" + checkin._id + "&validate_data=" + encodeURIComponent( JSON.stringify(validate_data) ) ).
     success(function(data, status, headers, config) {
+      $rootScope.validating = false;
+      $rootScope.pageChange( "current-checkins" );
       console.log( data );
     }).error(function(data, status, headers, config) {
       console.log( data );
@@ -38,12 +46,17 @@ var current_checkins = function( $rootScope, $scope, $http ){
 
   }
 
+  $scope.$on("validate-finish", function(){
+    $scope.update();
+  });
   $scope.invokeTypeRequirement = function( checkin ){
     /*if( checkin.offer.type == "SX" ){
       $("#SX-Modal").modal();
     }*/
     $rootScope.checkin = checkin;
     console.log( checkin );
+    $scope.spinner = true;
+    $scope.showData = false;
     $rootScope.$broadcast( "page-ctype-"+checkin.offer.type );
   }
 

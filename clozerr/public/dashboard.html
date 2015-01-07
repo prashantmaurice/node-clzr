@@ -94,6 +94,7 @@
   <script type="text/javascript" src="all_checkins.js"></script>
   <script type="text/javascript" src="login.js"></script>
   <script type="text/javascript" src="s1.js"></script>
+  <script type="text/javascript" src="password_change.js"></script>
 
 
     <div id="wrapper">
@@ -124,7 +125,7 @@
                             <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                            <a href="javascript:void(0)" ng-click="pageChange('password-change')"><i class="fa fa-fw fa-gear"></i> Change Password</a>
                         </li>
                         <li class="divider"></li>
                         <li>
@@ -163,6 +164,7 @@
                 <div class="item-wrap" ng-include=" 'all_checkins.html' "></div>
                 <div class="item-wrap" ng-include=" 'login.html' "></div>
                 <div class="item-wrap" ng-include=" 's1.html' "></div>
+                <div class="item-wrap" ng-include=" 'password_change.html' "></div>
 
               </div>
         </div>
