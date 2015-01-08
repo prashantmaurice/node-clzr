@@ -329,7 +329,7 @@ function check_confirmed(checkin) {
 function cancelCheckins( checkins ){
 
   _.each( checkins, function( checkin, index, array ){
-    checkin.state = CHECKIN_STATE_CANCELLED );
+    checkin.state = CHECKIN_STATE_CANCELLED;
     checkin.save();
   });
 
