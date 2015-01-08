@@ -213,7 +213,8 @@ router.get('/get/near', function (req, res) {
     Vendor.find({
         location: {
             $near: [lat, lon]
-        }
+        },
+        visible:true
     }).limit( limit ).skip( offset ).exec().then(function (vendors) {
 
         //console.log( vendors );
