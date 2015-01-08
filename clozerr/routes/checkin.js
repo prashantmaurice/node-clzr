@@ -184,6 +184,7 @@ router.get("/create", function (req, res) {
           debugger;
 
          checkin.save(function (err, res, num) {
+            console.log(err);
             console.log("Successfully saved checkin");
           });
 
