@@ -65,7 +65,7 @@ var vendor_update = function( $rootScope, $scope, $http) {
 	$scope.update_vendor = function(vendor) {
 
 		var access_token = localStorage.admin_token;
-		$http.get(CLOZERR_VENDORS_URL + "/update?access_token=" + access_token + "&vendor_id=" + vendor._id + "&vendor_name=" + vendor.name + "&latitude=" + vendor.location[0] + "&longitude=" + vendor.location[1] +"&fid=" + vendor.fid + "&image=" + vendor.image).
+		$http.get(CLOZERR_VENDORS_URL + "/update?access_token=" + access_token + "&vendor_id=" + vendor._id + "&vendor_name=" + vendor.name + "&latitude=" + vendor.location[0] + "&longitude=" + vendor.location[1] +"&fid=" + vendor.fid + "&image=" + vendor.image + "&description=" + vendor.description + "&phone=" + vendor.phone + "&city=" + vendor.city + "&address=" + vendor.address + "&visible=" + vendor.visible ).
 		success(function(data, status, headers, config) {
 			//redirect
 

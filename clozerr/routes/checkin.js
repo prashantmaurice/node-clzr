@@ -479,11 +479,12 @@ router.get("/confirmed", function (req, res) {
     if (ut=="Vendor") {
 
         CheckIn.find({
-            vendor: userobj.vendor_id
+            vendor: userobj.vendor_id,
+            state:CHECKIN_STATE_CONFIRMED
         }, function (err, checkins_list) {
             if (err) console.log(err);
             var checkins_list = _.filter(checkins_list, function (checkin) {
-                return check_confirmed(checkin);
+                return check_confirmed( checkin );
             });
             console.log(checkins_list);
             var len = checkins_list.length;

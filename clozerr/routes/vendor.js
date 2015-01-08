@@ -277,7 +277,7 @@ router.get('/get/near', function (req, res) {
     });
 })
 router.get('/update', function (req, res) {
-    var latitude,longitude,image,fid,name;
+    var latitude, longitude, image, fid, name, visible, address, city, phone, description;
     var user=req.user;
     var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
     if (!errobj) {
@@ -300,22 +300,40 @@ if(user.type="admin"){
     if (req.query.longitude) {
         longitude = req.query.longitude;
     } else longitude = vendor.latitude;
+
     dateUpdated = new Date();
     if (req.query.image) {
-
         image = req.query.image;
-
     } else image = vendor.image;
+
     if (req.query.fid) {
-
         fid = req.query.fid;
-
     } else fid = vendor.fid;
+
     if(req.query.vendor_name){
-
         name=req.query.vendor_name;
-
     }else name=vendor.name;
+
+		if(req.query.phone){
+			phone=req.query.phone;
+		}else phone = vendor.phone;
+
+		if(req.query.address){
+			address = req.query.address;
+		}else address=vendor.address;
+
+		if(req.query.city){
+			name=req.query.city;
+		}else city=vendor.city;
+
+		if( req.query.visible ){
+			visible = req.query.visible;
+		}else visible = vendor.visible;
+
+		if( req.query.description ){
+			description = req.query.description;
+		}else description = vendor.description;
+
 
     var date_created = vendor.date_created;
 
@@ -331,6 +349,11 @@ if(user.type="admin"){
             vendor.date_created = date_created;
             vendor.dateUpdated = new Date();
             vendor.name=name;
+						vendor.visible = visible;
+						vendor.city = city;
+						vendor.address = address;
+						vendor.phone = phone;
+						vendor.description = description;
             vendor.save(function (err) {
                 if (err) console.log(err);
             });

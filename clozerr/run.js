@@ -10,7 +10,7 @@ var db=mongoose.connection;
 var User = models.User;
 var bcrypt = require("bcrypt-nodejs");
 
-db.open('mongodb://'+settings.db.mongo.host+'/fin3');
+db.open('mongodb://'+settings.db.mongo.host+'/fin4');
 function random (howMany, chars) {
 	chars = chars
 	|| "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
@@ -69,13 +69,19 @@ for(var i=0;i<arr.length;i++)
 	   offers[k++]=links[arry[j].coupon.objectId]; }
 
 
-	var vendor=new Vendor({
+	var vendor = new Vendor({
+
 		location:[arr[i].location.latitude,arr[i].location.longitude],
 		name:arr[i].caption,
 		image:arr[i].image,
 		fid:random(4,"1234567890"),
 		date_created:arr[i].createdAt,
-		offers:offers
+		offers:offers,
+		address: arr[i].address.street,
+		city: arr[i].address.city,
+		phone: arr[i].phone,
+		visible: arr[i].visible,
+		description: arr[i].description
 	});
 
 	vendor.save();
@@ -99,21 +105,22 @@ for(var i=0;i<aray.length;i++)
 	}
 for(var i=0;i<k;i++)
 {
-	//debugger;
+
   var nuser = new User({
   	type:"User",
   	auth_type:"facebook",
   	social_id:user[i].profile.fb_socialId,
   	username:user[i].profile.first_name,
-		stamplist: {DEFAULT:0}
+		stamplist: { DEFAULT:0 },
   });
+
   nuser.save();
 }
 for(var i=0;i<v;i++)
 {
 	var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync( settings.auth.password.default, salt );
-		debugger;
+  var hash = bcrypt.hashSync( settings.auth.password.default, salt );
+	debugger;
 	var nuser = new User({
      type:"Vendor",
      auth_type:"password",

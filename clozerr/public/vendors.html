@@ -54,6 +54,22 @@ angular.module('bind_vendors', [])
       <input type="text" name="image" class="form-control" ng-model="vendor.image"></input>
       <label>Franchise ID:</label>
       <input type="text" name="fid" class="form-control" ng-model="vendor.fid"></input>
+
+      <label>Phone:</label>
+      <input type="text" name="phone" class="form-control" ng-model="vendor.phone"></input>
+
+      <label>Address:</label>
+      <input type="text" name="address" class="form-control" ng-model="vendor.address"></input>
+
+      <label>City:</label>
+      <input type="text" name="city" class="form-control" ng-model="vendor.city"></input>
+
+      <label>Visible:</label>
+      <input type="checkbox" name="visible" class="form-control" ng-model="vendor.visible"></input>
+
+      <label>Description:</label>
+      <input type="text" name="description" class="form-control" ng-model="vendor.description"></input>
+
       <a class="btn btn-primary" ng-click="update_vendor(vendor)">Update</a>
     </div>
 

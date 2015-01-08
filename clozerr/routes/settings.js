@@ -11,7 +11,7 @@ module.exports = {
 		}
 	},
 	"db":{
-		"mongo":{ "host":"db.clozerr.com", "port":"27107", "name":"fin3" }
+		"mongo":{ "host":"db.clozerr.com", "port":"27107", "name":"fin4" }
 	},
 	"s3":{
 		"access_key":"AKIAJHO66S6AWOPIT2GA",
