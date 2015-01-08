@@ -304,7 +304,6 @@ router.get("/validate", function (req, res) {
 
         } else error.err(res, "435");
     }, function (err) {
-        // throw.
         console.log(err);
     });
 
@@ -328,6 +327,12 @@ function check_confirmed(checkin) {
 }
 
 function cancelCheckins( checkins ){
+
+  _.each( checkins, function( checkin, index, array ){
+    checkin.state = CHECKIN_STATE_CANCELLED );
+    checkin.save();
+  });
+
   return;
 }
 
