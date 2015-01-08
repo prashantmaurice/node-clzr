@@ -323,7 +323,7 @@ if(user.type="admin"){
 		}else city=vendor.city;
 
 		if( req.query.visible ){
-			visible = req.query.visible;
+			visible = (req.query.visible == "true");
 		}else visible = vendor.visible;
 
 		if( req.query.description ){
