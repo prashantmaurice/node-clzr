@@ -146,10 +146,6 @@ router.get('/upload-policy', function( req, res ){
 			acl: 'public-read'
 		});
 
-		//var myS3Account = new s3( settings.s3.access_key, settings.s3.secret_key );
-		//var policy = myS3Account.writePolicy( settings.s3.base_path + "/" + req.user.username, settings.s3.bucket, 60, 10, 'public-read', function( a ){
-		//	console.log( a );
-		//});
 		res.end( JSON.stringify({ result:true, data:p }) );
 
 });

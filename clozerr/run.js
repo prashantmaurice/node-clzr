@@ -80,7 +80,7 @@ for(var i=0;i<arr.length;i++)
 		address: arr[i].address.street,
 		city: arr[i].address.city,
 		phone: arr[i].phone,
-		visible: arr[i].visible,
+		visible: true,
 		description: arr[i].description
 	});
 
