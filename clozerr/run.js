@@ -81,7 +81,8 @@ for(var i=0;i<arr.length;i++)
 		city: arr[i].address.city,
 		phone: arr[i].phone,
 		visible: true,
-		description: arr[i].description
+		description: arr[i].description,
+		resource_name:arr[i].username
 	});
 
 	vendor.save();

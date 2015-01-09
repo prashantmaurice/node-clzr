@@ -19,7 +19,8 @@ var vendorSchema = new Schema({
 	city: String,
 	phone: String,
 	visible: Boolean,
-	description: String
+	description: String,
+	resource_name: String
 });
 vendorSchema.index({ location: '2d' });
 

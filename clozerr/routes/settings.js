@@ -4,7 +4,7 @@ module.exports = {
 			"app_token":"643340145745435|nyelclS2lAU75ksOpYtfOLNtwOg"
 		},
 		"google":{
-			"app_token":""
+			"app_id":"496568600186-q67jdokmmuofba4updq7v8kl9j4niaoe.apps.googleusercontent.com",
 		},
 		"password":{
 			"default":"password"

@@ -131,22 +131,38 @@ router.get('/upload-policy', function( req, res ){
 		/*
 			TODO: Only allow if the user is linked to this vendor.
 		*/
+    if( !(req.user.type == "Admin") ){
+      error.err( res, "403" );
+      return;
+    }
 
-        var errobj = error.err_insuff_params(res,req,["id","access_token"]);
-        if(!errobj) {
-            return;
-        }
+    var errobj = error.err_insuff_params( res, req, ["id","access_token"] );
 
-		var p = policy({
-			secret: settings.s3.secret_key,
-			length: 5000000,
-			bucket: settings.s3.bucket,
-			key: settings.s3.base_path + "/" + req.user.username,
-			expires: new Date(Date.now() + 60000),
-			acl: 'public-read'
-		});
+    if( !errobj ) {
+      return;
+    }
 
-		res.end( JSON.stringify({ result:true, data:p }) );
+    Vendor.findOne({
+      _id : req.query.vendor_id
+    }, function( err, vendor ){
+
+      if( !vendor ){
+        error.err( res, "200" );
+      }
+      var p = policy({
+        secret: settings.s3.secret_key,
+        length: 5000000,
+        bucket: settings.s3.bucket,
+        key: settings.s3.base_path + "/" + vendor.resource_name,
+        expires: new Date(Date.now() + 60000),
+        acl: 'public-read'
+      });
+
+      var obj = { result:true, data:p };
+      res.end( JSON.stringify() );
+
+    });
+
 
 });
 
@@ -331,6 +347,10 @@ if(user.type="admin"){
 			description = req.query.description;
 		}else description = vendor.description;
 
+    if( req.query.resource_name ){
+      resource_name = req.query.resource_name;
+    }else resource_name = vendor.resource_name;
+
 
     var date_created = vendor.date_created;
 
@@ -351,6 +371,7 @@ if(user.type="admin"){
 						vendor.address = address;
 						vendor.phone = phone;
 						vendor.description = description;
+            vendor.resource_name = resource_name;
             vendor.save(function (err) {
                 if (err) console.log(err);
             });

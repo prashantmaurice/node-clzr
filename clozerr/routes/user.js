@@ -35,8 +35,17 @@ function loadFacebookDetails( user, access_token, cb ){
   });
 }
 
-function loadGoogleDetails(){
+function loadGoogleDetails( user, access_token, cb ){
+  https.get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + access_token, function( response ){
 
+    response.on("data", function( dat ){
+      var obj = JSON.parse( dat.toString() );
+      user.profile = obj;
+      user.markModified("profile");
+      cb( user );
+    });
+
+  });
 }
 
 var token = models.Token;
@@ -131,6 +140,80 @@ request.on('error', function(e) {
 
 router.get('/login/google', function(req, res) {
 
+  var errobj = error.err_insuff_params(res,req,["token"]);
+  if(!errobj) {
+    return;
+  }
+
+  var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + req.query.token, function(response) {
+    debugger;
+
+    response.on('data', function(dat) {
+      debugger;
+      d=JSON.parse(dat.toString());
+      //console.log(d);
+      if( d.issued_to && d.issued_to == settings.auth.google.app_id )
+      {
+
+        user.findOne({ social_id:d.user_id }, function(err, result) {
+          if (err) { console.log("error:") }
+          if (result)
+          {
+
+            if( !result.profile ){
+
+              loadGoogleDetails( result, req.query.token, function( user ){
+                user.save();
+                debugger;
+                var id = hat();
+                //console.log(id);
+                newid( id, user._id ).save();
+                res.end( JSON.stringify( {result : true, token : id } ) );
+              });
+
+            }else{
+
+              var id = hat();
+              console.log(id);
+
+              newid( id, result._id ).save();
+              res.end( JSON.stringify( {result : true, token : id } ) );
+
+            }
+          }
+          else
+          {
+            var nu = newUser( "google", d.user_id );
+            loadGoogleDetails(nu,req.query.token, function( user ){
+              nu.save();
+              debugger;
+              var id=hat();
+              //console.log(id);
+              newid(id,nu._id).save();
+              res.end( JSON.stringify( {result : true, token : id } ) );
+            });
+
+          }
+        });
+      }
+      else{
+        error.err( res, "102" );
+      }
+
+    });
+
+  });
+
+  //req.end();
+
+  request.on('error', function(e) {
+    console.error(e);
+  });
+
+});
+
+/*router.get('/login/google', function(req, res) {
+
   var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=1/'+req.query.token, function(response) {
 
     console.log("Statuscode: ", response.statusCode);
@@ -181,7 +264,7 @@ request.on('error', function(e) {
   console.error(e);
 });
 
-});
+});*/
 
 
 router.get('/login/password', function( req, res ){
