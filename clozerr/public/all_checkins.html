@@ -11,6 +11,7 @@
             <th>TIME</th>
             <th>OFFER</th>
             <th>OFFER-LEVEL</th>
+            <th>BILL</th>
           </tr>
         </thead>
 
@@ -20,6 +21,7 @@
             <td>{{ checkin.date_created | humanize_date }}</td>
             <td>{{ checkin.offer.caption }}</td>
             <td>{{ checkin.offer.stamps }}</td>
+            <td><a href="javascript:void(0)" class="btn btn-primary" ng-click="createBill( checkin )">MAKE BILL</a></td>
           </tr>
         </tbody>
 

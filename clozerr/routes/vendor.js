@@ -159,6 +159,7 @@ router.get('/upload-policy', function( req, res ){
       });
 
       var obj = { result:true, data:p };
+      obj.data.
       res.end( JSON.stringify() );
 
     });
@@ -299,20 +300,14 @@ router.get('/update', function (req, res) {
     }
 
     var id = req.query.vendor_id;
-    var vendor = Vendor.findOne({
-        _id: id
-    }, function (err, data) {
-        if (err) error.err(res, "210");
-        return;
-    });
-if(user.type="admin"){
-    if (req.query.latitude) {
-        latitude = req.query.latitude;
-    } else latitude = vendor.latitude;
+    if( user.type == "Admin" ){
+      if (req.query.latitude) {
+          latitude = req.query.latitude;
+        } else latitude = vendor.latitude;
     //debugger;
-    if (req.query.longitude) {
-        longitude = req.query.longitude;
-    } else longitude = vendor.latitude;
+      if (req.query.longitude) {
+          longitude = req.query.longitude;
+      } else longitude = vendor.latitude;
 
     dateUpdated = new Date();
     if (req.query.image) {
@@ -324,7 +319,7 @@ if(user.type="admin"){
     } else fid = vendor.fid;
 
     if(req.query.vendor_name){
-        name=req.query.vendor_name;
+      name=req.query.vendor_name;
     }else name=vendor.name;
 
 		if(req.query.phone){
@@ -336,7 +331,7 @@ if(user.type="admin"){
 		}else address=vendor.address;
 
 		if(req.query.city){
-			name=req.query.city;
+			city=req.query.city;
 		}else city=vendor.city;
 
 		if( req.query.visible ){
@@ -351,7 +346,6 @@ if(user.type="admin"){
       resource_name = req.query.resource_name;
     }else resource_name = vendor.resource_name;
 
-
     var date_created = vendor.date_created;
 
     Vendor.findOne({
@@ -359,31 +353,32 @@ if(user.type="admin"){
     }, function (err, vendor) {
         if (err) console.log(err);
         if (vendor) {
-
             vendor.location = [latitude, longitude];
             vendor.image = image;
             vendor.fid = fid;
             vendor.date_created = date_created;
             vendor.dateUpdated = new Date();
-            vendor.name=name;
+            vendor.name = name;
 						vendor.visible = visible;
 						vendor.city = city;
 						vendor.address = address;
 						vendor.phone = phone;
 						vendor.description = description;
             vendor.resource_name = resource_name;
-            vendor.save(function (err) {
+            console.log("Saving");
+            vendor.save(function (err, res) {
+              console.log("Saved");
+              console.log(res);
                 if (err) console.log(err);
             });
             res.send(JSON.stringify({result:true}));
         }
         else {
-            //Throw error - no such offer
+
             error.err(res,"210");
 						return;
 
         }
-
         res.end();
     });
 }
