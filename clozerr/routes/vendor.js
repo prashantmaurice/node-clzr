@@ -213,7 +213,7 @@ router.get('/get/near', function (req, res) {
 		var limit = req.query.limit;
 
 		if( !limit )
-			limit = 6;
+			limit = settings.api.default_limit;
 
 		var offset = req.query.offset;
 
@@ -300,59 +300,62 @@ router.get('/update', function (req, res) {
     }
 
     var id = req.query.vendor_id;
-    if( user.type == "Admin" ){
-      if (req.query.latitude) {
-          latitude = req.query.latitude;
-        } else latitude = vendor.latitude;
-    //debugger;
-      if (req.query.longitude) {
-          longitude = req.query.longitude;
-      } else longitude = vendor.latitude;
-
-    dateUpdated = new Date();
-    if (req.query.image) {
-        image = req.query.image;
-    } else image = vendor.image;
-
-    if (req.query.fid) {
-        fid = req.query.fid;
-    } else fid = vendor.fid;
-
-    if(req.query.vendor_name){
-      name=req.query.vendor_name;
-    }else name=vendor.name;
-
-		if(req.query.phone){
-			phone=req.query.phone;
-		}else phone = vendor.phone;
-
-		if(req.query.address){
-			address = req.query.address;
-		}else address=vendor.address;
-
-		if(req.query.city){
-			city=req.query.city;
-		}else city=vendor.city;
-
-		if( req.query.visible ){
-			visible = (req.query.visible == "true");
-		}else visible = vendor.visible;
-
-		if( req.query.description ){
-			description = req.query.description;
-		}else description = vendor.description;
-
-    if( req.query.resource_name ){
-      resource_name = req.query.resource_name;
-    }else resource_name = vendor.resource_name;
-
-    var date_created = vendor.date_created;
+    if( user.type != "Admin" ){
+      error.err( res, "200" );
+    }
 
     Vendor.findOne({
         _id: id
     }, function (err, vendor) {
         if (err) console.log(err);
         if (vendor) {
+          if (req.query.latitude) {
+            latitude = req.query.latitude;
+          } else latitude = vendor.latitude;
+          //debugger;
+          if (req.query.longitude) {
+            longitude = req.query.longitude;
+          } else longitude = vendor.latitude;
+
+          dateUpdated = new Date();
+          if (req.query.image) {
+            image = req.query.image;
+          } else image = vendor.image;
+
+          if (req.query.fid) {
+            fid = req.query.fid;
+          } else fid = vendor.fid;
+
+          if(req.query.vendor_name){
+            name=req.query.vendor_name;
+          }else name=vendor.name;
+
+          if(req.query.phone){
+            phone=req.query.phone;
+          }else phone = vendor.phone;
+
+          if(req.query.address){
+            address = req.query.address;
+          }else address=vendor.address;
+
+          if(req.query.city){
+            city=req.query.city;
+          }else city=vendor.city;
+
+          if( req.query.visible ){
+            visible = (req.query.visible == "true");
+          }else visible = vendor.visible;
+
+          if( req.query.description ){
+            description = req.query.description;
+          }else description = vendor.description;
+
+          if( req.query.resource_name ){
+            resource_name = req.query.resource_name;
+          }else resource_name = vendor.resource_name;
+
+          var date_created = vendor.date_created;
+
             vendor.location = [latitude, longitude];
             vendor.image = image;
             vendor.fid = fid;
@@ -381,6 +384,6 @@ router.get('/update', function (req, res) {
         }
         res.end();
     });
-}
+
 });
 module.exports = router;
