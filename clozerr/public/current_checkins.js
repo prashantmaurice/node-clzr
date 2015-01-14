@@ -70,12 +70,10 @@ var current_checkins = function( $rootScope, $scope, $http ){
   });
 
   $scope.update();
-  /*
-    TODO: Register for SocketIO messages here.
-  */
+
 
   $scope.reg_socket = function() {
-//TODO : will modify this
+
     var socket = io();
     socket.on('signal',function(signal) {
       console.log( "Signal received: " + signal );

@@ -24,7 +24,7 @@ module.exports = {
 		"delay_between_checkins":1000000
 	},
 	"api":{
-		"default_limit" : 15
+		"default_limit" : 30
 	}
 
 };
