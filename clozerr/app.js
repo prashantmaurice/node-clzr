@@ -73,7 +73,7 @@ app.use('/content',content);
 
 // --------- DB ----------
 var db=mongoose.connection;
-db.open('mongodb://'+settings.db.mongo.host+'/'+settings.db.mongo.name);
+db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
 // --------- DB ----------
 
 // catch 404 and forward to error handler

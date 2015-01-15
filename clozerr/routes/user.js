@@ -16,7 +16,8 @@ function newUser( backend, id ) {
   auth_type: backend,
   social_id:id,
   stamplist:{ STANDARD:0 },
-  type:"User"
+  type:"User",
+  date_created: new Date()
 });
 nuser.markModified("stamplist");
  return nuser;

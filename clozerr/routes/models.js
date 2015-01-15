@@ -50,7 +50,8 @@ Models.User = mongoose.model('User',new Schema({
 	username:String,
 	password:String,
 	auth_type:String,
-	profile: Schema.Types.Mixed
+	profile: Schema.Types.Mixed,
+	date_created:Date,
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
