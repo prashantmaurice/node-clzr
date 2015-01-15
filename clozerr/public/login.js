@@ -58,8 +58,12 @@ var login = function( $rootScope, $scope, $http ){
     success(function(data, status, headers, config) {
       console.log( data );
       $rootScope.user = data;
+      if( data.result == false ){
+        console.log("Invalid access token.");
+        $rootScope.logout();
+      }
 
-      $http.get(CLOZERR_VENDOR_URL + "?vendor_id=" + $rootScope.user.vendor_id).
+      $http.get(CLOZERR_VENDOR_URL + "?vendor_id="  + $rootScope.user.vendor_id).
       success(function(data, status, headers, config) {
         console.log( data );
         $rootScope.vendor = data;

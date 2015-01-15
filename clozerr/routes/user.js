@@ -42,6 +42,7 @@ function loadGoogleDetails( user, access_token, cb ){
     response.on("data", function( dat ){
       var obj = JSON.parse( dat.toString() );
       user.profile = obj;
+      user.upgraded = new Date();
       user.markModified("profile");
       cb( user );
     });
