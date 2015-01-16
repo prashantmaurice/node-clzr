@@ -178,8 +178,10 @@ function attachStamps( user, vendors ){
 router.get('/get/visited', function( req, res ){
 
 	var user =  req.user;
+  debugger;
 	var fid_list =_.keys( user.stamplist );
 	console.log(fid_list);
+  debugger;
 	Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
 		if( err ){
 			//TODO: Put error.
