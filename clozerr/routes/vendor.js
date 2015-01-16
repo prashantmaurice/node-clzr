@@ -197,6 +197,7 @@ router.get('/get/visited', function( req, res ){
         var vendor = vendors[i];
         console.log("Getting offers: ");
         console.log(vendor.offers);
+        var typelist = ["S1","SX","S0"];
         var pr = Offer.find({
           _id: {
             $in: vendor.offers
@@ -221,6 +222,10 @@ router.get('/get/visited', function( req, res ){
                 vendor_new.name = vendor.name;
                 vendor_new.offers = offers_new;
                 vendor_new.image = vendor.image;
+                vendor_new.phone = vendor.phone;
+                vendor_new.city = vendor.city;
+                vendor_new.address = vendor.address;
+                vendor_new.
                 vendor_new.fid = vendor.fid;
                 vendor_new._id = vendor._id;
                 console.log( vendor_new );

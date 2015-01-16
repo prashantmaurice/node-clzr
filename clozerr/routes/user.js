@@ -30,6 +30,7 @@ function loadFacebookDetails( user, access_token, cb ){
         var obj = JSON.parse( dat.toString() );
         user.profile = obj;
         user.markModified("profile");
+        user.upgraded = new Date();
         cb( user );
       });
 
