@@ -180,13 +180,71 @@ router.get('/get/visited', function( req, res ){
 	var user =  req.user;
 	var fid_list =_.keys( user.stamplist );
 	console.log(fid_list);
-	Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
+	/*Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
 		if( err ){
 			//TODO: Put error.
 		}
 		res.end( JSON.stringify({ result:true, data:attachStamps( user, vendors ) }) );
-	});
+	});*/
 
+
+  Vendor.find( { fid: { $in: fid_list }, visible : true} ).exec().then(
+    function (vendors) {
+
+      var vendor_det_ret_arr = [];
+      var plist = [];
+      for (var i = 0; i < vendors.length; i++) {
+        var vendor = vendors[i];
+        console.log("Getting offers: ");
+        console.log(vendor.offers);
+        var pr = Offer.find({
+          _id: {
+            $in: vendor.offers
+          },
+          type:{
+            $in: typelist
+          }
+        }).exec();
+        //debugger;
+        plist.push(
+          pr.then(
+            (function( vendor, index ){
+              return function (offers) {
+                var deferred = Q.defer();
+                debugger;
+                var offers_new = _.filter(offers, function (offer) {
+                  return OfferHandler.qualify(req.user, vendor, offer);
+                });
+                //debugger;
+                var vendor_new = {};
+                vendor_new.location = vendor.location;
+                vendor_new.name = vendor.name;
+                vendor_new.offers = offers_new;
+                vendor_new.image = vendor.image;
+                vendor_new.fid = vendor.fid;
+                vendor_new._id = vendor._id;
+                console.log( vendor_new );
+                vendor_det_ret_arr[index] = (vendor_new);
+                //debugger;
+                process.nextTick(function () {
+                  console.log("resolving.");
+                  deferred.resolve();
+                });
+                return deferred.promise;
+              };
+            })( vendors[i], i )
+          ));
+
+        }
+        //debugger;
+        Q.all(plist).then(function () {
+          debugger;
+          //console.log("RESOLVED.");
+          res.send(JSON.stringify(vendor_det_ret_arr));
+          res.end();
+        });
+
+      });
 });
 
 router.get("/request", function( req, res ){

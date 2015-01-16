@@ -198,7 +198,7 @@ var offers = function( $rootScope, $scope, $http) {
 
 		var access_token = localStorage.admin_token;
 		var offer = $scope.offer;
-		$http.get(CLOZERR_OFFERS_URL + "/update?access_token=" + access_token + "&offer_id=" + offer._id + "&type=" + offer.type + "&description=" + offer.description + "&caption=" + offer.caption + "&stamps=" + offer.stamps ).
+		$http.get(CLOZERR_OFFERS_URL + "/update?access_token=" + access_token + "&offer_id=" + offer._id + "&type=" + offer.type + "&description=" + encodeURIComponent( offer.description ) + "&caption=" + encodeURIComponent( offer.caption ) + "&stamps=" + offer.stamps ).
 		success(function(data, status, headers, config) {
 			//redirect
 
