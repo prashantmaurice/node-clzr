@@ -180,15 +180,15 @@ router.get('/get/visited', function( req, res ){
 	var user =  req.user;
 	var fid_list =_.keys( user.stamplist );
 	console.log(fid_list);
-	/*Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
+	Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
 		if( err ){
 			//TODO: Put error.
 		}
 		res.end( JSON.stringify({ result:true, data:attachStamps( user, vendors ) }) );
-	});*/
+	});
 
 
-  Vendor.find( { fid: { $in: fid_list }, visible : true} ).exec().then(
+  /*Vendor.find( { fid: { $in: fid_list }, visible : true} ).exec().then(
     function (vendors) {
 
       var vendor_det_ret_arr = [];
@@ -249,7 +249,7 @@ router.get('/get/visited', function( req, res ){
           res.end();
         });
 
-      });
+      });*/
 });
 
 router.get("/request", function( req, res ){
