@@ -1,11 +1,13 @@
 
 var countdown = function( selector ){
-
+  //console.log("Setting interval.");
   setInterval( function(){
+    //console.log("Running for all: "+selector);
     $( selector ).each(function( item ){
-      var datetime = new Date( new Date() - new Date(  $(item).attr("data-time") ) );
+      //console.log("Detected one.");
+      var datetime = new Date( new Date() - new Date(  $(this).attr("data-time") ) );
       var inner_html = datetime.getUTCMinutes() + ":" + datetime.getUTCSeconds();
-      $(item).html(inner_html);
+      $(this).html(inner_html);
     });
   }, 1000 );
 

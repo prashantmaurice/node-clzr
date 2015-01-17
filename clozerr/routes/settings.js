@@ -20,7 +20,7 @@ module.exports = {
 		"base_path":"app/coupons-alpha"
 	},
 	"checkin":{
-		"expiry_time":1000000,
+		"expiry_time":10 * 60 * 1000,
 		"delay_between_checkins":1000000
 	},
 	"api":{
