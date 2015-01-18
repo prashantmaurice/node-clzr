@@ -202,24 +202,23 @@ router.get("/create", function (req, res) {
 
 });
 
-function sendPushNotification(checkinobj) {
+function sendPushNotification( gcm_id, data ) {
+    console.log("Sending push notif to :" + gcm_id);
+    console.log(data);
     var message = new gcm.Message({
-        collapseKey: 'Stamps updated !',
+        collapseKey: 'validated',
         delayWhileIdle: true,
-        data: {
-            "key": "checkin_push",
-            "checkinobj": checkinobj
-        }
+        data: data
     });
 
-    var sender = new gcm.Sender('key'); //Insert Google Server API Key
+    var sender = new gcm.Sender(settings.gcm.apiKey); //Insert Google Server API Key
     var regIds = [];
-    regIds.push(checkinobj.gcm_id); //Insert Registration ID
+    regIds.push( gcm_id ); //Insert Registration ID
 
-    sender.send(message, regIds, 4, function (err, res) {
+    sender.send( message, regIds, 4, function (err, res) {
         console.log(res);
         if (err) console.log(err);
-    });
+    } );
 }
 
 router.get("/validate", function (req, res) {
@@ -236,7 +235,6 @@ router.get("/validate", function (req, res) {
     var obj = {
         userOfVendor: userOfVendor
     };
-
 
     var errobj = error.err_insuff_params(res, req, ["checkin_id"]);
     if (!errobj) {
@@ -296,6 +294,12 @@ router.get("/validate", function (req, res) {
                 OfferHandler.onCheckin( obj.user, obj.vendor, obj.offer, validate_data );
                 //debugger;
                 obj.user.save();
+
+                // ACTION: NOTIFY.
+                if( obj.checkin.gcm_id != '0' ){
+                  // SHOULD BE CREATED BY OFFER TYPE CONTROLLER.
+                  sendPushNotification( obj.checkin.gcm_id, { type: "VALIDATE_NOTIF", title: "Check-in Successful", message: "Your visit at " + obj.vendor.name + " has been confirmed!" })
+                }
 
                 res.end(JSON.stringify({
                     result: true
