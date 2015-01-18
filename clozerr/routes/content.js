@@ -18,6 +18,7 @@ router.get('/', function (req, res) {
 		}
 		if(content==null) {
 			error.err(res,"709");
+			return;
 		}
 		var value = content.value;
 		res.end(JSON.stringify({result:true,data:value}));
@@ -25,10 +26,11 @@ router.get('/', function (req, res) {
 });
 
 router.get('/create',function (req, res) {
-	
+
 	var user = req.user;
 	if(!(user.type=="Admin")) {
 		error.err(res,"909");
+		return;
 	}
 
 	var errobj = error.err_insuff_params(res, req, ["key","value"]);
