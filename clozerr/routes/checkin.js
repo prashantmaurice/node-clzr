@@ -298,7 +298,7 @@ router.get("/validate", function (req, res) {
                 // ACTION: NOTIFY.
                 if( obj.checkin.gcm_id != '0' ){
                   // SHOULD BE CREATED BY OFFER TYPE CONTROLLER.
-                  sendPushNotification( obj.checkin.gcm_id, { type: "VALIDATE_NOTIF", title: "Check-in Successful", message: "Your visit at " + obj.vendor.name + " has been confirmed!" })
+                  sendPushNotification( obj.checkin.gcm_id, { type: "STANDARD", title: "Check-in Successful", message: "Your visit at " + obj.vendor.name + " has been confirmed!" })
                 }
 
                 res.end(JSON.stringify({
