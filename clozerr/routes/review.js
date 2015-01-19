@@ -10,7 +10,7 @@ router.get('/create', function (req, res) {
 
     var checkin_id = req.query.checkin_id;
     var stars=req.query.stars;
-    debugger;
+    console.log(stars);
     var dateCreated = new Date();
 
     var review = new Review({

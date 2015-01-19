@@ -519,9 +519,14 @@ router.get("/confirmed", function (req, res) {
                     }).exec();
 
                 }).then(function (offer) {
+                    chfull.offer = offer.toJSON();
+                    return Review.findOne({
+                        chekinid: ch._id;
+                    }).exec();
+                }).then(function (review){
+                    chfull.review=review.toJSON();    
                     var deferred = Q.defer();
                     debugger;
-                    chfull.offer = offer.toJSON();
                     chfull._id = ch._id;
                     chfull.state = ch.state;
                     chfull.pin = ch.pin;
