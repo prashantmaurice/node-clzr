@@ -15,7 +15,6 @@ var policy = require("s3-policy");
 var settings = require("./settings");
 
 router.get('/create', function (req, res) {
-
     var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
@@ -30,7 +29,6 @@ router.get('/create', function (req, res) {
     var offers = [],
         offers_old = [],
         date_created = new Date();
-
     var vendor = new Vendor({
         //vendorid:vendorid,
         location: [lat, lon],
@@ -42,7 +40,6 @@ router.get('/create', function (req, res) {
         date_created: date_created,
         dateUpdated:date_created
     });
-
     res.send({
         result: true,
         data: vendor
@@ -51,6 +48,7 @@ router.get('/create', function (req, res) {
     vendor.save();
 }
 });
+
 
 router.get('/get/all',function(req,res) {
 
@@ -427,6 +425,7 @@ router.get('/get/near', function (req, res) {
 })
 router.get('/update', function (req, res) {
     var latitude, longitude, image, fid, name, visible, address, city, phone, description;
+    var question;
     var user=req.user;
     var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
     if (!errobj) {
@@ -435,9 +434,10 @@ router.get('/update', function (req, res) {
     }
 
     var id = req.query.vendor_id;
+    /*
     if( user.type != "Admin" ){
       error.err( res, "200" );
-    }
+    }*/
 
     Vendor.findOne({
         _id: id
@@ -488,7 +488,11 @@ router.get('/update', function (req, res) {
           if( req.query.resource_name ){
             resource_name = req.query.resource_name;
           }else resource_name = vendor.resource_name;
-
+          
+          if( req.query.question){
+            question=req.query.question;
+          }else question=vendor.question;
+          
           var date_created = vendor.date_created;
 
             vendor.location = [latitude, longitude];
@@ -503,6 +507,8 @@ router.get('/update', function (req, res) {
 						vendor.phone = phone;
 						vendor.description = description;
             vendor.resource_name = resource_name;
+            vendor.question=question;
+            console.log("question\n"+vendor.question);
             console.log("Saving");
             vendor.save(function (err, res) {
               console.log("Saved");

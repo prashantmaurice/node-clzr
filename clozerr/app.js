@@ -15,7 +15,7 @@ var vendor = require('./routes/vendor');
 var checkin = require('./routes/checkin');
 var content = require('./routes/content');
 var settings = require('./routes/settings');
-
+var rev = require('./routes/review');
 var error = require('./routes/error');
 
 var app = express();
@@ -70,7 +70,7 @@ app.use('/offer', offer);
 app.use('/vendor', vendor);
 app.use('/checkin', checkin);
 app.use('/content',content);
-
+app.use('/review',rev);
 // --------- DB ----------
 var db=mongoose.connection;
 db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
