@@ -3,21 +3,22 @@ function getBillHTML( checkin ){
   var str = "<h3 style='text-align:center' style='font-family:Roboto'>CLOZERR INVOICE</h3>"
       str += "<hr>"
 
-      /*str += "<table class='table table-bordered' style='font-size:12px'><thead><tr>"
-      str += "<th>Username</th>"
-      str += "<th>User ID</th>"
-      str += "<th>Offer ID</th>"
-      str += "<th>Offer Caption</th>"
+      str += "<ul>"
+      //str += "<li>Username</li>"
+      //str += "<li>User ID</li>"
+      //str += "<li>Offer ID</li>"
+      //str += "<li>Offer Caption</li>"
 
-      str += "</tr></thead><tbody><tr>"
+      //str += "</tr></thead><tbody><tr>"
 
-      str += "<td>" + checkin.user.profile.name + "</td>"
-      str += "<td>" + checkin.user._id + "</td>"
-      str += "<td>" + checkin.offer._id + "</td>"
-      str += "<td>" + checkin.offer.caption + "</td>"
+      str += "<li>Username: " + checkin.user.profile.name + "</li>"
+      str += "<li>User ID:  " + checkin.user._id + "</li>"
+      str += "<li>Offer ID: " + checkin.offer._id + "</li>"
+      str += "<li>Offer:    " + checkin.offer.caption + "</li>"
+      str += "<li>Timestamp:    " + new Date( checkin.date_created ).toString() + "</li>"
 
-      str += "</tr></tbody></table>"
-      str += "<hr>"*/
+      //str += "</tr></tbody></table>"
+      str += "</ul>"
       return str;
 }
 

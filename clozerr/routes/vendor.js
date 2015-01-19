@@ -85,9 +85,14 @@ router.get('/get', function (req, res) {
                 $in: vendor.offers
             }
         }, function (err, offers) {
+            if(err) console.log(err);
             var vendor_json = vendor.toJSON();
             vendor_json.offers = offers;
             //debugger;
+            var offers_qualified = _.filter(offers, function(offer) {
+              return OfferHandler.qualify(req.user,vendor,offer);
+            });
+            vendor_json.offers_qualified = offers_qualified;
             res.send(JSON.stringify(vendor_json));
             res.end();
         });
