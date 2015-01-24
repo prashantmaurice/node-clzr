@@ -14,13 +14,14 @@ var vendorSchema = new Schema({
 	offers_old : [ObjectId],
 	fid:String,
 	date_created:Date,
-  dateUpdated:Date,
+    dateUpdated:Date,
 	address: String,
 	city: String,
 	phone: String,
 	visible: Boolean,
 	description: String,
-	resource_name: String
+	resource_name: String,
+	question : [String]
 });
 vendorSchema.index({ location: '2d' });
 
@@ -74,6 +75,11 @@ Models.Offer = mongoose.model('Offer',new Schema({
 	caption:String,
 	description:String,
 	dateUpdated:Date
-}));;
+}));
+Models.Review = mongoose.model('Review',new Schema({
+	checkinid:ObjectId,
+	stars:[Number],
+	date_created:Date
+}));
 
 module.exports = Models;
