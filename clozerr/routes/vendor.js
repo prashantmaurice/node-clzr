@@ -215,15 +215,8 @@ router.get('/get/visitedV2', function( req, res ){
                 });
                 //debugger;
                 var vendor_new = vendor.toJSON();
-                vendor_new.location = vendor.location;
-                vendor_new.name = vendor.name;
                 vendor_new.offers = offers_new;
-                vendor_new.image = vendor.image;
-                vendor_new.phone = vendor.phone;
-                vendor_new.city = vendor.city;
-                vendor_new.address = vendor.address;
-                vendor_new.fid = vendor.fid;
-                vendor_new._id = vendor._id;
+                vendor_new.stamps = user.stamplist[vendor_new.fid] || 0;
                 console.log( vendor_new );
                 vendor_det_ret_arr[index] = (vendor_new);
                 //debugger;
@@ -262,69 +255,7 @@ router.get('/get/visited', function( req, res ){
 	});
 
 
-  /*Vendor.find( { fid: { $in: fid_list }, visible : true} ).exec().then(
-    function (vendors) {
-
-      var vendor_det_ret_arr = [];
-      var plist = [];
-      for (var i = 0; i < vendors.length; i++) {
-        var vendor = vendors[i];
-        console.log("Getting offers: ");
-        console.log(vendor.offers);
-        var typelist = ["S1","SX","S0"];
-        var pr = Offer.find({
-          _id: {
-            $in: vendor.offers
-          },
-          type:{
-            $in: typelist
-          }
-        }).exec();
-        //debugger;
-        plist.push(
-          pr.then(
-            (function( vendor, index ){
-              return function (offers) {
-                var deferred = Q.defer();
-                debugger;
-                var offers_new = _.filter(offers, function (offer) {
-                  return OfferHandler.qualify(req.user, vendor, offer);
-                });
-                //debugger;
-                var vendor_new = {};
-                vendor_new.location = vendor.location;
-                vendor_new.name = vendor.name;
-                vendor_new.offers = offers_new;
-                vendor_new.image = vendor.image;
-                vendor_new.phone = vendor.phone;
-                vendor_new.city = vendor.city;
-                vendor_new.address = vendor.address;
-                vendor_new.
-                vendor_new.fid = vendor.fid;
-                vendor_new._id = vendor._id;
-                console.log( vendor_new );
-                vendor_det_ret_arr[index] = (vendor_new);
-                //debugger;
-                process.nextTick(function () {
-                  console.log("resolving.");
-                  deferred.resolve();
-                });
-                return deferred.promise;
-              };
-            })( vendors[i], i )
-          ));
-
-        }
-        //debugger;
-        Q.all(plist).then(function () {
-          debugger;
-          //console.log("RESOLVED.");
-          res.send(JSON.stringify(vendor_det_ret_arr));
-          res.end();
-        });
-
-      });*/
-});
+  });
 
 router.get("/request", function( req, res ){
 	var user = req.user;
