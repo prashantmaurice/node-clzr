@@ -1,0 +1,982 @@
+{ "results": [
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "CSIR Road, Near Ascendas IT Park, Taramani"
+        },
+        "caption": "Pizza Republic",
+        "createdAt": "2014-08-22T19:43:37.855Z",
+        "email": "example@example.com",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/pizzarepublic.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.9915,
+            "longitude": 80.2336
+        },
+        "objectId": "oBgBDHHknq",
+        "pin": "1234",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Italian",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "italian",
+                "fast-food",
+                "non-veg",
+                "international",
+                "pizza"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Pizza Republic",
+        "updatedAt": "2014-10-23T12:36:35.338Z",
+        "username": "pizzarepublic",
+        "vendorId": "PIZR001"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "19, 3rd Street, Wallace Garden Road, Nungambakkam"
+        },
+        "caption": "Tuscana",
+        "createdAt": "2014-09-05T12:03:38.038Z",
+        "description": "A classic wood fired pizzeria created by Vipin Sachdev \u0026 Chef Willi brings the very best of authentic Italian food to the city. Tucked away in the upcoming area of Khader Nawaz Khan, we offer thin crust wood fired pizza with 4 different bases- Classic refined wheat, Whole wheat, Multigrain and Gluten free, presented in rustic wooden platter which adds originality to a flavorful experience. Our pizzeria is complemented by the addition of delectable risottos and inviting pastas, where we also offer a range of eggless, homemade and gluten free options. The trophy tiramisu is just one of our many devoured desserts, which complemented by an espresso is the perfect end to an authentic savored Italian experience. The Tuscana team extends a warm welcome to you and we hope you give us the honor of unleashing your taste buds while we delightfully serve you.",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/tuscana.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.0597049,
+            "longitude": 80.22522779999997
+        },
+        "objectId": "6HQ6AiUHHY",
+        "pin": "1234",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Italian",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 2,
+            "tags": [
+                "italian",
+                "fast-food",
+                "non-veg",
+                "international",
+                "pizza"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Tuscana Pizzeria",
+        "updatedAt": "2014-10-23T12:36:33.542Z",
+        "username": "tuscana",
+        "vendorId": "TUSC001"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "13/6, Jaganathan Road, Nungambakkam"
+        },
+        "caption": "DG's Grizzlers",
+        "createdAt": "2014-09-15T17:51:21.376Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/dgsgrizzlers.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.060724,
+            "longitude": 80.245397
+        },
+        "objectId": "egQJlGBhrl",
+        "phone": "914430853712",
+        "pin": "1232",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Continental",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 4.75,
+            "ratingCount": 4,
+            "tags": [
+                "sizzlers",
+                "grills"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "DG's Grizzlers",
+        "updatedAt": "2014-11-15T09:28:13.134Z",
+        "username": "dgsgrizzlers",
+        "vendorId": "DGS001"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "SFC, IIT Madras"
+        },
+        "caption": "Gurunath Departmental Stores",
+        "createdAt": "2014-09-15T18:17:24.766Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/gurunath.png",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.986773,
+            "longitude": 80.235323
+        },
+        "objectId": "y6sU3nYsSW",
+        "pin": "1456",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "N/A",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 2,
+            "tags": [
+                "stationery"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Gurunath Departmental Stores",
+        "updatedAt": "2014-10-05T16:29:41.145Z",
+        "username": "gurunath",
+        "vendorId": "GURU001"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "SFC, IIT Madras"
+        },
+        "caption": "Andavar",
+        "createdAt": "2014-09-20T06:01:16.093Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/andavar.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.986842,
+            "longitude": 80.234951
+        },
+        "objectId": "VcWrDJLZjo",
+        "pin": "2214",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 4.5,
+            "ratingCount": 2,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Andavar Fresh Fruit Juices",
+        "updatedAt": "2014-09-20T07:08:29.123Z",
+        "username": "andavar",
+        "vendorId": "AND01"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "Raja Annamalai Puram"
+        },
+        "caption": "Burgundy's",
+        "createdAt": "2014-09-20T06:27:06.668Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/bugundys.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.022045,
+            "longitude": 80.26279729999999
+        },
+        "objectId": "FYkbhfu0H2",
+        "phone": "914449001000",
+        "pin": "1114",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Burgundy's",
+        "updatedAt": "2014-11-15T09:27:10.013Z",
+        "username": "burgundys",
+        "vendorId": "BURG01"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "Himalaya, IIT Madras"
+        },
+        "caption": "La Salade",
+        "createdAt": "2014-09-22T19:31:43.445Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/lasalade.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.986842,
+            "longitude": 80.234951
+        },
+        "objectId": "PPMRlzhhcR",
+        "pin": "1221",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "La Salade",
+        "updatedAt": "2014-09-22T19:35:41.246Z",
+        "username": "lasalade",
+        "vendorId": "LASALAD"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "34/29, 2nd Main Road, Kasturibai Nagar, Adyar"
+        },
+        "caption": "That Madras Place",
+        "createdAt": "2014-10-03T07:02:13.774Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/madrasplace.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.997125,
+            "longitude": 80.236938
+        },
+        "objectId": "5rohUIbcds",
+        "pin": "1235",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "That Madras Place",
+        "updatedAt": "2014-10-03T08:34:40.283Z",
+        "username": "madrasplace",
+        "vendorId": "TMADRASPL"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "18/24, Yafa Building Basement, Khadar Nawaz Khan Road, Nungambakkam"
+        },
+        "caption": "Kryptos",
+        "createdAt": "2014-09-05T12:23:06.914Z",
+        "description": "Greek for “Hidden”, Kryptos, is a treasured jewel tucked away in the cellar of the Yafa building on Khader Nawaz Khan road. With its bright décor and sculptured stone clad walls, Kryptos is an explosion of delight where diners can sample some of the best vegetarian cuisine Chennai has to offer. The cuisine at Kryptos Vegetarian builds upon the reputation enjoyed by Kryptos, in the past, as a fully fledged Greek restaurant, to bring a change into the world of vegetarian cooking, that complements the life style and dining habits of today’s discerning clients. Complementing our Greek vegetarian fare are a range of dishes drawing from the world of Indian, Mexican and Chinese foods, plus offering a range of divine desserts and cooling beverages. Kryptos Vegetarian offers the only iced salad counter in Chennai’s restaurant scene and one that has justifiably earned the loyalty and love of our diners. With a selection of fresh salads, fruits, vegetables, cheese and fresh breads, the salad counter is great for a meal in itself or as an accompaniment to any of the wide range of dishes that we offer to devour. Our menu includes dishes inspired from around the world, such as Mexican vegetarian Burritos and Enchiladas, Chinese Manchurian and Crispy Tofu, Vegetarian Moussaka, Indian Paneer Kofta, Hara Bara Kebabs and Channa Masala, Beetroot and Beans burger and thin crust pizzas, amongst a range of platters to share. Finish your meal with a Baklava, our renowned eggless Tiramisu, Hot Chocolate Puffs dripping in chocolate sauce, sugar-free Carrot Kheer or just ask for a Greek coffee or a steaming masala tea! Whether you are looking for a chic restaurant to take your intimate date or as a family gathering around our renowned center stone table, Kryptos Vegetarian offers something for everyone all under one happy roof. We hope to be part of your extended family where we will be honored to serve you and share the happiness that great food brings.",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/kryptos.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.0606766,
+            "longitude": 80.24978039999996
+        },
+        "objectId": "U5zGOxJHiC",
+        "pin": "1234",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Greek",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "italian",
+                "fast-food",
+                "non-veg",
+                "international",
+                "pizza"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Kryptos",
+        "updatedAt": "2014-10-23T12:36:34.436Z",
+        "username": "kryptos",
+        "vendorId": "KRYP001"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "Ground Floor, Phase 1, Planet Yumm Food Court, Ascendas International Tech Park, CSIR Road, Taramani"
+        },
+        "caption": "Bobacha",
+        "createdAt": "2014-09-06T09:21:27.812Z",
+        "description": "Bobacha's bubble tea concept store offers a totally new style of uniquely flavored tea based beverages, delicious Smoothies and Frothy. Bubble Teas have a Jasmine green or Assam black tea base which are infused with delicious fruit flavourings, and addition of Tapioca pearls or Bobas adds fun to the drink.",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/bobacha.png",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.985929,
+            "longitude": 80.246575
+        },
+        "objectId": "YlrppMCje1",
+        "phone": "919677222312",
+        "pin": "1111",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Japanese",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 3,
+            "tags": [
+                "tea",
+                "drinks",
+                "bubble",
+                "international"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Bobacha",
+        "updatedAt": "2014-10-11T11:57:46.643Z",
+        "username": "bobacha",
+        "vendorId": "BOB001"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "9B, 1st Floor, Kakani Towers, Khader Nawaz Khan Road, Above Raymond, Nungambakkam"
+        },
+        "caption": "Shanghai Annaachi",
+        "createdAt": "2014-09-06T18:37:54.760Z",
+        "description": "Elaneer pudding?! Wondering how it would taste like? Then visit this beautiful restaurant and enjoy the exquisite cuisine of Chinese and Indian fusion.\u0000",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/shangaiannaachi.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.059705,
+            "longitude": 80.225228
+        },
+        "objectId": "tL64O3lZBZ",
+        "phone": "917299993773",
+        "pin": "2132",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Indian",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "tea",
+                "drinks",
+                "bubble",
+                "international"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Shanghai Annaachi",
+        "updatedAt": "2014-09-15T18:20:12.361Z",
+        "username": "shanghaiannaachi",
+        "vendorId": "SA01"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "100 Feet Bypass Road, 3rd Main Road, Opposite Murugan Kalyana Mandapam, Velachery"
+        },
+        "caption": "Pizza Empire",
+        "createdAt": "2014-09-06T18:38:06.148Z",
+        "description": "Italian food fan? Get affordable and delicious pizzas here and enjoy a nice get together with your family and friends.\u0000",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/pizzaempire.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.983319,
+            "longitude": 80.217891
+        },
+        "objectId": "zJuALyeXLc",
+        "phone": "914445122333",
+        "pin": "3342",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Itailan",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "tea",
+                "drinks",
+                "bubble",
+                "international"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Pizza Empire",
+        "updatedAt": "2014-09-07T03:43:16.105Z",
+        "username": "pizzaempire",
+        "vendorId": "PE01"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "Near DoMS, IIT Madras"
+        },
+        "caption": "Kickstart Cafe",
+        "createdAt": "2014-09-17T10:20:37.606Z",
+        "description": "This September, all roads lead to: Chennai's first biker Cafe. Stay Tuned.",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/kickstartcafe.png",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.991388,
+            "longitude": 80.234346
+        },
+        "objectId": "bh7e4bdkyo",
+        "pin": "2134",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Cafe",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "stationery"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Kickstart Cafe",
+        "updatedAt": "2014-09-27T07:49:25.362Z",
+        "username": "kickstartcafe",
+        "vendorId": "KICK01"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "81, Rajalakshmi Nagar, 100 Feet Bypass Road, Velachery"
+        },
+        "caption": "Peaches",
+        "createdAt": "2014-10-03T07:20:40.448Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/peaches.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.975971,
+            "longitude": 80.221209
+        },
+        "objectId": "mSeSwL2RLr",
+        "pin": "1880",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Peaches",
+        "updatedAt": "2014-10-03T08:34:40.895Z",
+        "username": "peaches",
+        "vendorId": "PEACHES"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "Tharamani Road, Ramagiri Nagar"
+        },
+        "caption": "Tadka Talk",
+        "createdAt": "2014-10-03T08:56:09.294Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/tadkatalk.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.981972,
+            "longitude": 80.232272
+        },
+        "objectId": "J38m9zVnrv",
+        "pin": "1882",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Tadka Talk",
+        "updatedAt": "2014-10-03T08:58:28.839Z",
+        "username": "tadkatalk",
+        "vendorId": "TADKA"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "8, Ayodhya Colony, Taramani Road, Near TCS, Velachery, Chennai"
+        },
+        "caption": "Jalapeno",
+        "createdAt": "2014-10-04T17:24:35.542Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/jalapeno_.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.98252,
+            "longitude": 80.231347
+        },
+        "objectId": "i6omQMh64N",
+        "phone": "914430853891",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "public_name": "Jalapeno",
+        "updatedAt": "2014-11-15T09:26:12.665Z",
+        "username": "jalapeno",
+        "vendorId": "JALAPENO"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "48B/2, 1st Main Road, Gandhi Nagar, Adyar"
+        },
+        "caption": "The Stop",
+        "createdAt": "2014-10-17T17:25:52.857Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/thestop.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.007948,
+            "longitude": 80.252402
+        },
+        "objectId": "LrFOsvhGhz",
+        "phone": "914430853728",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 2,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "The Stop",
+        "updatedAt": "2014-12-17T10:38:51.129Z",
+        "username": "thestop",
+        "vendorId": "THESTOP"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "80B, CSI Church Gate Road, Taramani Road, Annai Indira Nagar, Velachery"
+        },
+        "caption": "Parfait 3",
+        "createdAt": "2014-10-17T17:26:18.678Z",
+        "description": "Parfait 3, as we are branded, is an exclusive Continental Restaurant, Bakery and Confectionery concept designed for the young at heart. \"Parfait\" in French means \"Perfect\" and \"3\" stands for our perfection in Quality, Quantity and Service. Our ambience is contemporary and simple which when combined with our delicious food and warm hospitality, make us a truly mouth watering prospect.",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/parfait3.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.97532,
+            "longitude": 80.220635
+        },
+        "objectId": "qOnnT0xd83",
+        "phone": "914430853620",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Parfait 3",
+        "updatedAt": "2014-11-15T09:24:20.936Z",
+        "username": "parfait3",
+        "vendorId": "PARFAIT3"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "2nd Main, 5th Avenue, Thiruvalluvar Nagar, Besant Nagar"
+        },
+        "caption": "Cafe Adoniya",
+        "createdAt": "2014-10-27T13:14:54.020Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/cafeadoniya.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 12.987616,
+            "longitude": 80.238798
+        },
+        "objectId": "Xz3BvYDEUG",
+        "phone": "914424466488",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "public_name": "Cafe Adoniya",
+        "updatedAt": "2014-11-15T09:23:51.348Z",
+        "username": "cafeadoniya",
+        "vendorId": "CAFEADONIYA"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "147/9, 2nd Avenue, Besant Nagar"
+        },
+        "caption": "Jonah's Bistro",
+        "createdAt": "2014-11-14T07:55:11.918Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/jonahsbistro.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.003306,
+            "longitude": 80.272254
+        },
+        "objectId": "YFQbRippUL",
+        "phone": "914443511119\n",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "public_name": "Jonah's Bistro",
+        "updatedAt": "2014-12-11T11:27:12.320Z",
+        "username": "jonahsbistro",
+        "vendorId": "JONAHSBISTRO"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "13, 3rd Avenue, Sai Ram Colony, Above Cafe Coffee Day Lounge, Besant Nagar, Chennai"
+        },
+        "caption": "Y Cook",
+        "createdAt": "2014-10-17T17:17:35.350Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/ycook.png",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.005063,
+            "longitude": 80.269774
+        },
+        "objectId": "0X394wRv56",
+        "phone": "914424460183",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "protocol": "pin",
+        "public_name": "Y Cook",
+        "updatedAt": "2014-11-15T09:25:43.834Z",
+        "username": "ycook",
+        "vendorId": "YCOOK"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "2/14, Mount Poonamalle Road, Ramapuram, Chennai"
+        },
+        "caption": "Toss Up",
+        "createdAt": "2014-12-29T17:26:32.688Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/tossup.png",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.031744,
+            "longitude": 80.181672
+        },
+        "objectId": "EZoH6ceLcJ",
+        "phone": "914430853681",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "public_name": "Toss Up",
+        "updatedAt": "2014-12-29T19:21:39.874Z",
+        "username": "tossup",
+        "vendorId": "TOSSUP"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "2/13, Mount Poonamalle High Road, Opposite DLF, Ramapuram, Chennai"
+        },
+        "caption": "Chennai Chillin",
+        "createdAt": "2014-12-29T19:22:08.893Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/chennaichillin.png",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.032292,
+            "longitude": 80.163261
+        },
+        "objectId": "w9qLo0remN",
+        "phone": "914422492493",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "public_name": "Chennai Chillin",
+        "updatedAt": "2014-12-29T20:06:35.066Z",
+        "username": "chennaichillin",
+        "vendorId": "CHENNAICHILLIN"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "T 54 B, 1st Floor, Elliots Beach Road, Besant Nagar"
+        },
+        "caption": "Mash",
+        "createdAt": "2015-01-03T21:30:01.318Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/mash.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.084803,
+            "longitude": 80.274991
+        },
+        "objectId": "UJNNqym7n7",
+        "phone": "914445511555",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "public_name": "Mash",
+        "updatedAt": "2015-01-03T21:53:48.217Z",
+        "username": "mash",
+        "vendorId": "MASH"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "11, Poes Garden, 2nd Street, Kasturi Rangan Road, Near Ashwini Hospital, Alwarpet"
+        },
+        "caption": "Dario's",
+        "createdAt": "2015-01-03T21:30:13.241Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/darios.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.081604,
+            "longitude": 80.275183
+        },
+        "objectId": "ahr50bzwOe",
+        "phone": "914430853600",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "public_name": "Dario's",
+        "updatedAt": "2015-01-03T21:56:04.501Z",
+        "username": "darios",
+        "vendorId": "DARIOS"
+    },
+	{
+        "active": true,
+        "address": {
+            "city": "Chennai",
+            "street": "9, S-Block, 6th Avenue, Anna Nagar East"
+        },
+        "caption": "Brickhouse Bistro",
+        "createdAt": "2015-01-03T21:30:59.899Z",
+        "image": "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/brickhousebistro.jpg",
+        "location": {
+            "__type": "GeoPoint",
+            "latitude": 13.092205,
+            "longitude": 80.219851
+        },
+        "objectId": "QrMDM84mUe",
+        "phone": "919884373002",
+        "props": {
+            "avg_price": 500,
+            "cuisine": "Fresh Juices",
+            "location": {
+                "__type": "GeoPoint",
+                "latitude": 10,
+                "longitude": 10
+            },
+            "rating": 5,
+            "ratingCount": 1,
+            "tags": [
+                "Fruit",
+                "Juices"
+            ]
+        },
+        "public_name": "Brickhouse Bistro",
+        "updatedAt": "2015-01-03T21:56:33.168Z",
+        "username": "brickhousebistro",
+        "vendorId": "BHBISTRO"
+    }
+] }

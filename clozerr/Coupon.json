@@ -1,0 +1,2458 @@
+{ "results": [
+	{
+        "active": true,
+        "caption": "Free Main Course Dish",
+        "couponId": "MCDGS1",
+        "createdAt": "2014-09-15T18:52:45.943Z",
+        "group": "DGS01",
+        "objectId": "XgeQ6I0GmO",
+        "offer": [
+            {
+                "$$hashKey": "00I",
+                "caption": "Get a free Main Course dish on a minimum bill of Rs 1000/- only",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "item",
+            "style2": "generic"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:18.013Z",
+        "visible": true,
+        "visitCount": 4
+    },
+	{
+        "active": true,
+        "caption": "Free Dessert",
+        "couponId": "DESSERTDGS1",
+        "createdAt": "2014-09-15T18:50:04.715Z",
+        "group": "DGS01",
+        "objectId": "RJg8Cwd6rA",
+        "offer": [
+            {
+                "$$hashKey": "00I",
+                "caption": "Get a free dessert item on a minimum bill of Rs 1000/-",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "item",
+            "style2": "generic"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:19.255Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "Fusion Meals Combo",
+        "couponId": "COMBOSA1",
+        "createdAt": "2014-09-07T03:17:54.955Z",
+        "group": "SA01",
+        "objectId": "TqS9Y5RIOg",
+        "offer": [
+            {
+                "caption": "Rice, Egg Masala, Curd, Fish gravy, Fish fry, Rasam,  Appalam, Pickle, Payasam and Unlimited Banana Dosa @ Rs. 199",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "combo",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:20.228Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": false,
+        "caption": "SampleCaption",
+        "createdAt": "2014-10-28T12:51:04.878Z",
+        "group": "LAS01",
+        "objectId": "YgPkYzwJxM",
+        "offer": [
+            {
+                "caption": "Edit this content",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-28T12:51:04.878Z",
+        "visible": false,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "Get your third stamp!",
+        "createdAt": "2014-12-31T10:11:37.832Z",
+        "description": "undefined",
+        "group": "offerset1",
+        "objectId": "beYmpo1QAw",
+        "offer": [
+            {
+                "caption": "Get your third stamp! 4th stamp gets you FREE Soup or Salad of your choice!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-31T10:12:07.706Z",
+        "visible": true,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "Fusion Meals Combo",
+        "couponId": "COMBOSA1",
+        "createdAt": "2014-09-07T03:25:34.160Z",
+        "group": "SA01",
+        "objectId": "UbOCDRC4SC",
+        "offer": [
+            {
+                "caption": "Rice, Egg Masala, Curd, Fish gravy, Fish fry, Rasam,  Appalam, Pickle, Payasam and Unlimited Banana Dosa @ Rs. 199",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "combo",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:34.206Z",
+        "visible": true,
+        "visitCount": 5
+    },
+	{
+        "active": true,
+        "caption": "Fusion Meals Combo",
+        "couponId": "COMBOSA4",
+        "createdAt": "2014-09-07T03:25:35.482Z",
+        "group": "SA01",
+        "objectId": "4i5Dgy5eEd",
+        "offer": [
+            {
+                "caption": "Rice, Egg Masala, Curd, Fish gravy, Fish fry, Rasam,  Appalam, Pickle, Payasam and One Banana Dosa @ Rs. 199",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "combo",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:39.353Z",
+        "visible": true,
+        "visitCount": 4
+    },
+	{
+        "active": true,
+        "caption": "Fusion Meals Combo",
+        "couponId": "COMBOSA3",
+        "createdAt": "2014-09-07T03:25:36.257Z",
+        "group": "SA01",
+        "objectId": "gMuym8cSHF",
+        "offer": [
+            {
+                "caption": "Rice, Egg Masala, Curd, Fish gravy, Fish fry, Rasam,  Appalam, Pickle, Payasam and One Banana Dosa @ Rs. 199",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "combo",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:35.015Z",
+        "visible": true,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "Fusion Meals Combo",
+        "couponId": "COMBOSA2",
+        "createdAt": "2014-09-07T03:25:37.382Z",
+        "group": "SA01",
+        "objectId": "UUJCdzdDZh",
+        "offer": [
+            {
+                "caption": "Rice, Egg Masala, Curd, Fish gravy, Fish fry, Rasam,  Appalam, Pickle, Payasam and One Banana Dosa @ Rs. 199",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "combo",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:37.721Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": false,
+        "caption": "Flat 15% Off on Ala Carte",
+        "couponId": "FLAT15KR1",
+        "createdAt": "2014-09-05T12:29:50.332Z",
+        "description": "undefined",
+        "group": "KRYP01",
+        "objectId": "A2B9qEQf2L",
+        "offer": [
+            {
+                "$$hashKey": "00Y",
+                "caption": "Get Flat 15% Off on Ala Carte",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "greek"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-12T12:31:18.914Z",
+        "visible": false,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "Free Soup/Starter",
+        "couponId": "SOUPDGS1",
+        "createdAt": "2014-09-15T18:51:32.222Z",
+        "group": "DGS01",
+        "objectId": "EB60vTvzvq",
+        "offer": [
+            {
+                "caption": "Get a free Soup/Starter on a minimum bill of Rs 1000/-",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "item",
+            "style2": "generic"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:29.160Z",
+        "visible": true,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "Flat 25% Off",
+        "couponId": "FLAT25OFFDGS",
+        "createdAt": "2014-09-15T18:53:54.935Z",
+        "group": "DGS01",
+        "objectId": "Aodmo0SkaN",
+        "offer": [
+            {
+                "caption": "Get Flat 25% off on a minimum bill of Rs 1000/-",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:28.470Z",
+        "visible": true,
+        "visitCount": 5
+    },
+	{
+        "active": true,
+        "caption": "Buy 1 Get 1 Free Sizzler",
+        "couponId": "BOGODGS01",
+        "createdAt": "2014-09-15T18:48:37.932Z",
+        "group": "DGS01",
+        "objectId": "oWrIw5lcK1",
+        "offer": [
+            {
+                "caption": "Buy 1 get 1 free Sizzler on a minimum bill of Rs1500",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "bogo",
+            "style2": "generic"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:27.072Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "Flat 15% Off on Ala Carte",
+        "couponId": "FLAT15KR5",
+        "createdAt": "2014-09-05T12:29:53.783Z",
+        "group": "KRYP01",
+        "objectId": "Hf2lcY8HQ0",
+        "offer": [
+            {
+                "caption": "Get Flat 15% Off on Ala Carte",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "greek"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:44.198Z",
+        "visible": true,
+        "visitCount": 5
+    },
+	{
+        "active": true,
+        "caption": "Flat 15% Off on Ala Carte",
+        "couponId": "FLAT15KR4",
+        "createdAt": "2014-09-05T12:29:52.106Z",
+        "group": "KRYP01",
+        "objectId": "7rOZMKWgDE",
+        "offer": [
+            {
+                "caption": "Get Flat 15% Off on Ala Carte",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "greek"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:50.656Z",
+        "visible": true,
+        "visitCount": 4
+    },
+	{
+        "active": true,
+        "caption": "Flat 15% Off on Ala Carte",
+        "couponId": "FLAT15KR3",
+        "createdAt": "2014-09-05T12:29:51.603Z",
+        "group": "KRYP01",
+        "objectId": "I0I0PC5FhT",
+        "offer": [
+            {
+                "caption": "Get Flat 15% Off on Ala Carte",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "greek"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:45.748Z",
+        "visible": true,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "Flat 15% Off on Ala Carte",
+        "couponId": "FLAT15KR2",
+        "createdAt": "2014-09-05T12:29:51.067Z",
+        "group": "KRYP01",
+        "objectId": "bRI3nEyVWT",
+        "offer": [
+            {
+                "caption": "Get Flat 15% Off on Ala Carte",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "greek"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:45.194Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "Flat 15% Off",
+        "couponId": "FLAT15PR2",
+        "createdAt": "2014-09-05T08:35:27.146Z",
+        "group": "PZR01",
+        "objectId": "yrLgxbpKit",
+        "offer": [
+            {
+                "caption": "Get Flat 15% Off",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "pizza",
+                "thin-crust"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T11:23:40.293Z",
+        "visible": false,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "Flat 15% Off",
+        "couponId": "FLAT15PR1",
+        "createdAt": "2014-08-24T09:08:32.500Z",
+        "group": "PZR01",
+        "objectId": "kBhjMvW2b6",
+        "offer": [
+            {
+                "caption": "Get Flat 15% off",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "pizza",
+                "thin-crust"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T11:23:42.568Z",
+        "visible": false,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "Lunch Buffet Rs400/Rs500",
+        "couponId": "LUNCHOFF",
+        "createdAt": "2014-07-27T20:23:49.903Z",
+        "group": "BURG01",
+        "objectId": "yZmQt8TFXb",
+        "offer": [
+            {
+                "caption": "Rs 278 Off Lunch",
+                "subId": "1"
+            },
+            {
+                "caption": "Rs. 350 off dinner",
+                "subId": "2"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "value": "30%"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:48.802Z",
+        "visible": true,
+        "visitCount": 5
+    },
+	{
+        "active": true,
+        "caption": "Buy 1 Thin crust Get 1 thin crust",
+        "couponId": "THNCRUST1",
+        "createdAt": "2014-08-22T20:07:29.582Z",
+        "expiry": "",
+        "group": "PZR01",
+        "objectId": "mkCYMdZTvU",
+        "offer": [
+            {
+                "caption": "Buy 1 thin crust pizza get 1 free",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "pizza",
+                "thin-crust"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T11:23:44.323Z",
+        "visible": false,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "Lunch Buffet Rs400/Rs500",
+        "couponId": "LUNCHOFF",
+        "createdAt": "2014-07-27T20:23:49.896Z",
+        "group": "BURG01",
+        "objectId": "EztRNMQobP",
+        "offer": [
+            {
+                "caption": "Rs 278 Off Lunch",
+                "subId": "1"
+            },
+            {
+                "caption": "Rs. 350 off dinner",
+                "subId": "2"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "value": "30%"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:47.200Z",
+        "visible": true,
+        "visitCount": 4
+    },
+	{
+        "active": true,
+        "caption": "Lunch Buffet Rs400/Rs500",
+        "couponId": "LUNCHOFF",
+        "createdAt": "2014-07-27T20:23:49.892Z",
+        "group": "BURG01",
+        "objectId": "gnYYdx1FoO",
+        "offer": [
+            {
+                "caption": "Rs 278 Off Lunch",
+                "subId": "1"
+            },
+            {
+                "caption": "Rs. 350 off dinner",
+                "subId": "2"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "value": "30%"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:46.762Z",
+        "visible": true,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "Lunch Buffet Rs400/Rs500",
+        "couponId": "LUNCHOFF",
+        "createdAt": "2014-07-27T20:23:49.892Z",
+        "group": "BURG01",
+        "objectId": "rGnPS22LLQ",
+        "offer": [
+            {
+                "caption": "Rs 278 Off Lunch",
+                "subId": "1"
+            },
+            {
+                "caption": "Rs. 350 off dinner",
+                "subId": "2"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "value": "30%"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:46.304Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "Lunch Buffet Rs400/Rs500",
+        "couponId": "LUNCHOFF",
+        "createdAt": "2014-07-27T20:09:40.384Z",
+        "group": "BURG01",
+        "objectId": "J6nRAgPcbz",
+        "offer": [
+            {
+                "caption": "Rs 278 Off Lunch",
+                "subId": "1"
+            },
+            {
+                "caption": "Rs. 350 off dinner",
+                "subId": "2"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "value": "30%"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:05:44.107Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "Flat 15% Off on Ala Carte",
+        "couponId": "FLAT15TC5",
+        "createdAt": "2014-09-05T12:20:08.710Z",
+        "description": "\u003ch1\u003eFLAT 15% OFF\u003c/h1\u003e\u003cp\u003eshow this to the store staff\u003c/p\u003e",
+        "group": "TSC01",
+        "objectId": "vLPppzOLpg",
+        "offer": [
+            {
+                "$$hashKey": "00V",
+                "caption": "Get Flat 15% Off on Ala Carte",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "pizza"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-18T07:25:46.829Z",
+        "visible": true,
+        "visitCount": 5
+    },
+	{
+        "active": true,
+        "caption": "30% Off on Unlimited Buffet",
+        "couponId": "BURG01",
+        "createdAt": "2014-09-20T06:36:41.310Z",
+        "description": "",
+        "group": "BURG01",
+        "objectId": "xvi7s47xES",
+        "offer": [
+            {
+                "$$hashKey": "00V",
+                "caption": "",
+                "subId": "1"
+            },
+            {
+                "$$hashKey": "00X",
+                "caption": "",
+                "subId": "2"
+            },
+            {
+                "$$hashKey": "00Z",
+                "caption": "",
+                "subId": "3"
+            },
+            {
+                "$$hashKey": "011",
+                "caption": "",
+                "subId": "4"
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-18T08:04:36.638Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "30% off Unlimited Buffet Lunch/Dinner",
+        "couponId": "BURG01",
+        "createdAt": "2014-09-20T06:36:45.888Z",
+        "description": "undefined",
+        "group": "BURG01",
+        "objectId": "JDflVcPGbp",
+        "offer": [
+            {
+                "$$hashKey": "011",
+                "caption": "UNLIMITED Buffet lunch at Rs 400 Mon-Thu",
+                "subId": "1"
+            },
+            {
+                "$$hashKey": "012",
+                "caption": "UNLIMITED Buffet Dinner @ Rs 500/- (Fri-Sun)",
+                "subId": "2"
+            },
+            {
+                "$$hashKey": "014",
+                "caption": "Unlimited Buffet Breakfast @ Rs 300/-",
+                "subId": "3"
+            },
+            {
+                "$$hashKey": "016",
+                "caption": "Unlimited Buffet Dinner @ Rs600/- (All days)",
+                "subId": "4"
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-18T08:04:51.601Z",
+        "visible": true,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "40% Off on Unlimited Buffet Lunch/Dinner",
+        "couponId": "BURG01",
+        "createdAt": "2014-09-20T06:36:48.259Z",
+        "group": "BURG01",
+        "objectId": "l0ghUkv5AS",
+        "offer": [
+            {
+                "caption": "UNLIMITED Buffet lunch at Rs 400 Mon-Thu",
+                "subId": "1"
+            },
+            {
+                "caption": "UNLIMITED Buffet Dinner @ Rs 500/- (Fri-Sun)",
+                "subId": "2"
+            },
+            {
+                "caption": "Unlimited Buffet Breakfast @ Rs 300/-",
+                "subId": "3"
+            },
+            {
+                "caption": "Unlimited Buffet Dinner @ Rs600/- (All days)",
+                "subId": "4"
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:37:44.207Z",
+        "visible": true,
+        "visitCount": 4
+    },
+	{
+        "active": true,
+        "caption": "40% Off on Unlimited Buffet Lunch/Dinner",
+        "couponId": "BURG01",
+        "createdAt": "2014-09-20T06:36:49.230Z",
+        "group": "BURG01",
+        "objectId": "oy5fgL6e12",
+        "offer": [
+            {
+                "caption": "UNLIMITED Buffet lunch at Rs 400 Mon-Thu",
+                "subId": "1"
+            },
+            {
+                "caption": "UNLIMITED Buffet Dinner @ Rs 500/- (Fri-Sun)",
+                "subId": "2"
+            },
+            {
+                "caption": "Unlimited Buffet Breakfast @ Rs 300/-",
+                "subId": "3"
+            },
+            {
+                "caption": "Unlimited Buffet Dinner @ Rs600/- (All days)",
+                "subId": "4"
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-20T06:37:43.542Z",
+        "visible": true,
+        "visitCount": 5
+    },
+	{
+        "active": false,
+        "caption": "Casatta Lassi Buy 1 Get 1(200ml) Free!!! Till 8pm...today!!! Rush!!!",
+        "couponId": "ANDAVAR01",
+        "createdAt": "2014-09-20T06:03:12.710Z",
+        "description": "undefined",
+        "group": "AND01",
+        "objectId": "iMK0lLITpg",
+        "offer": [
+            {
+                "$$hashKey": "00A",
+                "caption": "Casatta Lassi Buy 1 Get 1(200ml) Free..Exclusive to Clozerr members!!!",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "NONE"
+        },
+        "updatedAt": "2014-10-29T16:45:17.785Z",
+        "visible": false,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "Flat 50/- off",
+        "couponId": "GURU6",
+        "createdAt": "2014-09-15T18:44:38.480Z",
+        "description": "undefined",
+        "group": "GU01",
+        "objectId": "s0ctUVFAPd",
+        "offer": [
+            {
+                "$$hashKey": "00M",
+                "caption": "Flat Rs 50/- off on min purchase of Rs 100 at dept. stores/gift shop.  (Excluding mobile recharges)",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-29T16:44:44.006Z",
+        "visible": false,
+        "visitCount": 6
+    },
+	{
+        "active": false,
+        "caption": "Flat 50/- off",
+        "couponId": "GURU4",
+        "createdAt": "2014-09-15T18:43:18.890Z",
+        "description": "undefined",
+        "group": "GU01",
+        "objectId": "m2UFrhaxeU",
+        "offer": [
+            {
+                "$$hashKey": "00M",
+                "caption": "Flat Rs 50/- off on min purchase of Rs 100 at dept. stores/gift shop.  (Excluding mobile recharges)",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-29T16:44:34.861Z",
+        "visible": false,
+        "visitCount": 4
+    },
+	{
+        "active": false,
+        "caption": "Checkin with a min bill of Rs 100",
+        "couponId": "GURU2",
+        "createdAt": "2014-09-15T18:42:00.775Z",
+        "description": "undefined",
+        "group": "GU01",
+        "objectId": "9ruiL27oww",
+        "offer": [
+            {
+                "$$hashKey": "00P",
+                "caption": "Check-in with a min Bill of Rs 100/-\nGet Rs 50 flat off on 4th \u0026 6th Check-in\nRs 200/- T-shirt Free on 8th Check-in",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-29T16:44:25.133Z",
+        "visible": false,
+        "visitCount": 2
+    },
+	{
+        "active": false,
+        "caption": "Checkin with a min bill of Rs 100",
+        "couponId": "GURU3",
+        "createdAt": "2014-09-15T18:42:35.880Z",
+        "description": "undefined",
+        "group": "GU01",
+        "objectId": "RCgyby4uWi",
+        "offer": [
+            {
+                "$$hashKey": "00R",
+                "caption": "Check-in with a min Bill of Rs 100/-\nGet Rs 50 flat off on 4th \u0026 6th Check-in\nRs 200/- T-shirt Free on 8th Check-in",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-29T16:44:30.387Z",
+        "visible": false,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "Checkin with a min bill of Rs 100",
+        "couponId": "GURU5",
+        "createdAt": "2014-09-15T18:44:02.096Z",
+        "description": "undefined",
+        "group": "GU01",
+        "objectId": "1BpfDIO0di",
+        "offer": [
+            {
+                "$$hashKey": "00U",
+                "caption": "Check-in with a min Bill of Rs 100/-\nGet Rs 50 flat off on 6th Check-in\nRs 200/- T-shirt Free on 8th Check-in",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-29T16:44:39.272Z",
+        "visible": false,
+        "visitCount": 5
+    },
+	{
+        "active": false,
+        "caption": "Special Introductory Offer",
+        "couponId": "FREEKICK",
+        "createdAt": "2014-09-17T10:31:29.216Z",
+        "description": "undefined",
+        "group": "KICK01",
+        "objectId": "twdPxDE4oz",
+        "offer": [
+            {
+                "$$hashKey": "00G",
+                "caption": "Introductory Offer exclusively for Clozerr users.\nCheck-in on a min bill of Rs 200/-   Get a special beverage Free!",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "item",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-30T14:07:36.169Z",
+        "visible": false,
+        "visitCount": 1
+    },
+	{
+        "active": false,
+        "caption": "Unlimited Pizzas!",
+        "couponId": "PEINFI1",
+        "createdAt": "2014-09-07T03:32:32.449Z",
+        "description": "undefined",
+        "group": "PE01",
+        "objectId": "C5Nrtfd0SC",
+        "offer": [
+            {
+                "$$hashKey": "00N",
+                "caption": "Choose any one among the offers below:\nOffer 1 : Mon-Fri   Lunch Veg 199 + taxes Non-veg  249 + taxes\n\n              Mon-Fri   Dinner Veg 249 + taxes Non-veg  299 + taxes\n              Sat/Sun/Holidays   Lunch/Dinner    Veg 249 + taxes Non-veg  299 + taxes\nOffer 2 : Pay for 5 Buffets Get 6th free\n\nOffer 3 : Buy Large get free either medium pizza or garlic bread + brownie\n\nOffer 4 : Buy Medium get free either regular pizza or garlic bread + brownie",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "unlimited",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-19T05:59:21.761Z",
+        "visible": false,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "Pizza Unlimited",
+        "couponId": "PEINFI2",
+        "createdAt": "2014-09-07T03:32:37.561Z",
+        "group": "PE01",
+        "objectId": "pP5Z6JH8CF",
+        "offer": [
+            {
+                "$$hashKey": "00P",
+                "caption": "Choose any one among the offers below:\nOffer 1 : Mon-Fri   Lunch Veg 199 + taxes Non-veg  249 + taxes\n              Mon-Fri   Dinner Veg 249 + taxes Non-veg  299 + taxes\n              Sat/Sun/Holidays   Lunch/Dinner    Veg 249 + taxes Non-veg  299 + taxes\nOffer 2 : Pay for 5 Buffets Get 6th free\nOffer 3 : Buy Large get free either medium pizza or garlic bread + brownie\nOffer 4 : Buy Medium get free either regular pizza or garlic bread + brownie\n\nUnlimited pizzas! Always wanted to have as much as you want then this place offers you the same at very affordable prices. With attractively priced buffets and unlimited meals it becomes one of those places where college students seem to stay forever. This is a must visit place for all those who like to eat a lot while not spend as much at the same time. Located at Velachery, it attracts a lot of IIT crowd. It also takes reservation which makes sure you get a table at all times.",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "unlimited",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-22T05:59:00.936Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "Pizza Unlimited",
+        "couponId": "PEINFI3",
+        "createdAt": "2014-09-07T03:32:38.088Z",
+        "group": "PE01",
+        "objectId": "LvkGo5Q3gw",
+        "offer": [
+            {
+                "$$hashKey": "00R",
+                "caption": "Choose any one among the offers below:\nOffer 1 : Mon-Fri   Lunch Veg 199 + taxes Non-veg  249 + taxes\n              Mon-Fri   Dinner Veg 249 + taxes Non-veg  299 + taxes\n              Sat/Sun/Holidays   Lunch/Dinner    Veg 249 + taxes Non-veg  299 + taxes\nOffer 2 : Pay for 5 Buffets Get 6th free\nOffer 3 : Buy Large get free either medium pizza or garlic bread + brownie\nOffer 4 : Buy Medium get free either regular pizza or garlic bread + brownie\n\nUnlimited pizzas! Always wanted to have as much as you want then this place offers you the same at very affordable prices. With attractively priced buffets and unlimited meals it becomes one of those places where college students seem to stay forever. This is a must visit place for all those who like to eat a lot while not spend as much at the same time. Located at Velachery, it attracts a lot of IIT crowd. It also takes reservation which makes sure you get a table at all times.",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "unlimited",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-22T05:59:10.522Z",
+        "visible": true,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "Pizza Unlimited",
+        "couponId": "PEINFI4",
+        "createdAt": "2014-09-07T03:32:38.599Z",
+        "group": "PE01",
+        "objectId": "Gsy7hGxf4u",
+        "offer": [
+            {
+                "$$hashKey": "00T",
+                "caption": "Choose any one among the offers below:\nOffer 1 : Mon-Fri   Lunch Veg 199 + taxes Non-veg  249 + taxes\n              Mon-Fri   Dinner Veg 249 + taxes Non-veg  299 + taxes\n              Sat/Sun/Holidays   Lunch/Dinner    Veg 249 + taxes Non-veg  299 + taxes\nOffer 2 : Pay for 5 Buffets Get 6th free\nOffer 3 : Buy Large get free either medium pizza or garlic bread + brownie\nOffer 4 : Buy Medium get free either regular pizza or garlic bread + brownie\n\nUnlimited pizzas! Always wanted to have as much as you want then this place offers you the same at very affordable prices. With attractively priced buffets and unlimited meals it becomes one of those places where college students seem to stay forever. This is a must visit place for all those who like to eat a lot while not spend as much at the same time. Located at Velachery, it attracts a lot of IIT crowd. It also takes reservation which makes sure you get a table at all times.",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "unlimited",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-22T05:59:15.560Z",
+        "visible": true,
+        "visitCount": 4
+    },
+	{
+        "active": true,
+        "caption": "Pizza Unlimited",
+        "couponId": "PEINFI5",
+        "createdAt": "2014-09-07T03:32:40.575Z",
+        "group": "PE01",
+        "objectId": "r9EBwCqPND",
+        "offer": [
+            {
+                "$$hashKey": "00V",
+                "caption": "Choose any one among the offers below:\nOffer 1 : Mon-Fri   Lunch Veg 199 + taxes Non-veg  249 + taxes\n              Mon-Fri   Dinner Veg 249 + taxes Non-veg  299 + taxes\n              Sat/Sun/Holidays   Lunch/Dinner    Veg 249 + taxes Non-veg  299 + taxes\nOffer 2 : Pay for 5 Buffets Get 6th free\nOffer 3 : Buy Large get free either medium pizza or garlic bread + brownie\nOffer 4 : Buy Medium get free either regular pizza or garlic bread + brownie\n\nUnlimited pizzas! Always wanted to have as much as you want then this place offers you the same at very affordable prices. With attractively priced buffets and unlimited meals it becomes one of those places where college students seem to stay forever. This is a must visit place for all those who like to eat a lot while not spend as much at the same time. Located at Velachery, it attracts a lot of IIT crowd. It also takes reservation which makes sure you get a table at all times.",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "unlimited",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-09-22T05:59:21.016Z",
+        "visible": true,
+        "visitCount": 5
+    },
+	{
+        "active": false,
+        "caption": "Pizza + Fries/Chicken + Cold Coffee Combo @ upto 25% Off (NO CHECK-IN REQUIRED)",
+        "couponId": "LA01",
+        "createdAt": "2014-09-22T19:32:56.434Z",
+        "description": "undefined",
+        "group": "LAS01",
+        "objectId": "gmIOe3B077",
+        "offer": [
+            {
+                "$$hashKey": "00V",
+                "caption": "1 Veg Pizza + French Fries + Cold Coffee @ just Rs 120/-  (NO CHECK-IN REQUIRED)",
+                "subId": "1"
+            },
+            {
+                "$$hashKey": "00C",
+                "caption": "1 Non-Veg Pizza + 2 Drumstick Chicken + Cold Coffee @ just Rs 150/-  (NO CHECK-IN REQUIRED)",
+                "subId": 2
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-29T16:45:40.560Z",
+        "visible": false,
+        "visitCount": 1
+    },
+	{
+        "active": false,
+        "caption": "You are one visit away from redeeming your reward!",
+        "couponId": "abc",
+        "createdAt": "2014-09-30T18:55:57.786Z",
+        "description": "undefined",
+        "group": "KICK01",
+        "objectId": "oFZ9myFtYL",
+        "offer": [
+            {
+                "$$hashKey": "00N",
+                "caption": "Check-in and mark your visit on a min. bill of Rs 200/-\nGet Combos at Flat 50% OFF on your next to next visit.",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-30T14:07:53.207Z",
+        "visible": false,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "FLAT 25 % OFF",
+        "couponId": "xyz",
+        "createdAt": "2014-10-03T07:59:44.178Z",
+        "group": "P1",
+        "objectId": "i5J4kpZpu7",
+        "offer": [
+            {
+                "$$hashKey": "00D",
+                "caption": "Flat 25% off on the bill.  Just tap the 'check-in' once you are in the restaurant.",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-06T07:00:30.234Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "FLAT 15% OFF",
+        "createdAt": "2014-10-04T18:30:17.766Z",
+        "group": "undefined",
+        "objectId": "UPlHZEQKcc",
+        "offer": [
+            {
+                "$$hashKey": "00P",
+                "caption": "FLAT 15% OFF on the bill amount. Just tap 'check in' once you are in the restaurant.",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-04T18:32:19.451Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "30% Off on Unlimited Buffet",
+        "couponId": "BURG01",
+        "createdAt": "2014-09-20T06:31:08.999Z",
+        "description": "\u003ch1\u003eBuffet Offer\u003c/h1\u003e\u003cp\u003eshow this to the store staff\u003c/p\u003e",
+        "group": "BURG01",
+        "objectId": "vWf6hhGtHP",
+        "offer": [
+            {
+                "$$hashKey": "00O",
+                "caption": "UNLIMITED   Buffet Lunch (Mon to Thu) Rs 444/- (inc. taxes)",
+                "subId": "1"
+            },
+            {
+                "$$hashKey": "00Q",
+                "caption": "UNLIMITED Buffet Lunch (Fri-Sun) Rs 549/- (inc. taxes)",
+                "subId": "2"
+            },
+            {
+                "$$hashKey": "00S",
+                "caption": "UNLIMITED   Buffet Dinner (All days) Rs 649/- (inc. taxes)",
+                "subId": "3"
+            },
+            {
+                "$$hashKey": "00U",
+                "caption": "UNLIMITED   Breakfast (All Days) RS 375/- (inc taxes)         \nJust tap 'check-in' once you are in the restaurant to redeem the offer.",
+                "subId": "4"
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-18T08:06:05.908Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": false,
+        "caption": "Check-in and redeem rewards on your upcoming visit.",
+        "couponId": "def",
+        "createdAt": "2014-09-30T15:12:35.214Z",
+        "description": "\u003cdiv class=\"white-bg\"\u003e\u003ch1\u003eGet Flat 50%\u0026nbsp;\u003c/h1\u003e\u003ch1\u003enext visit*\u003c/h1\u003e\u003cspan style=\"color:#B22222;\"\u003e*Min bill Rs 200/-\u003c/span\u003e\u003c/div\u003e",
+        "group": "KICK01",
+        "objectId": "2Ca4OwfuMg",
+        "offer": [
+            {
+                "$$hashKey": "00G",
+                "caption": "Check-in and mark your visit on a min. bill of Rs 200/-\nGet Combos at Flat 50% OFF on your next visit.",
+                "offer": "\u003cEditMe\u003e",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-30T14:07:42.758Z",
+        "visible": false,
+        "visitCount": 2
+    },
+	{
+        "active": false,
+        "caption": "SampleCaption",
+        "createdAt": "2014-10-14T20:08:00.544Z",
+        "group": "P1",
+        "objectId": "ghVIlSXXmC",
+        "offer": [
+            {
+                "caption": "Edit this content",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-14T20:08:00.544Z",
+        "visible": false,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "Buy 1 get 1 free Bubble Tea!",
+        "couponId": "BOGOBOB01",
+        "createdAt": "2014-09-06T09:29:57.362Z",
+        "description": "\u003ch2\u003e\u003cbig\u003e\u003cspan style=\"font-family:lucida sans unicode,lucida grande,sans-serif;\"\u003eBUY 1 GET 1 FREE\u003c/span\u003e\u003c/big\u003e\u003c/h2\u003e\u003cp\u003eShow this to the store staff\u003c/p\u003e",
+        "group": "BOB01",
+        "objectId": "OoJ57BEBt7",
+        "offer": [
+            {
+                "$$hashKey": "017",
+                "caption": "Buy 1 get 1 free on Bubble Tea!  Just tap 'check in' and redeem your offer.",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "bogo",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-06T09:36:10.534Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "3 visits away from FLAT 50% OFF!",
+        "couponId": "20OFFBOB1",
+        "createdAt": "2014-09-06T09:31:19.274Z",
+        "description": "\u003ch2\u003e\u003cspan style=\"font-size:28px;\"\u003e\u003c/span\u003e3 visits away from\u003cbr\u003e\u003c/h2\u003e\u003ch2\u003e FLAT 50% OFF!\u003cspan style=\"font-size:14px\"\u003e\u003c/span\u003e\u003c/h2\u003e",
+        "group": "BOB01",
+        "objectId": "EzQMIbsiTV",
+        "offer": [
+            {
+                "$$hashKey": "00Y",
+                "caption": "3 visits away from FLAT 50% OFF!",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T10:35:05.785Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "2 visits away from FLAT 50% OFF!",
+        "couponId": "20OFFBOB2",
+        "createdAt": "2014-09-06T09:31:20.328Z",
+        "description": "\u003ch2\u003e\u003cspan style=\"font-size:36px\"\u003e\u003c/span\u003e2 visits away from\u003cbr\u003e\u003c/h2\u003e\u003ch2\u003e FLAT 50% OFF!\u003cspan style=\"font-size:16px;\"\u003e\u003c/span\u003e\u003c/h2\u003e",
+        "group": "BOB01",
+        "objectId": "MSi7H9gAQS",
+        "offer": [
+            {
+                "$$hashKey": "019",
+                "caption": "2 visits away from FLAT 50% OFF!",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T10:34:42.735Z",
+        "visible": true,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "FLAT 50% OFF on any beverage of your choice!",
+        "couponId": "20OFFBOB8",
+        "createdAt": "2014-09-16T13:29:56.430Z",
+        "description": "\u003ch2\u003eFLAT 50% OFF \u003cbr\u003e\u003c/h2\u003e\u003ch2\u003eon any beverage of your choice!\u003cbr\u003e\u003c/h2\u003e",
+        "group": "BOB01",
+        "objectId": "UyQJome8kP",
+        "offer": [
+            {
+                "$$hashKey": "031",
+                "caption": "FLAT 50% OFF on any beverage of your choice!",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "item",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T10:36:16.520Z",
+        "visible": true,
+        "visitCount": 10
+    },
+	{
+        "active": true,
+        "caption": "FLAT 50% OFF on any beverage of your choice!",
+        "couponId": "FREETOPBOB",
+        "createdAt": "2014-09-06T09:31:24.089Z",
+        "description": "\u003ch2\u003eFLAT 50% OFF \u003cbr\u003e\u003c/h2\u003e\u003ch2\u003eon any beverage of your choice!\u003cbr\u003e\u003c/h2\u003e",
+        "group": "BOB01",
+        "objectId": "H4lWaU57P3",
+        "offer": [
+            {
+                "$$hashKey": "01R",
+                "caption": "FLAT 50% OFF on any beverage of your choice!",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "item",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T10:35:52.587Z",
+        "visible": true,
+        "visitCount": 5
+    },
+	{
+        "active": true,
+        "caption": "Flat 15% Off on Ala Carte",
+        "couponId": "FLAT15TC1",
+        "createdAt": "2014-09-05T12:17:58.094Z",
+        "description": "\u003ch1\u003eFLAT 15% OFF\u003c/h1\u003e\u003cp\u003eshow this to the store staff\u003c/p\u003e",
+        "group": "TSC01",
+        "objectId": "WcKDbyL2lB",
+        "offer": [
+            {
+                "$$hashKey": "00N",
+                "caption": "Get Flat 15% Off on Ala Carte",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "pizza"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-18T07:22:50.982Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "Flat 15% Off on Ala Carte",
+        "couponId": "FLAT15TC2",
+        "createdAt": "2014-09-05T12:19:15.358Z",
+        "description": "\u003ch1\u003eFLAT 15% OFF\u003c/h1\u003e\u003cp\u003eshow this to the store staff\u003c/p\u003e",
+        "group": "TSC01",
+        "objectId": "D2NqO4pBlZ",
+        "offer": [
+            {
+                "$$hashKey": "00P",
+                "caption": "Get Flat 15% Off on Ala Carte",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "pizza"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-18T07:23:46.427Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "Flat 15% Off on Ala Carte",
+        "couponId": "FLAT15TC3",
+        "createdAt": "2014-09-05T12:19:41.259Z",
+        "description": "\u003ch1\u003eFLAT 15% OFF\u003c/h1\u003e\u003cp\u003eshow this to the store staff\u003c/p\u003e",
+        "group": "TSC01",
+        "objectId": "LFedXSNlJA",
+        "offer": [
+            {
+                "$$hashKey": "00R",
+                "caption": "Get Flat 15% Off on Ala Carte",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "pizza"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-18T07:24:32.547Z",
+        "visible": true,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "Flat 15% Off on Ala Carte",
+        "couponId": "FLAT15TC4",
+        "createdAt": "2014-09-05T12:20:04.395Z",
+        "description": "\u003ch1\u003eFLAT 15% OFF\u003c/h1\u003e\u003cp\u003eshow this to the store staff\u003c/p\u003e",
+        "group": "TSC01",
+        "objectId": "PmdiAxomfd",
+        "offer": [
+            {
+                "$$hashKey": "00T",
+                "caption": "Get Flat 15% Off on Ala Carte",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "percentage",
+            "style2": "generic",
+            "tags": [
+                "pizza"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-18T07:25:15.584Z",
+        "visible": true,
+        "visitCount": 4
+    },
+	{
+        "active": true,
+        "caption": "FLAT 15% OFF",
+        "createdAt": "2014-10-18T09:50:10.882Z",
+        "description": "\u003ch1\u003eFLAT 15% OFF\u003c/h1\u003e\u003cp\u003eshow this to the store staff\u003c/p\u003e",
+        "group": "TheStop_Set1",
+        "objectId": "cvA9XfNhWp",
+        "offer": [
+            {
+                "$$hashKey": "01F",
+                "caption": "FLAT 15% OFF on entire bill",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-18T09:58:33.358Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "Get a Pastry Free!",
+        "createdAt": "2014-10-18T10:00:14.182Z",
+        "description": "\u003ch2\u003eExclusive Offer\u003c/h2\u003e\u003cp\u003eShow this to the store staff\u003c/p\u003e",
+        "group": "Par3_Set1",
+        "objectId": "CVy9GlGrDw",
+        "offer": [
+            {
+                "$$hashKey": "00O",
+                "caption": "Get a Pastry of the day Free on purchase of any Hot/Cold beverage!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-14T08:27:02.735Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "FLAT 20% OFF ON BIRTHDAY CAKES",
+        "createdAt": "2014-10-18T10:53:24.558Z",
+        "description": "undefined",
+        "group": "Par3_Set1",
+        "objectId": "cmQH0l5tPh",
+        "offer": [
+            {
+                "$$hashKey": "00J",
+                "caption": "FLAT 20% OFF on Birthday Cake of your choice.",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-13T17:08:54.001Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "FLAT 15% OFF",
+        "createdAt": "2014-10-20T14:04:13.242Z",
+        "description": "\u003ch1\u003eFLAT 15% OFF\u003c/h1\u003e\u003cp\u003eshow this to the store staff\u003c/p\u003e",
+        "group": "ycook_set1",
+        "objectId": "Zhu29vgcQI",
+        "offer": [
+            {
+                "$$hashKey": "00F",
+                "caption": "Flat 15% off on the bill amount on a min bill amount of Rs 200...\nValid on Lunch/Dinner on All days.",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-10T12:43:59.118Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "Free Butter Milk",
+        "createdAt": "2014-10-20T14:14:01.195Z",
+        "description": "undefined",
+        "group": "ycook_set1",
+        "objectId": "nikmmRqc0b",
+        "offer": [
+            {
+                "$$hashKey": "00L",
+                "caption": "Free Butter Milk",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-20T14:14:35.119Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": false,
+        "caption": "Buy 1 Cupcake Get 1 Free",
+        "createdAt": "2014-10-27T13:30:58.143Z",
+        "description": "\u003cp\u003e\u003cspan style=\"font-size:20px;\"\u003e\u003cstrong\u003eBUY 1 GET 1 FREE\u003c/strong\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size:20px;\"\u003e\u003cstrong\u003eCUPCAKE\u003c/strong\u003e\u003c/span\u003e\u003c/p\u003e",
+        "group": "adoniya_set1",
+        "objectId": "5K8E5CePXB",
+        "offer": [
+            {
+                "$$hashKey": "00Q",
+                "caption": "Buy 1 cupcake get 1 free",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-29T16:43:35.956Z",
+        "visible": false,
+        "visitCount": 1
+    },
+	{
+        "active": false,
+        "caption": "Check-in with a min bill of Rs 100",
+        "couponId": "GURU1",
+        "createdAt": "2014-09-15T18:39:42.510Z",
+        "description": "undefined",
+        "group": "GU01",
+        "objectId": "xT04ROwsCb",
+        "offer": [
+            {
+                "$$hashKey": "00N",
+                "caption": "Check-in with a min Bill of Rs 100/-\nGet Rs 50 flat off on 4th \u0026 6th Check-in\nRs 200/- T-shirt Free on 8th Check-in",
+                "subId": 1
+            }
+        ],
+        "props": {
+            "style": "none",
+            "style2": "generic"
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-10-29T16:44:20.318Z",
+        "visible": false,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "Free beverage / soup of your choice!",
+        "createdAt": "2014-11-06T07:26:15.236Z",
+        "description": "Free Beverage / Soup",
+        "group": "set1",
+        "objectId": "LYjkNzKvCV",
+        "offer": [
+            {
+                "caption": "Enjoy your favorite beverage or soup for free!  Min bill amount Rs 500.   Just tap 'check-in' once you are in the restaurant to redeem the freebie.",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-17T22:24:31.299Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "1 visit away from FLAT 50% OFF!",
+        "couponId": "20OFFBOB3",
+        "createdAt": "2014-09-06T09:31:22.368Z",
+        "description": "\u003ch2\u003e1 visit away from \u003cbr\u003e\u003c/h2\u003e\u003ch2\u003eFLAT 50% OFF!\u003cspan style=\"color:inherit; font-family:inherit; font-size:14px\"\u003e\u003c/span\u003e\u003c/h2\u003e",
+        "group": "BOB01",
+        "objectId": "JI8QBQpJ08",
+        "offer": [
+            {
+                "$$hashKey": "02P",
+                "caption": "1 visit away from FLAT 50% OFF!",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T10:34:13.760Z",
+        "visible": true,
+        "visitCount": 4
+    },
+	{
+        "active": true,
+        "caption": "4 visits away from FLAT 50% OFF!",
+        "couponId": "20OFFBOB4",
+        "createdAt": "2014-09-16T13:27:40.102Z",
+        "description": "\u003ch2\u003e4 visits away from \u003cbr\u003e\u003c/h2\u003e\u003ch2\u003eFLAT 50% OFF!\u003cspan style=\"font-size: 14px; color: inherit; font-family: inherit; line-height: 1.1;\"\u003e\u003c/span\u003e\u003c/h2\u003e",
+        "group": "BOB01",
+        "objectId": "K73SjVcVal",
+        "offer": [
+            {
+                "$$hashKey": "02R",
+                "caption": "4 visits away from FLAT 50% OFF!",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T11:00:59.576Z",
+        "visible": true,
+        "visitCount": 6
+    },
+	{
+        "active": true,
+        "caption": "3 visits away from FLAT 50% OFF!",
+        "couponId": "20OFFBOB5",
+        "createdAt": "2014-09-16T13:27:40.777Z",
+        "description": "\u003ch2\u003e\u003cspan style=\"font-size: 28px; color: inherit; font-family: inherit; line-height: 39.5999984741211px;\"\u003e\u003c/span\u003e3 visits away from \u003cbr\u003e\u003c/h2\u003e\u003ch2\u003eFLAT 50% OFF!\u003cspan style=\"font-size: 14px; color: inherit; font-family: inherit; line-height: 1.1;\"\u003e\u003c/span\u003e\u003c/h2\u003e",
+        "group": "BOB01",
+        "objectId": "ObcD2YbrSH",
+        "offer": [
+            {
+                "$$hashKey": "02T",
+                "caption": "3 visits away from FLAT 50% OFF!",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T11:01:27.369Z",
+        "visible": true,
+        "visitCount": 7
+    },
+	{
+        "active": true,
+        "caption": "2 visits away from FLAT 50% OFF!",
+        "couponId": "20OFFBOB6",
+        "createdAt": "2014-09-16T13:27:42.064Z",
+        "description": "\u003ch2\u003e\u003cspan style=\"color: inherit; font-family: inherit; font-size: 36px; line-height: 39.5999984741211px;\"\u003e\u003c/span\u003e2 visits away from\u003cbr\u003e\u003c/h2\u003e\u003ch2\u003e FLAT 50% OFF!\u003cspan style=\"font-size: 14px; color: inherit; font-family: inherit; line-height: 1.1;\"\u003e\u003c/span\u003e\u003c/h2\u003e",
+        "group": "BOB01",
+        "objectId": "hhSu00jfzj",
+        "offer": [
+            {
+                "$$hashKey": "02V",
+                "caption": "2 visits away from FLAT 50% OFF!",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T11:01:45.803Z",
+        "visible": true,
+        "visitCount": 8
+    },
+	{
+        "active": true,
+        "caption": "1 visit away from FLAT 50% OFF!",
+        "couponId": "20OFFBOB7",
+        "createdAt": "2014-09-16T13:29:13.721Z",
+        "description": "\u003ch2\u003e\u003cspan style=\"font-size:28px;\"\u003e\u003cspan style=\"color: inherit; font-family: inherit; line-height: 39.5999984741211px;\"\u003e\u003c/span\u003e\u003c/span\u003e1 visit away from \u003cbr\u003e\u003c/h2\u003e\u003ch2\u003eFLAT 50% OFF!\u003cspan style=\"font-size: 14px; color: inherit; font-family: inherit; line-height: 1.1;\"\u003e\u003c/span\u003e\u003c/h2\u003e",
+        "group": "BOB01",
+        "objectId": "DPaFc6AYRD",
+        "offer": [
+            {
+                "$$hashKey": "02X",
+                "caption": "1 visit away from FLAT 50% OFF!",
+                "subId": "1"
+            }
+        ],
+        "props": {
+            "style": "absolute",
+            "style2": "generic",
+            "tags": [
+                "bogo"
+            ]
+        },
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T11:02:09.073Z",
+        "visible": true,
+        "visitCount": 9
+    },
+	{
+        "active": true,
+        "caption": "3 visits away from Flat 50%!",
+        "createdAt": "2014-11-13T08:26:15.086Z",
+        "description": "\u003cp\u003e3 visits away \u003cbr\u003e\u003c/p\u003e\u003cp\u003efrom Flat 50%!\u003cbr\u003e\u003c/p\u003e",
+        "group": "BOB01",
+        "objectId": "0BFVHK2trE",
+        "offer": [
+            {
+                "$$hashKey": "011",
+                "caption": "3 visits away from Flat 50%!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T09:18:44.278Z",
+        "visible": true,
+        "visitCount": 12
+    },
+	{
+        "active": true,
+        "caption": "Chilli Paneer Combo at Rs 125!",
+        "createdAt": "2014-10-19T13:05:59.401Z",
+        "description": "\u003cp\u003e\u003cspan style=\"font-size:20px;\"\u003eChilli Paneer Combo \u003cbr\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003eat Rs 125!\u003cbr\u003e\u003c/p\u003e",
+        "group": "Par3_Set1",
+        "objectId": "x9gTlIPihE",
+        "offer": [
+            {
+                "$$hashKey": "00K",
+                "caption": "Chilli Paneer Combo at Rs 125!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-13T14:35:22.986Z",
+        "visible": true,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "Chilli Chicken Combo at Rs 150!",
+        "createdAt": "2014-11-13T14:35:25.466Z",
+        "description": "\u003cp\u003eChilli Chicken Combo \u003cbr\u003e\u003c/p\u003e\u003cp\u003eat Rs 150!\u003cbr\u003e\u003c/p\u003e",
+        "group": "Par3_Set1",
+        "objectId": "lJUTJNraMf",
+        "offer": [
+            {
+                "$$hashKey": "00U",
+                "caption": "Chilli Chicken Combo at Rs 150!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-13T14:36:00.126Z",
+        "visible": true,
+        "visitCount": 4
+    },
+	{
+        "active": true,
+        "caption": "Free Main Course Dish!",
+        "createdAt": "2014-11-14T08:47:47.954Z",
+        "description": "\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003eFree\u003c/span\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003e Main Course Dish!\u0026nbsp;\u003c/span\u003e\u003cstrong\u003e\u003c/strong\u003e\u003cbr\u003e\u003c/p\u003e",
+        "group": "set1",
+        "objectId": "cnNE5cnG3V",
+        "offer": [
+            {
+                "$$hashKey": "00F",
+                "caption": "Free Main Course Dish!   worth Rs 225 on a min bill of Rs 800.    Just tap check-in and redeem the offer!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-15T09:22:04.079Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "1 visit away from FLAT 50% OFF!",
+        "createdAt": "2014-11-20T08:02:32.702Z",
+        "description": "\u003cp\u003e1 visit away from\u003cbr\u003e\u003c/p\u003e\u003cp\u003e FLAT 50% OFF on any beverage!\u003cbr\u003e\u003c/p\u003e",
+        "group": "BOB01",
+        "objectId": "MszHouybfa",
+        "offer": [
+            {
+                "$$hashKey": "017",
+                "caption": "One visit away from FLAT 50% OFF on any beverage!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T09:17:17.679Z",
+        "visible": true,
+        "visitCount": 14
+    },
+	{
+        "active": true,
+        "caption": "4 visits away from Flat 50%!",
+        "createdAt": "2014-11-10T07:37:02.487Z",
+        "description": "\u003cp\u003e4 visits away\u003cbr\u003e\u003c/p\u003e\u003cp\u003e from Flat 50%!\u003cbr\u003e\u003c/p\u003e",
+        "group": "BOB01",
+        "objectId": "0uZnpuL9EK",
+        "offer": [
+            {
+                "$$hashKey": "03P",
+                "caption": "4 visits away from Flat 50%!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T09:20:52.969Z",
+        "visible": true,
+        "visitCount": 11
+    },
+	{
+        "active": true,
+        "caption": "25% OFF on Weekday Lunch!",
+        "createdAt": "2014-11-10T13:28:50.554Z",
+        "description": "",
+        "group": "TheStop_Set1",
+        "objectId": "oLBR6Kor41",
+        "offer": [
+            {
+                "caption": "25% OFF on Weekday Lunch! Just tap 'Check In' once in the restaurant to redeem it.",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-21T17:50:35.632Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "Get your second stamp!",
+        "createdAt": "2014-12-31T10:10:33.456Z",
+        "description": "undefined",
+        "group": "offerset1",
+        "objectId": "PfE2Pgi7nu",
+        "offer": [
+            {
+                "caption": "Get your second stamp! 4th stamp gets you FREE Soup or Salad of your choice!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-31T10:11:35.378Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "Get your 5th Stamp!",
+        "createdAt": "2014-12-31T10:13:04.659Z",
+        "description": "\u003cp\u003e\u003cbr\u003e\u003c/p\u003e",
+        "group": "offerset1",
+        "objectId": "EL06hkAgzY",
+        "offer": [
+            {
+                "caption": "Get your 5th Stamp! 8th Stamp gets you a FREE Starter or Desert of your choice!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-31T10:14:12.478Z",
+        "visible": true,
+        "visitCount": 5
+    },
+	{
+        "active": true,
+        "caption": "Get your 6th Stamp!",
+        "createdAt": "2014-12-31T10:14:14.832Z",
+        "description": "\u003cp\u003e\u003cbr\u003e\u003c/p\u003e",
+        "group": "offerset1",
+        "objectId": "SNwBaJdEBj",
+        "offer": [
+            {
+                "caption": "Get your 6th Stamp! 8th Stamp gets you a FREE Starter or Desert of your choice!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-31T10:15:14.520Z",
+        "visible": true,
+        "visitCount": 6
+    },
+	{
+        "active": true,
+        "caption": "Get your 7th Stamp!",
+        "createdAt": "2014-12-31T10:15:17.640Z",
+        "description": "\u003cp\u003e\u003cbr\u003e\u003c/p\u003e",
+        "group": "offerset1",
+        "objectId": "OZEYNQEH9c",
+        "offer": [
+            {
+                "caption": "Get your 7th Stamp! 8th Stamp gets you a FREE Starter or Desert of your choice!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-31T10:15:37.384Z",
+        "visible": true,
+        "visitCount": 7
+    },
+	{
+        "active": false,
+        "caption": "SampleCaption",
+        "createdAt": "2015-01-01T07:58:43.387Z",
+        "group": "offerset1",
+        "objectId": "R2yHW7h5wC",
+        "offer": [
+            {
+                "caption": "Edit this content",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2015-01-01T07:58:43.387Z",
+        "visible": false,
+        "visitCount": 9
+    },
+	{
+        "active": true,
+        "caption": "FLAT 50% OFF on any beverage of your choice!",
+        "createdAt": "2014-11-20T08:02:47.360Z",
+        "description": "\u003cp\u003e\u003cspan style=\"font-size:26px;\"\u003e\u003cstrong\u003e\u003c/strong\u003e\u003c/span\u003e\u003cstrong\u003e\u003cspan style=\"font-size:22px;\"\u003eFLAT 50% OFF on any\u003cbr\u003e\u003c/span\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cstrong\u003e\u003cspan style=\"font-size:22px;\"\u003e beverage of your choice!\u003c/span\u003e\u003c/strong\u003e\u003cspan style=\"line-height: 1.42857143;\"\u003e\u003c/span\u003e\u003c/p\u003e",
+        "group": "BOB01",
+        "objectId": "EhEzFS415n",
+        "offer": [
+            {
+                "$$hashKey": "01D",
+                "caption": "FLAT 50% OFF on any beverage of your choice!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T11:02:48.953Z",
+        "visible": true,
+        "visitCount": 15
+    },
+	{
+        "active": true,
+        "caption": "2 visit away from FLAT 50% OFF!",
+        "createdAt": "2014-11-16T05:36:38.521Z",
+        "description": "\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003e2 visit away from\u003cbr\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size:16px;\"\u003e\u003cspan style=\"font-size:22px;\"\u003e FLAT 50% OFF!​\u003c/span\u003e\u003c/span\u003e\u003cbr\u003e\u003c/p\u003e",
+        "group": "BOB01",
+        "objectId": "LRhL6VUWmS",
+        "offer": [
+            {
+                "$$hashKey": "01H",
+                "caption": "2 visit away from FLAT 50% OFF!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T10:33:22.777Z",
+        "visible": true,
+        "visitCount": 13
+    },
+	{
+        "active": true,
+        "caption": "4 Visits away from 50% Off!",
+        "createdAt": "2014-11-22T10:36:19.973Z",
+        "description": "\u003cp\u003e\u003cstrong\u003e\u003cspan style=\"font-size:22px;\"\u003e4 Visits away from\u003cbr\u003e\u003c/span\u003e\u003c/strong\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003e\u003cstrong\u003e 50% Off!\u003c/strong\u003e\u003c/span\u003e\u003cbr\u003e\u003c/p\u003e",
+        "group": "BOB01",
+        "objectId": "WJhN9GDauh",
+        "offer": [
+            {
+                "$$hashKey": "041",
+                "caption": "4 Visits away from 50% Off!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T11:05:07.658Z",
+        "visible": true,
+        "visitCount": 16
+    },
+	{
+        "active": true,
+        "caption": "3 Visits away from 50% Off!",
+        "createdAt": "2014-11-22T10:36:31.326Z",
+        "description": "\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003e3 Visits away from \u003cbr\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003e50% Off!\u003c/span\u003e\u003cbr\u003e\u003c/p\u003e",
+        "group": "BOB01",
+        "objectId": "ON8Ks90EV8",
+        "offer": [
+            {
+                "$$hashKey": "03Y",
+                "caption": "3 Visits away from 50% Off!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T11:06:18.508Z",
+        "visible": true,
+        "visitCount": 17
+    },
+	{
+        "active": true,
+        "caption": "2 Visits away from 50% Off!",
+        "createdAt": "2014-11-22T11:05:14.470Z",
+        "description": "\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003e2 Visits away from \u003cbr\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003e50% Off!\u003c/span\u003e\u003cbr\u003e\u003c/p\u003e",
+        "group": "BOB01",
+        "objectId": "wN4HRt85Hf",
+        "offer": [
+            {
+                "$$hashKey": "053",
+                "caption": "2 Visits away from 50% Off!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T11:06:13.650Z",
+        "visible": true,
+        "visitCount": 18
+    },
+	{
+        "active": true,
+        "caption": "1 Visit away from 50% Off!",
+        "createdAt": "2014-11-22T11:06:25.343Z",
+        "description": "\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003e1 Visit away from\u003cbr\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003e 50% Off!\u003c/span\u003e\u003cbr\u003e\u003c/p\u003e",
+        "group": "BOB01",
+        "objectId": "y7aoXWUg4G",
+        "offer": [
+            {
+                "$$hashKey": "069",
+                "caption": "1 Visit away from 50% Off!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T11:06:51.153Z",
+        "visible": true,
+        "visitCount": 19
+    },
+	{
+        "active": true,
+        "caption": "FLAT 50% OFF on any beverage of your choice!",
+        "createdAt": "2014-11-22T11:06:59.990Z",
+        "description": "\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003eFLAT 50% OFF \u003cbr\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003cspan style=\"font-size:22px;\"\u003eon any beverage of your choice!\u003c/span\u003e\u003cbr\u003e\u003c/p\u003e",
+        "group": "BOB01",
+        "objectId": "Ysp6DRwYHM",
+        "offer": [
+            {
+                "$$hashKey": "07G",
+                "caption": "FLAT 50% OFF on any beverage of your choice!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-11-22T11:07:22.554Z",
+        "visible": true,
+        "visitCount": 20
+    },
+	{
+        "active": true,
+        "caption": "Free beverage / soup of your choice!",
+        "createdAt": "2014-11-06T07:44:24.430Z",
+        "description": "",
+        "group": "set1",
+        "objectId": "OqS9FxB9Eu",
+        "offer": [
+            {
+                "caption": "Enjoy your favorite beverage or soup for free!  Min bill amount Rs 500.   Just tap 'check-in' once you are in the restaurant to redeem the freebie.",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-29T18:31:03.484Z",
+        "visible": true,
+        "visitCount": 2
+    },
+	{
+        "active": true,
+        "caption": "Free beverage / soup of your choice!",
+        "createdAt": "2014-12-11T09:26:27.267Z",
+        "description": "undefined",
+        "group": "set1",
+        "objectId": "7g1VizLi4n",
+        "offer": [
+            {
+                "caption": "Enjoy your favorite beverage or soup for free!  Min bill amount Rs 500.   Just tap 'check-in' once you are in the restaurant to redeem the freebie.",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-29T18:31:35.874Z",
+        "visible": true,
+        "visitCount": 3
+    },
+	{
+        "active": true,
+        "caption": "Get your first stamp!",
+        "createdAt": "2014-12-30T07:17:01.128Z",
+        "description": "\u003cp\u003e\u003cspan style=\"font-size:28px;\"\u003e\u003cstrong\u003eGET YOUR FIRST STAMP!\u003c/strong\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e----------------------------------------------\u003cbr\u003eShow this to the store staff\u003cbr\u003e\u003c/p\u003e",
+        "group": "offerset1",
+        "objectId": "abRkBLnxih",
+        "offer": [
+            {
+                "caption": "Get your first stamp! 4th Stamp gets you a FREE soup or salad of your choice!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-31T10:15:10.226Z",
+        "visible": true,
+        "visitCount": 1
+    },
+	{
+        "active": true,
+        "caption": "FREE Soup or Salad of your choice!",
+        "createdAt": "2014-12-31T10:12:10.986Z",
+        "description": "undefined",
+        "group": "offerset1",
+        "objectId": "uTOjvCUaM1",
+        "offer": [
+            {
+                "caption": "FREE Soup or Salad of your choice! Just tap Check-in and redeem your freebie!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-31T10:15:47.028Z",
+        "visible": true,
+        "visitCount": 4
+    },
+	{
+        "active": true,
+        "caption": "FREE Starter or Desert of your choice!",
+        "createdAt": "2014-12-31T10:15:49.633Z",
+        "description": "undefined",
+        "group": "offerset1",
+        "objectId": "XHh3FrdZwk",
+        "offer": [
+            {
+                "caption": "FREE Starter or Desert of your choice! Just tap Check-in and redeem your freebie!",
+                "subId": 1
+            }
+        ],
+        "settings": {
+            "prerequisite": "VSTCOUNT"
+        },
+        "updatedAt": "2014-12-31T10:16:26.360Z",
+        "visible": true,
+        "visitCount": 8
+    }
+] }
