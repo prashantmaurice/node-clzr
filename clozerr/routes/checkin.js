@@ -289,10 +289,10 @@ router.get("/validate", function (req, res) {
                   debugger;
                   push.sendPushNotification( obj.checkin.gcm_id, { type: "STANDARD", title: "Check-in Successful", message: "Your visit at " + obj.vendor.name + " has been confirmed!" })
                   var chfull = obj.checkin.toJSON();
-                  chfull.user = user;
-                  chfull.vendor = vendor;
-                  chfull.offer = offer;
-                  new ReviewHandler( chfull ).request();
+                  chfull.user = obj.user;
+                  chfull.vendor = obj.vendor;
+                  chfull.offer = obj.offer;
+                  new ReviewScheduler( chfull ).request();
                 }
 
                 res.end(JSON.stringify({

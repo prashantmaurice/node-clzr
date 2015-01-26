@@ -2,9 +2,10 @@
 var push = require("./push");
 // Review class.
 module.exports = function( checkin, database ){
-
+  debugger;
   this.checkin = checkin;
   this.request = function(){
+    debugger;
     var self = this;
     console.log("Requesting review for ");
     console.log(checkin);
