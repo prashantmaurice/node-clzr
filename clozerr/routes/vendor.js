@@ -241,7 +241,7 @@ router.get('/get/visitedV2', function( req, res ){
         Q.all(plist).then(function () {
           debugger;
           //console.log("RESOLVED.");
-          res.send(JSON.stringify(vendor_det_ret_arr));
+          res.send(JSON.stringify({result:true, data:vendor_det_ret_arr}));
           res.end();
         });
 
