@@ -364,11 +364,20 @@ router.get('/create', function( req, res ) {
 router.get('/profile',function(req,res){
 
 
-  if( req.user.type == "Anonymous" ){
+    if( req.user.type == "Anonymous" ){
       error.err(res,"909");
+      return;
     }
     //  TODO: Remove user private details.. remove password.
     res.end( JSON.stringify( req.user ) );
-  });
+});
 
+router.get("/update/gcm", function( req, res ){
+  if( req.user.type != "User" ){
+    error.err( res, "909" );
+    return;
+  }
+  req.user.gcm_id = req.query.gcm_id;
+  res.end( JSON.stringify( req.user ) );
+});
 module.exports = router;

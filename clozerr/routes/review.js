@@ -5,11 +5,11 @@ var Schema = mongoose.Schema;
 var models = require('./models');
 var Review = models.Review;
 var error = require("./error");
-var _ = require('underscore');;
+var _ = require('underscore');
 router.get('/create', function (req, res) {
 
     var checkin_id = req.query.checkin_id;
-    var stars=req.query.stars;
+    var stars = req.query.stars;
     console.log(stars);
     var dateCreated = new Date();
 

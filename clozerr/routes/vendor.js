@@ -214,7 +214,7 @@ router.get('/get/visitedV2', function( req, res ){
                   return OfferHandler.qualify(req.user, vendor, offer);
                 });
                 //debugger;
-                var vendor_new = {};
+                var vendor_new = vendor.toJSON();
                 vendor_new.location = vendor.location;
                 vendor_new.name = vendor.name;
                 vendor_new.offers = offers_new;
@@ -222,7 +222,6 @@ router.get('/get/visitedV2', function( req, res ){
                 vendor_new.phone = vendor.phone;
                 vendor_new.city = vendor.city;
                 vendor_new.address = vendor.address;
-                vendor_new.
                 vendor_new.fid = vendor.fid;
                 vendor_new._id = vendor._id;
                 console.log( vendor_new );
@@ -493,11 +492,11 @@ router.get('/update', function (req, res) {
           if( req.query.resource_name ){
             resource_name = req.query.resource_name;
           }else resource_name = vendor.resource_name;
-          
+
           if( req.query.question){
             question=req.query.question;
           }else question=vendor.question;
-          
+
           var date_created = vendor.date_created;
 
             vendor.location = [latitude, longitude];

@@ -9,6 +9,10 @@ var hat = require("hat");
 var rack = hat.rack(10, 10);
 var gcm = require("node-gcm");
 var settings = require("./settings");
+var push = require("./util/push");
+
+
+var Review = require("./util/review");
 
 var app = express();
 //var http = require('http').Server(app);
@@ -202,24 +206,7 @@ router.get("/create", function (req, res) {
 
 });
 
-function sendPushNotification( gcm_id, data ) {
-    console.log("Sending push notif to :" + gcm_id);
-    console.log(data);
-    var message = new gcm.Message({
-        collapseKey: 'validated',
-        delayWhileIdle: true,
-        data: data
-    });
 
-    var sender = new gcm.Sender(settings.gcm.apiKey); //Insert Google Server API Key
-    var regIds = [];
-    regIds.push( gcm_id ); //Insert Registration ID
-
-    sender.send( message, regIds, 4, function (err, res) {
-        console.log(res);
-        if (err) console.log(err);
-    } );
-}
 
 router.get("/validate", function (req, res) {
 
@@ -298,7 +285,8 @@ router.get("/validate", function (req, res) {
                 // ACTION: NOTIFY.
                 if( obj.checkin.gcm_id != '0' ){
                   // SHOULD BE CREATED BY OFFER TYPE CONTROLLER.
-                  sendPushNotification( obj.checkin.gcm_id, { type: "STANDARD", title: "Check-in Successful", message: "Your visit at " + obj.vendor.name + " has been confirmed!" })
+                  push.sendPushNotification( obj.checkin.gcm_id, { type: "STANDARD", title: "Check-in Successful", message: "Your visit at " + obj.vendor.name + " has been confirmed!" })
+                  new Review( checkin );
                 }
 
                 res.end(JSON.stringify({
@@ -462,10 +450,10 @@ Q.all(plist).then(function () {
                 plist.push(pr);
 
             });
-Q.all(plist).then(function () {
-    console.log("ALL DUN");
-    res.end(JSON.stringify({ result:true, data:chdummy_ret_arr }));
-});
+            Q.all(plist).then(function () {
+              console.log("ALL DUN");
+              res.end(JSON.stringify({ result:true, data:chdummy_ret_arr }));
+            });
 });
 
 }else{
@@ -521,10 +509,10 @@ router.get("/confirmed", function (req, res) {
                 }).then(function (offer) {
                     chfull.offer = offer.toJSON();
                     return Review.findOne({
-                        chekinid: ch._id;
+                        checkinid: ch._id
                     }).exec();
                 }).then(function (review){
-                    chfull.review=review.toJSON();    
+                    chfull.review=review.toJSON();
                     var deferred = Q.defer();
                     debugger;
                     chfull._id = ch._id;
