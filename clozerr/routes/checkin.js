@@ -12,7 +12,7 @@ var settings = require("./settings");
 var push = require("./util/push");
 
 
-var Review = require("./util/review");
+var ReviewScheduler = require("./util/review");
 
 var app = express();
 //var http = require('http').Server(app);
@@ -22,6 +22,7 @@ var Vendor = models.Vendor;
 var Offer = models.Offer;
 var CheckIn = models.CheckIn;
 var User = models.User;
+var Review = models.Review;
 
 var OfferHandler = require("./predicate");
 
@@ -285,8 +286,13 @@ router.get("/validate", function (req, res) {
                 // ACTION: NOTIFY.
                 if( obj.checkin.gcm_id != '0' ){
                   // SHOULD BE CREATED BY OFFER TYPE CONTROLLER.
+                  debugger;
                   push.sendPushNotification( obj.checkin.gcm_id, { type: "STANDARD", title: "Check-in Successful", message: "Your visit at " + obj.vendor.name + " has been confirmed!" })
-                  new Review( checkin );
+                  var chfull = obj.checkin.toJSON();
+                  chfull.user = user;
+                  chfull.vendor = vendor;
+                  chfull.offer = offer;
+                  new ReviewHandler( chfull ).request();
                 }
 
                 res.end(JSON.stringify({
@@ -508,13 +514,16 @@ router.get("/confirmed", function (req, res) {
 
                 }).then(function (offer) {
                     chfull.offer = offer.toJSON();
+
+                    debugger;
                     return Review.findOne({
                         checkinid: ch._id
                     }).exec();
                 }).then(function (review){
-                    chfull.review=review.toJSON();
-                    var deferred = Q.defer();
                     debugger;
+                    if( review )
+                      chfull.review=review.toJSON();
+                    var deferred = Q.defer();
                     chfull._id = ch._id;
                     chfull.state = ch.state;
                     chfull.pin = ch.pin;
