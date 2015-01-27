@@ -13,15 +13,19 @@ module.exports = function( checkin, database ){
 
     var gcm_id = checkin.user.gcm_id;
     if( !gcm_id ){
+      console.log("No GCMID, exiting");
       return;
     }
-    var offsetTime = checkin.vendor.reviewOffset;
-    if(!offsetTime)
-      offsetTime = 2000;
+    console.log("Found GCMID: " + gcm_id);
+    debugger;
 
+    //var offsetTime = checkin.vendor.reviewOffset;
+    //if(!offsetTime)
+    //  offsetTime = 2000;
+    console.log("Setting timeout.. ");
     setTimeout( function(){
       console.log("pushing");
       push.sendPushNotification( checkin.user, { type:"REVIEW", title:"Rate your experience", message:"Give us feedback on your visit to " + checkin.vendor.name + "." } );
-    }, offsetTime);
+    }, 2000);
   }
 }
