@@ -25,7 +25,7 @@ module.exports = function( checkin, database ){
     console.log("Setting timeout.. ");
     setTimeout( function(){
       console.log("pushing");
-      push.sendPushNotification( checkin.user, { type:"REVIEW", title:"Rate your experience", message:"Give us feedback on your visit to " + checkin.vendor.name + "." } );
+      push.sendPushNotification( gcm_id, { type:"REVIEW", title:"Rate your experience", message:"Give us feedback on your visit to " + checkin.vendor.name + ".", "checkin_id":checkin._id, "vendor_id":checkin.vendor._id } );
     }, 2000);
   }
 }
