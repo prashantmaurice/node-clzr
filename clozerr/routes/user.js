@@ -378,6 +378,6 @@ router.get("/update/gcm", function( req, res ){
     return;
   }
   req.user.gcm_id = req.query.gcm_id;
-  res.end( JSON.stringify( req.user ) );
+  res.end( JSON.stringify( {result:true, user:req.user} ) );
 });
 module.exports = router;

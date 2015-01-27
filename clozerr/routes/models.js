@@ -54,6 +54,7 @@ Models.User = mongoose.model('User',new Schema({
 	profile: Schema.Types.Mixed,
 	date_created:Date,
 	upgraded:Date
+	gcm_id: String
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
