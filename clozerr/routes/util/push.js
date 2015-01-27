@@ -3,7 +3,7 @@ var gcm = require("node-gcm");
 
 module.exports ={
   sendPushNotification: function( gcm_id, data ) {
-    debugger;
+    //debugger;
     console.log("Sending push notif to :" + gcm_id);
     console.log(data);
     var message = new gcm.Message({
@@ -19,6 +19,7 @@ module.exports ={
     sender.send( message, regIds, 4, function (err, res) {
       console.log(res);
       if (err) console.log(err);
-    } );
+    });
+
   }
 }

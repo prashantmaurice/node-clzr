@@ -295,7 +295,7 @@ router.get("/validate", function (req, res) {
                   chfull.user = obj.user;
                   chfull.vendor = obj.vendor;
                   chfull.offer = obj.offer;
-                  new ReviewScheduler( chfull ).request();
+                  //new ReviewScheduler( chfull ).request();
                 }
 
                 res.end(JSON.stringify({
