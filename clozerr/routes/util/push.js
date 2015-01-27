@@ -1,5 +1,5 @@
 var settings = require("../settings");
-var gcm = require("node-gcm");
+var gcm = require("node-gcm-service");
 
 module.exports ={
   sendPushNotification: function( gcm_id, data ) {
@@ -7,16 +7,17 @@ module.exports ={
     console.log("Sending push notif to :" + gcm_id);
     console.log(data);
     var message = new gcm.Message({
-      collapseKey: 'validated',
-      delayWhileIdle: true,
+      collapse_key: 'clozerr',
+      delay_while_idle: true,
       data: data
     });
 
-    var sender = new gcm.Sender(settings.gcm.apiKey); //Insert Google Server API Key
+    var sender = new gcm.Sender(); //Insert Google Server API Key
+    sender.setAPIKey(settings.gcm.apiKey);
     var regIds = [];
     regIds.push( gcm_id ); //Insert Registration ID
 
-    sender.send( message, regIds, 4, function (err, res) {
+    sender.sendMessage( message.toString(), regIds, true, function (err, res) {
       console.log(res);
       if (err) console.log(err);
     });
