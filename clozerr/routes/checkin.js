@@ -263,7 +263,9 @@ router.get("/validate", function (req, res) {
 
             obj.checkin.validate_data = validate_data;
             obj.checkin.markModified("validate_data");
-            obj.checkin.save();
+
+            if( !( req.query.test == "true" ) )
+              obj.checkin.save();
 
             //Note : There may be a need to modify the parameters to be sent to the notification,
             //depending on what frontend needs.
@@ -281,7 +283,8 @@ router.get("/validate", function (req, res) {
                 //debugger;
                 OfferHandler.onCheckin( obj.user, obj.vendor, obj.offer, validate_data );
                 //debugger;
-                obj.user.save();
+                if( !( req.query.test == "true" ) )
+                  obj.user.save();
 
                 // ACTION: NOTIFY.
                 if( obj.checkin.gcm_id != '0' ){

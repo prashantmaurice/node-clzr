@@ -25,7 +25,7 @@ router.get('/create', function (req, res) {
     })
 });
 router.get('/get',function(req,res){
- var errobj = error.err_insuff_params(res, req, ["review_id"]);
+    var errobj = error.err_insuff_params(res, req, ["review_id"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
