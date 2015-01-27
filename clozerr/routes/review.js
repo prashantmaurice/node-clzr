@@ -8,6 +8,7 @@ var error = require("./error");
 var _ = require('underscore');
 router.get('/create', function (req, res) {
 
+    // TODO: Need to check if accessing user is the same as the one who checked in.
     var checkin_id = req.query.checkin_id;
     var stars = req.query.stars;
     console.log(stars);
