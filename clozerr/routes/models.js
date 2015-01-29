@@ -14,7 +14,7 @@ var vendorSchema = new Schema({
 	offers_old : [ObjectId],
 	fid:String,
 	date_created:Date,
-    dateUpdated:Date,
+  dateUpdated:Date,
 	address: String,
 	city: String,
 	phone: String,
@@ -80,7 +80,8 @@ Models.Offer = mongoose.model('Offer',new Schema({
 Models.Review = mongoose.model('Review',new Schema({
 	checkinid:ObjectId,
 	stars:[Number],
-	date_created:Date
+	date_created:Date,
+	remarks: String
 }));
 
 module.exports = Models;
