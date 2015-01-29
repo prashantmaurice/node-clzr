@@ -28,6 +28,12 @@ var all_checkins = function( $rootScope, $scope, $http ){
 
   var CLOZERR_ALL_CHECKINS_URL = CLOZERR_API + "checkin/confirmed";
 
+  $scope.preprocess = function( checkin ){
+    if( !checkin.review ){
+      checkin.review = { stars:"N/A", remarks:"N/A" }
+    }
+    return checkin.review;
+  }
   $scope.update = function(){
     var access_token = localStorage.token;
 

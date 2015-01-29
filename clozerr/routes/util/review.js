@@ -8,23 +8,23 @@ module.exports = function( checkin, database ){
     debugger;
     var self = this;
 
-    console.log("Requesting review for ");
-    console.log(checkin);
+    //console.log("Requesting review for ");
+    //console.log(checkin);
 
     var gcm_id = checkin.user.gcm_id;
     if( !gcm_id ){
-      console.log("No GCMID, exiting");
+      //console.log("No GCMID, exiting");
       return;
     }
-    console.log("Found GCMID: " + gcm_id);
+    //console.log("Found GCMID: " + gcm_id);
     debugger;
 
     //var offsetTime = checkin.vendor.reviewOffset;
     //if(!offsetTime)
     //  offsetTime = 2000;
-    console.log("Setting timeout.. ");
+    //console.log("Setting timeout.. ");
     setTimeout( function(){
-      console.log("pushing");
+      //console.log("pushing");
       push.sendPushNotification( gcm_id, { type:"REVIEW", title:"Rate your experience", message:"Give us feedback on your visit to " + checkin.vendor.name + ".", "checkin_id":checkin._id, "vendor_id":checkin.vendor._id } );
     }, 2000);
   }
