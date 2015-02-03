@@ -77,6 +77,7 @@ Models.Offer = mongoose.model('Offer',new Schema({
 	description:String,
 	dateUpdated:Date
 }));
+
 Models.Review = mongoose.model('Review',new Schema({
 	checkinid:ObjectId,
 	stars:[Number],

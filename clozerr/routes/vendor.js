@@ -20,7 +20,12 @@ router.get('/create', function (req, res) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
-    if(req.query.user="admin"){
+
+    if( user.type != "Admin" ){
+      error.err( res, "200" );
+      return;
+    }
+
     var lat = req.query.latitude;
     var lon = req.query.longitude;
     var image = req.query.image;
@@ -46,7 +51,7 @@ router.get('/create', function (req, res) {
     });
 
     vendor.save();
-}
+
 });
 
 
@@ -102,7 +107,12 @@ router.get('/get', function (req, res) {
 
 router.get('/addoffer', function (req, res) {
 
-	// TODO: Only admin allowed.
+	// TODO: Only admin allowed. DONE.
+  if( user.type != "Admin" ){
+    error.err( res, "200" );
+    return;
+  }
+
     var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
@@ -369,10 +379,11 @@ router.get('/update', function (req, res) {
     }
 
     var id = req.query.vendor_id;
-    /*
+
     if( user.type != "Admin" ){
       error.err( res, "200" );
-    }*/
+      return;
+    }
 
     Vendor.findOne({
         _id: id
