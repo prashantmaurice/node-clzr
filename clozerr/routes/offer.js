@@ -49,8 +49,12 @@ router.get('/getmyoff',function(req,res){
         })
 });
 router.get('/create', function (req, res) {
-	// TODO: only admin allowed.
-
+	// TODO: only admin allowed. DONE
+	var user = req.user;
+	if( user.type != "Admin" ){
+		error.err( res, "200" );
+		return;
+	}
     var type = req.query.type;
 		if( !type ) type="S1";
     if (req.query.stamps) stamps = req.query.stamps;
@@ -78,12 +82,16 @@ router.get('/create', function (req, res) {
 });
 router.get('/update', function (req, res) {
 	var type, stamps, caption, description;
-
+	var user = req.user;
+	if( user.type != "Admin" ){
+		error.err( res, "200" );
+		return;
+	}
 	var errobj = error.err_insuff_params(res, req, ["offer_id"]);
 	if (!errobj) {
         return;
   }
-	if(req.query.user="admin"){
+
     var id = req.query.offer_id;
     var offer = Offer.findOne({
     	_id: id
@@ -132,13 +140,15 @@ router.get('/update', function (req, res) {
 
         res.end();
     });
-}
-else
-   res.end();
+
 });
 
     router.get('/delete', function (req, res) {
-
+			var user = req.user;
+			if( user.type != "Admin" ){
+				error.err( res, "200" );
+				return;
+			}
     	var errobj = error.err_insuff_params(res, req, ["offer_id", "vendor_id"]);
     	if (!errobj) {
             //error.err(res,errobj.code,errobj.params);
