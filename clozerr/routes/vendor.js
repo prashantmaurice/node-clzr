@@ -14,6 +14,8 @@ var s3 = require("s3policy");
 var policy = require("s3-policy");
 var settings = require("./settings");
 
+
+
 router.get('/create', function (req, res) {
     var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
     if (!errobj) {

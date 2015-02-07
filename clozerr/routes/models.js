@@ -6,7 +6,6 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var vendorSchema = new Schema({
-
 	location : {type:[Number],index:'2dsphere'} ,
 	name:String,
 	offers : [ObjectId],
@@ -22,8 +21,7 @@ var vendorSchema = new Schema({
 	description: String,
 	resource_name: String,
 	question : [String],
-    auth_type : String,
-    social_id : String
+	settings : Schema.Types.Mixed
 });
 vendorSchema.index({ location: '2d' });
 
