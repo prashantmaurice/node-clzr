@@ -350,7 +350,7 @@ router.get('/create', function( req, res ) {
       vuser.save();
 
       res.end( JSON.stringify({
-        result:true,
+        result:true
       }) );
 
      /* user.save(function(err) {
