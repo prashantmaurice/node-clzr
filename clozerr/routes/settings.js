@@ -28,6 +28,9 @@ module.exports = {
 	},
 	"gcm":{
 		"apiKey":"AIzaSyD7a0oUk6GMFLpuFU_wUsuhjBH4jKKOFKQ"
+	},
+	"birthday":{
+		"birthdayWishMessage": "wishes you a Happy Birthday"
 	}
 	
 };
