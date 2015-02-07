@@ -42,5 +42,6 @@ module.exports ={
       if (err) console.log(err);
     });
 
-  }
+  },
+  sendMultiPushNotification: sendMultiPushNotification
 }
