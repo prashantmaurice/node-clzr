@@ -14,14 +14,16 @@ var vendorSchema = new Schema({
 	offers_old : [ObjectId],
 	fid:String,
 	date_created:Date,
-  dateUpdated:Date,
+    dateUpdated:Date,
 	address: String,
 	city: String,
 	phone: String,
 	visible: Boolean,
 	description: String,
 	resource_name: String,
-	question : [String]
+	question : [String],
+    auth_type : String,
+    social_id : String
 });
 vendorSchema.index({ location: '2d' });
 

@@ -8,11 +8,10 @@ var error = require("./error");
 var bcrypt = require("bcrypt-nodejs");
 
 var router = express.Router();
-var user = models.User;
-var User = user;
-
+var User = models.User;
+var Vendor = models.Vendor;
 function newUser( backend, id ) {
- var nuser=new user({
+ var nuser=new User({
   auth_type: backend,
   social_id:id,
   stamplist:{ STANDARD:0 },
@@ -22,7 +21,15 @@ function newUser( backend, id ) {
 nuser.markModified("stamplist");
  return nuser;
 }
-
+function newVendor(backend,id) {
+    var nvendor=new Vendor({
+        auth_type: backend,
+        social_id:id,
+        date_created: new Date()
+    });
+    nvendor.markModified("social_id");
+    return nvendor;
+}
 function loadFacebookDetails( user, access_token, cb ){
   https.get("https://graph.facebook.com/me/?access_token=" + access_token, function( response ){
 
@@ -65,10 +72,10 @@ function loginUser( user ){
   var id = hat();
   return newid( id, user ).save().exec();
 }
-
+//TODO test login
 router.get('/login/facebook', function(req, res) {
 
-    var errobj = error.err_insuff_params(res,req,["token"]);
+    var errobj = error.err_insuff_params(res,req,["token","type"]);
     if(!errobj) {
       return;
     }
@@ -83,47 +90,92 @@ router.get('/login/facebook', function(req, res) {
     //console.log(d);
     if( d.data && d.data.is_valid )
     {
+        var type='user';
+        if(req.query.type) type=req.query.type;
+    if(type=='user'){
+        User.findOne({social_id:d.data.user_id}, function(err, result) {
+            if (err) { console.log("error:") }
+            if (result)
+            {
 
-    user.findOne({social_id:d.data.user_id}, function(err, result) {
-      if (err) { console.log("error:") }
-      if (result)
-      {
+                if( !result.profile ){
 
-            if( !result.profile ){
+                    loadFacebookDetails( result, req.query.token, function( user ){
+                        User.save();
+                        debugger;
+                        var id = hat();
+                        //console.log(id);
+                        newid( id, User._id ).save();
+                        res.end( JSON.stringify( {result : true, token : id } ) );
+                    });
 
-              loadFacebookDetails( result, req.query.token, function( user ){
-                user.save();
-                debugger;
-                var id = hat();
-                //console.log(id);
-                newid( id, user._id ).save();
-                res.end( JSON.stringify( {result : true, token : id } ) );
-              });
+                }else{
 
-            }else{
+                    var id = hat();
+                    console.log(id);
 
-              var id = hat();
-              console.log(id);
+                    newid( id, result._id ).save();
+                    res.end( JSON.stringify( {result : true, token : id } ) );
 
-              newid( id, result._id ).save();
-              res.end( JSON.stringify( {result : true, token : id } ) );
+                }
+            }
+            else
+            {
+                var nu = newUser( "facebook", d.data.user_id );
+                loadFacebookDetails(nu,req.query.token, function( user ){
+                    nu.save();
+                    debugger;
+                    var id=hat();
+                    //console.log(id);
+                    newid(id,nu._id).save();
+                    res.end( JSON.stringify( {result : true, token : id } ) );
+                });
 
             }
-          }
-          else
-          {
-            var nu = newUser( "facebook", d.data.user_id );
-            loadFacebookDetails(nu,req.query.token, function( user ){
-              nu.save();
-              debugger;
-              var id=hat();
-              //console.log(id);
-              newid(id,nu._id).save();
-              res.end( JSON.stringify( {result : true, token : id } ) );
-            });
-
-          }
         });
+    }
+    else if(type=='vendor'){
+        Vendor.findOne({social_id:d.data.user_id}, function(err, result) {
+            if (err) { console.log("error:") }
+            if (result)
+            {
+
+                if( !result.profile ){
+
+                    loadFacebookDetails( result, req.query.token, function( user ){
+                        Vendor.save();
+                        debugger;
+                        var id = hat();
+                        //console.log(id);
+                        newid( id, Vendor._id ).save();
+                        res.end( JSON.stringify( {result : true, token : id } ) );
+                    });
+
+                }else{
+
+                    var id = hat();
+                    console.log(id);
+
+                    newid( id, result._id ).save();
+                    res.end( JSON.stringify( {result : true, token : id } ) );
+
+                }
+            }
+            else
+            {
+                var nu = newVendor( "facebook", d.data.user_id );
+                loadFacebookDetails(nu,req.query.token, function( user ){
+                    nu.save();
+                    debugger;
+                    var id=hat();
+                    //console.log(id);
+                    newid(id,nu._id).save();
+                    res.end( JSON.stringify( {result : true, token : id } ) );
+                });
+
+            }
+        });
+    }
   }
   else{
     error.err( res, "102" );
@@ -143,7 +195,7 @@ request.on('error', function(e) {
 
 router.get('/login/google', function(req, res) {
 
-  var errobj = error.err_insuff_params(res,req,["token"]);
+  var errobj = error.err_insuff_params(res,req,["token","type"]);
   if(!errobj) {
     return;
   }
@@ -157,47 +209,92 @@ router.get('/login/google', function(req, res) {
       //console.log(d);
       if( d.issued_to && d.issued_to == settings.auth.google.app_id )
       {
+          var type='user';
+          if(req.query.type) type=req.query.type;
+        if(type=='user') {
+            User.findOne({social_id: d.user_id}, function (err, result) {
+                if (err) {
+                    console.log("error:")
+                }
+                if (result) {
 
-        user.findOne({ social_id:d.user_id }, function(err, result) {
-          if (err) { console.log("error:") }
-          if (result)
-          {
+                    if (!result.profile) {
 
-            if( !result.profile ){
+                        loadGoogleDetails(result, req.query.token, function (user) {
+                            User.save();
+                            debugger;
+                            var id = hat();
+                            //console.log(id);
+                            newid(id, User._id).save();
+                            res.end(JSON.stringify({result: true, token: id}));
+                        });
 
-              loadGoogleDetails( result, req.query.token, function( user ){
-                user.save();
-                debugger;
-                var id = hat();
-                //console.log(id);
-                newid( id, user._id ).save();
-                res.end( JSON.stringify( {result : true, token : id } ) );
-              });
+                    } else {
 
-            }else{
+                        var id = hat();
+                        console.log(id);
 
-              var id = hat();
-              console.log(id);
+                        newid(id, result._id).save();
+                        res.end(JSON.stringify({result: true, token: id}));
 
-              newid( id, result._id ).save();
-              res.end( JSON.stringify( {result : true, token : id } ) );
+                    }
+                }
+                else {
+                    var nu = newUser("google", d.user_id);
+                    loadGoogleDetails(nu, req.query.token, function (user) {
+                        nu.save();
+                        debugger;
+                        var id = hat();
+                        //console.log(id);
+                        newid(id, nu._id).save();
+                        res.end(JSON.stringify({result: true, token: id}));
+                    });
 
-            }
-          }
-          else
-          {
-            var nu = newUser( "google", d.user_id );
-            loadGoogleDetails(nu,req.query.token, function( user ){
-              nu.save();
-              debugger;
-              var id=hat();
-              //console.log(id);
-              newid(id,nu._id).save();
-              res.end( JSON.stringify( {result : true, token : id } ) );
+                }
             });
+        }
+        else if(type=='vendor') {
+            Vendor.findOne({social_id: d.user_id}, function (err, result) {
+                if (err) {
+                    console.log("error:")
+                }
+                if (result) {
 
-          }
-        });
+                    if (!result.profile) {
+
+                        loadGoogleDetails(result, req.query.token, function (user) {
+                            Vendor.save();
+                            debugger;
+                            var id = hat();
+                            //console.log(id);
+                            newid(id, Vendor._id).save();
+                            res.end(JSON.stringify({result: true, token: id}));
+                        });
+
+                    } else {
+
+                        var id = hat();
+                        console.log(id);
+
+                        newid(id, result._id).save();
+                        res.end(JSON.stringify({result: true, token: id}));
+
+                    }
+                }
+                else {
+                    var nu = newVendor("google", d.user_id);
+                    loadGoogleDetails(nu, req.query.token, function (user) {
+                        nu.save();
+                        debugger;
+                        var id = hat();
+                        //console.log(id);
+                        newid(id, nu._id).save();
+                        res.end(JSON.stringify({result: true, token: id}));
+                    });
+
+                }
+            });
+        }
       }
       else{
         error.err( res, "102" );
@@ -271,29 +368,38 @@ request.on('error', function(e) {
 
 
 router.get('/login/password', function( req, res ){
-  User.findOne( {username: req.query.username}, function( err, user ){
-    console.log(user);
-    if( !user ){
-      error.err(res,"102");
-      return;
+    var errobj = error.err_insuff_params(res,req,["username","password"]);
+    if(!errobj) {
+        return;
     }
-    if( err ){
-      error.err(res,"102");
-      return;
+    var type='user';
+    if(req.query.type) type=req.query.type;
+    if(type=='user'){
+        User.findOne( {username: req.query.username}, function( err, user ){
+            console.log(user);
+            if( !user ){
+                error.err(res,"102");
+                return;
+            }
+            if( err ){
+                error.err(res,"102");
+                return;
+            }
+
+            if( bcrypt.compareSync( req.query.password, user.password ) ){
+                var token = newid( hat(), user );
+                token.save( function( err, token, num ){
+                    console.log( token );
+                    res.end( JSON.stringify({ result:true, access_token:token.access_token }) );
+                });
+            }
+            else {
+                error.err(res,"212");
+            }
+
+        });
     }
 
-    if( bcrypt.compareSync( req.query.password, user.password ) ){
-      var token = newid( hat(), user );
-      token.save( function( err, token, num ){
-        console.log( token );
-        res.end( JSON.stringify({ result:true, access_token:token.access_token }) );
-      });
-    }
-    else {
-      error.err(res,"212");
-    }
-
-  });
 });
 
 router.get('/reset/password', function( req, res ){
@@ -321,6 +427,7 @@ router.get('/logout', function( req, res ){
     return;
   }
   debugger;
+    //TODO check for user and vendor ?
   token.remove({ account: user._id }, function( err, data ){
     console.log( err );
     console.log( data );
