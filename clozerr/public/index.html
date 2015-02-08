@@ -160,17 +160,24 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse" ng-show="loggedIn">
                 <ul class="nav navbar-nav side-nav">
+                    <!-- Leave it for now.. -->
                     <li class="active">
                         <a href="javascript:void(0)" ng-click="pageChange('home')"><i class="fa fa-fw fa-dashboard"></i>Home</a>
                     </li>
+                    <!-- Analytics. empty for now.. -->
                     <li>
                         <a href="javascript:void(0)" ng-click="pageChange('analytics')"><i class="fa fa-fw fa-bar-chart-o"></i>Analytics</a>
                     </li>
+                    <!--
+                      Settings is to set features: Birthday notifications, delayed push notifications & review questions.
+                      Also, have a button to bring up the offers modal.
+                    -->
                     <li>
                         <a href="javascript:void(0)" ng-click="pageChange('settings')"><i class="fa fa-fw fa-table"></i>Settings</a>
                     </li>
+                    <!-- Profile page is to contain profile stuff like public name, image, city, address etc. -->
                     <li>
-                        <a href="javascript:void(0)" ng-click="pageChange('a')"><i class="fa fa-fw fa-edit"></i>Forms</a>
+                        <a href="javascript:void(0)" ng-click="pageChange('profile')"><i class="fa fa-fw fa-edit"></i>Profile</a>
                     </li>
                     <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
