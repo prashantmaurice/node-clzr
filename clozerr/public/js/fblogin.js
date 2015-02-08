@@ -7,8 +7,18 @@ function statusChangeCallback(response) {
     // Full docs on the response object can be found in the documentation
     // for FB.getLoginStatus().
     if (response.status === 'connected') {
-        var accessToken=FB.getAuthResponse()['accessToken']
-        //TODO call /auth/login/facebook
+        //TODO test
+        var accessToken=FB.getAuthResponse()['accessToken'];
+        var xmlHttp = null;
+        var FB_CLOZERR_URL=CLOZERR_API+"/auth/login/facebook?token="+accessToken;
+        //TODO add type parameter
+
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET",FB_CLOZERR_URL, false );
+        xmlHttp.send( null );
+        var result= (JSON.parse(xmlHttp.responseText)).result;
+
+        //TODO action based on result
     } else if (response.status === 'not_authorized') {
         //not logged in app
     } else {
@@ -60,14 +70,3 @@ window.fbAsyncInit = function() {
     js.src = "//connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
-
-// Here we run a very simple test of the Graph API after login is
-// successful.  See statusChangeCallback() for when this call is made.
-function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', function(response) {
-        console.log('Successful login for: ' + response.name);
-        document.getElementById('status').innerHTML =
-            'Thanks for logging in, ' + response.name + '!';
-    });
-}
