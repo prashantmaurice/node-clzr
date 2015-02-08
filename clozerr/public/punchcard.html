@@ -1,0 +1,97 @@
+<html>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-switch.css" rel="stylesheet">
+<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+<!-- Custom CSS -->
+<link href="css/sb-admin.css" rel="stylesheet">
+<!-- Morris Charts CSS -->
+<link href="css/plugins/morris.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="punchcard.js"></script>
+<div ng-app="">
+	<div class="col-lg-10 col-lg-offset-2" ng-controller="punchCardType">
+		<div class="row">
+
+			<div class="col-lg-4 col-md-6">
+				<div class="panel panel-blue">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-8 text-left">
+								<div><big>Choose your punch card type!</big></div>
+							</div>
+							<div class="col-xs-4">
+								<i class="fa fa-credit-card fa-5x"></i>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel-footer">
+						<div class="panel-front-text">
+							<div class="panel-options">
+								<div class="row">
+									<div class="radio col-xs-8">
+										<label>
+											<input type="radio" ng-model="punchcardtype" name="punchcardtype" value="p5">5 punches</input>
+										</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="radio col-xs-8">
+										<label>
+											<input type="radio" ng-model="punchcardtype" name="punchcardtype" value="p10">10 punches</input>
+										</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="radio col-xs-8">
+										<label>
+											<input type="radio" ng-model="punchcardtype" name="punchcardtype" value="p15">15 punches</input>
+										</label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="radio col-xs-8">
+										<label>
+											<input type="radio" ng-model="punchcardtype" name="punchcardtype" value="px">Custom punch card</input></label>
+										</div>
+										<div ng-show="punchcardtype=='px'" class="col-xs-4 pvert-center">
+											<input type="number" id="customPunchCount" min="0" max="100" step="1" value="16" style="background-color: transparent;"/>
+										</div>	
+									</div>
+									<a href="javascript:void(0)" ng-click="showPunchCardInputs()" class="restore-color-blue">
+										<div class="row text-right">
+											<i class="fa fa-check fa-2x">&nbsp&nbsp&nbsp</i><br>
+										</div>
+									</a>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div ng-show="textInputVis">
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<th class="col-md-2"><center>No.</center></th>
+							<th class="col-md-10"><center>Offer</center></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="i in getNumber(num) track by $index">
+							<td class="col-md-2"><center>{{$index+1}}</center></td>
+							<td class="col-md-10"><input type="text" class="form-control"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</ul>
+
+
+		</div>
+	</div>
+	</html>
