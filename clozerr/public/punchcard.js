@@ -1,24 +1,27 @@
 var punchCardType = function($scope, $rootScope, $http) {
 	console.log("loaded");
-	var num = 0;
-	$scope.punchcardtype = 'p5';
+
+	$scope.offers = [];
+	$scope.punchcardtype = 'pp';
 	$scope.textInputVis = false;
 	$scope.showPunchCardInputs = function() {
 		console.log("working");
-		if($scope.punchcardtype=='p5') $scope.num = 5;
-		else if($scope.punchcardtype=='p10') $scope.num = 10;
-		else if($scope.punchcardtype=='p15') $scope.num = 15;
-		else {
-			console.log($('#customPunchCount').val());
-			$scope.num = $('#customPunchCount').val();
+		if($scope.punchcardtype=='pp') {
+			$scope.num = $('#customPunchCountp').val();
+			for(var i=1;i<=$scope.num;i++) {
+				$scope.offers.push(5*i + " % OFF");
+			}
+		}
+		else if($scope.punchcardtype=='px') {
+			$scope.num = $('#customPunchCountx').val();
+			console.log($scope.num);
+			for(var i=1;i<=$scope.num;i++) {
+				$scope.offers.push("");
+			}
 		}
 		$scope.textInputVis = true;
 	}
-	$scope.getNumber = function(num) {
-		var range = [];
-		for(var i=0;i<num;i++) {
-			range.push(i);
-		} 
-		return range;
+	$scope.savePunchCardInputs = function() {
+		console.log("saving offers");
 	}
 }
