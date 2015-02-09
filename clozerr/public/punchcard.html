@@ -65,7 +65,7 @@
 									<input type="number" id="customPunchCountx" min="0" max="100" step="1" value="5" style="background-color: transparent;"/>
 								</div>	
 							</div>
-							<a href="javascript:void(0)" data-toggle="modal" data-target="#myModal" class="restore-color-blue">
+							<a href="javascript:void(0)" data-toggle="modal" ng-click="showPunchCardInputs()" data-target="#myModal" class="restore-color-blue">
 								<div class="row text-right">
 									<i class="fa fa-check fa-2x">&nbsp&nbsp&nbsp</i><br>
 								</div>
@@ -81,7 +81,7 @@
 			Launch demo modal
 		</button> -->
 
-		<div class="modal fade" ng-init="showPunchCardInputs()" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
