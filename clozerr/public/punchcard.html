@@ -93,11 +93,14 @@
 							<div class="panel-body">
 								<ul class="timeline">
 									<li ng-class="{'timeline-inverted': $index%2==0}" ng-repeat="offer in offers track by $index">
-										<div class="timeline-badge background-blue"><i>{{$index+1}}</i>
+										<div class="timeline-badge background-blue" ng-click="toggleEditSaveOffer(offer, $index)"><i>{{$index+1}}</i>
 										</div>
 										<div class="timeline-panel">
-											<div class="timeline-heading">
+											<div class="timeline-heading" ng-show="textInfoVis[$index]">
 												<h4 class="timeline-title" ng-bind="offer"></h4>
+											</div>
+											<div ng-show="!textInfoVis[$index]">
+												<input type="text" class="form-control" ng-model="offer"/>
 											</div>
 										</div>
 									</li>
