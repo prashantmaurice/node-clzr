@@ -249,6 +249,13 @@ ul.alert-dropdown {
     position: relative;
     top: 50%;
 }
+.pvert-center1 {
+    width: 10px;
+    margin-top: 1%;
+    position: relative;
+    top: 25%;
+    left:-3%;
+}
 .button {
     color: white;
     background: rgba(255, 255, 255, 0);

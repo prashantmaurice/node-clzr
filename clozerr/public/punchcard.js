@@ -4,6 +4,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 	$scope.offers = [];
 	$scope.punchcardtype = 'pp';
 	$scope.textInfoVis = [];
+	$scope.hoverCheck = [];
 
 	$scope.showPunchCardInputs = function() {
 		console.log("working");
@@ -12,6 +13,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 			for(var i=1;i<=$scope.num;i++) {
 				$scope.offers.push(5*i + " % OFF");
 				$scope.textInfoVis.push(true);
+				$scope.hoverCheck.push(false);
 			}
 		}
 		else if($scope.punchcardtype=='px') {
@@ -20,6 +22,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 			for(var i=1;i<=$scope.num;i++) {
 				$scope.offers.push("");
 				$scope.textInfoVis.push(true);
+				$scope.hoverCheck.push(false);
 			}
 		}
 		$scope.textInputVis = true;
@@ -34,5 +37,8 @@ var punchCardType = function($scope, $rootScope, $http) {
 		else {
 			$scope.textInfoVis[$index] = true;
 		}
+	}
+	$scope.toggleHover = function($index) {
+		$scope.hoverCheck[$index] = !$scope.hoverCheck[$index];
 	}
 }
