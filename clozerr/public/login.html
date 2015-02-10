@@ -10,6 +10,8 @@
       <label>PASSWORD:</label>
       <input type=password class="form-control" id="password"></input>
       <a class="btn btn-primary" style="margin: 10px 0px" href="javascript:void(0)" id="login-btn" ng-click="login()">Log In</a>
+      <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+      </fb:login-button>
     </div>
     <div class="spinner"ng-show="spinner">
       <img src="loader.gif" class="spinner-img">
