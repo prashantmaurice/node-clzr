@@ -1,0 +1,99 @@
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-switch.css" rel="stylesheet">
+<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+<!-- Custom CSS -->
+<link href="css/sb-admin.css" rel="stylesheet">
+<!-- Morris Charts CSS -->
+<link href="css/plugins/morris.css" rel="stylesheet">
+<link href="css/timeline.css" rel="stylesheet">
+<link href="sb-admin-2.css" rel="stylesheet">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="vendor-signup.js"></script>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+<style>
+.custom-margin {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+</style>
+
+<div ng-app="">
+	<div ng-controller="vendorSignup">
+		<div ng-show="visStep1">
+			<div class="col-lg-3"></div>
+			<div class="col-md-6">
+				<br>
+				<h4><center>Credentials</center></h4>
+				<br>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon1">@</span>
+					<input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+				</div><br>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon2"><big>*</big></span>
+					<input type="password" class="form-control" placeholder="Password" aria-describedby="basic-addon2">
+				</div><br>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon3"><big>*</big></span>
+					<input type="password" class="form-control" placeholder="Confirm password" aria-describedby="basic-addon3">
+				</div>
+				<br><br>
+				<div class="pull-right">
+					<button type="button" class="btn btn-success" ng-click="step2()">
+						Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div ng-show="visStep2">
+			<div class="col-lg-3"></div>
+			<div class="col-md-6">
+				<br>
+				<h4><center>Profile details</center></h4>
+				<br>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon4">@</span>
+					<input type="text" class="form-control" placeholder="Public name" aria-describedby="basic-addon4">
+				</div><br>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon5">@</span>
+					<input type="text" class="form-control" placeholder="Franchise name" aria-describedby="basic-addon5">
+				</div><br>
+				<div class="input-group" >
+					<span class="input-group-addon" id="basic-addon6"><big>#&nbsp</big></span>
+					<input type="text" class="form-control" placeholder="Phone number" aria-describedby="basic-addon6">
+				</div><br>
+					<div class="row">
+						<div class="col-md-11">
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon6"><big>#&nbsp</big></span>
+								<input type="text" class="form-control custom-margin" ng-focus="focusShowNothing()" ng-blur="getLocation(address)" placeholder="Address" ng-model="address">
+							</div>
+						</div>
+						<div class="col-md-1">
+							<i id="statusLocationIndicator" class=""></i>
+						</div>
+				</div>
+				<br><br>
+				<div class="pull-left">
+					<button type="button" class="btn btn-default" ng-click="step1()">
+						<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp&nbspBack
+					</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn btn-success">
+						Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
