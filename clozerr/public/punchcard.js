@@ -17,6 +17,13 @@ var punchCardType = function($scope, $rootScope, $http) {
 					$scope.hoverCheck.push(false);
 				}
 			}
+			else if($scope.offers.length!=$scope.num) {
+				for(var i=$scope.offers.length+1;i<=$scope.num;i++) {
+					$scope.offers.push(5*i + " % OFF");
+					$scope.textInfoVis.push(true);
+					$scope.hoverCheck.push(false);
+				}
+			}
 		}
 		else if($scope.punchcardtype=='px') {
 			$scope.num = $('#customPunchCountx').val();
