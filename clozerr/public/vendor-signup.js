@@ -6,10 +6,10 @@ var vendorSignup = function($scope, $rootScope, $http) {
 	$scope.showTick = false;
 
 	$scope.focusShowNothing = function() {
-		console.log("focussed");
+		console.log("focussed");		
 		$('#statusLocationIndicator').removeClass('fa fa-spin fa-gear fa-2x');
-		$('#statusLocationIndicator').removeClass('fa fa-spin fa-times fa-2x');
-		$('#statusLocationIndicator').removeClass('fa fa-spin fa-check fa-2x');
+		$('#statusLocationIndicator').removeClass('fa fa-times fa-2x');
+		$('#statusLocationIndicator').removeClass('fa fa-check fa-2x');
 		$('#statusLocationIndicator').addClass('fa fa-spin fa-gear fa-2x');
 	}
 

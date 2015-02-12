@@ -183,6 +183,10 @@ ul.alert-dropdown {
     color: #5cb85c;
 }
 
+.panel-green .panel-front-text {
+    color: #5cb85c;
+}
+
 .panel-green a:hover {
     color: #3d8b3d;
 }

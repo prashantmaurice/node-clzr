@@ -1,0 +1,138 @@
+<link href="css/card-2.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-switch.css" rel="stylesheet">
+<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+<!-- Custom CSS -->
+<link href="css/sb-admin.css" rel="stylesheet">
+<!-- Morris Charts CSS -->
+<link href="css/plugins/morris.css" rel="stylesheet">
+<link href="css/timeline.css" rel="stylesheet">
+<link href="sb-admin-2.css" rel="stylesheet">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/slider.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="punchcard.js"></script>
+<script type="text/javascript" src="js/bootstrap-slider.js"></script>
+
+
+<script src="neighbourhoodperks.js"></script>
+<script type="text/javascript" src="js/bootstrap-switch.js"></script>
+
+<style>
+#notVisitedDaysCount {
+	background-color: transparent;
+}
+#DIVnotVisitedDaysCount {
+	margin-top:-4%;
+}
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}
+</style>
+
+<div ng-app="">
+	<div ng-controller="neighbourhoodPerksCtrl">
+		<div class="flip">			
+			<div class="card" ng-class="{'flipped':flipped}">
+				<div class="face front">
+					<div class="panel panel-red">
+						<div class="panel-red">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-8 text-left">
+										<div>
+											<big>Neighbourhood Perks</big>
+										</div>
+									</div>
+									<div class="col-xs-4">
+										<i class="fa fa-cloud-download fa-5x"></i> 
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<div class="panel-front-text">
+								<div class="panel-options">											
+									Notify about neighbourhood perks</div>	
+									<br>
+									<center>
+										<button type="button" class="btn btn-danger" id="saveNeighPerksPref" ng-click="flipped=!flipped"><i class="fa fa-check fa-1x">&nbsp&nbsp&nbspSelect</i></button>
+									</div>
+								</center>
+							</div>
+						</div>
+					</div>
+					<div class="face back">
+						<div class="row">
+							<div class="panel panel-red">
+								<div class="panel-red">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-8 text-left">
+												<div>
+													<big>&nbsp&nbspNeighbourhood Perks</big>
+												</div>
+											</div>
+											<div class="col-xs-4">
+												<i class="fa fa-cloud-download fa-5x"></i> 
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="panel-footer">
+									<div class="panel-front-text">
+										<div class="panel-options">											
+											<div class="col-xs-12">
+												<input type="textarea" id="neighPerksOffer" rows="5" class="form-control" placeholder="Enter the offer..">
+											</div><br><br>
+										</div>								
+										<div class="row">
+											<div class="col-xs-1">
+											</div>
+											<div class="radio col-xs-11">
+												How far away from your restaurant should customers receive this message ?
+												<!-- <div class="pull-right" id="DIVnotVisitedDaysCount">
+													<input type="number" id="notVisitedDaysCount" min="0" max="100" step="1" value="7"
+													/>
+												</div> -->
+											</div>
+										</div><br>
+										<div class="row">
+											<div class="col-xs-1">
+											</div>
+											<div class="col-xs-8">
+												<input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0.5" data-slider-max="1.5" data-slider-step="0.5" data-slider-value="1" data-slider-ticks="[0.5,1,1.5]" data-slider-ticks-labels="['a','b','c']" data-slider-ticks-snap-bounds="30"/>
+											</div>
+											<div class="col-xs-2">
+												{{neighDistance}}
+											</div>
+										</div>
+										<br>
+										<div class="row">
+											<div class="col-md-1">
+											</div>
+											<div class="col-md-1">
+												<a href="javascript:void(0)" class="restore-color-red">
+													<button type="button" class="btn btn-danger" id="cancelNeighPerksPref" ng-click="flipped=!flipped"><i class="fa fa-times fa-1x">&nbsp&nbspCANCEL</i></button>
+												</a>
+											</div>
+											<div class="col-md-6"></div>
+											<div class="col-md-1">
+												<a href="javascript:void(0)" class="restore-color-red">
+													<button type="button" class="btn btn-danger" id="saveNeighPerksPref" ng-click="flipped=!flipped;saveNeighPerksPref();"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspSAVE</i></button>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

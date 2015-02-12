@@ -27,8 +27,7 @@
 
 <div ng-app="">
 	<div ng-controller="birthdayCtrl">
-		<div class="flip">
-			
+		<div class="flip">			
 			<div class="card" ng-class="{'flipped':flipped}">
 				<div class="face front">
 					<div class="panel panel-blue">
@@ -53,71 +52,66 @@
 								</div>	
 								<br>
 								<center>
-									<button type="button" class="btn btn-primary" id="saveBirthdayPref" ng-click="flipped=!flipped"><i class="fa fa-check fa-1x">&nbsp&nbspSelect</i></button>
+									<button type="button" class="btn btn-primary" id="saveBirthdayPref" ng-click="flipped=!flipped"><i class="fa fa-check fa-1x">&nbsp&nbsp&nbspSelect</i></button>
 								</div>
 							</center>
-
 						</div>
-
 					</div>
 				</div>
 				<div class="face back">
 					<div class="row">
-						<div>
-							<div class="panel panel-blue">
-								<div class="panel-blue">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-8 text-left">
-												<div>
-													<big>Birthday Special</big>
-												</div>
+						<div class="panel panel-blue">
+							<div class="panel-blue">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-xs-8 text-left">
+											<div>
+												<big>&nbsp&nbspBirthday Special</big>
 											</div>
-											<div class="col-xs-4">
-												<i class="fa fa-cloud-download fa-5x"></i> 
-											</div>
+										</div>
+										<div class="col-xs-4">
+											<i class="fa fa-cloud-download fa-5x"></i> 
 										</div>
 									</div>
 								</div>
-								<div class="panel-footer">
-									<div class="panel-front-text">
-										<div class="panel-options">											
-											<div class="col-xs-12">
-												<input type="textarea" id="birthdayWish" rows="5" class="form-control" placeholder="Birthday wish..">
-											</div><br><br>
-											<div class="row">
-												<div class="radio col-xs-12">
-													<label>
-														<input type="checkbox" id="notify1st">&nbsp&nbsp&nbsp&nbspNotify user on first of month</input>
-													</label>
-												</div>
-											</div>
-										</div>								
+							</div>
+							<div class="panel-footer">
+								<div class="panel-front-text">
+									<div class="panel-options">											
+										<div class="col-xs-12">
+											<input type="textarea" id="birthdayWish" rows="5" class="form-control" placeholder="Birthday wish..">
+										</div><br><br>
 										<div class="row">
 											<div class="radio col-xs-12">
 												<label>
-													<input type="checkbox" id="notifyExact">&nbsp&nbsp&nbsp&nbspNotify user on exact date</input>
+													<input type="checkbox" id="notify1st">&nbsp&nbsp&nbsp&nbspNotify user on first of month</input>
 												</label>
 											</div>
-										</div><br>
-										<div class="row">
-											<div class="col-md-1">
-											</div>
-											<div class="col-md-1">
-												<a href="javascript:void(0)" class="restore-color-blue">
-													<button type="button" class="btn btn-primary" id="cancelBirthdayPref" ng-click="flipped=!flipped"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspCANCEL</i></button>
-												</a>
-											</div>
-											<div class="col-md-6"></div>
-											<div class="col-md-1">
-												<a href="javascript:void(0)" class="restore-color-blue">
-													<button type="button" class="btn btn-primary" id="saveBirthdayPref" ng-click="flipped=!flipped"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspSAVE</i></button>
-												</a>
-											</div>
+										</div>
+									</div>								
+									<div class="row">
+										<div class="radio col-xs-12">
+											<label>
+												<input type="checkbox" id="notifyExact">&nbsp&nbsp&nbsp&nbspNotify user on exact date</input>
+											</label>
+										</div>
+									</div><br>
+									<div class="row">
+										<div class="col-md-1">
+										</div>
+										<div class="col-md-1">
+											<a href="javascript:void(0)" class="restore-color-blue">
+												<button type="button" class="btn btn-primary" id="cancelBirthdayPref" ng-click="flipped=!flipped"><i class="fa fa-times fa-1x">&nbsp&nbspCANCEL</i></button>
+											</a>
+										</div>
+										<div class="col-md-6"></div>
+										<div class="col-md-1">
+											<a href="javascript:void(0)" class="restore-color-blue">
+												<button type="button" class="btn btn-primary" id="saveBirthdayPref" ng-click="flipped=!flipped;saveBirthdayPref();"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspSAVE</i></button>
+											</a>
 										</div>
 									</div>
 								</div>
-
 							</div>
 						</div>
 					</div>

@@ -3,6 +3,7 @@ var birthdayCtrl = function($scope, $rootScope, $http) {
 	$('#notify1st').bootstrapSwitch();
 	$('#notifyExact').bootstrapSwitch();
 	$('#checkBirthdayPref').bootstrapSwitch();
-
-	$("#checkBirthdayPref").on("switch-change", function (e, data) { console.log("change", data.value); });
+	$scope.saveBirthdayPref = function() {
+		console.log("saved birthday pref");
+	}
 }
