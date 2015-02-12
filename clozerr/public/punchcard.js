@@ -7,14 +7,15 @@ var punchCardType = function($scope, $rootScope, $http) {
 	$scope.hoverCheck = [];
 
 	$scope.showPunchCardInputs = function() {
-		$scope.offers = [];
 		if($scope.punchcardtype=='pp') {
 			$scope.num = $('#customPunchCountp').val();
 			console.log($scope.num);
-			for(var i=1;i<=$scope.num;i++) {
-				$scope.offers.push(5*i + " % OFF");
-				$scope.textInfoVis.push(true);
-				$scope.hoverCheck.push(false);
+			if($scope.offers.length==0) {
+				for(var i=1;i<=$scope.num;i++) {
+					$scope.offers.push(5*i + " % OFF");
+					$scope.textInfoVis.push(true);
+					$scope.hoverCheck.push(false);
+				}
 			}
 		}
 		else if($scope.punchcardtype=='px') {
@@ -29,7 +30,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 		$scope.textInputVis = true;
 	}
 	$scope.savePunchCardInputs = function() {
-		console.log("saving offers");
+		console.log($scope.offers);
 	}
 	$scope.toggleEditSaveOffer = function(offer, $index) {
 		if($scope.textInfoVis[$index]) {

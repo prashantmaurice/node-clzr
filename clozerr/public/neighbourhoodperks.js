@@ -9,6 +9,10 @@ var neighbourhoodPerksCtrl = function($scope, $rootScope, $http) {
 		tooltip : 'hide'
 	});
 
+	$scope.getNeighDistance = function() {
+		return $scope.neighDistance;
+	}
+
 	$scope.saveNeighPerksPref = function() {
 		console.log("saved neighbourhood perks");
 		console.log($('#ex1').data('slider').getValue());
