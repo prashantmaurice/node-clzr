@@ -21,6 +21,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 		else if($scope.punchcardtype=='px') {
 			$scope.num = $('#customPunchCountx').val();
 			console.log($scope.num);
+			$scope.offers = [];
 			for(var i=1;i<=$scope.num;i++) {
 				$scope.offers.push("");
 				$scope.textInfoVis.push(true);
