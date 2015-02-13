@@ -1,21 +1,3 @@
-<html>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/bootstrap-switch.css" rel="stylesheet">
-<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
-<!-- Custom CSS -->
-<link href="css/sb-admin.css" rel="stylesheet">
-<!-- Morris Charts CSS -->
-<link href="css/plugins/morris.css" rel="stylesheet">
-<link href="css/timeline.css" rel="stylesheet">
-<link href="sb-admin-2.css" rel="stylesheet">
-
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="reviewquestions.js"></script>
-
 <style>
 #divRemove {
 	color:#000;
@@ -28,94 +10,91 @@
 }
 </style>
 
-<div ng-app="">
-	<div id="h-div" class="col-lg-10 col-lg-offset-2" ng-controller="reviewQuestionsCtrl">
-		<div class="row">
-			<div class="col-lg-4 col-md-6">
-				<div class="panel panel-blue">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-xs-8 text-left">
-								<div>
-									<big>Review Questions</big>
-								</div>
-							</div>
-							<div class="col-xs-4">
-								<i class="fa fa-credit-card fa-5x"></i>
+<div id="h-div" class="col-lg-10 col-lg-offset-2" ng-controller="reviewQuestionsCtrl">
+	<div class="row">
+		<div class="col-lg-4 col-md-6">
+			<div class="panel panel-blue">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-8 text-left">
+							<div>
+								<big>Review Questions</big>
 							</div>
 						</div>
-					</div>
-
-					<div class="panel-footer">
-						<div class="panel-front-text">
-							<div class="panel-options">											
-								Clozerr allows you to get reviews from user about your restaurant.
-							</div>	
-							<br>
-							<center>
-								<a href="javascript:void(0)" data-toggle="modal" data-target="#myModal1" class="restore-color-blue">
-									<button type="button" class="btn btn-primary" id="editReviewQuestions"><i class="fa fa-pencil fa-1x">&nbsp&nbsp&nbspEDIT</i></button>
-								</a>
-								
-							</div>
-						</center>
+						<div class="col-xs-4">
+							<i class="fa fa-credit-card fa-5x"></i>
+						</div>
 					</div>
 				</div>
 
-			</div>
-		</div>
-
-
-		<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="myModalLabel"><center>REVIEW QUESTIONS</center></h4>
-					</div>
-					<div class="modal-body">
-						<div class="panel panel-default">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-lg-11">
-									</div>
-									<div class="col-lg-1">
-										<a href="javascript:void(0)" class="restore-color-blue font-size-normal" ng-click="addQuestion()">
-											<i class="fa fa-plus-circle fa-4x"></i>
-										</a>
-									</div>
-								</div>
-								<br>
-								<div ng-repeat="reviewQuestion in reviewQuestions track by $index">
-									<div class="row">
-										<div class="col-lg-11">
-											<div class="input-group" ng-focus="setFocussedQuestion($index)">
-												<span class="input-group-addon">
-													<input type="checkbox" aria-label="..."/>
-												</span>
-												<input type="text" placeholder="Your question.." ng-model="reviewQuestions[$index]" class="form-control" aria-label="...">
-											</div>
-
-										</div>
-										<div class="col-lg-1" id="divRemoveM">
-												<a href="javascript:void(0)"  id="divRemove" ng-click="removeQuestion($index)">
-													<i class="fa fa-times fa-1x"></i>
-												</a>
-											</div>
-									</div><br>
-								</div>
-							</div>
+				<div class="panel-footer">
+					<div class="panel-front-text">
+						<div class="panel-options">											
+							Clozerr allows you to get reviews from user about your restaurant.
+						</div>	
+						<br>
+						<center>
+							<a href="javascript:void(0)" data-toggle="modal" data-target="#myModal1" class="restore-color-blue">
+								<button type="button" class="btn btn-primary" id="editReviewQuestions"><i class="fa fa-pencil fa-1x">&nbsp&nbsp&nbspEDIT</i></button>
+							</a>
+							
 						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" ng-click="saveReviewQuestions()">Save changes</button>
-						</div>
-					</div>
+					</center>
 				</div>
 			</div>
 
 		</div>
 	</div>
+
+
+	<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel"><center>REVIEW QUESTIONS</center></h4>
+				</div>
+				<div class="modal-body">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-lg-11">
+								</div>
+								<div class="col-lg-1">
+									<a href="javascript:void(0)" class="restore-color-blue font-size-normal" ng-click="addQuestion()">
+										<i class="fa fa-plus-circle fa-4x"></i>
+									</a>
+								</div>
+							</div>
+							<br>
+							<div ng-repeat="reviewQuestion in reviewQuestions track by $index">
+								<div class="row">
+									<div class="col-lg-11">
+										<div class="input-group" ng-focus="setFocussedQuestion($index)">
+											<span class="input-group-addon">
+												<input type="checkbox" aria-label="..."/>
+											</span>
+											<input type="text" placeholder="Your question.." ng-model="reviewQuestions[$index]" class="form-control" aria-label="...">
+										</div>
+
+									</div>
+									<div class="col-lg-1" id="divRemoveM">
+										<a href="javascript:void(0)"  id="divRemove" ng-click="removeQuestion($index)">
+											<i class="fa fa-times fa-1x"></i>
+										</a>
+									</div>
+								</div><br>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" ng-click="saveReviewQuestions()">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
 </div>
 </div>
-</html>
