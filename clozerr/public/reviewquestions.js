@@ -4,6 +4,7 @@ var reviewQuestionsCtrl = function($scope, $rootScope, $http) {
 	$scope.focussedQuestion = 0;
 	$scope.saveReviewQuestions = function() {
 		console.log($scope.reviewQuestions);
+		$rootScope.reviewQuestions = $scope.reviewQuestions;
 	}
 
 	$scope.removeQuestion = function($index) {

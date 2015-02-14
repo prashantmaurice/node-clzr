@@ -70,21 +70,21 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		});
 	}
 	$scope.createVendor = function() {
-		$http.get( CLOZERR_VENDORS_URL + "/create" + "&latitude=" + $scope.vlatitude +"&longitude=" + $scope.vlongitude + "&image=default"+"&fid=0"+"&name=" + $scope.vpublicname).
+		/*$http.get( CLOZERR_VENDORS_URL + "/create" + "&latitude=" + $scope.vlatitude +"&longitude=" + $scope.vlongitude + "&image=default"+"&fid=0"+"&name=" + $scope.vpublicname).
 		success(function(data, status, headers, config) {
+			$scope.vendor_id = data.data._id;
+			console.log("Created : Vendor Object");
 			$http.get( CLOZERR_API +  "auth/create" + "&vendor_id=" + data.data._id + "&username=" + $scope.vusername + "&password=" + $scope.vpassword ).
 			success(function(data, status, headers, config) {
-				console.log("Your account has been created successfully");
+				console.log("Created : User account");
 			}).error(function(data, status, headers, config) {
-				/*
-				TODO: Throw error here.
-				*/
+				
 			});
 
 		}).error(function(data, status, headers, config) {
-			/*
-			TODO: Throw error here.
-			*/
-		});
+			
+		});*/
+		console.log($rootScope.offers);
+		console.log($rootScope.reviewQuestions);
 	}
 }
