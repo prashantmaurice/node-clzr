@@ -69,22 +69,42 @@ var vendorSignup = function($scope, $rootScope, $http) {
 
 		});
 	}
+
 	$scope.createVendor = function() {
-		$http.get( CLOZERR_VENDORS_URL + "/create" + "&latitude=" + $scope.vlatitude +"&longitude=" + $scope.vlongitude + "&image=default"+"&fid=0"+"&name=" + $scope.vpublicname).
+		$http.get( CLOZERR_VENDORS_URL + "/create" + "?latitude=" + $scope.vlatitude +"&longitude=" + $scope.vlongitude + "&image=default"+"&fid=0"+"&name=" + $scope.vpublicname).
 		success(function(data, status, headers, config) {
-			$http.get( CLOZERR_API +  "auth/create" + "&vendor_id=" + data.data._id + "&username=" + $scope.vusername + "&password=" + $scope.vpassword ).
+			$scope.vendor_id = data.data._id;
+			console.log("Created : Vendor Object");
+			$http.get( CLOZERR_API +  "auth/create" + "?vendor_id=" + data.data._id + "&username=" + $scope.vusername + "&password=" + $scope.vpassword ).
 			success(function(data, status, headers, config) {
-				console.log("Your account has been created successfully");
+				console.log("Created : User account");
 			}).error(function(data, status, headers, config) {
-				/*
-				TODO: Throw error here.
-				*/
+				//TODO : Throw error
 			});
 
+			for(var u=0;u<$rootScope.offers.length;u++) {
+
+				$http.get( CLOZERR_API +  "offer/create" + "?caption=" + $rootScope.offers[u] + "&description=" + $rootScope.offers[u]  ).
+				success(function(offerdata, status, headers, config) {
+					console.log("Created : Offer no. " + u+1);
+					//Link the offer -- vendor
+					$http.get( CLOZERR_API +  "vendor/addoffer" + "?offer_id=" + offerdata.data._id + "&vendor_id=" + $scope.vendor_id ).
+					success(function(data, status, headers, config) {
+						console.log("Linked : Offer no : " + u+1 + " with vendor object");
+
+					}).error(function(data, status, headers, config) {
+					//TODO : Throw error
+				});
+
+				}).error(function(data, status, headers, config) {
+					//TODO : Throw error
+				});
+			}
 		}).error(function(data, status, headers, config) {
-			/*
-			TODO: Throw error here.
-			*/
+			//TODO : Throw error
 		});
+		console.log($rootScope.offers);
+		console.log($rootScope.reviewQuestions);
+
 	}
 }
