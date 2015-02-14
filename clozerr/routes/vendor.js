@@ -370,6 +370,28 @@ router.get('/get/near', function (req, res) {
 
     });
 })
+
+router.get('/updatesettings',function (req,res){
+    var user = req.user;
+    if(user.type != "Admin" && user.type != "Vendor"){
+        error.err( res, "200" );
+        return;
+    }
+    var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
+    if (!errobj) {
+        //error.err(res,errobj.code,errobj.params);
+        return;
+    }
+    var vendorid=req.query.vendor_id;
+    Vendor.findOne({_id:vendorid},function (err,vendor){
+        if(req.query.birthday_notify1st){
+            vendor.settings.birthday_notify1st=req.query.birthday_notify1st;
+        }
+        if(req.query.birthday_notifyExact){
+            vendor.settings.birthday_notifyExact=req.query.birthday_notifyExact;
+        }
+    })
+})
 router.get('/update', function (req, res) {
     var latitude, longitude, image, fid, name, visible, address, city, phone, description;
     var question;
