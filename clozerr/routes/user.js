@@ -10,7 +10,7 @@ var bcrypt = require("bcrypt-nodejs");
 var router = express.Router();
 var user = models.User;
 var User = user;
-
+var Vendor = models.Vendor;
 function newUser( backend, id ) {
     var nuser=new user({
         auth_type: backend,
@@ -23,9 +23,13 @@ function newUser( backend, id ) {
     return nuser;
 }
 function newVendorUser( backend, id ) {
+    var nVendor=new Vendor({
+        //TODO initialize vendor
+    })
     var nuser=new user({
         auth_type: backend,
         social_id:id,
+        vendor_id:nVendor._id,
         stamplist:{ STANDARD:0 },
         type:"Vendor",
         date_created: new Date()
