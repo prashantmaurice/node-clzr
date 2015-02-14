@@ -112,22 +112,25 @@
 		<div ng-show="visStep3">
 			<div class="container-fluid">
 				<div class="row">
-					<div class="col-md-12">
-						<div id="page-wrapper" ng-include="'punchcard.html'"></div>
-						<div id="page-wrapper" ng-include="'reviewquestions.html'"></div>
-					</div>
+					<div ng-include="'punchcard.html'" class="col-lg-4 col-lg-offset-2"></div>
+					<div ng-include="'reviewquestions.html'" class="col-lg-4"></div>
 				</div>
-			</div>
-			<div class="pull-right">
-				<button type="button" ng-click="step4()" class="btn btn-success">
-					Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
-				</button>
+				<br><br><br>
+				<div class="row">
+					<button type="button" ng-click="step4()" class="btn btn-success col-lg-offset-8">
+						Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+					</button>
+				</div>
 			</div>
 		</div>
 		<div ng-show="visStep4">
-			<div id="page-wrapper" ng-include="'birthday.html'"></div>
-			<div id="page-wrapper" ng-include="'visitreminder.html'"></div>
-			<div id="page-wrapper" ng-include="'neighbourhoodperks.html'"></div>
+			<div class="container-fluid">
+				<div class="row">
+					<div ng-include="'birthday.html'" class="col-lg-4"></div>
+					<div ng-include="'visitreminder.html'" class="col-lg-4"></div>
+					<div ng-include="'neighbourhoodperks.html'" class="col-lg-4"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
