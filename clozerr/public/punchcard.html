@@ -1,25 +1,6 @@
-<html>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/bootstrap-switch.css" rel="stylesheet">
-<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
-<!-- Custom CSS -->
-<link href="css/sb-admin.css" rel="stylesheet">
-<!-- Morris Charts CSS -->
-<link href="css/plugins/morris.css" rel="stylesheet">
-<link href="css/timeline.css" rel="stylesheet">
-<link href="sb-admin-2.css" rel="stylesheet">
-
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="punchcard.js"></script>
-
-<div ng-app="">
-	<div id="h-div" class="col-lg-10 col-lg-offset-2" ng-controller="punchCardType">
+	<div id="h-div" class="col-md-12" ng-controller="punchCardType">
 		<div class="row">
-			<div class="col-lg-4 col-md-6">
+			<div class="col-md-12">
 				<div class="panel panel-blue">
 					<div class="panel-heading">
 						<div class="row">
@@ -33,17 +14,9 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="panel-footer">
 						<div class="panel-front-text">
 							<div class="panel-options">
-								<!-- <div class="row">
-									<div class="radio col-xs-8">
-										<label>
-											<input type="radio" ng-model="punchcardtype" name="punchcardtype" value="p5">5 punches</input>
-										</label>
-									</div>
-								</div> -->
 								<div class="row">
 									<div class="radio col-xs-8">
 										<label>
@@ -51,7 +24,7 @@
 										</label>
 									</div>
 									<div ng-show="punchcardtype=='pp'" class="col-xs-4 pvert-center">
-										<input type="number" id="customPunchCountp" min="0" max="100" step="1" value="5" style="background-color: transparent;"/>
+										<input type="number" class="form-control" id="customPunchCountp" min="0" max="100" step="1" value="5" style="background-color: transparent;"/>
 									</div>	
 								</div>
 							</div>								
@@ -62,7 +35,7 @@
 									</label>
 								</div>
 								<div ng-show="punchcardtype=='px'" class="col-xs-4 pvert-center">
-									<input type="number" id="customPunchCountx" min="0" max="100" step="1" value="5" style="background-color: transparent;"/>
+									<input type="number" class="form-control" id="customPunchCountx" min="0" max="100" step="1" value="5" style="background-color: transparent;"/>
 								</div>	
 							</div>
 							<a href="javascript:void(0)" data-toggle="modal" ng-click="showPunchCardInputs()" data-target="#myModal" class="restore-color-blue">
@@ -72,15 +45,9 @@
 							</a>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
-<!-- 
-		<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-			Launch demo modal
-		</button> -->
-
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -94,7 +61,7 @@
 								<ul class="timeline">
 									<li ng-class="{'timeline-inverted': $index%2==0}" ng-repeat="offer in offers track by $index">
 										<div class="timeline-badge background-blue" ng-mouseover="toggleHover($index)" ng-mouseleave="toggleHover($index)" ng-click="toggleEditSaveOffer(offer, $index)"><i ng-show="textInfoVis[$index] && !hoverCheck[$index]">{{$index+1}}</i>
-										<i ng-show="hoverCheck[$index] || !textInfoVis[$index]" ng-class="{'fa fa-pencil fa-1x pvert-center1':textInfoVis[$index],'fa fa-floppy-o fa-1x pvert-center1':!textInfoVis[$index]}"></i>
+											<i ng-show="hoverCheck[$index] || !textInfoVis[$index]" ng-class="{'fa fa-pencil fa-1x pvert-center1':textInfoVis[$index],'fa fa-floppy-o fa-1x pvert-center1':!textInfoVis[$index]}"></i>
 										</div>
 										<div class="timeline-panel">
 											<div class="timeline-heading" ng-show="textInfoVis[$index]">
@@ -108,20 +75,6 @@
 								</ul>
 							</div>
 						</div>
-						<!-- <table class="table table-bordered table-hover">
-							<thead>
-								<tr>
-									<th class="col-md-2"><center>No.</center></th>
-									<th class="col-md-10"><center>Offer</center></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="offer in offers track by $index">
-									<td class="col-md-2"><center>{{$index+1}}</center></td>
-									<td class="col-md-10"><input type="text" ng-model="offer" class="form-control"/></td>
-								</tr>
-							</tbody>
-						</table> -->
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -130,98 +83,5 @@
 				</div>
 			</div>
 		</div>
-
-					<!-- <li class="timeline-inverted">
-						<div class="timeline-badge warning"><i class="fa fa-credit-card"></i>
-						</div>
-						<div class="timeline-panel">
-							<div class="timeline-heading">
-								<h4 class="timeline-title">Lorem ipsum dolor</h4>
-							</div>
-							<div class="timeline-body">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem dolorem quibusdam, tenetur commodi provident cumque magni voluptatem libero, quis rerum. Fugiat esse debitis optio, tempore. Animi officiis alias, officia repellendus.</p>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium maiores odit qui est tempora eos, nostrum provident explicabo dignissimos debitis vel! Adipisci eius voluptates, ad aut recusandae minus eaque facere.</p>
-							</div>
-						</div>
-					</li> -->
-
-                                <!-- <li>
-                                    <div class="timeline-badge danger"><i class="fa fa-bomb"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus numquam facilis enim eaque, tenetur nam id qui vel velit similique nihil iure molestias aliquam, voluptatem totam quaerat, magni commodi quisquam.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="timeline-inverted">
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates est quaerat asperiores sapiente, eligendi, nihil. Itaque quos, alias sapiente rerum quas odit! Aperiam officiis quidem delectus libero, omnis ut debitis!</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-badge info"><i class="fa fa-save"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis minus modi quam ipsum alias at est molestiae excepturi delectus nesciunt, quibusdam debitis amet, beatae consequuntur impedit nulla qui! Laborum, atque.</p>
-                                            <hr>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Action</a>
-                                                    </li>
-                                                    <li><a href="#">Another action</a>
-                                                    </li>
-                                                    <li><a href="#">Something else here</a>
-                                                    </li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi fuga odio quibusdam. Iure expedita, incidunt unde quis nam! Quod, quisquam. Officia quam qui adipisci quas consequuntur nostrum sequi. Consequuntur, commodi.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="timeline-inverted">
-                                    <div class="timeline-badge success"><i class="fa fa-graduation-cap"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt obcaecati, quaerat tempore officia voluptas debitis consectetur culpa amet, accusamus dolorum fugiat, animi dicta aperiam, enim incidunt quisquam maxime neque eaque.</p>
-                                        </div>
-                                    </div>
-                                </li> -->
-
-                                <!-- /.panel-body -->
-
-                            </div>
-                        </div>
-                    </div>
-                    </html>
+	</div>
+</div>

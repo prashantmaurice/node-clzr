@@ -2,18 +2,32 @@
 <link href="css/bootstrap-switch.css" rel="stylesheet">
 <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+<link href="css/bootstrap-switch.css" rel="stylesheet">
+<link href="css/card-2.css" rel="stylesheet">
 <!-- Custom CSS -->
 <link href="css/sb-admin.css" rel="stylesheet">
 <!-- Morris Charts CSS -->
 <link href="css/plugins/morris.css" rel="stylesheet">
 <link href="css/timeline.css" rel="stylesheet">
 <link href="sb-admin-2.css" rel="stylesheet">
+<link href="css/bootstrap-switch.css" rel="stylesheet">
+<link href="css/timeline.css" rel="stylesheet">
+<link href="css/plugins/morris.css" rel="stylesheet">
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="vendor-signup.js"></script>
+<script type="text/javascript" src="reviewquestions.js"></script>
+<script type="text/javascript" src="punchcard.js"></script>
+<script type="text/javascript" src="neighbourhoodperks.js"></script>
+<script type="text/javascript" src="visitreminder.js"></script>
+<script type="text/javascript" src="birthday.js"></script>
+<script type="text/javascript" src="js/bootstrap-switch.js"></script>
+<script type="text/javascript" src="js/bootstrap-slider.js"></script>
+<link rel="stylesheet" href="css/slider.css">
+<script type="text/javascript" src="js/bootstrap-slider.js"></script>
 
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
@@ -71,16 +85,16 @@
 					<span class="input-group-addon" id="basic-addon6"><big>#&nbsp</big></span>
 					<input type="text" class="form-control" placeholder="Phone number" aria-describedby="basic-addon6">
 				</div><br>
-					<div class="row">
-						<div class="col-md-11">
-							<div class="input-group">
-								<span class="input-group-addon" id="basic-addon6"><big>#&nbsp</big></span>
-								<input type="text" class="form-control custom-margin" ng-focus="focusShowNothing()" ng-blur="getLocation(address)" placeholder="Address" ng-model="address">
-							</div>
+				<div class="row">
+					<div class="col-md-11">
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon6"><big>#&nbsp</big></span>
+							<input type="text" class="form-control custom-margin" ng-focus="focusShowNothing()" ng-blur="getLocation(address)" placeholder="Address" ng-model="address">
 						</div>
-						<div class="col-md-1">
-							<i id="statusLocationIndicator" class=""></i>
-						</div>
+					</div>
+					<div class="col-md-1">
+						<i id="statusLocationIndicator" class=""></i>
+					</div>
 				</div>
 				<br><br>
 				<div class="pull-left">
@@ -89,9 +103,32 @@
 					</button>
 				</div>
 				<div class="pull-right">
-					<button type="button" class="btn btn-success">
+					<button type="button" ng-click="step3()" class="btn btn-success">
 						Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
 					</button>
+				</div>
+			</div>
+		</div>
+		<div ng-show="visStep3">
+			<div class="container-fluid">
+				<div class="row">
+					<div ng-include="'punchcard.html'" class="col-lg-4 col-lg-offset-2"></div>
+					<div ng-include="'reviewquestions.html'" class="col-lg-4"></div>
+				</div>
+				<br><br><br>
+				<div class="row">
+					<button type="button" ng-click="step4()" class="btn btn-success col-lg-offset-8">
+						Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div ng-show="visStep4">
+			<div class="container-fluid">
+				<div class="row">
+					<div ng-include="'birthday.html'" class="col-lg-4"></div>
+					<div ng-include="'visitreminder.html'" class="col-lg-4"></div>
+					<div ng-include="'neighbourhoodperks.html'" class="col-lg-4"></div>
 				</div>
 			</div>
 		</div>

@@ -17,6 +17,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		$scope.visStep1 = true;
 		$scope.visStep2 = false;
 		$scope.visStep3 = false;
+		$scope.visStep4 = false;
 	}
 
 	$scope.step2 = function() {
@@ -24,12 +25,21 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		$scope.visStep1 = false;
 		$scope.visStep2 = true;
 		$scope.visStep3 = false;
+		$scope.visStep4 = false;
 	}
 
 	$scope.step3 = function() {
 		$scope.visStep1 = false;
 		$scope.visStep2 = false;
 		$scope.visStep3 = true;
+		$scope.visStep4 = false;
+	}
+
+	$scope.step4 = function() {
+		$scope.visStep1 = false;
+		$scope.visStep2 = false;
+		$scope.visStep3 = false;
+		$scope.visStep4 = true;
 	}
 
 	$scope.getLocation = function(address) {
