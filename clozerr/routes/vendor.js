@@ -22,7 +22,7 @@ router.get('/create', function (req, res) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
-
+    // TODO approve vendor
     if( user.type != "Admin" ){
       error.err( res, "200" );
       return;
@@ -146,7 +146,7 @@ router.get('/upload-policy', function( req, res ){
 		/*
 			TODO: Only allow if the user is linked to this vendor.
 		*/
-    if( !(req.user.type == "Admin") ){
+    if( !(req.user.type == "Admin") && req.query.user!="Vendor" ){
       error.err( res, "403" );
       return;
     }
@@ -390,6 +390,9 @@ router.get('/updatesettings',function (req,res){
         if(req.query.birthday_notifyExact){
             vendor.settings.birthday_notifyExact=req.query.birthday_notifyExact;
         }
+        if(req.query.neighDistance){
+            vendor.settings.neighDistance=req.query.neighDistance;
+        }
     })
 })
 router.get('/update', function (req, res) {
@@ -404,7 +407,7 @@ router.get('/update', function (req, res) {
 
     var id = req.query.vendor_id;
 
-    if( user.type != "Admin" ){
+    if( user.type != "Admin" && user.type !="Vendor" ){
       error.err( res, "200" );
       return;
     }
