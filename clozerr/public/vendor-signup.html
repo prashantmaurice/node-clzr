@@ -42,6 +42,9 @@ body {
 	border-radius: 10px;
 	padding: 30px;
 }
+.pull-down {
+	margin-bottom: 0px;
+}
 </style>
 
 <div ng-app="">
@@ -116,12 +119,42 @@ body {
 			</div>
 		</div>
 		<div ng-show="visStep3">
-			<div class="container-fluid">
-				<div class="row">
-					<div ng-include="'punchcard.html'" class="col-lg-4 col-lg-offset-2"></div>
-					<div ng-include="'reviewquestions.html'" class="col-lg-4"></div>
+			<center>
+				<div class="container-fluid">
+					<div class="whitebox" style="width:40%;height:110%;">
+						<h4><center>PREFERENCES</center></h4>
+						<br>
+						<div class="row">
+							<div ng-include="'punchcard.html'" class="col-lg-12"></div>
+						</div>
+						<br><br>
+						<div class="row">
+							<div ng-include="'reviewquestions.html'" class="col-lg-12"></div>
+						</div>
+						<br><br>
+						<div class="row">
+							<div class="col-md-1"></div>
+							<div class="col-md-1">
+								<button type="button" class="btn btn-default" ng-click="step2()">
+									<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp&nbspBack
+								</button>
+							</div>
+							<div class="col-md-5"></div>
+							<div>
+								<button type="button" ng-click="step4()" class="btn btn-success">
+									Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+								</button>
+							</div>
+						</div>
+						<br><br>
+					</div>
 				</div>
-				<br><br><br>
+			</center>
+			<br><br><br><br>
+		</div>
+		<!-- <div ng-show="visStep3">
+			<div class="container-fluid">
+				<br><br>
 				<div class="row">
 					<div class="col-md-2"></div>
 					<div class="col-md-1">
@@ -129,14 +162,21 @@ body {
 							<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp&nbspBack
 						</button>
 					</div>
-					<div class="col-md-offset-9">
-						<button type="button" ng-click="step4()" class="btn btn-success">
+					<div ng-include="'punchcard.html'" class="col-lg-4"></div>
+					
+				</div>
+				<br><br><br>
+				<div class="row">
+					<div class="col-md-3"></div>
+					<div ng-include="'reviewquestions.html'" class="col-lg-4"></div>					
+					<div>
+						<button type="button" ng-click="step4()" class="btn btn-success pull-down">
 							Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
 						</button>
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<div ng-show="visStep4">
 			<div class="container-fluid">
 				<div class="row">
