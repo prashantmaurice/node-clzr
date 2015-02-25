@@ -1,8 +1,6 @@
-<link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-switch.css" rel="stylesheet">
 <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
-<link href="css/bootstrap-switch.css" rel="stylesheet">
 <link href="css/card-2.css" rel="stylesheet">
 <!-- Custom CSS -->
 <link href="css/sb-admin.css" rel="stylesheet">
@@ -10,7 +8,6 @@
 <link href="css/plugins/morris.css" rel="stylesheet">
 <link href="css/timeline.css" rel="stylesheet">
 <link href="sb-admin-2.css" rel="stylesheet">
-<link href="css/bootstrap-switch.css" rel="stylesheet">
 <link href="css/timeline.css" rel="stylesheet">
 <link href="css/plugins/morris.css" rel="stylesheet">
 
@@ -36,15 +33,24 @@
 	margin-left: 0px;
 	margin-right: 0px;
 }
+body {
+	background-color: #d79a47;
+}
+.whitebox {
+	margin-top:10%;
+	background-color: #FFF;
+	border-radius: 10px;
+	padding: 30px;
+}
 </style>
 
 <div ng-app="">
 	<div ng-controller="vendorSignup">
 		<div ng-show="visStep1">
 			<div class="col-lg-3"></div>
-			<div class="col-md-6">
+			<div class="col-md-6 whitebox">
 				<br>
-				<h4><center>Credentials</center></h4>
+				<h4><center>CREDENTIALS</center></h4>
 				<br>
 				<div class="input-group">
 					<span class="input-group-addon" id="basic-addon1">@</span>
@@ -69,9 +75,9 @@
 
 		<div ng-show="visStep2">
 			<div class="col-lg-3"></div>
-			<div class="col-md-6">
+			<div class="col-md-6 whitebox">
 				<br>
-				<h4><center>Profile details</center></h4>
+				<h4><center>PROFILE DETAILS</center></h4>
 				<br>
 				<div class="input-group">
 					<span class="input-group-addon" id="basic-addon4">@</span>
