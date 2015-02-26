@@ -44,13 +44,13 @@ body {
 	background-color: #d79a47;
 }
 .whitebox {
-	margin-top:10%;
+	margin-top:4%;
 	background-color: #FFF;
 	border-radius: 10px;
 	padding: 30px;
 }
 .whitebox-settings {
-	margin-top:10%;
+	margin-top:4%;
 	background-color: #FFF;
 	border-radius: 10px;
 	padding: 10px !important;
@@ -80,14 +80,29 @@ body {
 	margin-top: 2px !important;
 	padding-top: 0px !important;
 }
+.box-header {
+	margin-top:6%;
+	background-color: #d79a47;
+	border-radius: 10px;
+	border-color: black;
+	border: 2px solid;
+	padding: 5px !important;
+}
 </style>
 <head>
-<div class="nav">
-	<center>
-	<a href="javascript:void(0)" style="color:#FFF;text-decoration:none;">&nbsp;<img src="http://www.clozerr.com/main/logo.png" class="logo" style="margin-top=2px !important;"></i></a>
-</center>
-</div>
+	<div class="nav">
+		<center>
+			<a href="javascript:void(0)" style="color:#FFF;text-decoration:none;">&nbsp;<img src="http://www.clozerr.com/main/logo.png" class="logo" style="margin-top=2px !important;"></i></a>
+		</center>
+	</div>
 </head>
+<div class="row">
+	<div class="col-md-5"></div>
+	<div class="col-md-2 box-header">
+		<center><big>VENDOR SIGNUP</big></center>
+	</div>
+</div>
+
 <div ng-app="">
 	<div ng-controller="vendorSignup">
 		<div ng-show="visStep1">
