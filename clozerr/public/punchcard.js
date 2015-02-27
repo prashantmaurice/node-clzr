@@ -9,6 +9,8 @@ var punchCardType = function($scope, $rootScope, $http) {
 	$scope.num = $('#customPunchCountp').val();
 	for(var i=1;i<=$scope.num;i++) {
 		$rootScope.offers.push(5*i + " % OFF");
+		$scope.textInfoVis.push(true);
+		$scope.hoverCheck.push(false);
 	}
 
 	console.log($rootScope.offers);
