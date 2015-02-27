@@ -16,6 +16,8 @@ var punchCardType = function($scope, $rootScope, $http) {
 	console.log($rootScope.offers);
 
 	$scope.showPunchCardInputs = function() {
+		console.log('true here');
+		$scope.visAlertEdit = true;
 		if($scope.punchcardtype=='pp') {
 			$scope.num = $('#customPunchCountp').val();
 			console.log($scope.num);

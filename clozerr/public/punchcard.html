@@ -17,7 +17,7 @@
 					<div class="panel-footer">
 						<div class="panel-front-text">
 							<div class="panel-options">
-								<div class="row">
+								<div class="row" style="text-align:left;">
 									<div class="radio col-xs-8">
 										<label>
 											<input type="radio" ng-model="punchcardtype" name="punchcardtype" value="pp">Preloaded punch card</input>
@@ -27,17 +27,18 @@
 										<input type="number" class="form-control" id="customPunchCountp" min="0" max="100" step="1" value="5" style="background-color: transparent;"/>
 									</div>	
 								</div>
-							</div>								
-							<div class="row">
-								<div class="radio col-xs-8">
-									<label>
-										<input type="radio" ng-model="punchcardtype" name="punchcardtype" value="px">Custom punch card</input>
-									</label>
+
+								<div class="row" style="text-align:left;">
+									<div class="radio col-xs-8">
+										<label>
+											<input type="radio" ng-model="punchcardtype" name="punchcardtype" value="px">Custom punch card</input>
+										</label>
+									</div>
+									<div ng-show="punchcardtype=='px'" class="col-xs-4 pvert-center">
+										<input type="number" class="form-control" id="customPunchCountx" min="0" max="100" step="1" value="5" style="background-color: transparent;"/>
+									</div>	
 								</div>
-								<div ng-show="punchcardtype=='px'" class="col-xs-4 pvert-center">
-									<input type="number" class="form-control" id="customPunchCountx" min="0" max="100" step="1" value="5" style="background-color: transparent;"/>
-								</div>	
-							</div>
+							</div>	
 							<br>
 							<a href="javascript:void(0)" data-toggle="modal" ng-click="showPunchCardInputs()" data-target="#myModal" class="restore-color-blue">
 								<div class="row text-right">
@@ -56,6 +57,27 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4 class="modal-title" id="myModalLabel"><center>YOUR OFFERS</center></h4>
 					</div>
+					<br>
+					<div class="alert alert-success alert-dismissable" style="width:95%" role="alert" ng-show="visAlertEdit" type="success">
+						<!-- <button ng-show="closeable" type="button" class="close" ng-click="close()">
+							<span aria-hidden="true">X</span>
+							<span class="sr-only">Close</span>
+						</button>
+						<div ng-transclude=""><span>Thanks for visiting! Feel free to create pull requests to improve the dashboard!</span></div> -->
+						<div class="row">
+							<div class="col-lg-11">
+								<div>
+									Thanks for visiting! Feel free to create pull requests to improve the dashboard!
+								</div>
+							</div>
+							<div class="col-lg-1" id="divRemoveA">
+								<a href="javascript:void(0)"  id="divAlertRemove" ng-click="visAlertEdit=false;">
+									<i class="fa fa-times fa-1x"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+
 					<div class="modal-body">
 						<div class="panel panel-default">
 							<div class="panel-body">
