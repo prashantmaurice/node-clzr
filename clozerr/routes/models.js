@@ -53,6 +53,8 @@ Models.User = mongoose.model('User',new Schema({
 	auth_type:String,
 	profile: Schema.Types.Mixed,
 	date_created:Date,
+	dateLastLogin:Date,
+	dateLastLogout:Date,
 	upgraded:Date,
 	gcm_id: String
 }));
