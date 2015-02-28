@@ -6,7 +6,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 	$scope.address = "";
 	$scope.showTick = false;
 
-	var CLOZERR_API = "http://api.clozerr.com/"
+	var CLOZERR_API = location.origin + '/';
 	var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
 
 	$scope.focusShowNothing = function() {

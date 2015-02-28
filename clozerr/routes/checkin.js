@@ -546,6 +546,9 @@ router.get("/confirmed", function (req, res) {
 Q.all(plist).then(function () {
     console.log("ALL DUN");
                 //debugger;
+                _.sortBy(chdummy_ret_arr, function(chdummyobj) {
+                    return chdummyobj.date_created;
+                });
                 res.end(JSON.stringify(chdummy_ret_arr));
             });
 

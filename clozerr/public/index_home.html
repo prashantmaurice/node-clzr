@@ -5,21 +5,10 @@
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">
-        Dashboard <small>Statistics Overview</small>
+        <a href="javascript:void(0)" ng-click="loadStats()">Dashboard <small>Statistics Overview</small></a>
       </h1>
     </div>
   </div>
-  <!-- /.row -->
-
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="alert alert-info alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <i class="fa fa-info-circle"></i>  <strong>Like SB Admin?</strong> Try out <a href="http://startbootstrap.com/template-overviews/sb-admin-2" class="alert-link">SB Admin 2</a> for additional features!
-      </div>
-    </div>
-  </div>
-  <!-- /.row -->
 
   <div class="row">
 
@@ -31,7 +20,7 @@
               <i class="fa fa-shopping-cart fa-5x"></i>
             </div>
             <div class="col-xs-9 text-right">
-              <div class="huge">124</div>
+              <div class="huge">{{latestCheckinObjects.length}}</div>
               <div>New Checkins!</div>
             </div>
           </div>

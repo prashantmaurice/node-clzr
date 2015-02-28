@@ -97,58 +97,58 @@ router.get('/login/facebook', function(req, res) {
 
                 user.findOne({social_id:d.data.user_id}, function(err, result) {
                     if (err) { console.log("error:") }
-                    if (result)
-                    {
+                        if (result)
+                        {
 
-                        if( !result.profile ){
+                            if( !result.profile ){
 
-                            loadFacebookDetails( result, req.query.token, function( user ){
-                                user.save();
-                                debugger;
-                                var id = hat();
+                                loadFacebookDetails( result, req.query.token, function( user ){
+                                    user.save();
+                                    debugger;
+                                    var id = hat();
                                 //console.log(id);
                                 newid( id, user._id ).save();
                                 res.end( JSON.stringify( {result : true, token : id } ) );
                             });
 
-                        }else{
+                            }else{
 
-                            var id = hat();
-                            console.log(id);
+                                var id = hat();
+                                console.log(id);
 
-                            newid( id, result._id ).save();
-                            res.end( JSON.stringify( {result : true, token : id } ) );
+                                newid( id, result._id ).save();
+                                res.end( JSON.stringify( {result : true, token : id } ) );
 
+                            }
                         }
-                    }
-                    else
-                    {
-                        var nu = (type=='user')? newUser( "facebook", d.data.user_id ):newVendorUser( "facebook", d.data.user_id );
-                        loadFacebookDetails(nu,req.query.token, function( user ){
-                            nu.save();
-                            debugger;
-                            var id=hat();
+                        else
+                        {
+                            var nu = (type=='user')? newUser( "facebook", d.data.user_id ):newVendorUser( "facebook", d.data.user_id );
+                            loadFacebookDetails(nu,req.query.token, function( user ){
+                                nu.save();
+                                debugger;
+                                var id=hat();
                             //console.log(id);
                             newid(id,nu._id).save();
                             res.end( JSON.stringify( {result : true, token : id } ) );
                         });
 
-                    }
-                });
-            }
-            else{
-                error.err( res, "102" );
-            }
+                        }
+                    });
+}
+else{
+    error.err( res, "102" );
+}
 
-        });
+});
 
-    });
+});
 
 //req.end();
 
-    request.on('error', function(e) {
-        console.error(e);
-    });
+request.on('error', function(e) {
+    console.error(e);
+});
 
 });
 
@@ -172,52 +172,52 @@ router.get('/login/google', function(req, res) {
 
                 user.findOne({ social_id:d.user_id }, function(err, result) {
                     if (err) { console.log("error:") }
-                    if (result)
-                    {
+                        if (result)
+                        {
 
-                        if( !result.profile ){
+                            if( !result.profile ){
 
-                            loadGoogleDetails( result, req.query.token, function( user ){
-                                user.save();
-                                debugger;
-                                var id = hat();
+                                loadGoogleDetails( result, req.query.token, function( user ){
+                                    user.save();
+                                    debugger;
+                                    var id = hat();
                                 //console.log(id);
                                 newid( id, user._id ).save();
                                 res.end( JSON.stringify( {result : true, token : id } ) );
                             });
 
-                        }else{
+                            }else{
 
-                            var id = hat();
-                            console.log(id);
+                                var id = hat();
+                                console.log(id);
 
-                            newid( id, result._id ).save();
-                            res.end( JSON.stringify( {result : true, token : id } ) );
+                                newid( id, result._id ).save();
+                                res.end( JSON.stringify( {result : true, token : id } ) );
 
+                            }
                         }
-                    }
-                    else
-                    {
-                        var nu = (type=='user')? newUser( "google", d.data.user_id ):newVendorUser( "google", d.data.user_id );
-                        loadGoogleDetails(nu,req.query.token, function( user ){
-                            nu.save();
-                            debugger;
-                            var id=hat();
+                        else
+                        {
+                            var nu = (type=='user')? newUser( "google", d.data.user_id ):newVendorUser( "google", d.data.user_id );
+                            loadGoogleDetails(nu,req.query.token, function( user ){
+                                nu.save();
+                                debugger;
+                                var id=hat();
                             //console.log(id);
                             newid(id,nu._id).save();
                             res.end( JSON.stringify( {result : true, token : id } ) );
                         });
 
-                    }
-                });
-            }
-            else{
-                error.err( res, "102" );
-            }
+                        }
+                    });
+}
+else{
+    error.err( res, "102" );
+}
 
-        });
+});
 
-    });
+});
 
     //req.end();
 
@@ -267,7 +267,7 @@ router.get('/login/google', function(req, res) {
  request.on('error', function(e) {
  console.error(e);
  });
- });*/
+});*/
 
 
 router.get('/login/password', function( req, res ){
@@ -298,6 +298,8 @@ router.get('/login/password', function( req, res ){
         else {
             error.err(res,"212");
         }
+        user.dateLastLogin = new Date();
+        user.save();
 
     });
 });
@@ -331,6 +333,8 @@ router.get('/logout', function( req, res ){
         console.log( err );
         console.log( data );
     });
+    user.dateLastLogout = new Date();
+    user.save();
     res.end(JSON.stringify({ result:true }));
 });
 
@@ -361,7 +365,7 @@ router.get('/create', function( req, res ) {
 
     /* user.save(function(err) {
      if(err) console.log(err);
-     });*/
+ });*/
 
 });
 
