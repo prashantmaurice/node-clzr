@@ -7,19 +7,20 @@ var index_home = function( $rootScope, $scope, $http ){
   var CLOZERR_ALL_CHECKINS_URL = CLOZERR_API + "checkin/confirmed";
 
   console.log(localStorage.token);
-  $http.get(CLOZERR_ALL_CHECKINS_URL + "?access_token=" + localStorage.token ).
+  loadStats();
+ /* $http.get(CLOZERR_ALL_CHECKINS_URL + "?access_token=" + localStorage.token ).
   success(function(data, status, headers, config) {
     console.log("Got all checkins..");
 
     $scope.latestCheckinObjects = [];
     console.log(data);
 
-   /* data.sort(function(obj1, obj2) {
+    data.sort(function(obj1, obj2) {
       var a = new Date(obj1);
       var b = new Date(obj2);
       if(a>b) return true;
       else return false;
-    });*/
+    });
 
   $scope.allCheckinObjects = data;
 
@@ -31,23 +32,16 @@ var index_home = function( $rootScope, $scope, $http ){
 
 }).error(function(data, status, headers, config) {
         //TODO : Throw error
-      });
+      });*/
 
 $scope.loadStats = function() {
 
-  $http.get(CLOZERR_ALL_CHECKINS_URL + "?access_token=" + localStorage.access_token ).
+  $http.get(CLOZERR_ALL_CHECKINS_URL + "?access_token=" + localStorage.token ).
   success(function(data, status, headers, config) {
     console.log("Got all checkins..");
 
     $scope.latestCheckinObjects = [];
     console.log(data);
-
-   /* data.sort(function(obj1, obj2) {
-      var a = new Date(obj1);
-      var b = new Date(obj2);
-      if(a>b) return true;
-      else return false;
-    });*/
 
   $scope.allCheckinObjects = data;
 
