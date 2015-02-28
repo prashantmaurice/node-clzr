@@ -110,18 +110,18 @@ router.get('/get', function (req, res) {
 router.get('/addoffer', function (req, res) {
 
 	// TODO: Only admin allowed. DONE.
-  if( user.type != "Admin" ){
+  if( req.user.type != "Admin" && req.user.type !="Vendor"){
     error.err( res, "200" );
     return;
   }
 
-  var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id"]);
+  var errobj = error.err_insuff_params(res, req, [ "offer_id"]);
   if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
       }
 
-      var vendorid = req.query.vendor_id;
+      var vendorid = req.user.vendor_id;
       var offerid = req.query.offer_id;
 
       Vendor.update({

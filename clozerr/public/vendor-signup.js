@@ -76,7 +76,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		success(function(data, status, headers, config) {
 			$scope.vendor_id = data.data._id;
 			console.log("Created : Vendor Object");
-			$http.get( CLOZERR_API +  "auth/create" + "?vendor_id=" + data.data._id + "&username=" + $scope.vusername + "&password=" + $scope.vpassword + "&access_token=" + access_token).
+			$http.get( CLOZERR_API +  "auth/create" + "?vendor_id=" + data.data._id + "&username=" + $scope.vusername + "&password=" + $scope.vpassword).
 			success(function(data, status, headers, config) {
 				console.log("Created : User account");
 			}).error(function(data, status, headers, config) {
@@ -85,11 +85,11 @@ var vendorSignup = function($scope, $rootScope, $http) {
 
 			for(var u=0;u<$rootScope.offers.length;u++) {
 
-				$http.get( CLOZERR_API +  "offer/create" + "?caption=" + $rootScope.offers[u] + "&description=" + $rootScope.offers[u] + "&access_token=" + access_token ).
+				$http.get( CLOZERR_API +  "offer/create" + "?caption=" + $rootScope.offers[u] + "&description=" + $rootScope.offers[u] ).
 				success(function(offerdata, status, headers, config) {
 					console.log("Created : Offer no. " + u+1);
 					//Link the offer -- vendor
-					$http.get( CLOZERR_API +  "vendor/addoffer" + "?offer_id=" + offerdata.data._id + "&vendor_id=" + $scope.vendor_id + "&access_token=" + access_token).
+					$http.get( CLOZERR_API +  "vendor/addoffer" + "?offer_id=" + offerdata.data._id ).
 					success(function(data, status, headers, config) {
 						console.log("Linked : Offer no : " + u+1 + " with vendor object");
 
