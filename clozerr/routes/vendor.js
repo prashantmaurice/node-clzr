@@ -17,26 +17,26 @@ var settings = require("./settings");
 
 
 router.get('/create', function (req, res) {
-    var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
-    if (!errobj) {
+  var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
+  if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
-    }
+      }
 
-    if( user.type != "Admin" ){
-      error.err( res, "200" );
-      return;
-    }
+      if( user.type != "Admin" ){
+        error.err( res, "200" );
+        return;
+      }
 
-    var lat = req.query.latitude;
-    var lon = req.query.longitude;
-    var image = req.query.image;
-    var fid = req.query.fid;
-    var name = req.query.name;
-    var offers = [],
-        offers_old = [],
-        date_created = new Date();
-    var vendor = new Vendor({
+      var lat = req.query.latitude;
+      var lon = req.query.longitude;
+      var image = req.query.image;
+      var fid = req.query.fid;
+      var name = req.query.name;
+      var offers = [],
+      offers_old = [],
+      date_created = new Date();
+      var vendor = new Vendor({
         //vendorid:vendorid,
         location: [lat, lon],
         name: name,
@@ -46,55 +46,55 @@ router.get('/create', function (req, res) {
         fid: fid,
         date_created: date_created,
         dateUpdated:date_created
-    });
-    res.send({
+      });
+      res.send({
         result: true,
         data: vendor
+      });
+
+      vendor.save();
+
     });
-
-    vendor.save();
-
-});
 
 
 router.get('/get/all',function(req,res) {
 
-    Vendor.find({},function(err,data) {
-        if(err) {
-            console.log(err);
-            return;
-        }
-        res.send(JSON.stringify(data));
-    });
+  Vendor.find({},function(err,data) {
+    if(err) {
+      console.log(err);
+      return;
+    }
+    res.send(JSON.stringify(data));
+  });
 });
 
 router.get('/get', function (req, res) {
 
-    var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
-    if (!errobj) {
+  var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
+  if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
-    }
+      }
 
-    var id = req.query.vendor_id;
+      var id = req.query.vendor_id;
 
-    Vendor.findOne({
+      Vendor.findOne({
         _id: id
-    }, function (err, vendor) {
+      }, function (err, vendor) {
         if (err) console.log(err);
         if ( !vendor ) {
-            error.err( res, "845" );
-						return;
+          error.err( res, "845" );
+          return;
         }
 
         Offer.find({
-            _id: {
-                $in: vendor.offers
-            }
+          _id: {
+            $in: vendor.offers
+          }
         }, function (err, offers) {
-            if(err) console.log(err);
-            var vendor_json = vendor.toJSON();
-            vendor_json.offers = offers;
+          if(err) console.log(err);
+          var vendor_json = vendor.toJSON();
+          vendor_json.offers = offers;
             //debugger;
             var offers_qualified = _.filter(offers, function(offer) {
               return OfferHandler.qualify(req.user,vendor,offer);
@@ -102,10 +102,10 @@ router.get('/get', function (req, res) {
             vendor_json.offers_qualified = offers_qualified;
             res.send(JSON.stringify(vendor_json));
             res.end();
-        });
+          });
 
-    });
-})
+      });
+    })
 
 router.get('/addoffer', function (req, res) {
 
@@ -115,72 +115,72 @@ router.get('/addoffer', function (req, res) {
     return;
   }
 
-    var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id"]);
-    if (!errobj) {
+  var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id"]);
+  if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
-    }
+      }
 
-    var vendorid = req.query.vendor_id;
-    var offerid = req.query.offer_id;
+      var vendorid = req.query.vendor_id;
+      var offerid = req.query.offer_id;
 
-    Vendor.update({
+      Vendor.update({
         _id: vendorid
-    }, {
+      }, {
         $addToSet: {
-            offers: offerid
+          offers: offerid
         }
-    }, function (err, num, raw) {
+      }, function (err, num, raw) {
         debugger;
         if (err) console.log(err + ' num : ' + num + ' raw : ' + raw);
         else {
-            res.send({
-                result: true,
-								data:raw
-            });
+          res.send({
+            result: true,
+            data:raw
+          });
         }
-    })
-});
+      })
+    });
 
 router.get('/upload-policy', function( req, res ){
 		/*
 			TODO: Only allow if the user is linked to this vendor.
-		*/
-    if( !(req.user.type == "Admin") ){
-      error.err( res, "403" );
-      return;
-    }
-
-    var errobj = error.err_insuff_params( res, req, ["id","access_token"] );
-
-    if( !errobj ) {
-      return;
-    }
-
-    Vendor.findOne({
-      _id : req.query.vendor_id
-    }, function( err, vendor ){
-
-      if( !vendor ){
-        error.err( res, "200" );
+      */
+      if( !(req.user.type == "Admin") ){
+        error.err( res, "403" );
+        return;
       }
-      var p = policy({
-        secret: settings.s3.secret_key,
-        length: 5000000,
-        bucket: settings.s3.bucket,
-        key: settings.s3.base_path + "/" + vendor.resource_name,
-        expires: new Date(Date.now() + 60000),
-        acl: 'public-read'
+
+      var errobj = error.err_insuff_params( res, req, ["id","access_token"] );
+
+      if( !errobj ) {
+        return;
+      }
+
+      Vendor.findOne({
+        _id : req.query.vendor_id
+      }, function( err, vendor ){
+
+        if( !vendor ){
+          error.err( res, "200" );
+        }
+        var p = policy({
+          secret: settings.s3.secret_key,
+          length: 5000000,
+          bucket: settings.s3.bucket,
+          key: settings.s3.base_path + "/" + vendor.resource_name,
+          expires: new Date(Date.now() + 60000),
+          acl: 'public-read'
+        });
+
+        var obj = { result:true, data:p };
+        obj.data.
+        res.end( JSON.stringify() );
+
       });
 
-      var obj = { result:true, data:p };
-      obj.data.
-      res.end( JSON.stringify() );
 
     });
-
-
-});
 
 function attachStamps( user, vendors ){
 	return _.map( vendors, function( vendor ){
@@ -239,9 +239,9 @@ router.get('/get/visitedV2', function( req, res ){
                 return deferred.promise;
               };
             })( vendors[i], i )
-          ));
+            ));
 
-        }
+      }
         //debugger;
         Q.all(plist).then(function () {
           debugger;
@@ -256,18 +256,18 @@ router.get('/get/visited', function( req, res ){
 
 	var user =  req.user;
   debugger;
-	var fid_list =_.keys( user.stamplist );
-	console.log(fid_list);
+  var fid_list =_.keys( user.stamplist );
+  console.log(fid_list);
   debugger;
-	Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
-		if( err ){
+  Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
+    if( err ){
 			//TODO: Put error.
 		}
 		res.end( JSON.stringify({ result:true, data:attachStamps( user, vendors ) }) );
 	});
 
 
-  });
+});
 
 router.get("/request", function( req, res ){
 	var user = req.user;
@@ -278,66 +278,66 @@ router.get("/request", function( req, res ){
 
 router.get('/get/near', function (req, res) {
 
-    var errobj = error.err_insuff_params(res, req, ["latitude", "longitude"]);
+  var errobj = error.err_insuff_params(res, req, ["latitude", "longitude"]);
 
-    if (!errobj) {
+  if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
-    }
+      }
 
-		var type = req.query.type;
+      var type = req.query.type;
 
-		if( !type )
-			type = JSON.stringify(["S0","S1","SX"]);
+      if( !type )
+       type = JSON.stringify(["S0","S1","SX"]);
 
-		var limit = req.query.limit;
+     var limit = req.query.limit;
 
-		if( !limit )
-			limit = settings.api.default_limit;
+     if( !limit )
+       limit = settings.api.default_limit;
 
-		var offset = req.query.offset;
+     var offset = req.query.offset;
 
-		if( !offset )
-			offset = 0;
+     if( !offset )
+       offset = 0;
 
-    var lat = req.query.latitude;
-    var lon = req.query.longitude;
-    var distance = req.query.distance;
-    var access_token = req.query.access_token;
-    var typelist = JSON.parse( type );
+     var lat = req.query.latitude;
+     var lon = req.query.longitude;
+     var distance = req.query.distance;
+     var access_token = req.query.access_token;
+     var typelist = JSON.parse( type );
 
-		console.log( typelist );
-    Vendor.find({
-        location: {
-            $near: [lat, lon]
-        },
-        visible:true
+     console.log( typelist );
+     Vendor.find({
+      location: {
+        $near: [lat, lon]
+      },
+      visible:true
     }).limit( limit ).skip( offset ).exec().then(function (vendors) {
 
         //console.log( vendors );
         var vendor_det_ret_arr = [];
         var plist = [];
         for (var i = 0; i < vendors.length; i++) {
-            var vendor = vendors[i];
-            console.log("Getting offers: ");
-            console.log(vendor.offers);
-            var pr = Offer.find({
-                _id: {
-                    $in: vendor.offers
-                },
-								type:{
-									$in: typelist
-								}
-            }).exec();
+          var vendor = vendors[i];
+          console.log("Getting offers: ");
+          console.log(vendor.offers);
+          var pr = Offer.find({
+            _id: {
+              $in: vendor.offers
+            },
+            type:{
+             $in: typelist
+           }
+         }).exec();
             //debugger;
             plist.push(
-							pr.then(
-								(function( vendor, index ){
-							return function (offers) {
+             pr.then(
+              (function( vendor, index ){
+               return function (offers) {
                 var deferred = Q.defer();
-								debugger;
+                debugger;
                 var offers_new = _.filter(offers, function (offer) {
-                    return OfferHandler.qualify(req.user, vendor, offer);
+                  return OfferHandler.qualify(req.user, vendor, offer);
                 });
                 //debugger;
                 var vendor_new = {};
@@ -347,49 +347,58 @@ router.get('/get/near', function (req, res) {
                 vendor_new.image = vendor.image;
                 vendor_new.fid = vendor.fid;
                 vendor_new._id = vendor._id;
-								console.log( vendor_new );
+                console.log( vendor_new );
                 vendor_det_ret_arr[index] = (vendor_new);
                 //debugger;
                 process.nextTick(function () {
-                    console.log("resolving.");
-                    deferred.resolve();
+                  console.log("resolving.");
+                  deferred.resolve();
                 });
                 return deferred.promise;
-            };
-					})( vendors[i], i )
-						));
+              };
+            })( vendors[i], i )
+            ));
 
-        }
+}
         //debugger;
         Q.all(plist).then(function () {
-            debugger;
+          debugger;
 						//console.log("RESOLVED.");
             res.send(JSON.stringify(vendor_det_ret_arr));
             res.end();
-        });
+          });
 
-    });
+      });
 })
+
+router.get('/settings/get', function (req, res) {
+  var errobj = error.err_insuff_params(res, req, ["access_token"]);
+  if (!errobj) {
+    return;
+  }
+  var userobj = req.user;
+  
+});
 router.get('/update', function (req, res) {
-    var latitude, longitude, image, fid, name, visible, address, city, phone, description;
-    var question;
-    var user=req.user;
-    var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
-    if (!errobj) {
+  var latitude, longitude, image, fid, name, visible, address, city, phone, description;
+  var question;
+  var user=req.user;
+  var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
+  if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
-    }
+      }
 
-    var id = req.query.vendor_id;
+      var id = req.query.vendor_id;
 
-    if( user.type != "Admin" ){
-      error.err( res, "200" );
-      return;
-    }
+      if( user.type != "Admin" ){
+        error.err( res, "200" );
+        return;
+      }
 
-    Vendor.findOne({
+      Vendor.findOne({
         _id: id
-    }, function (err, vendor) {
+      }, function (err, vendor) {
         if (err) console.log(err);
         if (vendor) {
           if (req.query.latitude) {
@@ -443,36 +452,36 @@ router.get('/update', function (req, res) {
 
           var date_created = vendor.date_created;
 
-            vendor.location = [latitude, longitude];
-            vendor.image = image;
-            vendor.fid = fid;
-            vendor.date_created = date_created;
-            vendor.dateUpdated = new Date();
-            vendor.name = name;
-						vendor.visible = visible;
-						vendor.city = city;
-						vendor.address = address;
-						vendor.phone = phone;
-						vendor.description = description;
-            vendor.resource_name = resource_name;
-            vendor.question=question;
-            console.log("question\n"+vendor.question);
-            console.log("Saving");
-            vendor.save(function (err, res) {
-              console.log("Saved");
-              console.log(res);
-                if (err) console.log(err);
-            });
-            res.send(JSON.stringify({result:true}));
+          vendor.location = [latitude, longitude];
+          vendor.image = image;
+          vendor.fid = fid;
+          vendor.date_created = date_created;
+          vendor.dateUpdated = new Date();
+          vendor.name = name;
+          vendor.visible = visible;
+          vendor.city = city;
+          vendor.address = address;
+          vendor.phone = phone;
+          vendor.description = description;
+          vendor.resource_name = resource_name;
+          vendor.question=question;
+          console.log("question\n"+vendor.question);
+          console.log("Saving");
+          vendor.save(function (err, res) {
+            console.log("Saved");
+            console.log(res);
+            if (err) console.log(err);
+          });
+          res.send(JSON.stringify({result:true}));
         }
         else {
 
-            error.err(res,"210");
-						return;
+          error.err(res,"210");
+          return;
 
         }
         res.end();
-    });
+      });
 
 });
 module.exports = router;
