@@ -109,7 +109,6 @@ router.get('/get', function (req, res) {
 
 router.get('/addoffer', function (req, res) {
 
-	// TODO: Only admin allowed. DONE.
   if( req.user.type != "Admin" && req.user.type !="Vendor"){
     error.err( res, "200" );
     return;
