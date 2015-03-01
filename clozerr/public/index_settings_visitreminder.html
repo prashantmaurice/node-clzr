@@ -21,19 +21,17 @@
 				<div class="panel-heading">
 					<div class="panel-front-text">
 						<div class="panel-options">											
-							<div class="col-xs-12">
+							<div class="col-lg-12">
 								<input type="textarea" id="temptingOffer" ng-model="vendor.settings.visitreminder.visitMessage" rows="5" class="form-control" placeholder="Enter your offer..">
-							</div><br><br>
-						</div>								
-						<div class="row" style="text-align:left;">
-							<div class="col-xs-1">
 							</div>
-							<div class="radio col-xs-10">
+						</div>		
+						<br><br>						
+						<div class="row">
+							<div class="radio col-lg-9 col-lg-offset-1">
 								Send this message to customers <br>who haven't visited in :
-								<div class="pull-right" id="DIVnotVisitedDaysCount">
-									<input type="number" class="form-control" id="notVisitedDaysCount" min="0" max="100" step="1" ng-model="vendor.settings.visitreminder.days"
-									/>
-								</div>
+							</div>
+							<div class="col-lg-1">
+								<input type="number" class="form-control" id="notVisitedDaysCount" min="0" max="100" step="1" ng-model="vendor.settings.visitreminder.days" style="margin-top:26%"/>
 							</div>
 						</div>
 					</div>

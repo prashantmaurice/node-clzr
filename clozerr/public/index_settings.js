@@ -15,13 +15,15 @@ var index_settings = function( $rootScope, $scope, $http ){
   	$rootScope.vendor.settings.birthday.notifyFirst = false;
   	$rootScope.vendor.settings.birthday.notifyExact = true;
 
+    $rootScope.vendor.settings.visitreminder = {};
   	$rootScope.vendor.settings.visitreminder.activated = false;	
   	$rootScope.vendor.settings.visitreminder.days = 7;
   	$rootScope.vendor.settings.visitreminder.visitMessage = "Get a Coffee free!";
 
+    $rootScope.vendor.settings.neighbourhoodperks = {};
   	$rootScope.vendor.settings.neighbourhoodperks.activated = true;
   	$rootScope.vendor.settings.neighbourhoodperks.message = "Restaurant is nearby..";
-	$rootScope.vendor.settings.neighbourhoodperks.distance = 1;  	
+    $rootScope.vendor.settings.neighbourhoodperks.distance = 1;  	
 
   });
   $scope.$on("page-close", function(){
