@@ -90,12 +90,21 @@ var vendorSignup = function($scope, $rootScope, $http) {
 				//TODO : Throw error
 			});
 
+				$http.get(CLOZERR_API + "auth/login/password?username=" + $scope.vusername + "&password=password" /*+ $scope.vpassword*/).
+					success(function(data, status, headers, config) {
+						console.log(data);
+						access_token = data.access_token;
+						console.log("Linked : Offer no : " + u+1 + " with vendor object");
+					}).error(function(data, status, headers, config) {
+					//TODO : Throw error
+				});
+
 			for(var u=0;u<$rootScope.offers.length;u++) {
 
 				$http.get( CLOZERR_API +  "offer/create" + "?caption=" + $rootScope.offers[u] + "&description=" + $rootScope.offers[u] + "&access_token=" + access_token ).
 				success(function(offerdata, status, headers, config) {
 					console.log("offerdata : ");
-					console.log(offerdata);x
+					console.log(offerdata);
 					console.log("Created : Offer no. " + u+1);
 					//Link the offer -- vendor
 					$http.get( CLOZERR_API +  "vendor/addoffer" + "?offer_id=" + offerdata.data._id + "&vendor_id=" + $scope.vendor_id + "&access_token=" + access_token).
