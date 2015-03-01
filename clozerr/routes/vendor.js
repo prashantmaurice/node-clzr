@@ -22,11 +22,12 @@ router.get('/create', function (req, res) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
+    var user=req.user;
     // TODO approve vendor
-    if( user.type != "Admin" ){
+    /*if( user.type != "Admin" ){
       error.err( res, "200" );
       return;
-    }
+    }*/
 
       var lat = req.query.latitude;
       var lon = req.query.longitude;

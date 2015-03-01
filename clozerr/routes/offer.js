@@ -51,10 +51,10 @@ router.get('/getmyoff',function(req,res){
 router.get('/create', function (req, res) {
 	// TODO: only admin allowed. DONE
 	var user = req.user;
-	if( user.type != "Admin" ){
+	/*if( user.type != "Admin" ){
 		error.err( res, "200" );
 		return;
-	}
+	}*/
     var type = req.query.type;
 		if( !type ) type="S1";
     if (req.query.stamps) stamps = req.query.stamps;
