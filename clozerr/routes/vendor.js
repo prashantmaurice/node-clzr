@@ -17,7 +17,7 @@ var settings = require("./settings");
 
 
 router.get('/create', function (req, res) {
-  var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
+  var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name","settings"]);
   if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
@@ -33,6 +33,7 @@ router.get('/create', function (req, res) {
       var image = req.query.image;
       var fid = req.query.fid;
       var name = req.query.name;
+      var settings = req.query.settings;
       var offers = [],
       offers_old = [],
       date_created = new Date();
@@ -45,7 +46,8 @@ router.get('/create', function (req, res) {
         offers_old: offers_old,
         fid: fid,
         date_created: date_created,
-        dateUpdated:date_created
+        dateUpdated:date_created,
+        settings:settings
       });
       res.send({
         result: true,
@@ -370,17 +372,14 @@ router.get('/get/near', function (req, res) {
 
       });
 })
-
-router.get('/settings/get', function (req, res) {
-  var errobj = error.err_insuff_params(res, req, ["access_token"]);
-  if (!errobj) {
-    return;
-  }
-  var userobj = req.user;
-  
+/*
+router.get('/settings/save', function (req, res) {
+  res.end(JSON.stringify(req.query));
+  console.log(req.query.settings.birthday.when);
 });
+*/
 router.get('/update', function (req, res) {
-  var latitude, longitude, image, fid, name, visible, address, city, phone, description;
+  var latitude, longitude, image, fid, name, visible, address, city, phone, description, settings={};
   var question;
   var user=req.user;
   var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
@@ -450,6 +449,11 @@ router.get('/update', function (req, res) {
             question=req.query.question;
           }else question=vendor.question;
 
+          if(req.query.settings) {
+            settings = req.query.settings;
+          }
+          else settings = vendor.settings;
+
           var date_created = vendor.date_created;
 
           vendor.location = [latitude, longitude];
@@ -465,6 +469,7 @@ router.get('/update', function (req, res) {
           vendor.description = description;
           vendor.resource_name = resource_name;
           vendor.question=question;
+          vendor.settings = settings;
           console.log("question\n"+vendor.question);
           console.log("Saving");
           vendor.save(function (err, res) {

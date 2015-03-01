@@ -1,0 +1,44 @@
+<style>
+.display-none {
+	display: none;
+}
+</style>
+<div class="container-fluid card-view" ng-controller="index_settings_visitreminder">
+	<div class="row">
+		<div class="col-lg-10">
+			<h3>Neighbourhood perks</h3>
+		</div>
+		<div class="col-lg-2">
+			<div class="checkbox" style="margin-top:18%;">
+				<input type="checkbox" ng-model="vendor.settings.visitreminder.activated" id="checkvisitreminder" name="checkvisitreminder" />
+				<label for="checkvisitreminder"></label>
+			</div>
+		</div>
+	</div>
+	<div ng-class="{'display-none':!vendor.settings.visitreminder.activated}" id="visitreminderPanel">
+		<div class="row">
+			<div class="panel">
+				<div class="panel-heading">
+					<div class="panel-front-text">
+						<div class="panel-options">											
+							<div class="col-xs-12">
+								<input type="textarea" id="temptingOffer" ng-model="vendor.settings.visitreminder.visitMessage" rows="5" class="form-control" placeholder="Enter your offer..">
+							</div><br><br>
+						</div>								
+						<div class="row" style="text-align:left;">
+							<div class="col-xs-1">
+							</div>
+							<div class="radio col-xs-10">
+								Send this message to customers <br>who haven't visited in :
+								<div class="pull-right" id="DIVnotVisitedDaysCount">
+									<input type="number" class="form-control" id="notVisitedDaysCount" min="0" max="100" step="1" ng-model="vendor.settings.visitreminder.days"
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
