@@ -21,12 +21,12 @@ router.get('/create', function (req, res) {
   if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
-      }
-
-      if( user.type != "Admin" ){
-        error.err( res, "200" );
-        return;
-      }
+    }
+    // TODO approve vendor
+    if( user.type != "Admin" ){
+      error.err( res, "200" );
+      return;
+    }
 
       var lat = req.query.latitude;
       var lon = req.query.longitude;
@@ -376,8 +376,33 @@ router.get('/get/near', function (req, res) {
 router.get('/settings/save', function (req, res) {
   res.end(JSON.stringify(req.query));
   console.log(req.query.settings.birthday.when);
-});
-*/
+  */
+
+router.get('/updatesettings',function (req,res){
+    var user = req.user;
+    if(user.type != "Admin" && user.type != "Vendor"){
+        error.err( res, "200" );
+        return;
+    }
+    var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
+    if (!errobj) {
+        //error.err(res,errobj.code,errobj.params);
+        return;
+    }
+    var vendorid=req.query.vendor_id;
+    Vendor.findOne({_id:vendorid},function (err,vendor){
+        if(req.query.birthday_notify1st){
+            vendor.settings.birthday_notify1st=req.query.birthday_notify1st;
+        }
+        if(req.query.birthday_notifyExact){
+            vendor.settings.birthday_notifyExact=req.query.birthday_notifyExact;
+        }
+        if(req.query.neighDistance){
+            vendor.settings.neighDistance=req.query.neighDistance;
+        }
+    })
+})
+
 router.get('/update', function (req, res) {
   var latitude, longitude, image, fid, name, visible, address, city, phone, description, settings={};
   var question;
@@ -390,10 +415,10 @@ router.get('/update', function (req, res) {
 
       var id = req.query.vendor_id;
 
-      if( user.type != "Admin" ){
-        error.err( res, "200" );
-        return;
-      }
+    if( user.type != "Admin" && user.type !="Vendor" ){
+      error.err( res, "200" );
+      return;
+    }
 
       Vendor.findOne({
         _id: id
