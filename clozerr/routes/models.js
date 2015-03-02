@@ -29,7 +29,7 @@ Models.Content = mongoose.model('Content',new Schema({
 	key:String,
 	value:String
 }));
-
+		
 Models.Vendor = mongoose.model('Vendor', vendorSchema );
 
 Models.CheckIn = mongoose.model('CheckIn',new Schema({

@@ -97,9 +97,6 @@ var login = function( $rootScope, $scope, $http ){
     }
   });
 
-
-
-
   $rootScope.logout = function(){
     var CLOZERR_LOGOUT_URL = CLOZERR_API + "auth/logout"
     $http.get( CLOZERR_LOGOUT_URL + "?access_token=" + localStorage.token ).
