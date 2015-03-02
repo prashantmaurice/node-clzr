@@ -21,7 +21,9 @@ var vendorSchema = new Schema({
 	description: String,
 	resource_name: String,
 	question : [String],
-	settings : Schema.Types.Mixed
+	UUID : [String],
+	test : Boolean,
+	settings : Schema.Types.Mixed	
 });
 vendorSchema.index({ location: '2d' });
 

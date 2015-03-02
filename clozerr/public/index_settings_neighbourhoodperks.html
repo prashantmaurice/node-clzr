@@ -1,0 +1,47 @@
+<style>
+.display-none {
+	display: none;
+}
+</style>
+<div class="container-fluid card-view" ng-controller="index_settings_neighbourhoodperks">
+	<div class="row">
+		<div class="col-lg-10">
+			<h3>Neighbourhood perks</h3>
+		</div>
+		<div class="col-lg-2">
+			<div class="checkbox" style="margin-top:18%;">
+				<input type="checkbox" ng-model="vendor.settings.neighbourhoodperks.activated" id="checkneighbourhoodperks" name="checkneighbourhoodperks" />
+				<label for="checkneighbourhoodperks"></label>
+			</div>
+		</div>
+	</div>
+	<div ng-class="{'display-none':!vendor.settings.neighbourhoodperks.activated}" id="neighbourhoodperksPanel">
+		<div class="row">
+			<div class="panel">
+				<div class="panel-heading">
+					<div class="panel-front-text">
+						<div class="panel-options">											
+							<div class="col-lg-12">
+								<input type="textarea" id="neighPerksOffer" ng-model="vendor.settings.neighbourhoodperks.message" rows="5" class="form-control" placeholder="Enter the offer..">
+							</div>
+						</div>		
+						<br><br>						
+						<div class="row">
+							<div class="radio col-lg-8 col-lg-offset-1">
+								How far away from your restaurant should customers receive this message ?
+							</div>
+							<div class="col-lg-2">
+								<!-- <input id="ex1" ng-model="vendor.settings.neighbourhoodperks.distance" style="width:80%" data-slider-id='ex1Slider' type="text" data-slider-min="0.5" data-slider-max="1.5" data-slider-step="0.5" data-slider-ticks="[0.5,1,1.5]" data-slider-ticks-labels="['a','b','c']" data-slider-ticks-snap-bounds="30"/> -->
+								<input type="number" class="form-control" id="ex1" min="0.5" max="2.5" step="0.5" ng-model="vendor.settings.neighbourhoodperks.distance" style="margin-top:6%"
+								/>
+							</div><!-- 
+							<div class="col-xs-2">
+								{{vendor.settings.neighbourhoodperks.distance}}
+							</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

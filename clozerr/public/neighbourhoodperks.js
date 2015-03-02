@@ -1,24 +1,22 @@
 var neighbourhoodPerksCtrl = function($scope, $rootScope, $http) {
 	$scope.flipped = false;
-	$scope.np = {};
-	$scope.np.neighDistance = '1 km';
-	$("#ex1").slider({
-		tooltip : 'hide'
-	});
-	$('#ex1').on('slideStop', function(ev) {
-		$scope.np.neighDistance = ev.value + ' km';
-		$scope.apply();
-		console.log($scope.np.neighDistance);
-	});
-
+	$rootScope.np = {};
+	$rootScope.np.distance = 1;
+	$rootScope.np.activated = false;
+	$rootScope.np.message = "Free coffee..";
 	$scope.saveNeighPerksPref = function() {
 		console.log("saved neighbourhood perks");
-		console.log($('#ex1').data('slider').getValue());
 	}
-	$scope.npflip = function() {
-		$rootScope.$broadcast('flip');
-		$scope.flipped = !$scope.flipped;
-	}
+
+	$rootScope.$watch(function($rootScope) {
+		return $rootScope.np.activated ;
+	}, function(newValue, oldValue) {
+		if($rootScope.np.activated) {
+			$rootScope.$broadcast('flip');
+			$scope.flipped = !$scope.flipped;
+		}
+	});
+
 	$scope.$on('flip',function() {
 		$scope.flipped = false;
 	});

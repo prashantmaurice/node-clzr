@@ -288,6 +288,7 @@ router.get('/login/password', function( req, res ){
             return;
         }
         if( err ){
+            console.log('error - user create');
             error.err(res,"102");
             return;
         }
