@@ -329,7 +329,7 @@ router.get('/get/near', function (req, res) {
         visible:true
     }).limit( limit ).skip( offset ).exec().then(function (vendors) {
       debugger;
-        getoff(vendors, function( vendors ){
+        getoff(vendors, req.user,typelist,function( vendors ){
           res.send(JSON.stringify( vendors ));
           res.end();
         });
@@ -341,7 +341,7 @@ router.get('/get/near', function (req, res) {
         test:true
       }).exec().then(function (vendors){
          debugger;
-         getoff(vendors, function( vendors ){
+         getoff(vendors, req.user,typelist,function( vendors ){
           res.send(JSON.stringify( vendors ));
           res.end();
          });
@@ -357,7 +357,7 @@ router.get('/get/near', function (req, res) {
 
 })    
         //console.log( vendors );
-  function getoff( vendors, callback ){
+  function getoff( vendors, user,typelist,callback ){
     debugger;
     var vendor_det_ret_arr = [];
     var plist = [];
@@ -381,7 +381,7 @@ router.get('/get/near', function (req, res) {
               var deferred = Q.defer();
               debugger;
               var offers_new = _.filter(offers, function (offer) {
-                 return OfferHandler.qualify(req.user, vendor, offer);
+                 return OfferHandler.qualify(user, vendor, offer);
               });
                 //debugger;
               var vendor_new = {};
