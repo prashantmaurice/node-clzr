@@ -106,6 +106,7 @@
         <script type="text/javascript" src="index_settings_birthday.js"></script>
         <script type="text/javascript" src="index_settings_visitreminder.js"></script>
         <script type="text/javascript" src="index_settings_neighbourhoodperks.js"></script>
+        <script type="text/javascript" src="index_settings_preferences.js"></script>
         <script type="text/javascript" src="js/bootstrap-switch.js"></script>
         <script type="text/javascript" src="login.js"></script>
         <script>
@@ -182,12 +183,17 @@
                       Also, have a button to bring up the offers modal.
                   -->
                   <li>
-                    <a href="javascript:void(0)" ng-click="pageChange('settings')"><i class="fa fa-fw fa-table"></i>Settings</a>
-                </li>
-                <!-- Profile page is to contain profile stuff like public name, image, city, address etc. -->
-                <li>
                     <a href="javascript:void(0)" ng-click="pageChange('profile')"><i class="fa fa-fw fa-edit"></i>Profile</a>
                 </li>
+                <li>
+                    <a href="javascript:void(0)" ng-click="pageChange('preferences')"><i class="fa fa-fw fa-table"></i>Preferences</a>
+                </li>
+                
+                  <li>
+                    <a href="javascript:void(0)" ng-click="pageChange('settings')"><i class="fa fa-fw fa-gear"></i>Settings</a>
+                </li>
+                <!-- Profile page is to contain profile stuff like public name, image, city, address etc. -->
+                
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
                     <ul id="demo" class="collapse">
@@ -207,6 +213,7 @@
     <div id="page-wrapper" ng-include="'index_home.html'"></div>
     <div id="page-wrapper" ng-include="'login.html'"></div>
     <div id="page-wrapper" ng-include="'index_settings.html'"></div>
+
         <!--<div id="page-wrapper" ng-include="index_signup.html"></div>
         
         <div id="page-wrapper" ng-include="index_analytics.html"></div>-->

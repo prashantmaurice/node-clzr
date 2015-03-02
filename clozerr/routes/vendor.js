@@ -413,14 +413,15 @@ router.get('/updatesettings',function (req,res){
 router.get('/update', function (req, res) {
   var latitude, longitude, image, fid, name, visible, address, city, phone, description, settings={};
   var question;
-  var user=req.user;
-  var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
+  
+  var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
   if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
       }
 
       var id = req.query.vendor_id;
+      var user=req.user;
 
     if( user.type != "Admin" && user.type !="Vendor" ){
       error.err( res, "200" );
@@ -483,6 +484,7 @@ router.get('/update', function (req, res) {
 
           if(req.query.settings) {
             settings = req.query.settings;
+            console.log(settings);
           }
           else settings = vendor.settings;
 
