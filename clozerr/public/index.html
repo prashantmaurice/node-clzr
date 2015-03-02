@@ -13,6 +13,9 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-switch.css" rel="stylesheet">
+    
+    <link href="css/animated-check-box.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
@@ -31,77 +34,84 @@
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <style>
-      .side-nav{
-        height:100%;
-      }
+        <![endif]-->
+        <style>
+        .side-nav{
+            height:100%;
+        }
 
-      a{
-        color:#FFF;
-      }
-      .nav-button{
-        color:#FFF;
-      }
-      .nav-btn:hover{
-        background-color:#d79a47;
-        color: #FFF;
-        text-decoration:none;
-      }
-      .whitebox{
-        background-color:#FFF;
-        border-radius:10px;
-        padding:30px;
-      }
+        a{
+            color:#FFF;
+        }
+        .nav-button{
+            color:#FFF;
+        }
+        .nav-btn:hover{
+            background-color:#d79a47;
+            color: #FFF;
+            text-decoration:none;
+        }
+        .whitebox{
+            background-color:#FFF;
+            border-radius:10px;
+            padding:30px;
+        }
 
-      .whitenavbox{
-        background-color:#FFF;
-        border-radius:10px;
-        padding:0px;
-        margin-bottom:10px;
-        text-align:center;
-      }
-      .spinner{
-        text-align:center;
-      }
-      .spinner-img{
-        height:28px;
-      }
+        .whitenavbox{
+            background-color:#FFF;
+            border-radius:10px;
+            padding:0px;
+            margin-bottom:10px;
+            text-align:center;
+        }
+        .spinner{
+            text-align:center;
+        }
+        .spinner-img{
+            height:28px;
+        }
 
-      .box-title{
-        width:100%;
-        text-align:center;
-        font-family:'Raleway';
-      }
-      body{
-        font-family:'Raleway';
-      }
-      .nav-btn{
-        color:#d79a47;
-        padding:10px;
-        font-size:17px;
-      }
+        .box-title{
+            width:100%;
+            text-align:center;
+            font-family:'Raleway';
+        }
+        body{
+            font-family:'Raleway';
+        }
+        .nav-btn{
+            color:#d79a47;
+            padding:10px;
+            font-size:17px;
+        }
 
-      #dropdown:hover{
-        background-color:#FFF;
-        color:#d79a47;
-      }
+        #dropdown:hover{
+            background-color:#FFF;
+            color:#d79a47;
+        }
 
-      #dropdown:focus{
-        background-color:#FFF;
-        color:#d79a47;
-      }
-    </style>
-</head>
+        #dropdown:focus{
+            background-color:#FFF;
+            color:#d79a47;
+        }
+        </style>
+    </head>
 
-<body style="font-family:'Raleway'">
-    <div id="fb-root"></div>
-    <script type='text/javascript' src="js/fblogin.js"></script>
-    <script type="text/javascript" src="index_home.js"></script>
-    <script type="text/javascript" src="login.js"></script>
-    <script>
-      var CLOZERR_API = location.origin + "/";
-    </script>
+    <body style="font-family:'Raleway'">
+        <div id="fb-root"></div>
+        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script type='text/javascript' src="js/fblogin.js"></script>
+        <script type="text/javascript" src="index_home.js"></script>
+        <script type="text/javascript" src="index_settings.js"></script>
+        <script type="text/javascript" src="index_settings_birthday.js"></script>
+        <script type="text/javascript" src="index_settings_visitreminder.js"></script>
+        <script type="text/javascript" src="index_settings_neighbourhoodperks.js"></script>
+        <script type="text/javascript" src="index_settings_preferences.js"></script>
+        <script type="text/javascript" src="js/bootstrap-switch.js"></script>
+        <script type="text/javascript" src="login.js"></script>
+        <script>
+        var CLOZERR_API = location.origin + "/";
+        </script>
     <!--<script type="text/javascript" src="index_signup.js"></script>
     <script type="text/javascript" src="index_profile_handler.js"></script>
     <script type="text/javascript" src="index_analytics.js"></script>
@@ -137,97 +147,104 @@
                     </ul>
                 </li>
                 <!--<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-                </fb:login-button>-->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ vendor.name }} <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
+            </fb:login-button>-->
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ vendor.name }} <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#" ng-click="logout()"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" ng-show="loggedIn">
+            <ul class="nav navbar-nav side-nav">
+                <!-- Leave it for now.. -->
+                <li class="active">
+                    <a href="javascript:void(0)" ng-click="pageChange('home')"><i class="fa fa-fw fa-dashboard"></i>Home</a>
+                </li>
+                <!-- Analytics. empty for now.. -->
+                <li>
+                    <a href="javascript:void(0)" ng-click="pageChange('analytics')"><i class="fa fa-fw fa-bar-chart-o"></i>Analytics</a>
+                </li>
+                    <!--
+                      Settings is to set features: Birthday notifications, delayed push notifications & review questions.
+                      Also, have a button to bring up the offers modal.
+                  -->
+                  <li>
+                    <a href="javascript:void(0)" ng-click="pageChange('profile')"><i class="fa fa-fw fa-edit"></i>Profile</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" ng-click="pageChange('preferences')"><i class="fa fa-fw fa-table"></i>Preferences</a>
+                </li>
+                
+                  <li>
+                    <a href="javascript:void(0)" ng-click="pageChange('settings')"><i class="fa fa-fw fa-gear"></i>Settings</a>
+                </li>
+                <!-- Profile page is to contain profile stuff like public name, image, city, address etc. -->
+                
+                <li>
+                    <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
+                    <ul id="demo" class="collapse">
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                            <a href="#">Dropdown Item</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#" ng-click="logout()"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            <a href="#">Dropdown Item</a>
                         </li>
                     </ul>
                 </li>
             </ul>
-            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse" ng-show="loggedIn">
-                <ul class="nav navbar-nav side-nav">
-                    <!-- Leave it for now.. -->
-                    <li class="active">
-                        <a href="javascript:void(0)" ng-click="pageChange('home')"><i class="fa fa-fw fa-dashboard"></i>Home</a>
-                    </li>
-                    <!-- Analytics. empty for now.. -->
-                    <li>
-                        <a href="javascript:void(0)" ng-click="pageChange('analytics')"><i class="fa fa-fw fa-bar-chart-o"></i>Analytics</a>
-                    </li>
-                    <!--
-                      Settings is to set features: Birthday notifications, delayed push notifications & review questions.
-                      Also, have a button to bring up the offers modal.
-                    -->
-                    <li>
-                        <a href="javascript:void(0)" ng-click="pageChange('settings')"><i class="fa fa-fw fa-table"></i>Settings</a>
-                    </li>
-                    <!-- Profile page is to contain profile stuff like public name, image, city, address etc. -->
-                    <li>
-                        <a href="javascript:void(0)" ng-click="pageChange('profile')"><i class="fa fa-fw fa-edit"></i>Profile</a>
-                    </li>
-                    <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
-                        <ul id="demo" class="collapse">
-                            <li>
-                                <a href="#">Dropdown Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Dropdown Item</a>
-                            </li>
-                        </ul>
-                    </li>
-                  </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </nav>
+        </div>
+        <!-- /.navbar-collapse -->
+    </nav>
 
-        <div id="page-wrapper" ng-include="'index_home.html'"></div>
-        <div id="page-wrapper" ng-include="'login.html'"></div>
+    <div id="page-wrapper" ng-include="'index_home.html'"></div>
+    <div id="page-wrapper" ng-include="'login.html'"></div>
+    <div id="page-wrapper" ng-include="'index_settings.html'"></div>
+
         <!--<div id="page-wrapper" ng-include="index_signup.html"></div>
-        <div id="page-wrapper" ng-include="index_settings.html"></div>
+        
         <div id="page-wrapper" ng-include="index_analytics.html"></div>-->
 
-        </div>
-        <!-- /#page-wrapper -->
-
     </div>
-    <!-- /#wrapper -->
+    <!-- /#page-wrapper -->
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script src="js/jspdf/dist/jspdf.min.js"></script>
+</div>
+<!-- /#wrapper -->
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<!-- jQuery -->
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
-    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script src="js/jspdf/dist/jspdf.min.js"></script>
 
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
-    <script>
-      var app = angular.module("clozerr",[]);
-      app.filter("humanize_date", function(){
-        return function( input ){
-          return new Date( input ).toLocaleString()
-        }
-      });
-    </script>
+<!-- Bootstrap Core JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+
+<script src="js/plugins/morris/raphael.min.js"></script>
+<script src="js/plugins/morris/morris.min.js"></script>
+<script src="js/plugins/morris/morris-data.js"></script>
+<script>
+var app = angular.module("clozerr",[]);
+app.filter("humanize_date", function(){
+    return function( input ){
+      return new Date( input ).toLocaleString()
+  }
+});
+</script>
 
 </body>
 

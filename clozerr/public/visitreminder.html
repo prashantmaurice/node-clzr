@@ -32,7 +32,9 @@
 								Bring your customers back with a tempting offer<br></div>	
 								<br><br>
 								<center>
-									<button type="button" class="btn btn-warning" id="saveVisitReminderPref" ng-click="vrflip()"><i class="fa fa-check fa-1x">&nbsp&nbsp&nbspSelect</i></button>
+									<label>
+									<input type="checkbox" id="enableVisitreminderPref" ng-model="vp.activated">
+								</input>
 								</div>
 							</center>
 						</div>
@@ -59,7 +61,7 @@
 								<div class="panel-front-text">
 									<div class="panel-options">											
 										<div class="col-xs-12">
-											<input type="textarea" id="temptingOffer" rows="5" class="form-control" placeholder="Enter your offer..">
+											<input type="textarea" id="temptingOffer" ng-model="vp.visitMessage" rows="5" class="form-control" placeholder="Enter your offer..">
 										</div><br><br>
 											<!-- <div class="row">
 												<div class="radio col-xs-12">
@@ -78,21 +80,15 @@
 												</label> -->
 												Send this message to customers <br>who haven't visited in :
 												<div class="pull-right" id="DIVnotVisitedDaysCount">
-													<input type="number" class="form-control" id="notVisitedDaysCount" min="0" max="100" step="1" value="7"
+													<input type="number" class="form-control" id="notVisitedDaysCount" ng-model="vp.days" min="0" max="100" step="1" value="7"
 													/>
 												</div>
 											</div>
 										</div><br>
 										<div class="row">
-											<div class="col-md-1">
+											<div class="col-md-4">
 											</div>
-											<div class="col-md-1">
-												<a href="javascript:void(0)" class="restore-color-yellow">
-													<button type="button" class="btn btn-warning" id="cancelVisitReminderPref" ng-click="flipped=!flipped"><i class="fa fa-times fa-1x">&nbsp&nbspCANCEL</i></button>
-												</a>
-											</div>
-											<div class="col-md-6"></div>
-											<div class="col-md-1">
+											<div class="col-md-2">
 												<a href="javascript:void(0)" class="restore-color-yellow">
 													<button type="button" class="btn btn-warning" id="saveVisitReminderPref" ng-click="flipped=!flipped;saveVisitReminderPref();"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspSAVE</i></button>
 												</a>

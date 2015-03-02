@@ -51,10 +51,10 @@ router.get('/getmyoff',function(req,res){
 router.get('/create', function (req, res) {
 	// TODO: only admin allowed. DONE
 	var user = req.user;
-	if( user.type != "Admin" ){
+	/*if( user.type != "Admin" ){
 		error.err( res, "200" );
 		return;
-	}
+	}*/
     var type = req.query.type;
 		if( !type ) type="S1";
     if (req.query.stamps) stamps = req.query.stamps;
@@ -145,10 +145,7 @@ router.get('/update', function (req, res) {
 
     router.get('/delete', function (req, res) {
 			var user = req.user;
-			if( user.type != "Admin" ){
-				error.err( res, "200" );
-				return;
-			}
+			
     	var errobj = error.err_insuff_params(res, req, ["offer_id", "vendor_id"]);
     	if (!errobj) {
             //error.err(res,errobj.code,errobj.params);
@@ -157,6 +154,12 @@ router.get('/update', function (req, res) {
 
         var offer_id = req.query.offer_id;
         var vendor_id = req.query.vendor_id;
+
+        if( user.type != "Vendor" && user.vendor_id != vendor_id ){
+                error.err( res, "200" );
+                return;
+            }
+       
 
         Vendor.findOne({
         	_id: vendor_id
