@@ -506,6 +506,8 @@ router.get('/update', function (req, res) {
           vendor.settings = settings;
           console.log("question\n"+vendor.question);
           console.log("Saving");
+          vendor.markModified("settings");
+          vendor.markModified("settings.birthday");
           vendor.save(function (err, res) {
             console.log("Saved");
             console.log(res);
