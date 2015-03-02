@@ -84,7 +84,7 @@ router.get('/get', function (req, res) {
         if (err) console.log(err);
         if ( !vendor ) {
             error.err( res, "845" );
-						return;
+            return;
         }
 
         Offer.find({
@@ -109,7 +109,7 @@ router.get('/get', function (req, res) {
 
 router.get('/addoffer', function (req, res) {
 
-	// TODO: Only admin allowed. DONE.
+  // TODO: Only admin allowed. DONE.
   if( user.type != "Admin" ){
     error.err( res, "200" );
     return;
@@ -136,16 +136,16 @@ router.get('/addoffer', function (req, res) {
         else {
             res.send({
                 result: true,
-								data:raw
+                data:raw
             });
         }
     })
 });
 
 router.get('/upload-policy', function( req, res ){
-		/*
-			TODO: Only allow if the user is linked to this vendor.
-		*/
+    /*
+      TODO: Only allow if the user is linked to this vendor.
+    */
     if( !(req.user.type == "Admin") ){
       error.err( res, "403" );
       return;
@@ -183,11 +183,11 @@ router.get('/upload-policy', function( req, res ){
 });
 
 function attachStamps( user, vendors ){
-	return _.map( vendors, function( vendor ){
-		var new_vendor = vendor.toJSON();
-		new_vendor.stamps = user.stamplist[new_vendor.fid] || 0;
-		return new_vendor;
-	});
+  return _.map( vendors, function( vendor ){
+    var new_vendor = vendor.toJSON();
+    new_vendor.stamps = user.stamplist[new_vendor.fid] || 0;
+    return new_vendor;
+  });
 }
 
 router.get('/get/visitedV2', function( req, res ){
@@ -254,26 +254,26 @@ router.get('/get/visitedV2', function( req, res ){
 });
 router.get('/get/visited', function( req, res ){
 
-	var user =  req.user;
+  var user =  req.user;
   debugger;
-	var fid_list =_.keys( user.stamplist );
-	console.log(fid_list);
+  var fid_list =_.keys( user.stamplist );
+  console.log(fid_list);
   debugger;
-	Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
-		if( err ){
-			//TODO: Put error.
-		}
-		res.end( JSON.stringify({ result:true, data:attachStamps( user, vendors ) }) );
-	});
+  Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
+    if( err ){
+      //TODO: Put error.
+    }
+    res.end( JSON.stringify({ result:true, data:attachStamps( user, vendors ) }) );
+  });
 
 
   });
 
 router.get("/request", function( req, res ){
-	var user = req.user;
-	var request = new VendorRequest( {account:user._id, name:req.query.name, remarks:req.query.remarks } );
-	request.save();
-	res.end(JSON.stringify( {result:true} ) ) ;
+  var user = req.user;
+  var request = new VendorRequest( {account:user._id, name:req.query.name, remarks:req.query.remarks } );
+  request.save();
+  res.end(JSON.stringify( {result:true} ) ) ;
 });
 
 router.get('/get/near', function (req, res) {
@@ -285,94 +285,125 @@ router.get('/get/near', function (req, res) {
         return;
     }
 
-		var type = req.query.type;
+    var type = req.query.type;
 
-		if( !type )
-			type = JSON.stringify(["S0","S1","SX"]);
+    if( !type )
+      type = JSON.stringify(["S0","S1","SX"]);
 
-		var limit = req.query.limit;
+    var limit = req.query.limit;
 
-		if( !limit )
-			limit = settings.api.default_limit;
+    if( !limit )
+      limit = settings.api.default_limit;
 
-		var offset = req.query.offset;
+    var offset = req.query.offset;
 
-		if( !offset )
-			offset = 0;
+    if( !offset )
+      offset = 0;
+    var user=req.user;
 
     var lat = req.query.latitude;
     var lon = req.query.longitude;
     var distance = req.query.distance;
     var access_token = req.query.access_token;
     var typelist = JSON.parse( type );
+    var vendorResult;
 
-		console.log( typelist );
+    console.log( typelist );
+    debugger;
+
+   if(user.type!='testUser'){
+      debugger;
     Vendor.find({
         location: {
             $near: [lat, lon]
         },
         visible:true
     }).limit( limit ).skip( offset ).exec().then(function (vendors) {
-
-        //console.log( vendors );
-        var vendor_det_ret_arr = [];
-        var plist = [];
-        for (var i = 0; i < vendors.length; i++) {
-            var vendor = vendors[i];
-            console.log("Getting offers: ");
-            console.log(vendor.offers);
-            var pr = Offer.find({
-                _id: {
-                    $in: vendor.offers
-                },
-								type:{
-									$in: typelist
-								}
-            }).exec();
-            //debugger;
-            plist.push(
-							pr.then(
-								(function( vendor, index ){
-							return function (offers) {
-                var deferred = Q.defer();
-								debugger;
-                var offers_new = _.filter(offers, function (offer) {
-                    return OfferHandler.qualify(req.user, vendor, offer);
-                });
-                //debugger;
-                var vendor_new = {};
-                vendor_new.location = vendor.location;
-                vendor_new.name = vendor.name;
-                vendor_new.offers = offers_new;
-                vendor_new.image = vendor.image;
-                vendor_new.fid = vendor.fid;
-                vendor_new._id = vendor._id;
-								console.log( vendor_new );
-                vendor_det_ret_arr[index] = (vendor_new);
-                //debugger;
-                process.nextTick(function () {
-                    console.log("resolving.");
-                    deferred.resolve();
-                });
-                return deferred.promise;
-            };
-					})( vendors[i], i )
-						));
-
-        }
-        //debugger;
-        Q.all(plist).then(function () {
-            debugger;
-						//console.log("RESOLVED.");
-            res.send(JSON.stringify(vendor_det_ret_arr));
-            res.end();
+      debugger;
+        getoff(typelist,vendors, req.user,function( vendors ){
+          res.send(JSON.stringify( vendors ));
+          res.end();
         });
+    });}
+    else   
+    {
 
-    });
-})
+      Vendor.find({
+        test:true
+      }).exec().then(function (vendors){
+         debugger;
+         getoff(typelist,vendors, req.user,function( vendors ){
+          res.send(JSON.stringify( vendors ));
+          res.end();
+         });
+        
+      });
+    }
+      debugger;
+            //console.log("RESOLVED.");
+            
+            
+       
+
+
+})    
+        //console.log( vendors );
+  function getoff( typelist, vendors, user, callback ){
+    debugger;
+    var vendor_det_ret_arr = [];
+    var plist = [];
+    for (var i = 0; i < vendors.length; i++) {
+      var vendor = vendors[i];
+      console.log("Getting offers: ");
+      console.log(vendor.offers);
+      var pr = Offer.find({
+          _id: {
+                $in: vendor.offers
+            },
+            type:{
+              $in: typelist
+              }
+         }).exec();
+            debugger;
+        plist.push(
+           pr.then(
+             (function( vendor, index ){
+              return function (offers) {
+              var deferred = Q.defer();
+              debugger;
+              var offers_new = _.filter(offers, function (offer) {
+                 return OfferHandler.qualify(user, vendor, offer);
+              });
+                //debugger;
+              var vendor_new = {};
+              vendor_new.location = vendor.location;
+              vendor_new.name = vendor.name;
+              vendor_new.offers = offers_new;
+              vendor_new.image = vendor.image;
+              vendor_new.fid = vendor.fid;
+              vendor_new._id = vendor._id;
+              console.log( vendor_new );
+              vendor_det_ret_arr[index] = (vendor_new);
+              //debugger;
+              process.nextTick(function () {
+                  console.log("resolving.");
+                  deferred.resolve();
+              });
+              return deferred.promise;
+          };
+        })( vendors[i], i )
+          ));
+
+      }
+        //debugger;
+      Q.all(plist).then(function () {
+        callback( vendor_det_ret_arr );
+      });
+    }
 router.get('/update', function (req, res) {
     var latitude, longitude, image, fid, name, visible, address, city, phone, description;
     var question;
+    var UUID;
     var user=req.user;
     var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
     if (!errobj) {
@@ -440,27 +471,32 @@ router.get('/update', function (req, res) {
           if( req.query.question){
             question=req.query.question;
           }else question=vendor.question;
-
+          if(req.query.UUID){
+            UUID=req.query.UUID;
+          }else UUID=vendor.UUID;
           var date_created = vendor.date_created;
-
+          
             vendor.location = [latitude, longitude];
             vendor.image = image;
             vendor.fid = fid;
             vendor.date_created = date_created;
             vendor.dateUpdated = new Date();
             vendor.name = name;
-						vendor.visible = visible;
-						vendor.city = city;
-						vendor.address = address;
-						vendor.phone = phone;
-						vendor.description = description;
+            vendor.visible = visible;
+            vendor.city = city;
+            vendor.address = address;
+            vendor.phone = phone;
+            vendor.description = description;
             vendor.resource_name = resource_name;
             vendor.question=question;
-            console.log("question\n"+vendor.question);
-            console.log("Saving");
-            vendor.save(function (err, res) {
-              console.log("Saved");
-              console.log(res);
+            vendor.UUID=UUID;
+            //console.log("question\n"+vendor.question);
+            //console.log("Saving");
+            debugger;
+            vendor.save(function (err) {
+              //console.log("Saved");
+              //console.log(resu);
+               debugger;
                 if (err) console.log(err);
             });
             res.send(JSON.stringify({result:true}));
@@ -468,7 +504,7 @@ router.get('/update', function (req, res) {
         else {
 
             error.err(res,"210");
-						return;
+            return;
 
         }
         res.end();
