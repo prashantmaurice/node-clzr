@@ -7,13 +7,22 @@
     <div id="linechart" style="height: 250px;"></div>
 </div>
 <script>
+    /*
+        arr should have key value pairs for line,area,bar charts.
+        xkey and ykey arguments should be same as in arr.
+        xkey should be same for all elements.
+     */
     var arr= [
         { year: '2008', value: 20 },
         { year: '2009', value: 10 },
         { year: '2010', value: 5 },
-
         { year: '2011', value: 5 },
         { year: '2012', value: 20 }
     ];
     linechart(arr,'year',['value'],['value'],'linechart');
+    areachart(arr,'year',['value'],['value'],'areachart');
+    barchart(arr,'year',['value'],['value'],'barchart');
+    var darr=[7,8,9];
+    var dlabel=["sector1","sector2","3"];
+    donutchart(darr,dlabel,'donutcahrt');
 </script>
