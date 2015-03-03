@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link href="css/plugins/morris.css" rel="stylesheet">
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="js/plugins/morris/morris.min.js"></script>
+<script src="vendor_charts.js"></script>
+<div id="charts">
+    <div id="linechart" style="height: 250px;"></div>
+</div>
+<script>
+    var arr= [
+        { year: '2008', value: 20 },
+        { year: '2009', value: 10 },
+        { year: '2010', value: 5 },
 
-</body>
-</html>
+        { year: '2011', value: 5 },
+        { year: '2012', value: 20 }
+    ];
+    linechart(arr,'year',['value'],['value'],'linechart');
+</script>
