@@ -465,11 +465,11 @@ router.get('/update', function (req, res) {
         if (vendor) {
           if (req.query.latitude) {
             latitude = req.query.latitude;
-          } else latitude = vendor.latitude;
+          } else latitude = vendor.location[0];
           //debugger;
           if (req.query.longitude) {
             longitude = req.query.longitude;
-          } else longitude = vendor.latitude;
+          } else longitude = vendor.location[1];
 
           dateUpdated = new Date();
           if (req.query.image) {
