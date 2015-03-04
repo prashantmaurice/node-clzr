@@ -22,6 +22,8 @@ router.get('/create', function (req, res) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
+    user=req.user;
+    debugger;
     // TODO approve vendor
     if( user.type != "Admin" ){
       error.err( res, "200" );
@@ -110,16 +112,17 @@ router.get('/get', function (req, res) {
 router.get('/addoffer', function (req, res) {
 
 	// TODO: Only admin allowed. DONE.
-  if( user.type != "Admin" ){
-    error.err( res, "200" );
-    return;
-  }
+  
 
     var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
+    if( user.type != "Admin" ){
+    error.err( res, "200" );
+    return;
+  }
 
     var vendorid = req.query.vendor_id;
     var offerid = req.query.offer_id;
@@ -146,17 +149,18 @@ router.get('/upload-policy', function( req, res ){
 		/*
 			TODO: Only allow if the user is linked to this vendor.
 		*/
-    if( !(req.user.type == "Admin") && req.query.user!="Vendor" ){
-      error.err( res, "403" );
-      return;
-    }
+    
 
-    var errobj = error.err_insuff_params( res, req, ["id","access_token"] );
+    var errobj = error.err_insuff_params( res, req, ["vendor_id","access_token"] );
 
     if( !errobj ) {
       return;
     }
 
+    if( !(req.user.type == "Admin") && req.query.user!="Vendor" ){
+      error.err( res, "403" );
+      return;
+    }
     Vendor.findOne({
       _id : req.query.vendor_id
     }, function( err, vendor ){
@@ -191,7 +195,10 @@ function attachStamps( user, vendors ){
 }
 
 router.get('/get/visitedV2', function( req, res ){
-
+  var errobj = error.err_insuff_params( res, req, ["access_token"] );
+       if( !errobj ) {
+      return;
+    }
   var user =  req.user;
   debugger;
   var fid_list =_.keys( user.stamplist );
@@ -253,7 +260,11 @@ router.get('/get/visitedV2', function( req, res ){
       });
 });
 router.get('/get/visited', function( req, res ){
+  var errobj = error.err_insuff_params( res, req, ["access_token"] );
 
+    if( !errobj ) {
+      return;
+    }
 	var user =  req.user;
   debugger;
 	var fid_list =_.keys( user.stamplist );
@@ -270,6 +281,10 @@ router.get('/get/visited', function( req, res ){
   });
 
 router.get("/request", function( req, res ){
+   var errobj = error.err_insuff_params( res, req, ["access_token","name"] );
+       if( !errobj ) {
+      return;
+    }
 	var user = req.user;
 	var request = new VendorRequest( {account:user._id, name:req.query.name, remarks:req.query.remarks } );
 	request.save();
@@ -372,16 +387,17 @@ router.get('/get/near', function (req, res) {
 })
 
 router.get('/updatesettings',function (req,res){
+  var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
+    if (!errobj) {
+        //error.err(res,errobj.code,errobj.params);
+        return;
+    }
     var user = req.user;
     if(user.type != "Admin" && user.type != "Vendor"){
         error.err( res, "200" );
         return;
     }
-    var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
-    if (!errobj) {
-        //error.err(res,errobj.code,errobj.params);
-        return;
-    }
+
     var vendorid=req.query.vendor_id;
     Vendor.findOne({_id:vendorid},function (err,vendor){
         if(req.query.birthday_notify1st){
@@ -399,7 +415,7 @@ router.get('/update', function (req, res) {
     var latitude, longitude, image, fid, name, visible, address, city, phone, description;
     var question;
     var user=req.user;
-    var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
+    var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;

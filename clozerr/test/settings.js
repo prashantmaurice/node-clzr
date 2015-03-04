@@ -26,4 +26,20 @@ SETTINGS.core = {
     server:"http://localhost:3000"
 }
 
+SETTINGS.dummy_user = {
+    username:"dummy2",
+    access_token:"abcdefghijklmnop",
+}
+
+SETTINGS.dummy_vendor = {
+    name:"DEFAULT002",
+    latitude:10,
+    longitude:10
+}
+
+SETTINGS.dummy_checkin = {
+    latitude:10,
+    longitude:10
+}
+
 exports.settings = SETTINGS;
