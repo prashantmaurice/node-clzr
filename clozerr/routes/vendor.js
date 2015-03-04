@@ -202,7 +202,7 @@ router.get('/get/visitedV2', function( req, res ){
   var user =  req.user;
   debugger;
   var fid_list =_.keys( user.stamplist );
-  console.log(fid_list);
+  //console.log(fid_list);
   debugger;
   Vendor.find( { fid: { $in: fid_list }, visible : true} ).exec().then(
     function (vendors) {
@@ -211,8 +211,8 @@ router.get('/get/visitedV2', function( req, res ){
       var plist = [];
       for (var i = 0; i < vendors.length; i++) {
         var vendor = vendors[i];
-        console.log("Getting offers: ");
-        console.log(vendor.offers);
+        //console.log("Getting offers: ");
+        //console.log(vendor.offers);
         var typelist = ["S1","SX","S0"];
         var pr = Offer.find({
           _id: {
@@ -236,11 +236,11 @@ router.get('/get/visitedV2', function( req, res ){
                 var vendor_new = vendor.toJSON();
                 vendor_new.offers = offers_new;
                 vendor_new.stamps = user.stamplist[vendor_new.fid] || 0;
-                console.log( vendor_new );
+                //console.log( vendor_new );
                 vendor_det_ret_arr[index] = (vendor_new);
                 //debugger;
                 process.nextTick(function () {
-                  console.log("resolving.");
+                  //console.log("resolving.");
                   deferred.resolve();
                 });
                 return deferred.promise;
@@ -268,7 +268,7 @@ router.get('/get/visited', function( req, res ){
 	var user =  req.user;
   debugger;
 	var fid_list =_.keys( user.stamplist );
-	console.log(fid_list);
+	//console.log(fid_list);
   debugger;
 	Vendor.find( { fid : { $in : fid_list } }, function( err, vendors ){
 		if( err ){
@@ -321,7 +321,7 @@ router.get('/get/near', function (req, res) {
     var access_token = req.query.access_token;
     var typelist = JSON.parse( type );
 
-		console.log( typelist );
+		//console.log( typelist );
     Vendor.find({
         location: {
             $near: [lat, lon]
@@ -334,8 +334,8 @@ router.get('/get/near', function (req, res) {
         var plist = [];
         for (var i = 0; i < vendors.length; i++) {
             var vendor = vendors[i];
-            console.log("Getting offers: ");
-            console.log(vendor.offers);
+            //console.log("Getting offers: ");
+            //console.log(vendor.offers);
             var pr = Offer.find({
                 _id: {
                     $in: vendor.offers
@@ -362,11 +362,11 @@ router.get('/get/near', function (req, res) {
                 vendor_new.image = vendor.image;
                 vendor_new.fid = vendor.fid;
                 vendor_new._id = vendor._id;
-								console.log( vendor_new );
+								//console.log( vendor_new );
                 vendor_det_ret_arr[index] = (vendor_new);
                 //debugger;
                 process.nextTick(function () {
-                    console.log("resolving.");
+                    //console.log("resolving.");
                     deferred.resolve();
                 });
                 return deferred.promise;
@@ -497,11 +497,11 @@ router.get('/update', function (req, res) {
 						vendor.description = description;
             vendor.resource_name = resource_name;
             vendor.question=question;
-            console.log("question\n"+vendor.question);
-            console.log("Saving");
+            //console.log("question\n"+vendor.question);
+            //console.log("Saving");
             vendor.save(function (err, res) {
-              console.log("Saved");
-              console.log(res);
+              //console.log("Saved");
+              //console.log(res);
                 if (err) console.log(err);
             });
             res.send(JSON.stringify({result:true}));

@@ -360,3 +360,250 @@ describe("testing update",function(done){
     }); 
 });
 });
+describe("testing offer.js",function(done){
+    describe("testing get function",function(done){
+        it("should not work without offer_id",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/offer",function(res){
+                res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                result.result.should.equal(false);
+                done();
+            });
+            });
+        });
+    });
+    describe("testing getmyoff",function(done){
+        it("should not work without access_token",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/offer/getmyoff",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+    });
+    describe("testing create",function(done){
+        it("should not work without access_token",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/offer/create",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+        it("should not work if the user is not admin",function(done){
+        this.timeout(10000);
+        http.get(settings.core.server+"/offer/create?access_token=db134037e1da7148ca8b30c355b89990",function(res){
+            res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                result.result.should.equal(false);
+                   done();
+                });
+        });
+    });
+      });
+     describe("testing update",function(done){
+        it("should not work without access_token",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/offer/update",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+        it("should not work without offer_id",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/offer/update?access_token=04038c662a13aa753766cf4fd20570ad",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    //console.log(result);
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+        
+        it("should not work if the user is not admin",function(done){
+        this.timeout(10000);
+        http.get(settings.core.server+"/offer/update?access_token=db134037e1da7148ca8b30c355b89990",function(res){
+            res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                result.result.should.equal(false);
+                   done();
+                });
+        });
+    });
+      });
+describe("testing delete",function(done){
+            it("should not work without access_token",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/offer/delete",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+            it("should not work if the user is not admin",function(done){
+        this.timeout(10000);
+        http.get(settings.core.server+"/offer/delete?access_token=db134037e1da7148ca8b30c355b89990",function(res){
+            res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                result.result.should.equal(false);
+                   done();
+                });
+        });
+    });
+             it("should not work without vendor id or offer id",function(done){
+        this.timeout(10000);
+        http.get(settings.core.server+"/offer/delete?access_token=04038c662a13aa753766cf4fd20570ad",function(res){
+            res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                result.result.should.equal(false);
+                   done();
+                });
+        });
+    });
+   it("should not work without vendor id ",function(done){
+        this.timeout(10000);
+        http.get(settings.core.server+"/offer/delete?access_token=04038c662a13aa753766cf4fd20570ad&offer_id=54b03cba1752e1f403837038",function(res){
+            res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                result.result.should.equal(false);
+                   done();
+                });
+        });
+    });
+   
+});
+describe("testing user.js",function(done){
+    describe("testing facebooklogin",function(done){
+        it("should not work without token",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/login/facebook",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+    });
+    describe("testing googlelogin",function(done){
+        it("should not work without token",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/login/google",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+    });
+    describe("testing login/password",function(done){
+        it("should not work without username or password",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/auth/login/password",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+        it("should not work without username ",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/auth/login/password?password=\"adcdefgh\"",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+        it("should not work without password ",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/auth/login/password?username=\"adcdefgh\"",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+        /*it("should work with params ",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/auth/login/password?username=\"adcdefgh\"&password=\"adcdefgh\"",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(true);
+                    done();
+                });
+            });
+        });*/
+    });
+   describe("testing reset/password",function(done){
+        it("should not work without access_token",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/auth/reset/password",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+        it("should not work without new_password",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/auth/reset/password?access_token=db134037e1da7148ca8b30c355b89990",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+    });
+   describe("testing create for vendoruser",function(done){
+        it("should not work without vendor_id or username",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/auth/create",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+        it("should not work without vendor_id ",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/auth/create?username=\"abcdefgh\"",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+         it("should not work without username ",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/auth/create?vendor_id=54b03cba1752e1f4038370a9",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+    });
+});
+});

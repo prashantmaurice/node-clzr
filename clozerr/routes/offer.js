@@ -36,6 +36,11 @@ router.get('/get', function (req, res) {
     })
 });
 router.get('/getmyoff',function(req,res){
+    var errobj = error.err_insuff_params(res, req, ["access_token"]);
+    if (!errobj) {
+        //error.err(res,errobj.code,errobj.params);
+        return;
+    }
     var user=req.user;
     Offer.findone({},
         function(err,data){
@@ -50,6 +55,11 @@ router.get('/getmyoff',function(req,res){
 });
 router.get('/create', function (req, res) {
 	// TODO: only admin allowed. DONE
+    var errobj = error.err_insuff_params(res, req, ["access_token"]);
+    if (!errobj) {
+        //error.err(res,errobj.code,errobj.params);
+        return;
+    }
 	var user = req.user;
 	if( user.type != "Admin" ){
 		error.err( res, "200" );
@@ -144,6 +154,11 @@ router.get('/update', function (req, res) {
 });
 
     router.get('/delete', function (req, res) {
+        var errobj = error.err_insuff_params(res, req, ["offer_id"]);
+    if (!errobj) {
+        return;
+  }
+
 			var user = req.user;
 			if( user.type != "Admin" ){
 				error.err( res, "200" );
