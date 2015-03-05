@@ -42,11 +42,11 @@ router.get('/getmyoff',function(req,res){
         return;
     }
     var user=req.user;
-    Offer.findone({},
+    Offer.findOne({},
         function(err,data){
           if(err) console.log(err);
           if(data){
-            res.send(JSON.stringify(data));
+            res.send(JSON.stringify({result:true,data:data}));
           }
           else{
             error.err(res,"210");

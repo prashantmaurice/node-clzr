@@ -28,7 +28,7 @@ describe("Testing get/near functionality", function(){
                 res.on('data', function(body) {
                     var result = JSON.parse( body.toString() );
                     //console.log( result );
-                    //result.result.should.equal(true); 
+                    result.result.should.equal(true); 
                     done();
                 });
             });
@@ -40,6 +40,7 @@ describe("testing typelist",function(){
         res.on('data',function(body){
         var result=JSON.parse(body.toString());
         //console.log(result);
+        result.result.should.equal(true);
         done();
     });
 });
@@ -50,6 +51,7 @@ describe("testing typelist",function(){
         res.on('data',function(body){
         var result=JSON.parse(body.toString());
        //console.log(result);
+        result.result.should.equal(true);
         done();
     });
 });
@@ -60,6 +62,7 @@ describe("testing typelist",function(){
         res.on('data',function(body){
         var result=JSON.parse(body.toString());
        //console.log(result);
+        result.result.should.equal(true);
         done();
     });
 });
@@ -121,6 +124,17 @@ describe("testing create function",function(done){
                 });
         });
     }); 
+    it("should work with all params",function(done){
+        this.timeout(10000);
+        http.get(settings.core.server+"/vendor/create?name=\"testvendor\"&fid=1234&latitude=10&longitude=10&image=\"testimage\"&access_token=22ce76d30c28e12f8062a9f9976299d1",function(res){
+            res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                  //console.log(result);  
+                  result.result.should.equal(true); 
+                    done();
+                });
+        });
+    })
  });
 describe("testing getall function",function(done){
     it("should without any params",function(done){
@@ -129,6 +143,7 @@ describe("testing getall function",function(done){
         res.on('data',function(body){
             var result=JSON.parse(body.toString());
             //console.log(result);
+            result.result.should.equal(true);
             done();
         });
     });
@@ -142,6 +157,17 @@ describe("testing get function",function(done){
                 var result=JSON.parse(body.toString());
                 //console.log(result);
                  result.result.should.equal(false);
+                done();
+            });
+        });
+    });
+    it("should work with vendor id",function(done){
+        this.timeout(10000);
+        http.get(settings.core.server+"/vendor/get?vendor_id=54b03cba1752e1f403837097",function(res){
+            res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                //console.log(result);
+                 result.result.should.equal(true);
                 done();
             });
         });
@@ -186,11 +212,23 @@ describe("testing addoffer function",function(done){
         http.get(settings.core.server+"/vendor/addoffer?vendor_id=54b03cba1752e1f40383705b&offer_id=54b03cba1752e1f40383705b",function(res){
             res.on('data',function(body){
                 var result=JSON.parse(body.toString());
+                //console.log(result);
                 result.result.should.equal(false);
                    done();
                 });
         });
-    }); 
+    });
+    it("should work with all correct params",function(done){
+        this.timeout(10000);
+        http.get(settings.core.server+"/vendor/addoffer?vendor_id=54f37ae23009ee8c2fe33667&offer_id=54b03cba1752e1f40383705b&access_token=22ce76d30c28e12f8062a9f9976299d1",function(res){
+            res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                //console.log(result);
+                result.result.should.equal(true);
+                   done();
+                });
+        });
+    });
 });
 describe("testing upload policy",function(done){
     it("should not work without vendor id",function(done){
@@ -221,6 +259,17 @@ describe("testing upload policy",function(done){
                 var result=JSON.parse(body.toString());
                 //console.log(result);
                 result.result.should.equal(false);
+                done();
+                     });
+        });
+    });
+    it("should work with all correct params",function(done){
+        this.timeout(10000);
+        http.get(settings.core.server+"/vendor/upload-policy?vendor_id=54f37ae23009ee8c2fe33667&access_token=22ce76d30c28e12f8062a9f9976299d1",function(res){
+            res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                //console.log(result);
+                result.result.should.equal(true);
                 done();
                      });
         });
@@ -283,17 +332,17 @@ describe("testing vendorrequest",function(done){
             });
         });
     });
-   /* it("should work with access_token",function(done){
+    it("should work with access_token",function(done){
         this.timeout(10000);
-        http.get(settings.core.server+"/vendor/request?access_token=db134037e1da7148ca8b30c355b89990",function(res){
+        http.get(settings.core.server+"/vendor/request?access_token=8aeba274a9fad4f865e126104f7ed455&name=nothing&remarks=nothing",function(res){
             res.on('data',function(body){
                 var result=JSON.parse(body.toString());
-                //console.log(result);
+                console.log(result);
                 result.result.should.equal(true);
                 done();
             });
         });
-    });*/
+    });
 });
 describe("testing updatesettings",function(done){
     it("should not work without vendor id",function(done){
@@ -350,10 +399,21 @@ describe("testing update",function(done){
     }); 
     it("should not work if the user is not admin or vendor",function(done){
         this.timeout(10000);
-        http.get(settings.core.server+"/vendor/updatesettings?vendor_id=54b03cba1752e1f40383705b&access_token=db134037e1da7148ca8b30c355b89990",function(res){
+        http.get(settings.core.server+"/vendor/update?vendor_id=54b03cba1752e1f40383705b&access_token=db134037e1da7148ca8b30c355b89990",function(res){
             res.on('data',function(body){
                 var result=JSON.parse(body.toString());
                 result.result.should.equal(false);
+                   done();
+                });
+        });
+    }); 
+    it("should work for correct params",function(done){
+        this.timeout(10000);
+        http.get(settings.core.server+"/vendor/update?vendor_id=54f37ae23009ee8c2fe33667&access_token=22ce76d30c28e12f8062a9f9976299d1&UUID=jascb&UUID=jbakc",function(res){
+            res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                console.log(result);
+                result.result.should.equal(true);
                    done();
                 });
         });
@@ -362,9 +422,19 @@ describe("testing update",function(done){
 });
 describe("testing offer.js",function(done){
     describe("testing get function",function(done){
+        it("should work with offer_id",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/offer/get?offer_id=54b03cba1752e1f403837038",function(res){
+                res.on('data',function(body){
+                var result=JSON.parse(body.toString());
+                result.result.should.equal(true);
+                done();
+            });
+            });
+        });
         it("should not work without offer_id",function(done){
             this.timeout(10000);
-            http.get(settings.core.server+"/offer",function(res){
+            http.get(settings.core.server+"/offer/get",function(res){
                 res.on('data',function(body){
                 var result=JSON.parse(body.toString());
                 result.result.should.equal(false);
@@ -380,6 +450,17 @@ describe("testing offer.js",function(done){
                 res.on('data',function(body){
                     var result=JSON.parse(body.toString());
                     result.result.should.equal(false);
+                    done();
+                });
+            });
+        });
+        it("should work with access_token",function(done){
+            this.timeout(10000);
+            http.get(settings.core.server+"/offer/getmyoff?access_token=49cba97de9d025f5416a7db2295c11ca",function(res){
+                res.on('data',function(body){
+                    var result=JSON.parse(body.toString());
+                    console.log(result);
+                    result.result.should.equal(true);
                     done();
                 });
             });

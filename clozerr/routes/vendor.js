@@ -49,10 +49,10 @@ router.get('/create', function (req, res) {
         date_created: date_created,
         dateUpdated:date_created
     });
-    res.send({
+    res.send(JSON.stringify({
         result: true,
         data: vendor
-    });
+    }));
 
     vendor.save();
 
@@ -66,7 +66,7 @@ router.get('/get/all',function(req,res) {
             console.log(err);
             return;
         }
-        res.send(JSON.stringify(data));
+        res.send(JSON.stringify({result:true,data:data}));
     });
 });
 
@@ -102,7 +102,7 @@ router.get('/get', function (req, res) {
               return OfferHandler.qualify(req.user,vendor,offer);
             });
             vendor_json.offers_qualified = offers_qualified;
-            res.send(JSON.stringify(vendor_json));
+            res.send(JSON.stringify({result:true,vendor:vendor_json}));
             res.end();
         });
 
@@ -114,7 +114,7 @@ router.get('/addoffer', function (req, res) {
 	// TODO: Only admin allowed. DONE.
   
 
-    var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id"]);
+    var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id","access_token"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
@@ -178,8 +178,8 @@ router.get('/upload-policy', function( req, res ){
       });
 
       var obj = { result:true, data:p };
-      obj.data.
-      res.end( JSON.stringify() );
+      
+      res.end( JSON.stringify(obj) );
 
     });
 
@@ -379,7 +379,7 @@ router.get('/get/near', function (req, res) {
         Q.all(plist).then(function () {
             debugger;
 						//console.log("RESOLVED.");
-            res.send(JSON.stringify(vendor_det_ret_arr));
+            res.send(JSON.stringify({result:true,offers:vendor_det_ret_arr}));
             res.end();
         });
 
@@ -415,6 +415,7 @@ router.get('/update', function (req, res) {
     var latitude, longitude, image, fid, name, visible, address, city, phone, description;
     var question;
     var user=req.user;
+    var UUID;
     var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
@@ -481,7 +482,9 @@ router.get('/update', function (req, res) {
           if( req.query.question){
             question=req.query.question;
           }else question=vendor.question;
-
+          if(req.query.UUID){
+            UUID=req.query.UUID;
+          }else UUID=vendor.UUID;
           var date_created = vendor.date_created;
 
             vendor.location = [latitude, longitude];
@@ -497,6 +500,7 @@ router.get('/update', function (req, res) {
 						vendor.description = description;
             vendor.resource_name = resource_name;
             vendor.question=question;
+            vendor.UUID=UUID;
             //console.log("question\n"+vendor.question);
             //console.log("Saving");
             vendor.save(function (err, res) {
