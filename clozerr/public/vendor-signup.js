@@ -101,7 +101,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 							console.log(offerdata);
 							console.log("Created : Offer no. " + u+1);
 					//Link the offer -- vendor
-					$http.get( CLOZERR_API +  "vendor/addoffer" + "?offer_id=" + offerdata.data._id + "&vendor_id=" + $scope.vendor_id + "&access_token=" + access_token).
+					$http.get( CLOZERR_API +  "vendor/addoffer" + "?offer_id=" + offerdata.data._id ).
 					success(function(data, status, headers, config) {
 						console.log("Linked : Offer no : " + u+1 + " with vendor object");
 
