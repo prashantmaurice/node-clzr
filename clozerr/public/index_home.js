@@ -15,6 +15,25 @@ var index_home = function( $rootScope, $scope, $http ){
     console.log('watched - toggle - visibility - home');
   });
 
+  $scope.getTimeInFormat = function(dateStr) {
+    //10/21/2013 3:29 PM
+    var date = new Date(dateStr);
+    var str = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ';
+    var ampm = "";
+    if(date.getHours()>12) {
+      str = str + (date.getHours() - 12);
+      ampm = "PM";
+    }
+    else {
+      str = str + date.getHours();
+      ampm = "AM";
+    }
+
+    str = str + ':' + date.getMinutes() + ' ' + ampm;
+    console.log(str);
+    return str;
+  }
+
   $scope.loadStats = function() {
 
     $http.get(CLOZERR_ALL_CHECKINS_URL + "?access_token=" + localStorage.token ).
@@ -28,10 +47,12 @@ var index_home = function( $rootScope, $scope, $http ){
       $scope.allCheckinObjects = data;
 
       for(var i=0;i<data.length;i++) {
-        if(new Date().getTime() - new Date(data[i].date_created).getTime() < 7*24*3600*1000) {
+        if(new Date().getTime() - new Date(data[i].date_created).getTime() < 7*24*3600*1000*10000) {
+          data[i].date_created_modified = $scope.getTimeInFormat(data[i].date_created);
           $scope.latestCheckinObjects.push(data[i]);      //may or may not contain a review
           if(data[i].review) {
             $scope.latestCheckinObjectsWithReviews.push(data[i]);
+            data[i].review.date_created_modified = $scope.getTimeInFormat(data[i].review.date_created);
           }
         }
       }
@@ -64,8 +85,5 @@ var index_home = function( $rootScope, $scope, $http ){
     $rootScope.$broadcast("page-" + page );
   }
 
-  //$scope.update();
-  /*
-  TODO: Register for SocketIO messages here.
-  */
+  
 }
