@@ -149,7 +149,8 @@
                <a href="#" class="list-group-item">
                 <span class="badge">{{obj.review.date_created_modified}}</span>
                 {{obj.user.profile.name || (obj.user.profile.first_name  + " " + obj.user.profile.last_name)}} 
-                <i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i>
+                <!-- <i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i> -->
+                  <i ng-repeat="st in getNumber(obj.review.stars) track by $index" class="fa fa-fw fa-star"></i>
               </a>
             </div>
           </div>

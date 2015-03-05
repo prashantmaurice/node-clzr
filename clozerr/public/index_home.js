@@ -15,6 +15,16 @@ var index_home = function( $rootScope, $scope, $http ){
     console.log('watched - toggle - visibility - home');
   });
 
+  $scope.getNumber = function(stars) {
+    var avgst=0;
+    for(var kw=0;kw<stars.length;kw++) {
+      avgst = avgst + stars[kw];
+    }
+    if(stars.length!=0) {
+      avgst = avgst/stars.length;
+    }
+    return new Array(avgst);   
+  }
   $scope.getTimeInFormat = function(dateStr) {
     //10/21/2013 3:29 PM
     var date = new Date(dateStr);
