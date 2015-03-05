@@ -23,6 +23,7 @@ var index_home = function( $rootScope, $scope, $http ){
     if(stars.length!=0) {
       avgst = avgst/stars.length;
     }
+    avgst = parseInt(avgst+"");
     return new Array(avgst);   
   }
   $scope.getTimeInFormat = function(dateStr) {
