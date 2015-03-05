@@ -10,16 +10,19 @@
 	<div class="container-fluid card-view">
 		<div class="col-md-12">
 			<br>
+
 			<h4><center>PROFILE DETAILS</center></h4>
+				
 			<br>
 			<div class="input-group">
 				<span class="input-group-addon" id="basic-addon4">&nbsp&nbsp&nbspPublic name&nbsp&nbsp&nbsp&nbsp</span>
 				<input type="text" class="form-control" ng-model="vendor.name" placeholder="Public name" aria-describedby="basic-addon4">
 			</div><br>
+			<!-- 
 			<div class="input-group">
 				<span class="input-group-addon" id="basic-addon5">Franchise  name</span>
 				<input type="text" class="form-control" ng-model="vendor.name" placeholder="Franchise name" aria-describedby="basic-addon5">
-			</div><br>
+			</div><br> -->
 			<div class="input-group" >
 				<span class="input-group-addon" id="basic-addon6">&nbspPhone  number&nbsp</span>
 				<input type="text" class="form-control" ng-model="vendor.phone" placeholder="Phone number" aria-describedby="basic-addon6">
@@ -28,7 +31,7 @@
 				<div class="col-md-11">
 					<div class="input-group">
 						<span class="input-group-addon" id="basic-addon6">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAddress&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-						<input type="text" class="form-control custom-margin" ng-focus="focusShowNothing()" ng-blur="getLocation(vaddress)" placeholder="Address" ng-model="vendorAddressRevGeoCoded">
+						<input type="text" class="form-control custom-margin" ng-focus="focusShowNothing()" ng-blur="getLocation(vendorAddressRevGeoCoded)" placeholder="Address" ng-model="vendorAddressRevGeoCoded">
 					</div>
 				</div>
 				<div class="col-md-1">
@@ -36,11 +39,7 @@
 				</div>
 			</div>
 		</div>
-		<a href="javascript:void(0)" data-toggle="modal" data-target="#modalChangePassword" class="restore-color-blue">
-			<button type="button" class="btn btn-success">
-				Change password
-			</button>
-		</a>
+		
 	</div>
 	<div class="modal fade in" id="modalChangePassword" tabindex="-1" role="dialog" aria-labelledby="modalChangePasswordLabel" aria-hidden="true">
 		<div class="modal-dialog">

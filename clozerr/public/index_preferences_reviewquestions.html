@@ -1,21 +1,29 @@
 <style>
 #divRemove {
-	color:#000;
+	color:#333;
 }
 #divRemoveM {
-	margin-top:2%;
+	margin-top:0.8%;
 }
 .font-size-normal {
 	font-size: 0.5em;
 }
+.non-blue-a-theme {
+	background: transparent;
+	color: #666;
+}
+a.non-blue-a-theme:hover {
+	background: transparent;
+	color: #333;
+}
 </style>
 
-<div class="container-fluid card-view" ng-controller="reviewQuestionsCtrl">
-	<div class="modal-dialog">
+<div class="container-fluid" style="margin-top:20px" ng-controller="reviewQuestionsCtrl">
+	<div class="">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel"><center>REVIEW QUESTIONS</center></h4>
+				<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				 --><h4 class="modal-title" id="myModalLabel"><center>REVIEW QUESTIONS</center></h4>
 			</div>
 			<div class="modal-body">
 				<div class="panel panel-default">
@@ -24,7 +32,7 @@
 							<div class="col-lg-11">
 							</div>
 							<div class="col-lg-1">
-								<a href="javascript:void(0)" class="restore-color-blue font-size-normal" ng-click="addQuestion()">
+								<a href="javascript:void(0)" class="font-size-normal non-blue-a-theme" ng-click="addQuestion()">
 									<i class="fa fa-plus-circle fa-4x"></i>
 								</a>
 							</div>
@@ -35,7 +43,7 @@
 								<div class="col-lg-11">
 									<div class="input-group" ng-focus="setFocussedQuestion($index)">
 										<span class="input-group-addon">
-											<input type="checkbox" aria-label="..."/>
+											{{$index + 1}}
 										</span>
 										<input type="text" placeholder="Your question.." ng-model="vendor.question[$index]" class="form-control" aria-label="...">
 									</div>
