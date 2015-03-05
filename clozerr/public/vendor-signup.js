@@ -76,7 +76,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		settings.birthday = $rootScope.bp;
 		settings.neighbourhoodperks = $rootScope.np;
 		settings.visitreminder = $rootScope.vp;
-		var str = decodeURIComponent(jQuery.param({settings:settings}));
+		var str = decodeURIComponent(jQuery.param({question:$rootScope.reviewQuestions,settings:settings}));
 		console.log(str);
 		
 		$http.get( CLOZERR_VENDORS_URL + "/create" + "?latitude=" + $scope.vlatitude +"&longitude=" + $scope.vlongitude + "&image=default"+"&fid=0"+"&name=" + $scope.vpublicname + "&" + str).

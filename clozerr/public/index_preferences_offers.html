@@ -1,0 +1,126 @@
+<!-- 
+
+<div class="container-fluid card-view" ng-controller="punchCardType">
+
+
+	<div class="row">
+			<div class="col-md-12">
+				<div class="panel">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-8 text-left">
+								<div>
+									<big>Choose your punch card type!</big>
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<i class="fa fa-credit-card fa-5x"></i>
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer">
+						<div class="panel-front-text">
+							<div class="panel-options">
+								<div class="row" style="text-align:left;">
+									<div class="radio col-xs-8">
+										<label>
+											<input type="radio" ng-model="punchcardtype" name="punchcardtype" value="pp">Preloaded punch card</input>
+										</label>
+									</div>
+									<div ng-show="punchcardtype=='pp'" class="col-xs-4 pvert-center">
+										<input type="number" class="form-control" id="customPunchCountp" min="0" max="100" step="1" value="5" style="background-color: transparent;"/>
+									</div>	
+								</div>
+
+								<div class="row" style="text-align:left;">
+									<div class="radio col-xs-8">
+										<label>
+											<input type="radio" ng-model="punchcardtype" name="punchcardtype" value="px">Custom punch card</input>
+										</label>
+									</div>
+									<div ng-show="punchcardtype=='px'" class="col-xs-4 pvert-center">
+										<input type="number" class="form-control" id="customPunchCountx" min="0" max="100" step="1" value="5" style="background-color: transparent;"/>
+									</div>	
+								</div>
+							</div>	
+							<br>
+							<a href="javascript:void(0)" data-toggle="modal" ng-click="showPunchCardInputs()" data-target="#myModal" class="restore-color-blue">
+								<div class="row text-right">
+									<i class="fa fa-check fa-2x">&nbsp&nbsp&nbsp</i><br>
+								</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel"><center>YOUR OFFERS</center></h4>
+				</div>
+				<br>
+				<div class="modal-body">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<ul class="timeline">
+								<li ng-class="{'timeline-inverted': $index%2==0}" ng-repeat="offer in vendor.offers track by $index">
+									<div class="timeline-badge background-blue" ng-mouseover="toggleHover($index)" ng-mouseleave="toggleHover($index)" ng-click="toggleEditSaveOffer(offer, $index)"><i ng-show="textInfoVis[$index] && !hoverCheck[$index]">{{$index+1}}</i>
+										<i ng-show="hoverCheck[$index] || !textInfoVis[$index]" ng-class="{'fa fa-pencil fa-1x pvert-center1':textInfoVis[$index],'fa fa-floppy-o fa-1x pvert-center1':!textInfoVis[$index]}"></i>
+									</div>
+									<div class="timeline-panel">
+										<div class="timeline-heading" ng-show="textInfoVis[$index]">
+											<h4 class="timeline-title" ng-bind="vendor.offers[$index].caption"></h4>
+										</div>
+										<div ng-show="!textInfoVis[$index]">
+											<input type="text" class="form-control" ng-model="vendor.offers[$index].caption"/>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="savePunchCardInputs()">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> -->
+ <div class="container-fluid card-view" ng-controller="punchCardType">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel"><center>YOUR OFFERS</center></h4>
+			</div>
+			<br>
+			<div class="modal-body">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<ul class="timeline">
+							<li ng-class="{'timeline-inverted': $index%2==0}" ng-repeat="offer in vendor.offers track by $index">
+								<div class="timeline-badge background-blue" ng-mouseover="toggleHover($index)" ng-mouseleave="toggleHover($index)" ng-click="toggleEditSaveOffer(offer, $index)"><i ng-show="textInfoVis[$index] && !hoverCheck[$index]">{{$index+1}}</i>
+									<i ng-show="hoverCheck[$index] || !textInfoVis[$index]" ng-class="{'fa fa-pencil fa-1x pvert-center1':textInfoVis[$index],'fa fa-floppy-o fa-1x pvert-center1':!textInfoVis[$index]}"></i>
+								</div>
+								<div class="timeline-panel">
+									<div class="timeline-heading" ng-show="textInfoVis[$index]">
+										<h4 class="timeline-title" ng-bind="vendor.offers[$index].caption"></h4>
+									</div>
+									<div ng-show="!textInfoVis[$index]">
+										<input type="text" class="form-control" ng-model="vendor.offers[$index].caption"/>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

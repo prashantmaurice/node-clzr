@@ -83,10 +83,13 @@ router.get('/create', function (req, res) {
 router.get('/update', function (req, res) {
 	var type, stamps, caption, description;
 	var user = req.user;
-	if( user.type != "Admin" ){
+	/*if( user.type != "Admin" ){
 		error.err( res, "200" );
 		return;
-	}
+	}*/
+
+    //TODO : do validation here
+
 	var errobj = error.err_insuff_params(res, req, ["offer_id"]);
 	if (!errobj) {
         return;
