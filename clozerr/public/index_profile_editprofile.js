@@ -70,7 +70,10 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
 				$http.get( CLOZERR_PASSWORD_URL + "?access_token=" + localStorage.token + "&new_password=" + $("#new_password").val() ).
 				success(function(data, status, headers, config) {
 					$scope.wrongData = false;
-					
+
+					$("#new_password_again").val('');
+					$("#new_password").val('');
+					$("#old_password").val('');
 					$('#modalChangePassword').modal('hide');
 
 					$scope.getDetails();

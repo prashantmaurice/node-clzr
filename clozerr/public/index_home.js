@@ -1,7 +1,7 @@
 
 
 var index_home = function( $rootScope, $scope, $http ){
-  $scope.checkins = [];
+
   $scope.visibility = false;
 
   var CLOZERR_ALL_CHECKINS_URL = CLOZERR_API + "checkin/confirmed";
@@ -51,23 +51,27 @@ var index_home = function( $rootScope, $scope, $http ){
     success(function(data, status, headers, config) {
       console.log("Got all checkins..");
 
-      $scope.latestCheckinObjects = [];
-      $scope.latestCheckinObjectsWithReviews = [];
+      $rootScope.latestCheckinObjects = [];
+      $rootScope.latestCheckinObjectsWithReviews = [];
+      $rootScope.allCheckinObjectsWithReviews = [];
       console.log(data);
 
-      $scope.allCheckinObjects = data;
+      $rootScope.allCheckinObjects = data;
 
       for(var i=0;i<data.length;i++) {
         if(new Date().getTime() - new Date(data[i].date_created).getTime() < 7*24*3600*1000*10000) {
           data[i].date_created_modified = $scope.getTimeInFormat(data[i].date_created);
-          $scope.latestCheckinObjects.push(data[i]);      //may or may not contain a review
+          $rootScope.latestCheckinObjects.push(data[i]);      //may or may not contain a review
           if(data[i].review) {
-            $scope.latestCheckinObjectsWithReviews.push(data[i]);
             data[i].review.date_created_modified = $scope.getTimeInFormat(data[i].review.date_created);
+            $rootScope.latestCheckinObjectsWithReviews.push(data[i]);            
           }
         }
+        if(data[i].review) {
+          data[i].review.date_created_modified = $scope.getTimeInFormat(data[i].review.date_created);
+          $rootScope.allCheckinObjectsWithReviews.push(data[i]);
+        }
       }
-
     }).error(function(data, status, headers, config) {
         //TODO : Throw error
       });

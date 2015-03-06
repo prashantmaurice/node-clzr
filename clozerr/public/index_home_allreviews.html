@@ -1,0 +1,36 @@
+<div ng-controller="index_home_allreviews">
+  <div ng-show="visibility">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="pull-right">
+          <button type="button" class="btn btn-default circular-btn" ng-click="pageChange('home')"><i class="fa fa-arrow-left fa-1x"></i></button>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="col-lg-3"></div>
+    <div class="col-lg-9">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Latest Reviews</h3>
+        </div>
+        <div class="panel-body">
+            <div class="list-group"><!-- 
+              <a href="#" class="list-group-item">
+                <span class="badge">just now</span>
+                Sai Praveen <i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i>
+              </a> -->
+              <div ng-repeat="obj in allCheckinObjectsWithReviews track by $index">
+               <a href="#" class="list-group-item">
+                <span class="badge">{{obj.review.date_created_modified}}</span>
+                {{obj.user.profile.name || (obj.user.profile.first_name  + " " + obj.user.profile.last_name)}} 
+                <!-- <i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i> -->
+                <i ng-repeat="st in getNumber(obj.review.stars) track by $index" class="fa fa-fw fa-star"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

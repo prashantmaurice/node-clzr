@@ -1,4 +1,4 @@
-/*!
+x/*!
  * Start Bootstrap - SB Admin 2 Bootstrap Admin Theme (http://startbootstrap.com)
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
@@ -352,3 +352,11 @@ table.dataTable thead .sorting:after {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+.panel-default a {
+    color:#555;
+}
+
+.panel-default a:hover {
+    color:#222;
+};
