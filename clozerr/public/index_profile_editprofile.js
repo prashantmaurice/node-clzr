@@ -4,10 +4,10 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
 
 	$scope.focusShowNothing = function() {
 		console.log("focussed");		
-		$('#statusLocationIndicator').removeClass('fa fa-spin fa-gear fa-2x');
+		$('#statusLocationIndicator').removeClass('fa fa-spinner fa-pulse fa-2x');
 		$('#statusLocationIndicator').removeClass('fa fa-times fa-2x');
 		$('#statusLocationIndicator').removeClass('fa fa-check fa-2x');
-		$('#statusLocationIndicator').addClass('fa fa-spin fa-gear fa-2x');
+		$('#statusLocationIndicator').addClass('fa fa-spinner fa-pulse fa-2x');
 	}
 
 
@@ -28,7 +28,7 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
 	$scope.getLocation = function(address) {
 		var geocoder = new google.maps.Geocoder();
 		console.log('blurred');
-		$('#statusLocationIndicator').removeClass('fa fa-spin fa-gear fa-2x');
+		$('#statusLocationIndicator').removeClass('fa fa-spinner fa-pulse fa-2x');
 		geocoder.geocode({ 'address': address }, function (results, status) {
 
 			if (status == google.maps.GeocoderStatus.OK) {
