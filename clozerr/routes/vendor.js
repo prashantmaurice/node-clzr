@@ -157,14 +157,15 @@ router.get('/upload-policy', function( req, res ){
       return;
     }
 
-    if( !(req.user.type == "Admin") && req.query.user!="Vendor" ){
+    if( !(req.user.type == "Admin") && req.user.type!="Vendor" ){
       error.err( res, "403" );
       return;
     }
+    debugger;
     Vendor.findOne({
       _id : req.query.vendor_id
     }, function( err, vendor ){
-
+        
       if( !vendor ){
         error.err( res, "200" );
       }
@@ -393,13 +394,14 @@ router.get('/updatesettings',function (req,res){
         return;
     }
     var user = req.user;
+    debugger;
     if(user.type != "Admin" && user.type != "Vendor"){
         error.err( res, "200" );
         return;
     }
 
-    var vendorid=req.query.vendor_id;
-    Vendor.findOne({_id:vendorid},function (err,vendor){
+    var vendor_id=req.query.vendor_id;
+    Vendor.findOne({_id:vendor_id},function (err,vendor){
         if(req.query.birthday_notify1st){
             vendor.settings.birthday_notify1st=req.query.birthday_notify1st;
         }

@@ -13,17 +13,28 @@ SETTINGS.mongo = {
 }
 
 SETTINGS.admin = {
-    username:"clozerradmin"
+    username:"clozerradmin",
+    access_token:"9ba831f417cda35bd7bec86159d2e699"
 }
 
 SETTINGS.vendor = {
     username:"mysample",
     public_name:"SampleVendor",
-    password:"password"
+    password:"password",
+    fid:"1234",
+    image:"testimage",
+    vendorid:"54f37ae23009ee8c2fe33667",
+    offerid:"54b03cba1752e1f40383705b",
+    reqacctok:"8aeba274a9fad4f865e126104f7ed455"
 }
 
 SETTINGS.core = {
     server:"http://localhost:3000"
+}
+SETTINGS.gen={
+	nonadminorvendor:"3dabb3a3ff67abb935fd3fe59988dc82",
+	vendorid:"54b03cba1752e1f403837097",
+	useracctok:"db134037e1da7148ca8b30c355b89990"
 }
 
 exports.settings = SETTINGS;
