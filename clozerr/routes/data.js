@@ -96,3 +96,5 @@ router.get('/location',function (req,res){
         res.send(JSON.stringify({result : false , error: "insufficient parameters"}));
     }
 });
+
+module.exports=router;
