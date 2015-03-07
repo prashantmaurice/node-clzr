@@ -81,6 +81,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		
 		$http.get( CLOZERR_VENDORS_URL + "/create" + "?latitude=" + $scope.vlatitude +"&longitude=" + $scope.vlongitude + "&image=default"+"&fid=0"+"&name=" + $scope.vpublicname + "&" + str).
 		success(function(data, status, headers, config) {
+            $rootScope.vendor=data;
 			$scope.vendor_id = data.data._id;
 			console.log(data);
 			console.log("Created : Vendor Object");
