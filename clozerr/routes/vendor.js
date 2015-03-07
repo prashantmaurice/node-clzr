@@ -540,12 +540,14 @@ router.get('/update', function (req, res) {
            vendor.UUID=UUID; 
           console.log("question\n"+vendor.question);
           console.log("Saving");
+          debugger;
+          
           vendor.markModified("settings");
           vendor.markModified("settings.birthday");
           vendor.save(function (err, res) {
             console.log("Saved");
-            console.log(res);
-            if (err) console.log(err);
+            console.log(res); 
+            console.log(err);
           });
           res.send(JSON.stringify({result:true}));
         }
@@ -559,7 +561,6 @@ router.get('/update', function (req, res) {
       });
 
 });
-
 router.get('/checkins',function (req,res){
     /*
     var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);

@@ -1,0 +1,31 @@
+ var index_profile = function( $rootScope, $scope, $http ) {
+
+  var CLOZERR_API = location.origin + '/';
+  var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
+  var CLOZERR_OFFERS_URL = CLOZERR_API + "offer";
+
+  // Page change controllers start.
+  $scope.visibility = false;
+
+  var PAGE_NAME = "profile";
+  $scope.$on("page-" + PAGE_NAME, function(){
+    $scope.visibility = true;
+    $rootScope.$broadcast('page-editprofile');
+  });
+
+  $scope.$on("page-close", function(){
+   $scope.visibility = false;
+ });
+  // Page change controllers end.
+
+  $scope.updateVendorProfileBackend = function() {
+    var access_token = localStorage.token;
+
+    $http.get( CLOZERR_VENDORS_URL + "/update?vendor_id=" + $rootScope.vendor._id + "&name=" + $rootScope.vendor.name + "&phone=" + $rootScope.vendor.phone + "&latitude=" + $rootScope.vendor.location[0] + "&longitude=" + $rootScope.vendor.location[1] + "&access_token=" + access_token ).
+      success(function(data, status, headers, config) {
+        console.log(data);
+    }).error(function(data, status, headers, config) {
+  });
+
+}
+}

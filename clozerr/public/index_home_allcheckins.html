@@ -1,0 +1,53 @@
+<style>
+.circular-btn {
+  border-radius: 50% 50% 50% 50%;
+  color: #333;
+  padding: 12px;
+}
+.circular-btn:hover {
+  border-radius: 50% 50% 50% 50%;
+  color: #000;
+  padding: 12px;
+}
+</style>
+<div ng-controller="index_home_allcheckins">
+  <div ng-show="visibility">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="pull-right">
+          <button type="button" class="btn btn-default circular-btn" ng-click="pageChange('home')"><i class="fa fa-arrow-left fa-1x"></i></button>
+       </div>
+     </div>
+   </div>
+   <br><br>
+   <div class="col-lg-3"></div>
+   <div class="col-lg-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-money fa-fw"></i> All Checkins</h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date-Time</th>
+                <th>Visit No.</th>
+                <th>Offer</th>
+              </tr>
+            </thead>
+            <tbody
+            <tr ng-repeat="obj2 in allCheckinObjects track by $index">
+              <td>{{obj2.user.profile["name"]  || (obj2.user.profile["first_name"] + " " + obj2.user.profile['last_name'])}}</td>
+              <td>{{obj2.date_created_modified}}</td>
+              <td>{{obj2.user.stamplist[obj2.vendor.fid]}}</td>
+              <td>{{obj2.offer.caption}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

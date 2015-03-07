@@ -1,7 +1,9 @@
 var index_settings = function( $rootScope, $scope, $http ){
 
   $scope.extractBool = function(str) {
-    if(str=="true" || str==true) return true;
+    if(str=="true") return true;
+    else if(str=="false") return false;
+    else if(str) return true;
     else return false;
   }
 
@@ -16,6 +18,8 @@ var index_settings = function( $rootScope, $scope, $http ){
   	$scope.visibility = true;
 
     $rootScope.vendor.settings.birthday.activated = $scope.extractBool($rootScope.vendor.settings.birthday.activated);
+    console.log('birthday-act');
+    console.log($rootScope.vendor.settings.birthday.activated);
     $rootScope.vendor.settings.birthday.notifyFirst = $scope.extractBool($rootScope.vendor.settings.birthday.notifyFirst);
     $rootScope.vendor.settings.birthday.notifyExact = $scope.extractBool($rootScope.vendor.settings.birthday.notifyExact);
 

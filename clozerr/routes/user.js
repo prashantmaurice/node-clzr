@@ -309,6 +309,37 @@ router.get('/login/password', function( req, res ){
     });
 });
 
+router.get('/login/verifypassword', function( req,res) {
+    var errobj = error.err_insuff_params(res,req,["username","password"]);
+    if(!errobj) {
+        return;
+    }
+    var type='user';
+    if(req.query.type) type=req.query.type;
+    User.findOne( {username: req.query.username}, function( err, user ){
+        console.log(user);
+        if( !user ){
+            error.err(res,"102");
+            return;
+        }
+        if( err ){
+            console.log('error - user create');
+            error.err(res,"102");
+            return;
+        }
+
+        if( bcrypt.compareSync( req.query.password, user.password ) ){
+            
+                res.end( JSON.stringify({ result:true}) );
+        
+        }
+        else {
+            error.err(res,"212");
+        }
+
+    });
+});
+
 router.get('/reset/password', function( req, res ){
     var user = req.user;
 

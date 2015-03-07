@@ -243,7 +243,17 @@ ul.alert-dropdown {
 .panel-blue a:hover {
     color: #2200FC;
 }
-    
+
+.panel-default a {
+    color:#555;
+    text-decoration: none;
+}
+
+.panel-default a:hover {
+    color:#222;
+    text-decoration: none;
+}
+
 .pvert-center {
     width: 10px;
     margin-top: 2%;

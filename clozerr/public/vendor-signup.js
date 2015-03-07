@@ -11,10 +11,10 @@ var vendorSignup = function($scope, $rootScope, $http) {
 
 	$scope.focusShowNothing = function() {
 		console.log("focussed");		
-		$('#statusLocationIndicator').removeClass('fa fa-spin fa-gear fa-2x');
+		$('#statusLocationIndicator').removeClass('ffa fa-spinner fa-pulse fa-2x');
 		$('#statusLocationIndicator').removeClass('fa fa-times fa-2x');
 		$('#statusLocationIndicator').removeClass('fa fa-check fa-2x');
-		$('#statusLocationIndicator').addClass('fa fa-spin fa-gear fa-2x');
+		$('#statusLocationIndicator').addClass('fa fa-spinner fa-pulse fa-2x');
 	}
 
 	$scope.step1 = function() {
@@ -50,7 +50,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 	$scope.getLocation = function(address) {
 		var geocoder = new google.maps.Geocoder();
 		console.log('blurred');
-		$('#statusLocationIndicator').removeClass('fa fa-spin fa-gear fa-2x');
+		$('#statusLocationIndicator').removeClass('fa fa-spinner fa-pulse fa-2x');
 		geocoder.geocode({ 'address': address }, function (results, status) {
 
 			if (status == google.maps.GeocoderStatus.OK) {
@@ -76,7 +76,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		settings.birthday = $rootScope.bp;
 		settings.neighbourhoodperks = $rootScope.np;
 		settings.visitreminder = $rootScope.vp;
-		var str = decodeURIComponent(jQuery.param({settings:settings}));
+		var str = decodeURIComponent(jQuery.param({question:$rootScope.reviewQuestions,settings:settings}));
 		console.log(str);
 		
 		$http.get( CLOZERR_VENDORS_URL + "/create" + "?latitude=" + $scope.vlatitude +"&longitude=" + $scope.vlongitude + "&image=default"+"&fid=0"+"&name=" + $scope.vpublicname + "&" + str).

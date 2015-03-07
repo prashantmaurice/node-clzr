@@ -1,7 +1,8 @@
-var index_preferences = function( $rootScope, $scope, $http ){
+  var index_preferences = function( $rootScope, $scope, $http ) {
 
   var CLOZERR_API = location.origin + '/';
   var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
+  var CLOZERR_OFFERS_URL = CLOZERR_API + "offer";
 
   // Page change controllers start.
   $scope.visibility = false;
@@ -9,6 +10,7 @@ var index_preferences = function( $rootScope, $scope, $http ){
   var PAGE_NAME = "preferences";
   $scope.$on("page-" + PAGE_NAME, function(){
   	$scope.visibility = true;
+    $rootScope.$broadcast('showPunchCardInputs');
 
   });
 
@@ -17,34 +19,32 @@ var index_preferences = function( $rootScope, $scope, $http ){
  });
   // Page change controllers end.
 
+  console.log('in index_preferences controller');
+
   $scope.updateVendorPreferencesBackend = function() {
     var access_token = localStorage.token;
-    var str = decodeURIComponent(jQuery.param({offers:$rootScope.vendor.offers}));
-    console.log(str);
-    $http.get( CLOZERR_VENDORS_URL + "/update?"+ str + "&access_token=" + access_token).
-    success(function(data, status, headers, config) {
-      console.log('Successfully updated');
+
+    var arr = $rootScope.vendor.offers;
+    var str = decodeURIComponent(jQuery.param({question:$rootScope.vendor.question}));
+
+    $http.get( CLOZERR_VENDORS_URL + "/update?vendor_id=" + $rootScope.vendor._id + "&" + str + "&access_token=" + access_token ).
+      success(function(data, status, headers, config) {
+
+        console.log('success - question');
+        console.log( CLOZERR_VENDORS_URL + "/update?vendor_id=" + $rootScope.vendor._id + "&" + str + "&access_token=" + access_token );
+        console.log(data);
+    }).error(function(data, status, headers, config) {
+  });
+
+    for(var u = 0; u<arr.length; u++) {
+      $http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + arr[u]._id + "&caption=" + arr[u].caption + "&description=" + arr[u].description + "&access_token=" + access_token ).
+      success(function(data, status, headers, config) {
+      console.log(data);
       $rootScope.pageChange("home");
     }).error(function(data, status, headers, config) {
-
-    });
-
-
-  }
+  });
 }
-/*
-    $rootScope.vendor.settings = {};
-    $rootScope.vendor.settings.birthday = {};
-    $rootScope.vendor.settings.birthday.activated = true;
-    $rootScope.vendor.settings.birthday.birthdayWish = "Happy birthday";*/
+}
+//call update offer url and not vendor update
 
-     /* $rootScope.vendor.settings.visitreminder = {};
-    $rootScope.vendor.settings.visitreminder.activated = false; 
-    $rootScope.vendor.settings.visitreminder.days = 7;
-    $rootScope.vendor.settings.visitreminder.visitMessage = "Get a Coffee free!";
-
-    $rootScope.vendor.settings.neighbourhoodperks = {};
-    $rootScope.vendor.settings.neighbourhoodperks.activated = true;
-    $rootScope.vendor.settings.neighbourhoodperks.message = "Restaurant is nearby..";
-    $rootScope.vendor.settings.neighbourhoodperks.distance = 1;   
-    */
+}
