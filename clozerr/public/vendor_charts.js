@@ -1,3 +1,8 @@
+/*
+ arr should have key value pairs for line,area,bar charts.
+ xkey and ykey arguments should be same as in arr.
+ xkey should be same for all elements.
+ */
 function linechart(array,xkey,ykey,labels,chartname){
     var d = document.createElement("div");
     d.id=chartname;
@@ -61,4 +66,11 @@ function donutchart(array,labels,chartname){
     script.text="new Morris.Donut({element: \'"+chartname+"\',data: "+getdonutarray(array,labels)+"});"
     console.log(script.text);
     chartdiv.appendChild(script);
+}
+
+function checkin_chart(checkin_array,start,end){
+    var data=[];
+    for(var i=0;i<checkin_array.length;i++){
+        var checkin_date=checkin_array[i].date_created;
+    }
 }

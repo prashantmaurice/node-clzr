@@ -5,6 +5,7 @@ var models = require("./models");
 var _ = require("underscore");
 var Vendor = models.Vendor;
 var Offer = models.Offer;
+var Checkin = models.CheckIn;
 var VendorRequest = models.VendorRequest;
 var Promise = mongoose.Promise;
 var Q = require("q");
@@ -560,4 +561,25 @@ router.get('/update', function (req, res) {
       });
 
 });
+router.get('/checkins',function (req,res){
+    /*
+    var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
+    if (!errobj) {
+        //error.err(res,errobj.code,errobj.params);
+        return;
+    }
+    */
+    if(req.query.startdate && req.query.enddate && req.query.vendor_id){
+        Checkin.find({
+            "date_created" : {
+                "$gte" : req.query.enddate,
+                "$lte" : req.query.startdate
+            },
+            "vendor" : req.query.vendor_id
+        },function(err,result){
+            res.json(result);
+            res.end();
+        })
+    }
+})
 module.exports = router;
