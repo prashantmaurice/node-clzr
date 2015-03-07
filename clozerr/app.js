@@ -63,6 +63,11 @@ app.use('/', function( req, res, next ){
     req.user = { _id:"0", id_type:"Anonymous", auth_type:"None", stamplist:{}, social_id:""  };
     next();
   }
+  if(req.query.ver){
+    req.ver=req.query.ver;
+  }
+  else
+    req.ver="default";
 
 });
 app.use('/auth', auth);
