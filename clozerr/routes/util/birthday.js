@@ -8,14 +8,14 @@ var User = Models.User;
 var _ = require('underscore');
 var currentDate = new Date();
 var birthdayMsg = settings.birthday.birthdayWishMessage;
-var compareDateString = currentDate.getDate() + "" + currentDate.getMonth() + currentDate.getFullYear();
+var compareDateString = currentDate.getDate() + "" + (currentDate.getMonth());
 
 db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
 
 Vendor.find({settings.notifyBirthday:true}, function(vendors) {
 	User.find({}, function(allUsers) {
 		var bUsers = _.filter(allUsers, function(userobj) {
-			var userBirthDay = userobj.getDate() + "" + userobj.getMonth() + userobj.getFullYear();
+			var userBirthDay = userobj.getDate() + "" + userobj.getMonth();
 			return userBirthDay == compareDateString;
 		});
 		vendors.forEach(function(currentVendor, posV, arrayV) {
