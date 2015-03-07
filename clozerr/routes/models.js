@@ -89,4 +89,9 @@ Models.Review = mongoose.model('Review',new Schema({
 	remarks: String
 }));
 
+Models.Data = mongoose.model('Data',new Schema({
+    type:String,
+    content: Schema.Types.Mixed
+}));
+
 module.exports = Models;
