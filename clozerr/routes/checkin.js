@@ -337,13 +337,13 @@ function cancelCheckins( checkins ){
   return;
 }
 
-router.get("/active", function ( req, res ) {
+router.get("/active", function ( req, res ) {   
     var user = req.user;
     var userobj = user;
     var ut = userobj.type;
     var chdummy_ret_arr = [];
 
-    if (ut == "User") {
+    if (ut == "User"||ut=="TestUser") {
         CheckIn.find({
             user: userobj._id,
             state: CHECKIN_STATE_ACTIVE

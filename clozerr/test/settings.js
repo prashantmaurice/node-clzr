@@ -45,7 +45,10 @@ SETTINGS.dummy_user = {
 SETTINGS.dummy_vendor = {
     name:"DEFAULT002",
     latitude:10,
-    longitude:10
+    longitude:10,
+    vendorid:"54f431d14f8ac1b15aa46d9e",
+    access_token:"default002abcd",
+    fid:10
 }
 
 SETTINGS.dummy_checkin = {
