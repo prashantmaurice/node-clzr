@@ -21,7 +21,7 @@ module.exports = {
 	},
 	"checkin":{
 		"expiry_time":10 * 60 * 1000,
-		"delay_between_checkins":1000000
+		"delay_between_checkins":2 * 60 * 60 * 1000
 	},
 	"api":{
 		"default_limit" : 30
