@@ -21,60 +21,67 @@
             <td>{{ checkin.date_created | humanize_date }}</td>
             <td>{{ checkin.offer.caption }}</td>
             <td>{{ checkin.offer.stamps }}</td>
-            <td ng-click="showPopUpReview($event,checkin.review)" style="cursor:pointer">{{getAvgStars(checkin.review.stars)}}</td>
+            <td ng-click="showPopUpReview($event,checkin.review,$index)" style="cursor:pointer">{{getAvgStars(checkin.review.stars)}}</td>
             <!-- <td>{{ checkin.review.remarks }}</td> -->
             <!-- <td><a href="javascript:void(0)" class="btn btn-primary" ng-click="showPopUpReview($event,checkin.review)">SHOW</a></td>
-             -->
-             <td><a href="javascript:void(0)" class="btn btn-primary" ng-click="createBill( checkin )">MAKE BILL</a></td>
-          </tr>
-        </tbody>
+          -->
+          <td><a href="javascript:void(0)" class="btn btn-primary" ng-click="createBill( checkin )">MAKE BILL</a></td>
+        </tr>
+      </tbody>
 
-      </table>
-    </div>
-    <div class="spinner"ng-show="spinner">
-      <img src="loader.gif" class="spinner-img">
-    </div>
+    </table>
   </div>
-  <div class="pop-panel" ng-show="popUpReviewVisibility" ng-style="popUpReviewStyle">
-    <div class="card" style="width:100%">
-      <div class="panel">
-        <div class="panel-default">
-          <div class="panel-heading">
-            <div class="row">
-              <div class="col-xs-8">
-                <div>
-                  <br>
-                  <big><big>Reviews</big></big>
-                </div>
+  <div class="spinner"ng-show="spinner">
+    <img src="loader.gif" class="spinner-img">
+  </div>
+</div>
+<div class="pop-panel" ng-show="popUpReviewVisibility" ng-style="popUpReviewStyle">
+  <div class="card" style="width:100%">
+    <div class="panel">
+      <div class="panel-default">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-8">
+              <div>
+                <br>
+                <big><big>Reviews</big></big>
               </div>
-              <div class="col-xs-1"></div>
-              <div class="col-xs-2">
-                <i class="fa fa-question fa-4x"></i> 
-              </div>
-              <div class="col-xs-1"><button type="button" class="close" ng-click="hidePopUpReview()" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
             </div>
+            <div class="col-xs-1"></div>
+            <div class="col-xs-2">
+              <i class="fa fa-question fa-4x"></i> 
+            </div>
+            <div class="col-xs-1"><button type="button" class="close" ng-click="hidePopUpReview()" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
           </div>
         </div>
-        <div class="panel-default">
-          <div class="panel-footer" style="background:#fff">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>QUESTION</th>
-                  <th>RATING</th>
-                </tr>
-              </thead>
-              <tbody >
-                <tr ng-repeat="question in popReview.question track by $index">
-                  <td>{{question}}</td>
-                  <td><i ng-repeat="st in getArray(popReview.stars[$index]) track by $index" class="fa fa-fw fa-star"></i></td>
-                </tr>
-              </tbody>
-            </table>
+      </div>
+      <div class="panel-default">
+        <div class="panel-footer" style="background:#fff">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>QUESTION</th>
+                <th>RATING</th>
+              </tr>
+            </thead>
+            <tbody >
+              <tr ng-repeat="question in popReview.question track by $index">
+                <td>{{question}}</td>
+                <td><i ng-repeat="st in getArray(popReview.stars[$index]) track by $index" class="fa fa-fw fa-star"></i></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-xs-9">
             <b>REMARKS</b> : {{popReview.remarks}}
+          </div>
+          <div class="col-xs-3">
+            <button type="button" class="btn btn-default" ng-click="notifyUser()"><i class="fa fa-bell"></i>&nbspNotify</button>
+          </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>
