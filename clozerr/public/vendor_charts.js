@@ -1,4 +1,5 @@
 var sample_checkins=[
+    //TODO check time zone correctness
     {
         "date_created" : new Date("2015-01-12T11:57:34.727Z")
     }
@@ -248,12 +249,13 @@ var sample_checkins=[
         "date_created" : new Date("2015-01-15T20:03:00.962Z")
     }];
 
-function checkin_chart(checkin_array){
+function checkin_date_data(checkin_array){
     var data={};
     var dates=[];
     for(var i=0;i<checkin_array.length;i++){
         var checkin_date=checkin_array[i].date_created;
-        var date=(checkin_date.toISOString().split('T'))[0];
+        var date=(checkin_date.getFullYear()+"-"+(checkin_date.getMonth()+1)+"-"+checkin_date.getDate());
+        console.log(checkin_date.toString());
         var date_obj=data[date] || {count : 0};
         if(!data[date]) dates.push(date);
         date_obj.count++;
@@ -265,6 +267,29 @@ function checkin_chart(checkin_array){
         table.push(entry);
     }
     return table;
+}
+
+function checkin_time_day_data(checkin_array){
+    var table=[];
+    for(var i=0;i<24;i++) {
+        table[i]=[];
+        for(var j=0;j<7;j++){
+            table[i][j]=0;
+        }
+    }
+    for(var i=0;i<checkin_array.length;i++){
+        var checkin_date=checkin_array[i].date_created;
+        table[checkin_date.getHours()][checkin_date.getDay()]++;
+    }
+    var table2=[[],[],[]];
+    for(var i=0;i<24;i++) {
+        for(var j=0;j<7;j++){
+            table2[0].push(i);
+            table2[1].push(j);
+            table2[2].push(table[i][j]);
+        }
+    }
+    return table2;
 }
 
 function date_month(date){
