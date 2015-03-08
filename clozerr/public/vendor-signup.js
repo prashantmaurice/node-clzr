@@ -5,6 +5,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 	$scope.visStep4 = false;
 	$scope.address = "";
 	$scope.showTick = false;
+	$scope.stepNo = 1;
 
 	var CLOZERR_API = location.origin + '/';
 	var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
@@ -22,6 +23,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		$scope.visStep2 = false;
 		$scope.visStep3 = false;
 		$scope.visStep4 = false;
+		$scope.stepNo = 1;
 	}
 
 	$scope.step2 = function() {
@@ -30,6 +32,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		$scope.visStep2 = true;
 		$scope.visStep3 = false;
 		$scope.visStep4 = false;
+		$scope.stepNo = 2;
 	}
 
 	$scope.step3 = function() {
@@ -38,6 +41,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		$scope.visStep2 = false;
 		$scope.visStep3 = true;
 		$scope.visStep4 = false;
+		$scope.stepNo = 3;
 	}
 
 	$scope.step4 = function() {
@@ -45,6 +49,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		$scope.visStep2 = false;
 		$scope.visStep3 = false;
 		$scope.visStep4 = true;
+		$scope.stepNo = 4;
 	}
 
 	$scope.getLocation = function(address) {

@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>// maybe have raphael local
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="js/plugins/morris/morris.min.js"></script>
 <script type="text/javascript" src="vendor-signup.js"></script>
 <script type="text/javascript" src="reviewquestions.js"></script>
@@ -126,6 +126,22 @@ body {
 
 <div ng-app="">
 	<div ng-controller="vendorSignup">
+		<div class="row row-no-margin">
+			<div class="col-lg-3"></div>
+			<div class="col-md-6" style="padding:20px;margin-top:4%;">
+				<div class="col-md-4" style="color:white">
+					<big><big>Step {{stepNo}} of 4</big></big>
+				</div>
+				<div class="col-md-6">
+				</div>
+				<div class="col-md-2">
+					<i class="fa fa-lock fa-2x" ng-show="visStep1" style="color:white"></i>
+					<i class="fa fa-cutlery fa-2x" ng-show="visStep2" style="color:white"></i>
+					<i class="fa fa-tachometer fa-2x" ng-show="visStep3" style="color:white"></i>
+					<i class="fa fa-cogs fa-2x" ng-show="visStep4" style="color:white"></i>
+				</div>
+			</div>
+		</div>
 		<div ng-show="visStep1">
 			<div class="col-lg-3"></div>
 			<div class="col-md-6 whitebox">
@@ -163,10 +179,11 @@ body {
 					<span class="input-group-addon" id="basic-addon4">@</span>
 					<input type="text" class="form-control" ng-model="vpublicname" placeholder="Public name" aria-describedby="basic-addon4">
 				</div><br>
+				<!-- 
 				<div class="input-group">
 					<span class="input-group-addon" id="basic-addon5">@</span>
 					<input type="text" class="form-control" ng-model="vfranchisename" placeholder="Franchise name" aria-describedby="basic-addon5">
-				</div><br>
+				</div><br> -->
 				<div class="input-group" >
 					<span class="input-group-addon" id="basic-addon6"><big>#&nbsp</big></span>
 					<input type="text" class="form-control" ng-model="vphoneno" placeholder="Phone number" aria-describedby="basic-addon6">
