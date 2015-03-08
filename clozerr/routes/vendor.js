@@ -292,7 +292,8 @@ router.get("/request", function( req, res ){
 	res.end(JSON.stringify( {result:true} ) ) ;
 });
 
-router.get('/get/near2', function (req, res) {
+
+router.get('/get/near', function (req, res) {
 
     var errobj = error.err_insuff_params(res, req, ["latitude", "longitude"]);
 
@@ -315,171 +316,107 @@ router.get('/get/near2', function (req, res) {
 
     if( !offset )
       offset = 0;
+    var user=req.user;
 
     var lat = req.query.latitude;
     var lon = req.query.longitude;
     var distance = req.query.distance;
     var access_token = req.query.access_token;
     var typelist = JSON.parse( type );
+    var vendorResult;
 
-    //console.log( typelist );
-    Vendor.find({
-        location: {
-            $near: [lat, lon]
-        }
-    }).limit( limit ).skip( offset ).exec().then(function (vendors) {
+    console.log( typelist );
+    debugger;
 
-        //console.log( vendors );
-        var vendor_det_ret_arr = [];
-        var plist = [];
-        for (var i = 0; i < vendors.length; i++) {
-            var vendor = vendors[i];
-            //console.log("Getting offers: ");
-            //console.log(vendor.offers);
-            var pr = Offer.find({
-                _id: {
-                    $in: vendor.offers
-                },
-                type:{
-                  $in: typelist
-                }
-            }).exec();
-            //debugger;
-            plist.push(
-              pr.then(
-                (function( vendor, index ){
-              return function (offers) {
-                var deferred = Q.defer();
-                debugger;
-                var offers_new = _.filter(offers, function (offer) {
-                    return OfferHandler.qualify(req.user, vendor, offer);
-                });
-                //debugger;
-                var vendor_new = {};
-                vendor_new.location = vendor.location;
-                vendor_new.name = vendor.name;
-                vendor_new.offers = offers_new;
-                vendor_new.image = vendor.image;
-                vendor_new.fid = vendor.fid;
-                vendor_new._id = vendor._id;
-                //console.log( vendor_new );
-                vendor_det_ret_arr[index] = (vendor_new);
-                //debugger;
-                process.nextTick(function () {
-                    //console.log("resolving.");
-                    deferred.resolve();
-                });
-                return deferred.promise;
-            };
-          })( vendors[i], i )
-            ));
-
-        }
-        //debugger;
-        Q.all(plist).then(function () {
-            debugger;
-            //console.log("RESOLVED.");
-            res.send(JSON.stringify({result:true,offers:vendor_det_ret_arr}));
-            res.end();
-        });
-
-    });
-});
-
-router.get('/get/near', function (req, res) {
-
-    var errobj = error.err_insuff_params(res, req, ["latitude", "longitude"]);
-
-    if (!errobj) {
-        //error.err(res,errobj.code,errobj.params);
-        return;
-    }
-
-		var type = req.query.type;
-
-		if( !type )
-			type = JSON.stringify(["S0","S1","SX"]);
-
-		var limit = req.query.limit;
-
-		if( !limit )
-			limit = settings.api.default_limit;
-
-		var offset = req.query.offset;
-
-		if( !offset )
-			offset = 0;
-
-    var lat = req.query.latitude;
-    var lon = req.query.longitude;
-    var distance = req.query.distance;
-    var access_token = req.query.access_token;
-    var typelist = JSON.parse( type );
-
-		//console.log( typelist );
+   if(user.type!='TestUser'){
+      debugger;
     Vendor.find({
         location: {
             $near: [lat, lon]
         },
         visible:true
     }).limit( limit ).skip( offset ).exec().then(function (vendors) {
-
-        //console.log( vendors );
-        var vendor_det_ret_arr = [];
-        var plist = [];
-        for (var i = 0; i < vendors.length; i++) {
-            var vendor = vendors[i];
-            //console.log("Getting offers: ");
-            //console.log(vendor.offers);
-            var pr = Offer.find({
-                _id: {
-                    $in: vendor.offers
-                },
-								type:{
-									$in: typelist
-								}
-            }).exec();
-            //debugger;
-            plist.push(
-							pr.then(
-								(function( vendor, index ){
-							return function (offers) {
-                var deferred = Q.defer();
-								debugger;
-                var offers_new = _.filter(offers, function (offer) {
-                    return OfferHandler.qualify(req.user, vendor, offer);
-                });
-                //debugger;
-                var vendor_new = {};
-                vendor_new.location = vendor.location;
-                vendor_new.name = vendor.name;
-                vendor_new.offers = offers_new;
-                vendor_new.image = vendor.image;
-                vendor_new.fid = vendor.fid;
-                vendor_new._id = vendor._id;
-								//console.log( vendor_new );
-                vendor_det_ret_arr[index] = (vendor_new);
-                //debugger;
-                process.nextTick(function () {
-                    //console.log("resolving.");
-                    deferred.resolve();
-                });
-                return deferred.promise;
-            };
-					})( vendors[i], i )
-						));
-
-        }
-        //debugger;
-        Q.all(plist).then(function () {
-            debugger;
-						//console.log("RESOLVED.");
-            res.send(JSON.stringify({result:true,offers:vendor_det_ret_arr}));
-            res.end();
+      debugger;
+        getoff(vendors, req.user,typelist,function( vendors ){
+          res.send(JSON.stringify( vendors ));
+          res.end();
         });
+    });}
+    else   
+    {
 
-    });
-});
+      Vendor.find({
+        test:true
+      }).exec().then(function (vendors){
+         debugger;
+         getoff(vendors, req.user,typelist,function( vendors ){
+          res.send(JSON.stringify( vendors ));
+          res.end();
+         });
+        
+      });
+    }
+      debugger;
+            //console.log("RESOLVED.");
+            
+            
+       
+
+
+})    
+        //console.log( vendors );
+  function getoff( vendors, user,typelist,callback ){
+    debugger;
+    var vendor_det_ret_arr = [];
+    var plist = [];
+    for (var i = 0; i < vendors.length; i++) {
+      var vendor = vendors[i];
+      console.log("Getting offers: ");
+      console.log(vendor.offers);
+      var pr = Offer.find({
+          _id: {
+                $in: vendor.offers
+            },
+            type:{
+              $in: typelist
+              }
+         }).exec();
+            debugger;
+        plist.push(
+           pr.then(
+             (function( vendor, index ){
+              return function (offers) {
+              var deferred = Q.defer();
+              debugger;
+              var offers_new = _.filter(offers, function (offer) {
+                 return OfferHandler.qualify(user, vendor, offer);
+              });
+                //debugger;
+              var vendor_new = {};
+              vendor_new.location = vendor.location;
+              vendor_new.name = vendor.name;
+              vendor_new.offers = offers_new;
+              vendor_new.image = vendor.image;
+              vendor_new.fid = vendor.fid;
+              vendor_new._id = vendor._id;
+              console.log( vendor_new );
+              vendor_det_ret_arr[index] = (vendor_new);
+              //debugger;
+              process.nextTick(function () {
+                  console.log("resolving.");
+                  deferred.resolve();
+              });
+              return deferred.promise;
+          };
+        })( vendors[i], i )
+          ));
+
+      }
+        //debugger;
+      Q.all(plist).then(function () {
+        callback( vendor_det_ret_arr );
+      });
+    }
 
 router.get('/updatesettings',function (req,res){
   var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);

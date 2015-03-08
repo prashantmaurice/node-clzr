@@ -56,14 +56,16 @@ describe("Fully Testing Checkin System", function(){
 
                 it("the vendor should show up in lat-long search", function( done ){
                     this.timeout(10000);
-                    http.get(settings.core.server + "/vendor/get/near2/?latitude=" + settings.dummy_checkin.latitude + "&longitude=" + settings.dummy_checkin.longitude + "&access_token=" + settings.dummy_user.access_token, function(res) {
+                    http.get(settings.core.server + "/vendor/get/near?latitude=" + settings.dummy_checkin.latitude + "&longitude=" + settings.dummy_checkin.longitude + "&access_token=" + settings.dummy_user.access_token, function(res) {
                 
                         res.on('data', function(body) {
                             var response = JSON.parse( body.toString() );
                             console.log("Response received from get/near");
-                            var dummy = _.find( response.offers, function( obj ){
+                            debugger;
+                            var dummy = _.find( response, function( obj ){
+                                debugger;
                                 return (obj.name == settings.dummy_vendor.name);
-                            });                        
+                            });                 
                             should.exist( dummy );
                             done();
                             deferred.resolve( dummy );
