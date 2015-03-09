@@ -1,3 +1,5 @@
+<html>
+<head>
 <link href="css/bootstrap-switch.css" rel="stylesheet">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
@@ -27,7 +29,7 @@
 <script type="text/javascript" src="js/bootstrap-slider.js"></script>
 <link rel="stylesheet" href="css/slider.css">
 <script type="text/javascript" src="js/bootstrap-slider.js"></script>
-
+<script type='text/javascript' src="js/fblogin.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
 <style>
@@ -110,7 +112,7 @@ body {
 }
 
 </style>
-<head>
+
 	<div class="nav">
 		<center>
 			<a href="javascript:void(0)" style="color:#FFF;text-decoration:none;">&nbsp;<img src="http://www.clozerr.com/main/logo.png" class="logo" style="margin-top=2px !important;"></i></a>
@@ -125,6 +127,7 @@ body {
 </div>
 
 <div ng-app="">
+
 	<div ng-controller="vendorSignup">
 		<div class="row row-no-margin">
 			<div class="col-lg-3"></div>
@@ -160,6 +163,9 @@ body {
 					<span class="input-group-addon" id="basic-addon3"><big>*</big></span>
 					<input type="password" class="form-control" ng-model="vcpassword" placeholder="Confirm password" aria-describedby="basic-addon3">
 				</div>
+				<br><br>
+				<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+				</fb:login-button>
 				<br><br>
 				<div class="pull-right">
 					<button type="button" class="btn btn-success" ng-click="step2()">
@@ -244,6 +250,7 @@ body {
 					</div>
 				</div>
 			</center>
+
 			<br><br><br><br>
 		</div>
 		<!-- <div ng-show="visStep3">
@@ -257,12 +264,12 @@ body {
 						</button>
 					</div>
 					<div ng-include="'punchcard.html'" class="col-lg-4"></div>
-					
+
 				</div>
 				<br><br><br>
 				<div class="row">
 					<div class="col-md-3"></div>
-					<div ng-include="'reviewquestions.html'" class="col-lg-4"></div>					
+					<div ng-include="'reviewquestions.html'" class="col-lg-4"></div>
 					<div>
 						<button type="button" ng-click="step4()" class="btn btn-success pull-down">
 							Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
@@ -370,3 +377,4 @@ body {
 		</div>
 	</div>
 </div>
+</html>
