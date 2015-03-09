@@ -341,12 +341,11 @@ router.get('/login/verifypassword', function( req,res) {
 });
 
 router.get('/reset/password', function( req, res ){
-    var user = req.user;
-
-    var errobj = error.err_insuff_params(res,req,["new_password"]);
+    var errobj = error.err_insuff_params(res,req,["access_token","new_password"]);
     if(!errobj) {
         return;
     }
+    var user = req.user;
 
     var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync( req.query.new_password, salt );
@@ -358,13 +357,13 @@ router.get('/reset/password', function( req, res ){
 });
 
 router.get('/logout', function( req, res ){
-    var user = req.user;
-
-    var errobj = error.err_insuff_params( res, req, ["access_token"] );
+     var errobj = error.err_insuff_params( res, req, ["access_token"] );
     if( !errobj ) {
         return;
     }
-    debugger;
+    var user = req.user;
+
+       debugger;
     token.remove({ account: user._id }, function( err, data ){
         console.log( err );
         console.log( data );
@@ -375,6 +374,10 @@ router.get('/logout', function( req, res ){
 });
 
 router.get('/create', function( req, res ) {
+    if( !req.query.vendor_id || !req.query.username ){
+        error.err(res,"420");
+        return;
+    }
 
     // TODO: Only Admin allowed.
     var type = "Vendor";
@@ -382,10 +385,7 @@ router.get('/create', function( req, res ) {
     debugger;
     //if (err) error.err(res,"420");
 
-    if( !req.query.vendor_id || !req.query.username ){
-        error.err(res,"420");
-        return;
-    }
+    
 
     var vendor_id = req.query.vendor_id;
 
