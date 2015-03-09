@@ -410,6 +410,8 @@ router.get('/get/near', function (req, res) {
                 var vendor_new = {};
                 vendor_new.location = vendor.location;
                 vendor_new.name = vendor.name;
+                if(vendor.settings)
+                  vendor_new.settings = vendor.settings;
                 vendor_new.offers = offers_new;
                 vendor_new.image = vendor.image;
                 vendor_new.fid = vendor.fid;
