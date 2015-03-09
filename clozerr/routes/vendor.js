@@ -6,6 +6,7 @@ var _ = require("underscore");
 var Vendor = models.Vendor;
 var Offer = models.Offer;
 var Checkin = models.CheckIn;
+var User = models.User;
 var VendorRequest = models.VendorRequest;
 var Promise = mongoose.Promise;
 var Q = require("q");
@@ -83,13 +84,14 @@ router.get('/send/push', function (req, res) {
   var user_id = req.query.user_id;
   var data = req.query.data;
 
-  if(req.user.vendor_id != vendor_id) {
+  if(req.user.vendor_id != req.query.vendor_id) {
     error.err(res, "909");
     return;
   }
 
   User.findOne({_id:user_id}, function (err, puser) {
     push.sendPushNotification( puser.gcm_id, data);
+    res.end(JSON.stringify({result:true}));
   });
 
 });

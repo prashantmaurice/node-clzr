@@ -67,8 +67,8 @@ $scope.getAvgStars = function(stars) {
 var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
 
 $scope.notifyUser = function() {
-  var strData = jQuery.param({});
-  $http.get( CLOZERR_VENDORS_URL + "/send/push" + "?vendor_id=" + $rootScope.vendor._id + "&user_id=" + $scope.checkins[$scope.currentCheckinPos].user + "&access_token=" + localStorage.token + "&data=" + strData).
+  var strData = decodeURIComponent(jQuery.param({data:$scope.notifyUser.data}));
+  $http.get( CLOZERR_VENDORS_URL + "/send/push" + "?vendor_id=" + $rootScope.vendor._id + "&user_id=" + $scope.checkins[$scope.currentCheckinPos].user._id + "&access_token=" + localStorage.token + "&" + strData).
   success(function(data, status, headers, config) {
     console.log(data);
     //hide the popup review
@@ -99,6 +99,7 @@ $scope.update = function(){
   $http.get( CLOZERR_ALL_CHECKINS_URL + "?access_token=" + access_token ).
   success( function( data, status, headers, config ) {
     $scope.checkins = data;
+    console.log(data);
     $scope.spinner = false;
     $scope.showData = true;
     for(var i=0;i<$scope.checkins.length;i++) {
