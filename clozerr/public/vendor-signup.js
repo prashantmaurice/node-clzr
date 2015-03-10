@@ -5,6 +5,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 	$scope.visStep4 = false;
 	$scope.address = "";
 	$scope.showTick = false;
+	$scope.stepNo = 1;
 
 	var CLOZERR_API = location.origin + '/';
 	var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
@@ -22,6 +23,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		$scope.visStep2 = false;
 		$scope.visStep3 = false;
 		$scope.visStep4 = false;
+		$scope.stepNo = 1;
 	}
 
 	$scope.step2 = function() {
@@ -30,6 +32,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		$scope.visStep2 = true;
 		$scope.visStep3 = false;
 		$scope.visStep4 = false;
+		$scope.stepNo = 2;
 	}
 
 	$scope.step3 = function() {
@@ -38,6 +41,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		$scope.visStep2 = false;
 		$scope.visStep3 = true;
 		$scope.visStep4 = false;
+		$scope.stepNo = 3;
 	}
 
 	$scope.step4 = function() {
@@ -45,6 +49,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		$scope.visStep2 = false;
 		$scope.visStep3 = false;
 		$scope.visStep4 = true;
+		$scope.stepNo = 4;
 	}
 
 	$scope.getLocation = function(address) {
@@ -78,21 +83,25 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		settings.visitreminder = $rootScope.vp;
 		var str = decodeURIComponent(jQuery.param({question:$rootScope.reviewQuestions,settings:settings}));
 		console.log(str);
+
+		$scope.fid = Math.floor(Math.random() * Math.pow(10,16));
+		console.log($scope.fid);
 		
-		$http.get( CLOZERR_VENDORS_URL + "/create" + "?latitude=" + $scope.vlatitude +"&longitude=" + $scope.vlongitude + "&image=default"+"&fid=0"+"&name=" + $scope.vpublicname + "&" + str).
+		$http.get( CLOZERR_VENDORS_URL + "/create" + "?latitude=" + $scope.vlatitude +"&longitude=" + $scope.vlongitude + "&image=default"+"&fid=" + $scope.fid+"&name=" + $scope.vpublicname + "&phone=" + $scope.vphoneno + "&" + str).
 		success(function(data, status, headers, config) {
             $rootScope.vendor=data;
 			$scope.vendor_id = data.data._id;
 			console.log(data);
 			console.log("Created : Vendor Object");
-			$http.get( CLOZERR_API +  "auth/create" + "?vendor_id=" + $scope.vendor_id + "&username=" + $scope.vusername + "&password=" + $scope.vpassword + "&access_token=" + access_token).
+			$http.get( CLOZERR_API +  "auth/create" + "?vendor_id=" + $scope.vendor_id + "&username=" + $scope.vusername + "&password=" + $scope.vpassword).
 			success(function(data, status, headers, config) {
 				console.log("Created : User account");
+				console.log($scope.vusername);
 				$http.get(CLOZERR_API + "auth/login/password?username=" + $scope.vusername + "&password=password" /*+ $scope.vpassword*/).
 				success(function(data, status, headers, config) {
 					console.log(data);
 					access_token = data.access_token;
-					console.log("Linked : Offer no : " + u+1 + " with vendor object");
+					localStorage.token = data.access_token;
 
 					for(var u=0;u<$rootScope.offers.length;u++) {
 
@@ -102,8 +111,9 @@ var vendorSignup = function($scope, $rootScope, $http) {
 							console.log(offerdata);
 							console.log("Created : Offer no. " + u+1);
 					//Link the offer -- vendor
-					$http.get( CLOZERR_API +  "vendor/addoffer" + "?offer_id=" + offerdata.data._id ).
+					$http.get( CLOZERR_API +  "vendor/addoffer" + "?offer_id=" + offerdata.data._id + "&access_token=" + access_token + "&vendor_id=" + $scope.vendor_id).
 					success(function(data, status, headers, config) {
+
 						console.log("Linked : Offer no : " + u+1 + " with vendor object");
 
 					}).error(function(data, status, headers, config) {
@@ -128,7 +138,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 				});
 
 
-		//console.log($rootScope.offers);
-		//console.log($rootScope.reviewQuestions);
+		console.log($rootScope.offers);
+		console.log($rootScope.reviewQuestions);
 	}
 }

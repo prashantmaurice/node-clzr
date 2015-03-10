@@ -59,8 +59,10 @@ var index_home = function( $rootScope, $scope, $http ){
       $rootScope.allCheckinObjects = data;
 
       for(var i=0;i<data.length;i++) {
+        data[i].offer.caption = unescape(data[i].offer.caption);
+        data[i].offer.description = unescape(data[i].offer.description);
+        data[i].date_created_modified = $scope.getTimeInFormat(data[i].date_created);
         if(new Date().getTime() - new Date(data[i].date_created).getTime() < 7*24*3600*1000) {
-          data[i].date_created_modified = $scope.getTimeInFormat(data[i].date_created);
           $rootScope.latestCheckinObjects.push(data[i]);      //may or may not contain a review
           if(data[i].review) {
             data[i].review.date_created_modified = $scope.getTimeInFormat(data[i].review.date_created);
