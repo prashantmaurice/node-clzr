@@ -25,7 +25,7 @@
             <!-- <td>{{ checkin.review.remarks }}</td> -->
             <!-- <td><a href="javascript:void(0)" class="btn btn-primary" ng-click="showPopUpReview($event,checkin.review)">SHOW</a></td>
           -->
-          <td><a href="javascript:void(0)" class="btn btn-primary" ng-click="createBill( checkin )">MAKE BILL</a></td>
+          <td><a href="javascript:void(0)" class="btn btn-primary" id="makeBill" ng-click="createBill( checkin )">MAKE BILL</a></td>
         </tr>
       </tbody>
 
@@ -84,6 +84,9 @@
     </div>
   </div>
 </div>
+
+<canvas id="canvasBill" width="1024" height="768" style="border:1px solid #d3d3d3;background:#fff;visibility:hidden;opacity:0">
+Your browser does not support the HTML5 canvas tag.</canvas>
 
 <div class="modal fade in" id="modalNotifyUser" tabindex="-1" role="dialog" aria-labelledby="modalNotifyUserLabel" aria-hidden="true">
     <div class="modal-dialog">

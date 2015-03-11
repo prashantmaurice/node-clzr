@@ -1,46 +1,76 @@
 
-function getBillHTML( checkin ){
-  var str = "<h3 style='text-align:center' style='font-family:Roboto'>CLOZERR INVOICE</h3>"
-  str += "<hr>"
+function getBillHTML( checkin , convertToPDF){
 
-  str += "<ul>"
-      //str += "<li>Username</li>"
-      //str += "<li>User ID</li>"
-      //str += "<li>Offer ID</li>"
-      //str += "<li>Offer Caption</li>"
+  var c = document.getElementById("canvasBill");
+  var ctx = c.getContext("2d");
 
-      //str += "</tr></thead><tbody><tr>"
+  var dataInBillCaptions = [];
+  dataInBillCaptions.push("Username");
+  dataInBillCaptions.push("Offer");
+  dataInBillCaptions.push("Offer level");
+  dataInBillCaptions.push("Timestamp");
 
-      str += "<li>Username: " + checkin.user.profile.name + "</li>"
-      str += "<li>User ID:  " + checkin.user._id + "</li>"
-      str += "<li>Offer ID: " + checkin.offer._id + "</li>"
-      str += "<li>Offer:    " + checkin.offer.caption + "</li>"
-      str += "<li>Timestamp:    " + new Date( checkin.date_created ).toString() + "</li>"
+  var dataInBillValues = [];
+  dataInBillValues.push(checkin.user.profile.name);
+  dataInBillValues.push(checkin.offer.caption);
+  dataInBillValues.push(checkin.offer.stamps);
+  dataInBillValues.push( new Date( checkin.date_created ).toString());
 
-      //str += "</tr></tbody></table>"
-      str += "</ul>"
-      return str;
-    }
+  ctx.font = "20px Georgia";
 
-    var all_checkins = function( $rootScope, $scope, $http, $window){
-      $scope.checkins = [];
-      $scope.visibility = false;
+  var imgClozerrNav = new Image();
 
-      $scope.popReview = {};
-      $scope.popReview.question = [];
-      $scope.popReview.stars = [5,3,4];
-      $scope.popReview.question.push('How do you rate the food in our restaurant ?');
-      $scope.popReview.question.push('How do you rate the ambience of our restaurant ?');
-      $scope.popReview.question.push('How do you rate the hygeine in our restaurant ?');
-      $scope.popReview.remarks = "Nothing special to say..";
+  imgClozerrNav.src = '/clozerr-nav.png';
 
-      $scope.popUpReviewVisibility = false;
+  imgClozerrNav.onload = function() {
+    ctx.drawImage(imgClozerrNav, 0, 0);
+    console.log('loaded');
+    for(var i=0;i<dataInBillValues.length;i++) {
+    ctx.fillText(dataInBillCaptions[i], 100, 40*i + 200);
+    ctx.fillText(dataInBillValues[i], 300, 40*i + 200);
+  }
+  var imgData = c.toDataURL();
+  convertToPDF(imgData);
+  };
 
-      $scope.showPopUpReview = function(event, review, index) {
 
-        $scope.currentCheckinPos = index;
-        $scope.popUpReviewX = event.clientX;
-        $scope.popUpReviewY = event.clientY;
+  
+
+ /* function downloadCanvas(link, canvasId, filename) {
+    link.href = document.getElementById(canvasId).toDataURL();
+    link.download = filename;
+  }
+
+  document.getElementById('download').addEventListener('click', function() {
+    downloadCanvas(this, 'canvasBill', 'test.pdf');
+  }, false);
+*/
+}
+/*
+function downloadCanvas(link, canvasId, filename) {
+    link.href = document.getElementById(canvasId).toDataURL();
+    link.download = filename;
+  } */
+
+  var all_checkins = function( $rootScope, $scope, $http, $window){
+    $scope.checkins = [];
+    $scope.visibility = false;
+
+    $scope.popReview = {};
+    $scope.popReview.question = [];
+    $scope.popReview.stars = [5,3,4];
+    $scope.popReview.question.push('How do you rate the food in our restaurant ?');
+    $scope.popReview.question.push('How do you rate the ambience of our restaurant ?');
+    $scope.popReview.question.push('How do you rate the hygeine in our restaurant ?');
+    $scope.popReview.remarks = "Nothing special to say..";
+
+    $scope.popUpReviewVisibility = false;
+
+    $scope.showPopUpReview = function(event, review, index) {
+
+      $scope.currentCheckinPos = index;
+      $scope.popUpReviewX = event.clientX;
+      $scope.popUpReviewY = event.clientY;
     //$scope.popReview = review;
     $scope.popUpReviewVisibility = true;
     $scope.popUpReviewStyle = {'position':'absolute','z-index':100,'background':'#fff','top':$scope.popUpReviewY-200,'left':$scope.popUpReviewX};
@@ -112,34 +142,21 @@ $scope.update = function(){
 }
 
 $scope.createBill = function( checkin ){
-  var doc = new jsPDF();
-
-    // We'll make our own renderer to skip this editor
-    var specialElementHandlers = {
-      '#editor': function(element, renderer){
-        return true;
-      }
-    };
-
-    // All units are in the set measurement for the document
-    // This can be changed to "pt" (points), "mm" (Default), "cm", "in"
-    doc.fromHTML(getBillHTML( checkin ), 15, 15, {
-      'width': 200,
-      'elementHandlers': specialElementHandlers
-    }, function(dispose){
-      doc.save("bill-" + checkin._id + ".pdf");
-    });
-
-  }
-
-  $scope.$on("page-all-checkins", function(){
-    $scope.visibility = true;
-    $scope.update();
+  getBillHTML(checkin, function(imgData) {
+    var doc = new jsPDF();
+    doc.addImage(imgData, "JPEG", 0, 0);
+    doc.save();
   });
+}
 
-  $scope.$on("page-close", function(){
-    $scope.visibility = false;
-  });
+$scope.$on("page-all-checkins", function(){
+  $scope.visibility = true;
+  $scope.update();
+});
+
+$scope.$on("page-close", function(){
+  $scope.visibility = false;
+});
 
   //$scope.update();
   /*
