@@ -588,24 +588,35 @@ router.get('/updatesettings',function (req,res){
 
 });
 router.get('/checkins',function (req,res){
-    /*
+
     var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
-    */
+    var user=req.user;
+    if( user.type != "Admin" && user.type !="Vendor" ){
+        error.err( res, "200" );
+        return;
+    }
     if(req.query.startdate && req.query.enddate && req.query.vendor_id){
-      Checkin.find({
-        "date_created" : {
-          "$gte" : req.query.enddate,
-          "$lte" : req.query.startdate
-        },
-        "vendor" : req.query.vendor_id
-      },function(err,result){
-        res.json(result);
-        res.end();
-      })
+        Checkin.find({
+            "date_created" : {
+                "$gte" : req.query.enddate,
+                "$lte" : req.query.startdate
+            },
+            "vendor" : req.query.vendor_id
+        },function(err,result){
+            res.json(result);
+            res.end();
+        })
+    } else {
+        Checkin.find({
+            "vendor" : req.query.vendor_id
+        },function(err,result){
+            res.json(result);
+            res.end();
+        })
     }
 })
 module.exports = router;
