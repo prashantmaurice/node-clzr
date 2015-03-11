@@ -1,40 +1,28 @@
-
 function getBillHTML( checkin , convertToPDF){
 
-  var c = document.getElementById("canvasBill");
+  var c = document.createElement("CANVAS");
+  c.width = 800;
+  c.height = 158;
   var ctx = c.getContext("2d");
 
-  var dataInBillCaptions = [];
-  dataInBillCaptions.push("Username");
-  dataInBillCaptions.push("Offer");
-  dataInBillCaptions.push("Offer level");
-  dataInBillCaptions.push("Timestamp");
-
-  var dataInBillValues = [];
-  dataInBillValues.push(checkin.user.profile.name);
-  dataInBillValues.push(checkin.offer.caption);
-  dataInBillValues.push(checkin.offer.stamps);
-  dataInBillValues.push( new Date( checkin.date_created ).toString());
 
   ctx.font = "20px Georgia";
 
   var imgClozerrNav = new Image();
 
-  imgClozerrNav.src = '/clozerr-nav.png';
+  imgClozerrNav.src = '/clozerr-nav-1.png';
 
   imgClozerrNav.onload = function() {
     ctx.drawImage(imgClozerrNav, 0, 0);
     console.log('loaded');
-    for(var i=0;i<dataInBillValues.length;i++) {
+
+    var imgData = c.toDataURL();
+    convertToPDF(imgData);
+   /* for(var i=0;i<dataInBillValues.length;i++) {
     ctx.fillText(dataInBillCaptions[i], 100, 40*i + 200);
-    ctx.fillText(dataInBillValues[i], 300, 40*i + 200);
+    ctx.fillText(dataInBillValues[i], 300, 40*i + 200);*/
   }
-  var imgData = c.toDataURL();
-  convertToPDF(imgData);
-  };
-
-
-  
+};  
 
  /* function downloadCanvas(link, canvasId, filename) {
     link.href = document.getElementById(canvasId).toDataURL();
@@ -45,7 +33,7 @@ function getBillHTML( checkin , convertToPDF){
     downloadCanvas(this, 'canvasBill', 'test.pdf');
   }, false);
 */
-}
+
 /*
 function downloadCanvas(link, canvasId, filename) {
     link.href = document.getElementById(canvasId).toDataURL();
@@ -143,8 +131,44 @@ $scope.update = function(){
 
 $scope.createBill = function( checkin ){
   getBillHTML(checkin, function(imgData) {
-    var doc = new jsPDF();
-    doc.addImage(imgData, "JPEG", 0, 0);
+
+    var dataInBillCaptions = [];
+    dataInBillCaptions.push("Username");
+    dataInBillCaptions.push("Offer");
+    dataInBillCaptions.push("Offer level");
+    dataInBillCaptions.push("Timestamp");
+
+    var dataInBillValues = [];
+    dataInBillValues.push(checkin.user.profile.name);
+    dataInBillValues.push(checkin.offer.caption);
+    dataInBillValues.push(checkin.offer.stamps);
+    dataInBillValues.push( new Date( checkin.date_created ).toString());
+    var doc = new jsPDF('p', 'mm', [200, 250]);
+    doc.addImage(imgData, "JPEG", 0, 0, 250, 50);
+
+    doc.setFontSize(18);
+    doc.setTextColor(255,255,255);
+    doc.text(80, 20, "Peaches");
+
+    doc.setFontSize(14);
+    doc.setTextColor(255,255,255);
+    doc.text(80, 30, "No 15, abc street, So and so nagar, Chennai 600090");
+
+    doc.setFontSize(16);
+    doc.setTextColor(255,255,255);
+    doc.text(80, 40, "CHECKIN DETAILS");
+
+    doc.setFontSize(16);
+    doc.setTextColor(0,0,0);
+
+    for(var i=0;i<dataInBillValues.length;i++) {
+      doc.text(20, 20*i + 70, dataInBillCaptions[i]);
+      if(dataInBillValues[i])
+        doc.text(80, 20*i + 70, dataInBillValues[i]);
+      else
+        doc.text(80, 20*i + 70, "1");
+    }
+
     doc.save();
   });
 }
@@ -158,8 +182,4 @@ $scope.$on("page-close", function(){
   $scope.visibility = false;
 });
 
-  //$scope.update();
-  /*
-    TODO: Register for SocketIO messages here.
-    */
-  }
+}
