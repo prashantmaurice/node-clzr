@@ -148,29 +148,35 @@ $scope.createBill = function( checkin ){
 
     doc.setFontSize(18);
     doc.setTextColor(255,255,255);
-    doc.text(80, 20, "Peaches");
+    doc.text(80, 20, checkin.vendor.name);
 
     doc.setFontSize(14);
     doc.setTextColor(255,255,255);
-    doc.text(80, 30, "No 15, abc street, So and so nagar, Chennai 600090");
 
-    doc.setFontSize(16);
-    doc.setTextColor(255,255,255);
-    doc.text(80, 40, "CHECKIN DETAILS");
+    $http.get( "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + checkin.vendor.location[0] + "," + checkin.vendor.location[1]).
+    success(function(data, status, headers, config) {
+     doc.text(80, 30, data.results[0].formatted_address.substring(0, 45)+"-");
+     doc.text(80,40,data.results[0].formatted_address.substring(45,  data.results[0].formatted_address.length));
+     doc.setFontSize(16);
+     doc.setTextColor(255,255,255);
+     doc.text(80, 60, "CHECKIN DETAILS");
 
-    doc.setFontSize(16);
-    doc.setTextColor(0,0,0);
+     doc.setFontSize(16);
+     doc.setTextColor(0,0,0);
 
-    for(var i=0;i<dataInBillValues.length;i++) {
-      doc.text(20, 20*i + 70, dataInBillCaptions[i]);
+     for(var i=0;i<dataInBillValues.length;i++) {
+      doc.text(20, 20*i + 80, dataInBillCaptions[i]);
       if(dataInBillValues[i])
-        doc.text(80, 20*i + 70, dataInBillValues[i]);
+        doc.text(80, 20*i + 80, dataInBillValues[i]);
       else
-        doc.text(80, 20*i + 70, "1");
+        doc.text(80, 20*i + 80, "1");
     }
 
     doc.save();
+  }).error(function(data, status, headers, config) {
+    console.log('error in pdf creation');
   });
+});
 }
 
 $scope.$on("page-all-checkins", function(){
