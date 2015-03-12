@@ -337,13 +337,13 @@ function cancelCheckins( checkins ){
   return;
 }
 
-router.get("/active", function ( req, res ) {
+router.get("/active", function ( req, res ) {   
     var user = req.user;
     var userobj = user;
     var ut = userobj.type;
     var chdummy_ret_arr = [];
 
-    if (ut == "User") {
+    if (ut == "User"||ut=="TestUser") {
         CheckIn.find({
             user: userobj._id,
             state: CHECKIN_STATE_ACTIVE
@@ -394,6 +394,9 @@ for (var i = 0; i < len; i++) {
 }
 Q.all(plist).then(function () {
     console.log("ALL DUN");
+    chdummy_ret_arr =  _.sortBy(chdummy_ret_arr, function(chdummyobj) {
+                    return (-chdummyobj.date_created.getTime());
+                });
     res.end(JSON.stringify( { result:true, data:chdummy_ret_arr } ));
 });
 
@@ -461,6 +464,9 @@ Q.all(plist).then(function () {
             });
             Q.all(plist).then(function () {
               console.log("ALL DUN");
+              chdummy_ret_arr =  _.sortBy(chdummy_ret_arr, function(chdummyobj) {
+                    return (-chdummyobj.date_created.getTime());
+                });
               res.end(JSON.stringify({ result:true, data:chdummy_ret_arr }));
             });
 });
@@ -545,7 +551,14 @@ router.get("/confirmed", function (req, res) {
             });
 Q.all(plist).then(function () {
     console.log("ALL DUN");
+
                 //debugger;
+                chdummy_ret_arr =  _.sortBy(chdummy_ret_arr, function(chdummyobj) {
+                    return (-chdummyobj.date_created.getTime());
+                });
+                for(var kk=0;kk<chdummy_ret_arr.length;kk++) {
+                    console.log(chdummy_ret_arr[kk].date_created);
+                }
                 res.end(JSON.stringify(chdummy_ret_arr));
             });
 

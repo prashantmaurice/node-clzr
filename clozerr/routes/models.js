@@ -6,7 +6,6 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var vendorSchema = new Schema({
-
 	location : {type:[Number],index:'2dsphere'} ,
 	name:String,
 	offers : [ObjectId],
@@ -14,14 +13,17 @@ var vendorSchema = new Schema({
 	offers_old : [ObjectId],
 	fid:String,
 	date_created:Date,
-  dateUpdated:Date,
+    dateUpdated:Date,
 	address: String,
 	city: String,
 	phone: String,
 	visible: Boolean,
 	description: String,
 	resource_name: String,
-	question : [String]
+	question : [String],
+	UUID : [String],
+	test : Boolean,
+	settings : Schema.Types.Mixed	
 });
 vendorSchema.index({ location: '2d' });
 
@@ -29,7 +31,7 @@ Models.Content = mongoose.model('Content',new Schema({
 	key:String,
 	value:String
 }));
-
+		
 Models.Vendor = mongoose.model('Vendor', vendorSchema );
 
 Models.CheckIn = mongoose.model('CheckIn',new Schema({
@@ -53,6 +55,8 @@ Models.User = mongoose.model('User',new Schema({
 	auth_type:String,
 	profile: Schema.Types.Mixed,
 	date_created:Date,
+	dateLastLogin:Date,
+	dateLastLogout:Date,
 	upgraded:Date,
 	gcm_id: String
 }));
@@ -83,6 +87,11 @@ Models.Review = mongoose.model('Review',new Schema({
 	stars:[Number],
 	date_created:Date,
 	remarks: String
+}));
+
+Models.Data = mongoose.model('Data',new Schema({
+    type:String,
+    content: Schema.Types.Mixed
 }));
 
 module.exports = Models;

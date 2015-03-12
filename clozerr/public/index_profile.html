@@ -1,0 +1,29 @@
+<style>
+.card-view {
+	background-color:white;
+	padding:25px;
+	margin-top:20px;
+	border:1px solid grey;
+}
+</style>
+
+<div ng-controller="index_profile" class="col-lg-10 col-lg-offset-2">
+	<div class="container-fluid" ng-show="visibility">
+
+		<div class="row">
+			<div class="col-lg-8">
+				<h1 class="page-header">Profile
+				</h1>
+			</div>
+			<div class="col-lg-2">
+				<a href="javascript:void(0)"><button type="button" data-toggle="modal" data-target="#modalChangePassword" class="page-header btn btn-default" ng-click="updateVendorProfileBackend()"><i class="fa fa-lock">&nbsp&nbspChange password</i></button></a>
+			</div>
+			<div class="col-lg-2">
+				<a href="javascript:void(0)"><button type="button" class="page-header btn btn-default" ng-click="updateVendorProfileBackend();pageChange('home')"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspSAVE</i></button></a>
+			</div>
+		</div>
+		<div class="col-md-12 jumbotron" style="padding:20px">
+			<div ng-include="'index_profile_editprofile.html'"></div>		
+		</div>
+	</div>
+</div>

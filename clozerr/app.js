@@ -17,6 +17,7 @@ var content = require('./routes/content');
 var settings = require('./routes/settings');
 var rev = require('./routes/review');
 var error = require('./routes/error');
+var data = require('./routes/data');
 
 var app = express();
 
@@ -63,6 +64,11 @@ app.use('/', function( req, res, next ){
     req.user = { _id:"0", id_type:"Anonymous", auth_type:"None", stamplist:{}, social_id:""  };
     next();
   }
+  if(req.query.ver){
+    req.ver=req.query.ver;
+  }
+  else
+    req.ver="default";
 
 });
 app.use('/auth', auth);
@@ -71,6 +77,7 @@ app.use('/vendor', vendor);
 app.use('/checkin', checkin);
 app.use('/content',content);
 app.use('/review',rev);
+//app.use('/data',data);
 // --------- DB ----------
 var db=mongoose.connection;
 db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);

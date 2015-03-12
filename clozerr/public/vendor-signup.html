@@ -1,0 +1,380 @@
+<html>
+<head>
+<link href="css/bootstrap-switch.css" rel="stylesheet">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+<link href="css/card-2.css" rel="stylesheet">
+<!-- Custom CSS -->
+<link href="css/sb-admin.css" rel="stylesheet">
+<!-- Morris Charts CSS -->
+<link href="css/plugins/morris.css" rel="stylesheet">
+<link href="css/timeline.css" rel="stylesheet">
+<link href="sb-admin-2.css" rel="stylesheet">
+<link href="css/plugins/morris.css" rel="stylesheet">
+<link href="css/timeline.css" rel="stylesheet">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="js/plugins/morris/morris.min.js"></script>
+<script type="text/javascript" src="vendor-signup.js"></script>
+<script type="text/javascript" src="reviewquestions.js"></script>
+<script type="text/javascript" src="punchcard.js"></script>
+<script type="text/javascript" src="neighbourhoodperks.js"></script>
+<script type="text/javascript" src="visitreminder.js"></script>
+<script type="text/javascript" src="birthday.js"></script>
+<script type="text/javascript" src="js/bootstrap-switch.js"></script>
+<script type="text/javascript" src="js/bootstrap-slider.js"></script>
+<link rel="stylesheet" href="css/slider.css">
+<script type="text/javascript" src="js/bootstrap-slider.js"></script>
+<script type='text/javascript' src="js/fblogin.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+<style>
+.center-horizontal {
+	text-align: center;
+}
+.custom-margin {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.less-padding-left {
+	padding-left: 0 !important;
+	margin-left: 0 !important;
+}
+body {
+	background-color: #d79a47;
+}
+.whitebox {
+	margin-top:4%;
+	background-color: #FFF;
+	border-radius: 10px;
+	padding: 30px;
+}
+.whitebox-settings {
+	margin-top:4%;
+	background-color: #FFF;
+	border-radius: 10px;
+	padding: 10px !important;
+}
+.pull-down {
+	margin-bottom: 0px;
+}
+.nav {
+	height: 40px;
+	width: 100%;
+	padding: 6px;
+	background-color: rgba(0,0,0,0.3);
+	position: fixed;
+	z-index: 3;
+}
+.logo {
+	height: 26px;
+}
+.business-button-container {
+	float: right;
+	padding-right: 40px;
+	display: inline;
+	color: #FFF;
+	padding-top: 6px;
+}
+.mar-menu-button {
+	margin-top: 2px !important;
+	padding-top: 0px !important;
+}
+.box-header {
+	margin-top:6%;
+	background-color: #d79a47;
+	border-radius: 10px;
+	border-color: black;
+	border: 1px solid;
+	padding: 5px !important;
+}
+.row-no-margin {
+	margin-left: 0%;
+	margin-right: 0%;
+}
+.alert-success {
+	color: #3c763d;
+	background-color: #dff0d8;
+	border-color: #d6e9c6;
+}
+.alert-dismissable, .alert-dismissible {
+	padding-right: 35px;
+}
+.alert {
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+</style>
+
+	<div class="nav">
+		<center>
+			<a href="javascript:void(0)" style="color:#FFF;text-decoration:none;">&nbsp;<img src="http://www.clozerr.com/main/logo.png" class="logo" style="margin-top=2px !important;"></i></a>
+		</center>
+	</div>
+</head>
+<div class="row row-no-margin">
+	<div class="col-md-5"></div>
+	<div class="col-md-2 box-header">
+		<center><big>VENDOR SIGNUP</big></center>
+	</div>
+</div>
+
+<div ng-app="">
+
+	<div ng-controller="vendorSignup">
+		<div class="row row-no-margin">
+			<div class="col-lg-3"></div>
+			<div class="col-md-6" style="padding:20px;margin-top:4%;">
+				<div class="col-md-4" style="color:white">
+					<big><big>Step {{stepNo}} of 4</big></big>
+				</div>
+				<div class="col-md-6">
+				</div>
+				<div class="col-md-2">
+					<i class="fa fa-lock fa-2x" ng-show="visStep1" style="color:white"></i>
+					<i class="fa fa-cutlery fa-2x" ng-show="visStep2" style="color:white"></i>
+					<i class="fa fa-tachometer fa-2x" ng-show="visStep3" style="color:white"></i>
+					<i class="fa fa-cogs fa-2x" ng-show="visStep4" style="color:white"></i>
+				</div>
+			</div>
+		</div>
+		<div ng-show="visStep1">
+			<div class="col-lg-3"></div>
+			<div class="col-md-6 whitebox">
+				<br>
+				<h4><center>CREDENTIALS</center></h4>
+				<br>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon1">@</span>
+					<input type="text" class="form-control" ng-model="vusername" placeholder="Username" aria-describedby="basic-addon1">
+				</div><br>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon2"><big>*</big></span>
+					<input type="password" class="form-control" ng-model="vpassword" placeholder="Password" aria-describedby="basic-addon2">
+				</div><br>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon3"><big>*</big></span>
+					<input type="password" class="form-control" ng-model="vcpassword" placeholder="Confirm password" aria-describedby="basic-addon3">
+				</div>
+				<br><br>
+				<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+				</fb:login-button>
+				<br><br>
+				<div class="pull-right">
+					<button type="button" class="btn btn-success" ng-click="step2()">
+						Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div ng-show="visStep2">
+			<div class="col-lg-3"></div>
+			<div class="col-md-6 whitebox">
+				<br>
+				<h4><center>PROFILE DETAILS</center></h4>
+				<br>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon4">@</span>
+					<input type="text" class="form-control" ng-model="vpublicname" placeholder="Public name" aria-describedby="basic-addon4">
+				</div><br>
+				<!-- 
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon5">@</span>
+					<input type="text" class="form-control" ng-model="vfranchisename" placeholder="Franchise name" aria-describedby="basic-addon5">
+				</div><br> -->
+				<div class="input-group" >
+					<span class="input-group-addon" id="basic-addon6"><big>#&nbsp</big></span>
+					<input type="text" class="form-control" ng-model="vphoneno" placeholder="Phone number" aria-describedby="basic-addon6">
+				</div><br>
+				<div class="row">
+					<div class="col-md-11">
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon6"><big>#&nbsp</big></span>
+							<input type="text" class="form-control custom-margin" ng-focus="focusShowNothing()" ng-blur="getLocation(vaddress)" placeholder="Address" ng-model="vaddress">
+						</div>
+					</div>
+					<div class="col-md-1">
+						<i id="statusLocationIndicator" class=""></i>
+					</div>
+				</div>
+				<br><br>
+				<div class="pull-left">
+					<button type="button" class="btn btn-default" ng-click="step1()">
+						<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp&nbspBack
+					</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" ng-click="step3()" class="btn btn-success">
+						Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div ng-show="visStep3">
+			<center>
+				<div class="container-fluid">
+					<div class="whitebox" style="width:40%;height:110%;">
+						<h4><center>PREFERENCES</center></h4>
+						<br>
+						<div class="row">
+							<div ng-include="'punchcard.html'" class="col-lg-12"></div>
+						</div>
+						<br><br>
+						<div class="row">
+							<div ng-include="'reviewquestions.html'" class="col-lg-12"></div>
+						</div>
+						<br><br>
+						<div class="row">
+							<div class="col-md-1"></div>
+							<div class="col-md-1">
+								<button type="button" class="btn btn-default" ng-click="step2()">
+									<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp&nbspBack
+								</button>
+							</div>
+							<div class="col-md-5"></div>
+							<div>
+								<button type="button" ng-click="step4()" class="btn btn-success">
+									Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+								</button>
+							</div>
+						</div>
+						<br><br>
+					</div>
+				</div>
+			</center>
+
+			<br><br><br><br>
+		</div>
+		<!-- <div ng-show="visStep3">
+			<div class="container-fluid">
+				<br><br>
+				<div class="row">
+					<div class="col-md-2"></div>
+					<div class="col-md-1">
+						<button type="button" class="btn btn-default" ng-click="step2()">
+							<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp&nbspBack
+						</button>
+					</div>
+					<div ng-include="'punchcard.html'" class="col-lg-4"></div>
+
+				</div>
+				<br><br><br>
+				<div class="row">
+					<div class="col-md-3"></div>
+					<div ng-include="'reviewquestions.html'" class="col-lg-4"></div>
+					<div>
+						<button type="button" ng-click="step4()" class="btn btn-success pull-down">
+							Proceed&nbsp&nbsp<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div> -->
+		<!-- <div ng-show="visStep4">
+			<div class="container-fluid">
+				<div class="row">
+					<div ng-include="'birthday.html'" class="col-lg-4"></div>
+					<div ng-include="'visitreminder.html'" class="col-lg-4"></div>
+					<div ng-include="'neighbourhoodperks.html'" class="col-lg-4"></div>
+				</div>
+			</div>
+			<br><br><br>
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-1">
+					<button type="button" class="btn btn-default" ng-click="step3()">
+						<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp&nbspBack
+					</button>
+				</div>
+				<div class="col-md-offset-9">
+					<button type="button" ng-click="createVendor();"class="btn btn-success">
+						Create Account
+					</button>
+				</div>
+			</div>
+		</div> -->
+		<!-- <div ng-show="visStep4">
+			<center>
+				<div class="container-fluid">
+					<div class="whitebox" style="width:40%;height:140%;">
+						<h4><center>SETTINGS</center></h4>
+						<br>
+						<div class="row">
+							<div ng-include="'birthday.html'" class="col-lg-12"></div>
+						</div>
+						<br><br><br><br>
+						<div class="row">
+							<div ng-include="'visitreminder.html'" class="col-lg-12"></div>
+						</div>
+						<br><br><br><br>
+						<div class="row">
+							<div ng-include="'neighbourhoodperks.html'" class="col-lg-12"></div>
+						</div>
+						<br><br><br><br>
+						<div class="row">
+							<div class="col-md-1"></div>
+							<div class="col-md-1">
+								<button type="button" class="btn btn-default" ng-click="step3()">
+									<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp&nbspBack
+								</button>
+							</div>
+							<div class="col-md-5"></div>
+							<div>
+								<button type="button" ng-click="createVendor();"class="btn btn-success">
+									Create Account
+								</button>
+							</div>
+						</div>
+						<br><br>
+					</div>
+				</div>
+			</center>
+			<br><br><br><br>
+		</div> -->
+		<div ng-show="visStep4">
+			<center>
+				<div class="container-fluid">
+					<div class="whitebox-settings" style="width:80%;height:130%;">
+						<h4><center>SETTINGS</center></h4>
+						<br>
+						<div class="row">
+							<div class="col-lg-1 less-padding-left"></div>
+							<div ng-include="'birthday.html'" class="col-lg-5"></div>
+							<div ng-include="'visitreminder.html'" class="col-lg-5"></div>
+						</div>
+						<br><br><br><br><br><br><br>
+						<div class="row">
+							<div class="col-lg-4"></div>
+							<div ng-include="'neighbourhoodperks.html'" class="col-lg-4"></div>
+						</div>
+						<br><br><br><br><br><br><br><br><br>
+						<div class="row">
+							<div class="col-md-1"></div>
+							<div class="col-md-1">
+								<button type="button" class="btn btn-default" ng-click="step3()">
+									<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp&nbspBack
+								</button>
+							</div>
+							<div class="col-md-5"></div>
+							<div>
+								<button type="button" ng-click="createVendor();"class="btn btn-success">
+									Create Account
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</center>
+			<br><br><br><br>
+		</div>
+	</div>
+</div>
+</html>

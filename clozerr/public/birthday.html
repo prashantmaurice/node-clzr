@@ -1,0 +1,95 @@
+<style>
+#birthdayWish {
+	margin-left: 1%;
+}
+</style>
+
+<div ng-controller="birthdayCtrl" class="col-md-12">
+	<div class="flip">			
+		<div class="card" ng-class="{'flipped':flipped}">
+			<div class="face front">
+				<div class="panel panel-blue">
+					<div class="panel-blue">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-8 text-left">
+									<div>
+										<big>Birthday Special</big>
+									</div>
+								</div>
+								<div class="col-xs-4">
+									<i class="fa fa-cloud-download fa-5x"></i> 
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer">
+						<div class="panel-front-text">
+							<div class="panel-options">											
+								Send intelligent push notifications to customers on the occasion of their birthday..
+							</div>	
+							<br>
+							<center>
+								<label>
+									<input type="checkbox" id="enableBirthdayPref" ng-model="bp.activated">
+								</input>
+							</label>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="face back">
+			<div class="row">
+				<div class="panel panel-blue">
+					<div class="panel-blue">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-8 text-left">
+									<div>
+										<big>&nbsp&nbspBirthday Special</big>
+									</div>
+								</div>
+								<div class="col-xs-4">
+									<i class="fa fa-cloud-download fa-5x"></i> 
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer">
+						<div class="panel-front-text">
+							<div class="panel-options">											
+								<div class="col-xs-12">
+									<input type="textarea" id="birthdayWish" rows="5" class="form-control" ng-model="bp.birthdayWish" placeholder="Birthday wish..">
+								</div><br><br>
+								<div class="row" style="text-align:left;">
+									<div class="radio col-xs-12">
+										<label>
+											<input type="checkbox" id="notify1st" ng-model="bp.notifyFirst">&nbsp&nbsp&nbsp&nbspNotify user on first of month</input>
+										</label>
+									</div>
+								</div>
+							</div>								
+							<div class="row" style="text-align:left;">
+								<div class="radio col-xs-12">
+									<label>
+										<input type="checkbox" id="notifyExact" ng-model="bp.notifyExact">&nbsp&nbsp&nbsp&nbspNotify user on exact date</input>
+									</label>
+								</div>
+							</div><br>
+							<div class="row">
+								<div class="col-md-4">
+								</div>
+								<div class="col-md-2">
+									<a href="javascript:void(0)" class="restore-color-blue">
+										<button type="button" class="btn btn-primary" id="saveBirthdayPrefbtn" ng-click="flipped=!flipped;saveBirthdayPref();"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspSAVE</i></button>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

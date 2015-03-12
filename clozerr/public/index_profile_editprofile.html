@@ -1,0 +1,73 @@
+<style>
+.card-view {
+	background-color:white;
+	padding:25px;
+	margin-top:20px;
+	border:1px solid grey;
+}
+</style>
+<div ng-controller="index_profile_editprofile">
+	<div class="container-fluid card-view">
+		<div class="col-md-12">
+			<br>
+
+			<h4><center>PROFILE DETAILS</center></h4>
+
+			<br>
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon4">&nbsp&nbsp&nbspPublic name&nbsp&nbsp&nbsp&nbsp</span>
+				<input type="text" class="form-control" ng-model="vendor.name" placeholder="Public name" aria-describedby="basic-addon4">
+			</div><br>
+			<!-- 
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon5">Franchise  name</span>
+				<input type="text" class="form-control" ng-model="vendor.name" placeholder="Franchise name" aria-describedby="basic-addon5">
+			</div><br> -->
+			<div class="input-group" >
+				<span class="input-group-addon" id="basic-addon6">&nbspPhone  number&nbsp</span>
+				<input type="text" class="form-control" ng-model="vendor.phone" placeholder="Phone number" aria-describedby="basic-addon6">
+			</div><br>
+			<div class="row">
+				<div class="col-md-11">
+					<div class="input-group">
+						<span class="input-group-addon" id="basic-addon6">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAddress&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+						<input type="text" class="form-control custom-margin" ng-focus="focusShowNothing()" ng-blur="getLocation(vendorAddressRevGeoCoded)" placeholder="Address" ng-model="vendorAddressRevGeoCoded">
+					</div>
+				</div>
+				<div class="col-md-1">
+					<i id="statusLocationIndicator" class=""></i>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="modal fade in" id="modalChangePassword" tabindex="-1" role="dialog" aria-labelledby="modalChangePasswordLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="modalChangePasswordLabel"><center>Change password</center></h4>
+				</div>
+				<div class="modal-body">
+					<h4 class="text-danger bg-danger" style="padding:5px;border-radius:3px;" ng-show="wrongData">Password mismatch</h4>
+					<h4 class="text-danger bg-danger" style="padding:5px;border-radius:3px;" ng-show="wrongPassword">Incorrect old password</h4>
+					<div class="input-group">
+						<span class="input-group-addon" id="basic-addon1"><big>*</big></span>
+						<input type="password" class="form-control" id="old_password" placeholder="Old password" aria-describedby="basic-addon1">
+					</div><br>
+					<div class="input-group">
+						<span class="input-group-addon" id="basic-addon2"><big>*</big></span>
+						<input type="password" class="form-control" id="new_password" placeholder="New Password" aria-describedby="basic-addon2">
+					</div><br>
+					<div class="input-group">
+						<span class="input-group-addon" id="basic-addon3"><big>*</big></span>
+						<input type="password" class="form-control" id="new_password_again" placeholder="Confirm new password" aria-describedby="basic-addon3">
+					</div>
+				</div>		
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" ng-click="verifyPasswordChange()">Update password</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

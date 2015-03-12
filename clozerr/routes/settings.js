@@ -21,13 +21,16 @@ module.exports = {
 	},
 	"checkin":{
 		"expiry_time":10 * 60 * 1000,
-		"delay_between_checkins":1000000
+		"delay_between_checkins":2 * 60 * 60 * 1000
 	},
 	"api":{
 		"default_limit" : 30
 	},
 	"gcm":{
 		"apiKey":"AIzaSyD7a0oUk6GMFLpuFU_wUsuhjBH4jKKOFKQ"
+	},
+	"birthday":{
+		"birthdayWishMessage": "wishes you a Happy Birthday"
 	}
 	
 };

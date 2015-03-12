@@ -64,6 +64,11 @@ var current_checkins = function( $rootScope, $scope, $http ){
     $scope.visibility = true;
     $scope.update();
   });
+  $scope.$on("logged-in", function(){
+    $scope.visibility = true;
+    $scope.update();
+  });
+
 
   $scope.$on("page-close", function(){
     $scope.visibility = false;

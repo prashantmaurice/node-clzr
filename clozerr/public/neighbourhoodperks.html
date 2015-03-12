@@ -1,0 +1,106 @@
+<style>
+#notVisitedDaysCount {
+	background-color: transparent;
+}
+#DIVnotVisitedDaysCount {
+	margin-top:-4%;
+}
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}
+</style>
+
+<div ng-controller="neighbourhoodPerksCtrl" class="col-md-12">
+	<div class="flip">			
+		<div class="card" ng-class="{'flipped':flipped}">
+			<div class="face front">
+				<div class="panel panel-red">
+					<div class="panel-red">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-xs-8 text-left">
+									<div>
+										<big>Neighbourhood Perks</big>
+									</div>
+								</div>
+								<div class="col-xs-4">
+									<i class="fa fa-cloud-download fa-5x"></i> 
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel-footer">
+						<div class="panel-front-text">
+							<div class="panel-options">											
+								Notify about neighbourhood perks</div>	
+								<br><br>
+								<center>
+									<label>
+										<input type="checkbox" id="enableNeighPerksPref" ng-model="np.activated">
+									</input>
+								</label>
+
+							</center>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="face back">
+				<div class="row">
+					<div class="panel panel-red">
+						<div class="panel-red">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-8 text-left">
+										<div>
+											<big>&nbsp&nbspNeighbourhood Perks</big>
+										</div>
+									</div>
+									<div class="col-xs-4">
+										<i class="fa fa-cloud-download fa-5x"></i> 
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<div class="panel-front-text">
+								<div class="panel-options">											
+									<div class="col-xs-12">
+										<input type="textarea" id="neighPerksOffer" ng-model="np.message" rows="5" class="form-control" placeholder="Enter the offer..">
+									</div><br><br>
+								</div>								
+								<div class="row" style="text-align:left;">
+									<div class="radio col-lg-9">
+										How far away from your restaurant should customers receive this message ?
+									</div>
+									<div class="col-lg-3">
+										<input type="number" class="form-control" id="ex1" min="0.5" max="2.5" step="0.5" ng-model="np.distance" style="margin-top:6%"
+										/>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-md-4">
+									</div>
+									<div class="col-md-2">
+										<a href="javascript:void(0)" class="restore-color-red">
+											<button type="button" class="btn btn-danger" id="saveNeighPerksPref" ng-click="flipped=!flipped;saveNeighPerksPref();"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspSAVE</i></button>
+										</a>
+									</div>
+									<!-- 
+									<div class="col-md-6"></div>
+									<div class="col-md-1">
+										<a href="javascript:void(0)" class="restore-color-red">
+											<button type="button" class="btn btn-danger" id="saveNeighPerksPref" ng-click="flipped=!flipped;saveNeighPerksPref();"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspSAVE</i></button>
+										</a>
+									</div> -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
