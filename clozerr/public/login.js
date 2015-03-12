@@ -6,6 +6,7 @@ var login = function( $rootScope, $scope, $http ){
   var CLOZERR_LOGIN_URL = CLOZERR_API + "auth/login/password";
   // TODO: update this url somewhere.
   $scope.visibility = true;
+  $rootScope.loggedIn = false;
   $scope.spinner = false;
   $scope.login_form = true;
   $scope.login = function(){
@@ -26,7 +27,7 @@ var login = function( $rootScope, $scope, $http ){
       $scope.wrongData = false;
 
       $rootScope.$broadcast("page-close");
-      $rootScope.$broadcast("page-current-checkins");
+      $rootScope.$broadcast("logged-in");
       $rootScope.loggedIn = true;
       $scope.getDetails();
     }).error(function(data, status, headers, config) {
@@ -81,22 +82,22 @@ var login = function( $rootScope, $scope, $http ){
 
   //$scope.update();
   angular.element(document).ready(function () {
-    //console.log('Hello World');
-    console.log( localStorage.token );
-    if( !localStorage.token ){
-      console.log("Not logged in.");
-      $rootScope.$broadcast("page-close");
-      $rootScope.$broadcast("page-login");
-      $rootScope.loggedIn = false;
-    }else{
-      console.log('Logged in');
-      $rootScope.$broadcast("page-close");
-      $rootScope.$broadcast("page-current-checkins");
-      $scope.getDetails();
-      $rootScope.loggedIn = true;
-    }
+    
   });
-
+  console.log('Hello World');
+  console.log( localStorage.token );
+  if( !localStorage.token ){
+    console.log("Not logged in.");
+    $rootScope.$broadcast("page-close");
+    $rootScope.$broadcast("page-login");
+    $rootScope.loggedIn = false;
+  }else{
+    console.log('Logged in');
+    $rootScope.$broadcast("page-close");
+    $rootScope.$broadcast("logged-in");
+    $scope.getDetails();
+    $rootScope.loggedIn = true;
+  }
   $rootScope.logout = function(){
     var CLOZERR_LOGOUT_URL = CLOZERR_API + "auth/logout"
     $http.get( CLOZERR_LOGOUT_URL + "?access_token=" + localStorage.token ).
