@@ -43,6 +43,7 @@ function downloadCanvas(link, canvasId, filename) {
   var all_checkins = function( $rootScope, $scope, $http, $window){
     $scope.checkins = [];
     $scope.visibility = false;
+    $scope.visShowQuestions = false;
 
     $scope.popReview = {};
     $scope.popReview.question = [];
@@ -54,12 +55,21 @@ function downloadCanvas(link, canvasId, filename) {
 
     $scope.popUpReviewVisibility = false;
 
-    $scope.showPopUpReview = function(event, review, index) {
+    $scope.showPopUpReview = function(event, checkin, index) {
 
       $scope.currentCheckinPos = index;
       $scope.popUpReviewX = event.clientX;
       $scope.popUpReviewY = event.clientY;
-    //$scope.popReview = review;
+      console.log(checkin);
+      console.log(checkin.vendor.question.length);
+      console.log(checkin.review.stars.length);
+      if(checkin.review.stars == "N/A") {
+        $scope.visShowQuestions = false;
+      }
+      else if(checkin.vendor.question.length == checkin.review.stars.length) {
+          $scope.popReview = checkin;
+          $scope.visShowQuestions = true;
+        }
     $scope.popUpReviewVisibility = true;
     $scope.popUpReviewStyle = {'position':'absolute','z-index':100,'background':'#fff','top':$scope.popUpReviewY-200,'left':$scope.popUpReviewX};
   }
@@ -79,7 +89,7 @@ $scope.getAvgStars = function(stars) {
   for(var i=0;i<stars.length;i++) {
     avg = avg + stars[i];
   }
-  return avg/5 + "/5.0";
+  return avg/stars.length + "/5.0";
 }
 
 var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
