@@ -199,14 +199,15 @@ router.get('/upload-policy', function( req, res ){
       }
       var p = policy({
         secret: settings.s3.secret_key,
-        length: 5000000,
+        length: 50000000,
         bucket: settings.s3.bucket,
         key: settings.s3.base_path + "/" + vendor.resource_name,
-        expires: new Date(Date.now() + 60000),
+        expires: new Date(Date.now() + 600000),
         acl: 'public-read'
       });
 
-      var obj = { result:true, data:p };
+      var obj = p;
+      obj.key=settings.s3.access_key;
       
       res.end( JSON.stringify(obj) );
       });

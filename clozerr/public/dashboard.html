@@ -93,6 +93,7 @@
   </script>
   <!--==<script type="text/javascript" src="js/custom_hovercard.js"></script>-->
   <script type="text/javascript" src="current_checkins.js"></script>
+  <script src="ng-img-crop.js"></script>
   <script type="text/javascript" src="all_checkins.js"></script>
   <script type="text/javascript" src="login.js"></script>
   <script type="text/javascript" src="s1.js"></script>
@@ -189,7 +190,7 @@
     <script type="text/javascript" src="js/countdown.js"></script>
     <script>
     countdown( ".timer" );
-    var app = angular.module("clozerr",[]);
+    var app = angular.module("clozerr",['ngImgCrop']);
     app.filter("humanize_date", function(){
       return function( input ){
         return new Date( input ).toLocaleString()

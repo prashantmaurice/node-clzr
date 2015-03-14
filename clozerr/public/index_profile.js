@@ -6,10 +6,12 @@
 
   // Page change controllers start.
   $scope.visibility = false;
+  $rootScope.uploadModal = false;
 
   var PAGE_NAME = "profile";
   $scope.$on("page-" + PAGE_NAME, function(){
     $scope.visibility = true;
+   // $("#modalUploadPhoto").find('.modal-body').load('./example.html');
     $rootScope.$broadcast('page-editprofile');
   });
 
@@ -28,4 +30,14 @@
   });
 
 }
+ $scope.uploadVendorPhotoBackend = function(){
+    $http.get(CLOZERR_VENDORS_URL+"/upload-policy?vendor_id=54f37ae23009ee8c2fe33667&access_token="+localStorage.token).
+    success(function(data,status,headers,config){
+      console.log(data);
+      $rootScope.options = data;
+      $rootScope.uploadModal = true;
+    }).error(function(data,status,headers,config){
+
+    });
+ }
 }

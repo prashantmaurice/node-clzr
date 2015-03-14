@@ -1,7 +1,11 @@
+
 var index_profile_editprofile = function( $rootScope, $scope, $http) {
 	var CLOZERR_API = location.origin + '/';
 	var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
-
+    $scope.myImage='';
+    $scope.myCroppedImage='';
+    var policy,signature;
+    
 	$scope.focusShowNothing = function() {
 		console.log("focussed");		
 		$('#statusLocationIndicator').removeClass('fa fa-spinner fa-pulse fa-2x');
@@ -10,7 +14,10 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
 		$('#statusLocationIndicator').addClass('fa fa-spinner fa-pulse fa-2x');
 	}
 
+   $scope.UploadPhoto=function(){
 
+   	  
+   		 }
 
 	$scope.getAddress = function(lat, lon) {
 		$http.get( "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon).
@@ -114,3 +121,135 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
   });
 	}
 }
+var upload=angular.module('clozerr',['ngImgCrop','ngSanitize', 'ngS3upload']);	
+ 
+      	function Ctrl($scope, $rootScope) {
+        $scope.myImage='';
+        $scope.myCroppedImage='';
+       /* $scope.files = {
+    		};*/
+    	//$scope.options=
+    	$scope.performUpload = false;
+        var handleFileSelect=function(evt) {
+          console.log(evt);
+          var file=evt.currentTarget.files[0];
+          $rootScope.file=file;
+          //$scope.fil=file;
+          var reader = new FileReader();
+          reader.onload = function (evt) {
+            console.log('loaded');
+            $scope.$apply(function($scope){
+              $scope.myImage=evt.target.result;
+                 console.log(evt.target.result);
+          console.log($scope.myImage.size);
+          console.log($scope.myCroppedImage);
+          $scope.key=''+ + (new Date()).getTime() + '-' + randomString(16);
+          //console.log($scope.fil);
+          $rootScope.myCroppedImage=$scope.myCroppedImage;
+            });
+          };
+          reader.readAsDataURL(file);
+        };
+        $scope.$watch('myCroppedImage', function(newValue, oldValue) {
+         console.log($scope.myCroppedImage);
+        });
+        $scope.$watch('performUpload',function(newValue,oldValue){
+        	console.log($scope.performUpload);
+        	if($scope.performUpload==true){
+        		console.log(true);
+        		console.log($rootScope.file[0]);
+        		upload_image($scope,'https://clozerr.s3.amazonaws.com/',$scope.key,'public-read','jpg',$rootScope.options.key,$rootScope.options.policy,
+        			$rootScope.options.signature,
+        			$rootScope.file);
+        	}
+        })
+        angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+      };
+function upload_image(scope, uri, key, acl, type, accessKey, policy, signature, file) {
+      //var deferred = $q.defer();
+      scope.attempt = true;
+      console.log(file);
+      var fd = new FormData();
+      fd.append('key', key);
+      fd.append('acl', acl);
+      fd.append('Content-Type', file.type);
+      fd.append('AWSAccessKeyId', accessKey);
+      fd.append('policy', policy);
+      fd.append('signature', signature);
+      fd.append("file", file);
+
+      var xhr = new XMLHttpRequest();
+      xhr.upload.addEventListener("progress", uploadProgress, false);
+      xhr.addEventListener("load", uploadComplete, false);
+      xhr.addEventListener("error", uploadFailed, false);
+      xhr.addEventListener("abort", uploadCanceled, false);
+      scope.$emit('s3upload:start', xhr);
+
+      // Define event handlers
+      function uploadProgress(e) {
+        scope.$apply(function () {
+          if (e.lengthComputable) {
+            scope.progress = Math.round(e.loaded * 100 / e.total);
+          } else {
+            scope.progress = 'unable to compute';
+          }
+          var msg = {type: 'progress', value: scope.progress};
+          scope.$emit('s3upload:progress', msg);
+          /*if (typeof deferred.notify === 'function') {
+            deferred.notify(msg);
+          }*/
+
+        });
+      }
+      function uploadComplete(e) {
+        var xhr = e.srcElement || e.target;
+        scope.$apply(function () {
+          self.uploads--;
+          scope.uploading = false;
+          if (xhr.status === 204) { // successful upload
+            scope.success = true;
+            //deferred.resolve(xhr);
+            scope.$emit('s3upload:success', xhr, {path: uri + key});
+          } else {
+            scope.success = false;
+            //deferred.reject(xhr);
+            scope.$emit('s3upload:error', xhr);
+          }
+        });
+      }
+      function uploadFailed(e) {
+        var xhr = e.srcElement || e.target;
+        scope.$apply(function () {
+          self.uploads--;
+          scope.uploading = false;
+          scope.success = false;
+          //deferred.reject(xhr);
+          scope.$emit('s3upload:error', xhr);
+        });
+      }
+      function uploadCanceled(e) {
+        var xhr = e.srcElement || e.target;
+        scope.$apply(function () {
+          self.uploads--;
+          scope.uploading = false;
+          scope.success = false;
+          //deferred.reject(xhr);
+          scope.$emit('s3upload:abort', xhr);
+        });
+      }
+
+      // Send the file
+      scope.uploading = true;
+      this.uploads++;
+      xhr.open('POST', uri, true);
+      xhr.send(fd);
+
+      //return deferred.promise;
+    };
+    function randomString(length) {
+      var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var result = '';
+      for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
+
+      return result;
+    };
