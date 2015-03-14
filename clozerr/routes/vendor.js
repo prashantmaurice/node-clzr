@@ -203,7 +203,7 @@ router.get('/upload-policy', function( req, res ){
         secret: settings.s3.secret_key,
         length: 50000000,
         bucket: settings.s3.bucket,
-        key: settings.s3.base_path + "/" + vendor.resource_name,
+        name: settings.s3.base_path + "/" + vendor.resource_name,
         expires: new Date(Date.now() + 600000),
         acl: 'public-read'
       });
