@@ -6,6 +6,7 @@ var _ = require("underscore");
 var Vendor = models.Vendor;
 var Offer = models.Offer;
 var Checkin = models.CheckIn;
+var User = models.User;
 var VendorRequest = models.VendorRequest;
 var Promise = mongoose.Promise;
 var Q = require("q");
@@ -84,13 +85,14 @@ router.get('/send/push', function (req, res) {
   var user_id = req.query.user_id;
   var data = req.query.data;
 
-  if(req.user.vendor_id != vendor_id) {
+  if(req.user.vendor_id != req.query.vendor_id) {
     error.err(res, "909");
     return;
   }
 
   User.findOne({_id:user_id}, function (err, puser) {
     push.sendPushNotification( puser.gcm_id, data);
+    res.end(JSON.stringify({result:true}));
   });
 
 });
@@ -409,6 +411,8 @@ router.get('/get/near', function (req, res) {
                 var vendor_new = {};
                 vendor_new.location = vendor.location;
                 vendor_new.name = vendor.name;
+                if(vendor.settings)
+                  vendor_new.settings = vendor.settings;
                 vendor_new.offers = offers_new;
                 vendor_new.image = vendor.image;
                 vendor_new.fid = vendor.fid;
@@ -585,24 +589,35 @@ router.get('/updatesettings',function (req,res){
 
 });
 router.get('/checkins',function (req,res){
-    /*
+
     var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
     }
-    */
+    var user=req.user;
+    if( user.type != "Admin" && user.type !="Vendor" ){
+        error.err( res, "200" );
+        return;
+    }
     if(req.query.startdate && req.query.enddate && req.query.vendor_id){
-      Checkin.find({
-        "date_created" : {
-          "$gte" : req.query.enddate,
-          "$lte" : req.query.startdate
-        },
-        "vendor" : req.query.vendor_id
-      },function(err,result){
-        res.json(result);
-        res.end();
-      })
+        Checkin.find({
+            "date_created" : {
+                "$gte" : req.query.enddate,
+                "$lte" : req.query.startdate
+            },
+            "vendor" : req.query.vendor_id
+        },function(err,result){
+            res.json(result);
+            res.end();
+        })
+    } else {
+        Checkin.find({
+            "vendor" : req.query.vendor_id
+        },function(err,result){
+            res.json(result);
+            res.end();
+        })
     }
 })
 module.exports = router;

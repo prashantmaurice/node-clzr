@@ -1,47 +1,75 @@
+function getBillHTML( checkin , convertToPDF){
 
-function getBillHTML( checkin ){
-  var str = "<h3 style='text-align:center' style='font-family:Roboto'>CLOZERR INVOICE</h3>"
-  str += "<hr>"
+  var c = document.createElement("CANVAS");
+  c.width = 800;
+  c.height = 158;
+  var ctx = c.getContext("2d");
 
-  str += "<ul>"
-      //str += "<li>Username</li>"
-      //str += "<li>User ID</li>"
-      //str += "<li>Offer ID</li>"
-      //str += "<li>Offer Caption</li>"
 
-      //str += "</tr></thead><tbody><tr>"
+  ctx.font = "20px Georgia";
 
-      str += "<li>Username: " + checkin.user.profile.name + "</li>"
-      str += "<li>User ID:  " + checkin.user._id + "</li>"
-      str += "<li>Offer ID: " + checkin.offer._id + "</li>"
-      str += "<li>Offer:    " + checkin.offer.caption + "</li>"
-      str += "<li>Timestamp:    " + new Date( checkin.date_created ).toString() + "</li>"
+  var imgClozerrNav = new Image();
 
-      //str += "</tr></tbody></table>"
-      str += "</ul>"
-      return str;
-    }
+  imgClozerrNav.src = '/clozerr-nav-1.png';
 
-    var all_checkins = function( $rootScope, $scope, $http, $window){
-      $scope.checkins = [];
-      $scope.visibility = false;
+  imgClozerrNav.onload = function() {
+    ctx.drawImage(imgClozerrNav, 0, 0);
+    console.log('loaded');
 
-      $scope.popReview = {};
-      $scope.popReview.question = [];
-      $scope.popReview.stars = [5,3,4];
-      $scope.popReview.question.push('How do you rate the food in our restaurant ?');
-      $scope.popReview.question.push('How do you rate the ambience of our restaurant ?');
-      $scope.popReview.question.push('How do you rate the hygeine in our restaurant ?');
-      $scope.popReview.remarks = "Nothing special to say..";
+    var imgData = c.toDataURL();
+    convertToPDF(imgData);
+   /* for(var i=0;i<dataInBillValues.length;i++) {
+    ctx.fillText(dataInBillCaptions[i], 100, 40*i + 200);
+    ctx.fillText(dataInBillValues[i], 300, 40*i + 200);*/
+  }
+};  
 
-      $scope.popUpReviewVisibility = false;
+ /* function downloadCanvas(link, canvasId, filename) {
+    link.href = document.getElementById(canvasId).toDataURL();
+    link.download = filename;
+  }
 
-      $scope.showPopUpReview = function(event, review, index) {
+  document.getElementById('download').addEventListener('click', function() {
+    downloadCanvas(this, 'canvasBill', 'test.pdf');
+  }, false);
+*/
 
-        $scope.currentCheckinPos = index;
-        $scope.popUpReviewX = event.clientX;
-        $scope.popUpReviewY = event.clientY;
-    //$scope.popReview = review;
+/*
+function downloadCanvas(link, canvasId, filename) {
+    link.href = document.getElementById(canvasId).toDataURL();
+    link.download = filename;
+  } */
+
+  var all_checkins = function( $rootScope, $scope, $http, $window){
+    $scope.checkins = [];
+    $scope.visibility = false;
+    $scope.visShowQuestions = false;
+
+    $scope.popReview = {};
+    $scope.popReview.question = [];
+    $scope.popReview.stars = [5,3,4];
+    $scope.popReview.question.push('How do you rate the food in our restaurant ?');
+    $scope.popReview.question.push('How do you rate the ambience of our restaurant ?');
+    $scope.popReview.question.push('How do you rate the hygeine in our restaurant ?');
+    $scope.popReview.remarks = "Nothing special to say..";
+
+    $scope.popUpReviewVisibility = false;
+
+    $scope.showPopUpReview = function(event, checkin, index) {
+
+      $scope.currentCheckinPos = index;
+      $scope.popUpReviewX = event.clientX;
+      $scope.popUpReviewY = event.clientY;
+      console.log(checkin);
+      console.log(checkin.vendor.question.length);
+      console.log(checkin.review.stars.length);
+      if(checkin.review.stars == "N/A") {
+        $scope.visShowQuestions = false;
+      }
+      else if(checkin.vendor.question.length == checkin.review.stars.length) {
+          $scope.popReview = checkin;
+          $scope.visShowQuestions = true;
+        }
     $scope.popUpReviewVisibility = true;
     $scope.popUpReviewStyle = {'position':'absolute','z-index':100,'background':'#fff','top':$scope.popUpReviewY-200,'left':$scope.popUpReviewX};
   }
@@ -61,14 +89,14 @@ $scope.getAvgStars = function(stars) {
   for(var i=0;i<stars.length;i++) {
     avg = avg + stars[i];
   }
-  return avg/5 + "/5.0";
+  return avg/stars.length + "/5.0";
 }
 
 var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
 
 $scope.notifyUser = function() {
-  var strData = jQuery.param({});
-  $http.get( CLOZERR_VENDORS_URL + "/send/push" + "?vendor_id=" + $rootScope.vendor._id + "&user_id=" + $scope.checkins[$scope.currentCheckinPos].user + "&access_token=" + localStorage.token + "&data=" + strData).
+  var strData = decodeURIComponent(jQuery.param({data:$scope.notifyUser.data}));
+  $http.get( CLOZERR_VENDORS_URL + "/send/push" + "?vendor_id=" + $rootScope.vendor._id + "&user_id=" + $scope.checkins[$scope.currentCheckinPos].user._id + "&access_token=" + localStorage.token + "&" + strData).
   success(function(data, status, headers, config) {
     console.log(data);
     //hide the popup review
@@ -99,6 +127,7 @@ $scope.update = function(){
   $http.get( CLOZERR_ALL_CHECKINS_URL + "?access_token=" + access_token ).
   success( function( data, status, headers, config ) {
     $scope.checkins = data;
+    console.log(data);
     $scope.spinner = false;
     $scope.showData = true;
     for(var i=0;i<$scope.checkins.length;i++) {
@@ -111,37 +140,62 @@ $scope.update = function(){
 }
 
 $scope.createBill = function( checkin ){
-  var doc = new jsPDF();
+  getBillHTML(checkin, function(imgData) {
 
-    // We'll make our own renderer to skip this editor
-    var specialElementHandlers = {
-      '#editor': function(element, renderer){
-        return true;
-      }
-    };
+    var dataInBillCaptions = [];
+    dataInBillCaptions.push("Username");
+    dataInBillCaptions.push("Offer");
+    dataInBillCaptions.push("Offer level");
+    dataInBillCaptions.push("Timestamp");
 
-    // All units are in the set measurement for the document
-    // This can be changed to "pt" (points), "mm" (Default), "cm", "in"
-    doc.fromHTML(getBillHTML( checkin ), 15, 15, {
-      'width': 200,
-      'elementHandlers': specialElementHandlers
-    }, function(dispose){
-      doc.save("bill-" + checkin._id + ".pdf");
-    });
+    var dataInBillValues = [];
+    dataInBillValues.push(checkin.user.profile.name);
+    dataInBillValues.push(checkin.offer.caption);
+    dataInBillValues.push(checkin.offer.stamps);
+    dataInBillValues.push( new Date( checkin.date_created ).toString());
+    var doc = new jsPDF('p', 'mm', [200, 250]);
+    doc.addImage(imgData, "JPEG", 0, 0, 250, 50);
 
-  }
+    doc.setFontSize(18);
+    doc.setTextColor(255,255,255);
+    doc.text(80, 20, checkin.vendor.name);
 
-  $scope.$on("page-all-checkins", function(){
-    $scope.visibility = true;
-    $scope.update();
+    doc.setFontSize(14);
+    doc.setTextColor(255,255,255);
+
+    $http.get( "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + checkin.vendor.location[0] + "," + checkin.vendor.location[1]).
+    success(function(data, status, headers, config) {
+     doc.text(80, 30, data.results[0].formatted_address.substring(0, 45)+"-");
+     doc.text(80,40,data.results[0].formatted_address.substring(45,  data.results[0].formatted_address.length));
+     doc.setFontSize(16);
+     doc.setTextColor(255,255,255);
+     doc.text(80, 60, "CHECKIN DETAILS");
+
+     doc.setFontSize(16);
+     doc.setTextColor(0,0,0);
+
+     for(var i=0;i<dataInBillValues.length;i++) {
+      doc.text(20, 20*i + 80, dataInBillCaptions[i]);
+      if(dataInBillValues[i])
+        doc.text(80, 20*i + 80, dataInBillValues[i]);
+      else
+        doc.text(80, 20*i + 80, "1");
+    }
+
+    doc.save();
+  }).error(function(data, status, headers, config) {
+    console.log('error in pdf creation');
   });
+});
+}
 
-  $scope.$on("page-close", function(){
-    $scope.visibility = false;
-  });
+$scope.$on("page-all-checkins", function(){
+  $scope.visibility = true;
+  $scope.update();
+});
 
-  //$scope.update();
-  /*
-    TODO: Register for SocketIO messages here.
-    */
-  }
+$scope.$on("page-close", function(){
+  $scope.visibility = false;
+});
+
+}

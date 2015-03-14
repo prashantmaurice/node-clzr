@@ -124,11 +124,21 @@
         <script type="text/javascript" src="index_profile.js"></script>
         <script type="text/javascript" src="index_profile_editprofile.js"></script>
 
+        <script type="text/javascript" src="index_analytics.js"></script>
+
         <script type="text/javascript" src="js/bootstrap-switch.js"></script>
  
         <script type="text/javascript" src="login.js"></script>
         
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <link href="css/plugins/morris.css" rel="stylesheet">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="js/plugins/graphael/g.raphael.js"></script>
+        <script src="js/plugins/graphael/g.dot.js"></script>
+        <script src="js/plugins/morris/morris.min.js"></script>
+        <script src="vendor_charts.js"></script>
         <script>
         var CLOZERR_API = location.origin + "/";
         </script>
@@ -195,9 +205,9 @@
                     <a href="javascript:void(0)" ng-click="pageChange('home')"><i class="fa fa-fw fa-dashboard"></i>Home</a>
                 </li>
                 <!-- Analytics. empty for now.. -->
-                <li>
+                <!-- <li>
                     <a href="javascript:void(0)" ng-click="pageChange('analytics')"><i class="fa fa-fw fa-bar-chart-o"></i>Analytics</a>
-                </li>
+                </li> -->
                     <!--
                       Settings is to set features: Birthday notifications, delayed push notifications & review questions.
                       Also, have a button to bring up the offers modal.
@@ -223,7 +233,7 @@
                         <li>
                             <a href="javascript:void(0);" ng-click="showEditProfile();hideChangePassword();">Edit profile</a>
                         </li>
-                    </ul>
+                    </ul> a
                 </li> -->
             </ul>
         </div>
@@ -238,12 +248,12 @@
     <div id="page-wrapper" ng-include="'index_preferences.html'"></div>
     <div id="page-wrapper" ng-include="'index_profile.html'"></div>
 
-        <!--<div id="page-wrapper" ng-include="index_signup.html"></div>
-        
-        <div id="page-wrapper" ng-include="index_analytics.html"></div>-->
+    <!--<div id="page-wrapper" ng-include="index_signup.html"></div>-->
+    
+    <div id="page-wrapper" ng-include="index_analytics.html"></div>
 
-    </div>
-    <!-- /#page-wrapper -->
+</div>
+<!-- /#page-wrapper -->
 
 </div>
 <!-- /#wrapper -->

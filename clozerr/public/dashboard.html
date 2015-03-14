@@ -16,6 +16,7 @@
 
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
     <!-- <link href="css/custom_hovercard.css" rel="stylesheet">
  -->
     <!-- Custom Fonts -->
@@ -119,7 +120,7 @@
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
 
-                <li class="dropdown">
+                <li class="dropdown" ng-show="loggedIn">
                     <a href="#" class="dropdown-toggle" id="dropdown" data-toggle="dropdown"><i class="fa fa-user"></i> {{ vendor.name }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
