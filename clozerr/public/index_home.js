@@ -1,5 +1,3 @@
-
-
 var index_home = function( $rootScope, $scope, $http ){
 
   $scope.visibility = false;

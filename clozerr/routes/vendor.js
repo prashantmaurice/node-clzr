@@ -23,8 +23,8 @@ router.get('/create', function (req, res) {
         //error.err(res,errobj.code,errobj.params);
         return;
 
-    }
-    var user=req.user;
+      }
+      var user=req.user;
 
     // TODO approve vendor
     /*if( user.type != "Admin" ){
@@ -55,24 +55,24 @@ router.get('/create', function (req, res) {
         dateUpdated:date_created,
         settings:settings
       });
-      res.send({
-        result: true,
-        data: vendor
-      });
-      vendor.save();
+    res.send({
+      result: true,
+      data: vendor
+    });
+    vendor.save();
   });
 
 
 router.get('/get/all',function (req,res) {
 
 
-    Vendor.find({},function(err,data) {
-        if(err) {
-            console.log(err);
-            return;
-        }
-        res.send(JSON.stringify(data));
-    });
+  Vendor.find({},function(err,data) {
+    if(err) {
+      console.log(err);
+      return;
+    }
+    res.send(JSON.stringify(data));
+  });
 });
 
 router.get('/send/push', function (req, res) {
@@ -95,6 +95,21 @@ router.get('/send/push', function (req, res) {
     res.end(JSON.stringify({result:true}));
   });
 
+});
+
+router.get('/get/all/uuid', function(req, res) {
+  Vendor.find({}, function(err, data) {
+    if(err) {
+      console.log(err);
+      return;
+    }
+
+    var vendorDetails = [];
+    _.each( data, function( vendorObj, index, array ){
+      vendorDetails[index] = {_id:vendorObj._id,UUID:vendorObj.UUID,name:vendorObj.name};
+    });
+    res.end(JSON.stringify(vendorDetails));
+  });
 });
 
 router.get('/get', function (req, res) {
@@ -137,81 +152,81 @@ router.get('/get', function (req, res) {
     })
 
 router.get('/addoffer', function (req, res) {
-    var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id","access_token"]);
-    if (!errobj) {
+  var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id","access_token"]);
+  if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
-    }
-     
-  if( req.user.type != "Admin" && req.user.type !="Vendor"){
+      }
+      
+      if( req.user.type != "Admin" && req.user.type !="Vendor"){
   // TODO: Only admin allowed. DONE.
   /*if( user.type != "Admin" ){*/
     error.err( res, "200" );
     return;
   }
-       if(req.user.vendor_id != req.query.vendor_id) {
-        error.err(res, "909");
-        return;
-       }
+  if(req.user.vendor_id != req.query.vendor_id) {
+    error.err(res, "909");
+    return;
+  }
   // TODO: Only admin allowed. DONE.
   
-      var vendorid = req.query.vendor_id;
-      var offerid = req.query.offer_id;
+  var vendorid = req.query.vendor_id;
+  var offerid = req.query.offer_id;
 
-      Vendor.update({
-        _id: vendorid
-      }, {
-        $addToSet: {
-          offers: offerid
-        }
-      }, function (err, num, raw) {
-        debugger;
-        if (err) console.log(err + ' num : ' + num + ' raw : ' + raw);
-        else {
-          res.send({
-            result: true,
-            data:raw
-          });
-        }
-      })
-    });
+  Vendor.update({
+    _id: vendorid
+  }, {
+    $addToSet: {
+      offers: offerid
+    }
+  }, function (err, num, raw) {
+    debugger;
+    if (err) console.log(err + ' num : ' + num + ' raw : ' + raw);
+    else {
+      res.send({
+        result: true,
+        data:raw
+      });
+    }
+  })
+});
 
 router.get('/upload-policy', function( req, res ){
-    var errobj = error.err_insuff_params( res, req, ["vendor_id","access_token"] );
-      if( !errobj ) {
-        return;
-      }
+  var errobj = error.err_insuff_params( res, req, ["vendor_id","access_token"] );
+  if( !errobj ) {
+    return;
+  }
           /*
       TODO: Only allow if the user is linked to this vendor.
       */
     /*
       TODO: Only allow if the user is linked to this vendor.
-    */
-    if( !(req.user.type == "Admin") && req.user.type!="Vendor" ){
-      error.err( res, "403" );
-      return;
-    }
-    debugger;
-    Vendor.findOne({
-      _id : req.query.vendor_id
-    }, function( err, vendor ){
-        
-      if( !vendor ){
-        error.err( res, "200" );
+      */
+      if( !(req.user.type == "Admin") && req.user.type!="Vendor" ){
+        error.err( res, "403" );
+        return;
       }
-      var p = policy({
-        secret: settings.s3.secret_key,
-        length: 50000000,
-        bucket: settings.s3.bucket,
-        name: settings.s3.base_path + "/" + vendor.resource_name,
-        expires: new Date(Date.now() + 600000),
-        acl: 'public-read'
-      });
+      debugger;
+      Vendor.findOne({
+        _id : req.query.vendor_id
+      }, function( err, vendor ){
+        
+        if( !vendor ){
+          error.err( res, "200" );
+        }
+        var p = policy({
+          secret: settings.s3.secret_key,
+          length: 50000000,
+          bucket: settings.s3.bucket,
+          name: settings.s3.base_path + "/" + vendor.resource_name,
+          expires: new Date(Date.now() + 600000),
+          acl: 'public-read'
+        });
 
-      var obj = p;
-      obj.key=settings.s3.access_key;
-      
-      res.end( JSON.stringify(obj) );
+        var obj = p;
+        obj.key=settings.s3.access_key;
+        
+        res.end( JSON.stringify(obj) );
       });
 
 
@@ -227,9 +242,9 @@ function attachStamps( user, vendors ){
 
 router.get('/get/visitedV2', function( req, res ){
   var errobj = error.err_insuff_params( res, req, ["access_token"] );
-       if( !errobj ) {
-      return;
-    }
+  if( !errobj ) {
+    return;
+  }
   var user =  req.user;
   debugger;
   var fid_list =_.keys( user.stamplist );
@@ -308,14 +323,14 @@ router.get('/get/visited', function( req, res ){
 });
 
 router.get("/request", function( req, res ){
-   var errobj = error.err_insuff_params( res, req, ["access_token","name"] );
-       if( !errobj ) {
-      return;
-    }
-	var user = req.user;
-	var request = new VendorRequest( {account:user._id, name:req.query.name, remarks:req.query.remarks } );
-	request.save();
-	res.end(JSON.stringify( {result:true} ) ) ;
+ var errobj = error.err_insuff_params( res, req, ["access_token","name"] );
+ if( !errobj ) {
+  return;
+}
+var user = req.user;
+var request = new VendorRequest( {account:user._id, name:req.query.name, remarks:req.query.remarks } );
+request.save();
+res.end(JSON.stringify( {result:true} ) ) ;
 });
 
 
@@ -339,74 +354,74 @@ router.get('/get/near', function (req, res) {
         limit = settings.api.default_limit;
 
       var offset = req.query.offset;
-        if( !offset )
+      if( !offset )
         offset = 0;
       var user=req.user;
-    var lat = req.query.latitude;
-    var lon = req.query.longitude;
-    var distance = req.query.distance;
-    var access_token = req.query.access_token;
-    var typelist = JSON.parse( type );
-    var vendorResult;
-    console.log( typelist );
-    debugger;
+      var lat = req.query.latitude;
+      var lon = req.query.longitude;
+      var distance = req.query.distance;
+      var access_token = req.query.access_token;
+      var typelist = JSON.parse( type );
+      var vendorResult;
+      console.log( typelist );
+      debugger;
 
-   if(user.type!='TestUser'){
+      if(user.type!='TestUser'){
         debugger;
         Vendor.find({
           location: {
             $near: [lat, lon]
-        },
-        visible:true
-    }).limit( limit ).skip( offset ).exec().then(function (vendors) {
-      debugger;
-        getoff(vendors, req.user,typelist,function( vendors ){
-          res.send(JSON.stringify( vendors ));
-          res.end();
-        });
-    });}
-    else   
-    {
+          },
+          visible:true
+        }).limit( limit ).skip( offset ).exec().then(function (vendors) {
+          debugger;
+          getoff(vendors, req.user,typelist,function( vendors ){
+            res.send(JSON.stringify( vendors ));
+            res.end();
+          });
+        });}
+        else   
+        {
           Vendor.find({location:{
-        $near:[lat,lon]
-      },
-        test:true
-      }).limit(limit).skip(offset).exec().then(function (vendors){
+            $near:[lat,lon]
+          },
+          test:true
+        }).limit(limit).skip(offset).exec().then(function (vendors){
          debugger;
          getoff(vendors, req.user,typelist,function( vendors ){
           res.send(JSON.stringify(vendors));
           res.end();
-         });
-        });  
+        });
+       });  
       }
- });         
+    });         
 
-        function getoff( vendors, user,typelist,callback ){
+function getoff( vendors, user,typelist,callback ){
+  debugger;
+  var vendor_det_ret_arr = [];
+  var plist = [];
+  for (var i = 0; i < vendors.length; i++) {
+    var vendor = vendors[i];
+    console.log("Getting offers: ");
+    console.log(vendor.offers);
+    var pr = Offer.find({
+      _id: {
+        $in: vendor.offers
+      },
+      type:{
+        $in: typelist
+      }
+    }).exec();
+    debugger;
+    plist.push(
+     pr.then(
+       (function( vendor, index ){
+        return function (offers) {
+          var deferred = Q.defer();
           debugger;
-          var vendor_det_ret_arr = [];
-          var plist = [];
-          for (var i = 0; i < vendors.length; i++) {
-            var vendor = vendors[i];
-            console.log("Getting offers: ");
-            console.log(vendor.offers);
-            var pr = Offer.find({
-              _id: {
-                $in: vendor.offers
-              },
-              type:{
-                $in: typelist
-              }
-            }).exec();
-            debugger;
-            plist.push(
-             pr.then(
-               (function( vendor, index ){
-                return function (offers) {
-                  var deferred = Q.defer();
-                  debugger;
-                  var offers_new = _.filter(offers, function (offer) {
-                   return OfferHandler.qualify(user, vendor, offer);
-                 });
+          var offers_new = _.filter(offers, function (offer) {
+           return OfferHandler.qualify(user, vendor, offer);
+         });
                 //debugger;
                 var vendor_new = {};
                 vendor_new.location = vendor.location;
@@ -442,21 +457,21 @@ router.get('/settings/save', function (req, res) {
   */
 
 
-router.get('/updatesettings',function (req,res){
-  var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
+  router.get('/updatesettings',function (req,res){
+    var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
-    }
-    var user = req.user;
-    debugger;
-    if(user.type != "Admin" && user.type != "Vendor"){
-      error.err( res, "200" );
-      return;
-    }
+      }
+      var user = req.user;
+      debugger;
+      if(user.type != "Admin" && user.type != "Vendor"){
+        error.err( res, "200" );
+        return;
+      }
 
-    var vendor_id=req.query.vendor_id;
-    Vendor.findOne({_id:vendor_id},function (err,vendor){
+      var vendor_id=req.query.vendor_id;
+      Vendor.findOne({_id:vendor_id},function (err,vendor){
 
         if(req.query.birthday_notify1st){
           vendor.settings.birthday_notify1st=req.query.birthday_notify1st;
@@ -590,35 +605,35 @@ router.get('/updatesettings',function (req,res){
 });
 router.get('/checkins',function (req,res){
 
-    var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
-    if (!errobj) {
+  var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
+  if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
-    }
-    var user=req.user;
-    if( user.type != "Admin" && user.type !="Vendor" ){
+      }
+      var user=req.user;
+      if( user.type != "Admin" && user.type !="Vendor" ){
         error.err( res, "200" );
         return;
-    }
-    if(req.query.startdate && req.query.enddate && req.query.vendor_id){
+      }
+      if(req.query.startdate && req.query.enddate && req.query.vendor_id){
         Checkin.find({
-            "date_created" : {
-                "$gte" : req.query.enddate,
-                "$lte" : req.query.startdate
-            },
-            "vendor" : req.query.vendor_id
+          "date_created" : {
+            "$gte" : req.query.enddate,
+            "$lte" : req.query.startdate
+          },
+          "vendor" : req.query.vendor_id
         },function(err,result){
-            res.json(result);
-            res.end();
+          res.json(result);
+          res.end();
         })
-    } else {
+      } else {
         Checkin.find({
-            "vendor" : req.query.vendor_id
+          "vendor" : req.query.vendor_id
         },function(err,result){
-            res.json(result);
-            res.end();
+          res.json(result);
+          res.end();
         })
-    }
-})
+      }
+    })
 module.exports = router;
 
