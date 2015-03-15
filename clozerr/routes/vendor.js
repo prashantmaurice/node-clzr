@@ -18,7 +18,7 @@ var settings = require("./settings");
 var push = require("./util/push");
 
 router.get('/create', function (req, res) {
-  var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name","settings","phone","question"]);
+  var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
   if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
