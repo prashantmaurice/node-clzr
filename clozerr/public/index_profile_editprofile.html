@@ -6,23 +6,23 @@
 	border:1px solid grey;
 }
 .cropArea {
-  background: #E4E4E4;
-  overflow: hidden;
-  width:500px;
-  height:350px;
+	background: #E4E4E4;
+	overflow: hidden;
+	width:500px;
+	height:350px;
 }
 .cropArea.big {
-      width:800px;
-      height:600px;
+	width:800px;
+	height:600px;
 }
 .cropArea.medium {
-      width:500px;
-      height:350px;
- }
+	width:500px;
+	height:350px;
+}
 .cropArea.small {
-      width:300px;
-      height:200px;
- }
+	width:300px;
+	height:200px;
+}
 </style>
 <div ng-controller="index_profile_editprofile">
 	<div class="container-fluid card-view">
@@ -54,6 +54,13 @@
 				</div>
 				<div class="col-md-1">
 					<i id="statusLocationIndicator" class=""></i>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-9">
+				</div>
+				<div class="col-lg-2">
+					<a href="javascript:void(0)"><button type="button" data-toggle="modal" data-target="#modalUploadPhoto" class="page-header btn btn-default" ng-click="uploadVendorPhotoBackend()"><i class="fa fa-camera">&nbsp&nbspSelect image</i></button></a>
 				</div>
 			</div>
 		</div>
@@ -88,32 +95,41 @@
 			</div>
 		</div>
 	</div>
-		<div ng-controller="Ctrl" class="modal fade in" id="modalUploadPhoto" tabindex="-1" role="dialog" aria-labelledby="modalUploadPhotoLabel" aria-hidden="true" ng-show="uploadModal">
+	<div ng-controller="Ctrl" class="modal fade in" id="modalUploadPhoto" tabindex="-1" role="dialog" aria-labelledby="modalUploadPhotoLabel" aria-hidden="true" ng-show="uploadModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="modalUploadPhotoLabel"><center>Upload P</center></h4>
+					<h4 class="modal-title" id="modalUploadPhotoLabel"><center>Upload image</center></h4>
 				</div>
 				<div class="modal-body" >
-					<div s3-upload bucket="'test'" ng-model="files.first" s3-upload-options="{getOptionsUri:'http://localhost:3000/vendor/upload-policy?vendor_id=54f37ae23009ee8c2fe33667&access_token=623b8953dba03aa3b413ba0bbe60c301'}" do-upload="performUpload">Select an image file: <input type="file" id="fileInput" /></div>
-  <div class="cropArea">
-    <img-crop image="myImage" result-image="myCroppedImage"></img-crop>
-  </div>
-  <div>Cropped Image:</div>
-  <div><img ng-src="{{myCroppedImage}}" /></div>
+					<center>
+					<div s3-upload bucket="'test'" ng-model="files.first" s3-upload-options="{getOptionsUri:'http://localhost:3000/vendor/upload-policy?vendor_id=54f37ae23009ee8c2fe33667&access_token=623b8953dba03aa3b413ba0bbe60c301'}" do-upload="performUpload">
+						<center>
+							<button type="button" class="btn btn-default" ng-click="openPhotoUploadDialog()"><i class="fa fa-search">&nbsp&nbspBrowse image</i>
+							</button>
+						</center>
+						<input type="file" style="visibility:hidden;opacity:0;" id="fileInput" />
+					</div>
+					<div class="cropArea">
+						<img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+					</div>
+					<br>
+					<div>Cropped Image:</div>
+					<div><img ng-src="{{myCroppedImage}}" /></div>
 <!-- 					  <div>Select an image file: <input type="file" id="fileInput" onchange="angular.element(this).scope().handleFileSelect(event)"/></div>
   						<div class="cropArea">
     						<img-crop image="myImage" result-image="myCroppedImage"></img-crop>
  						 </div>
   					<div>Cropped Image:</div>
-  				<div><img ng-src="{{myCroppedImage}}" /></div> -->
-  				<!-- <iframe src="example.html" width="550" height="650"></iframe> -->
-				</div>	
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" ng-click="performUpload = true">Upload Photo</button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+  					<div><img ng-src="{{myCroppedImage}}" /></div> -->
+  					<!-- <iframe src="example.html" width="550" height="650"></iframe> -->
+  				</center>
+  				</div>	
+  				<div class="modal-footer">
+  					<button type="button" class="btn btn-default" ng-click="performUpload = true"><i class="fa fa-cloud-upload">&nbsp&nbspUpload image</i></button>
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+  </div>
