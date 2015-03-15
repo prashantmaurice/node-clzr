@@ -98,18 +98,68 @@ router.get('/send/push', function (req, res) {
 });
 
 router.get('/get/all/uuid', function(req, res) {
-  Vendor.find({}, function(err, data) {
-    if(err) {
-      console.log(err);
-      return;
-    }
 
-    var vendorDetails = [];
-    _.each( data, function( vendorObj, index, array ){
-      vendorDetails[index] = {_id:vendorObj._id,UUID:vendorObj.UUID,name:vendorObj.name};
-    });
-    res.end(JSON.stringify(vendorDetails));
-  });
+  var errobj = error.err_insuff_params(res, req, ["user_id"]);
+  if (!errobj) {
+        //error.err(res,errobj.code,errobj.params);
+        return;
+      }
+
+      var user_id = req.query.user_id;
+
+      User.findOne({_id:user_id}, function(err, userObj) {
+        if(err) {
+          console.log(err);
+          return;
+        }
+
+        Vendor.find({}, function(err, data) {
+          if(err) {
+            console.log(err);
+            return;
+          }
+
+          var vendorDetails = [];
+          var pr =  _.each( data, function( vendorObj, index, array ){
+
+            Offer.find({
+              _id: {
+                $in: vendorObj.offers
+              }
+            }, function (err, offers) {
+              if(err) {
+                console.log(err);
+                return;
+              }
+              var objRet;
+              var offers_qualified = _.filter(offers, function(offer) {
+                return OfferHandler.qualify(req.user,vendorObj,offer);
+              });
+
+              console.log(offers_qualified);
+
+              var objRet = {};
+
+              objRet._id = vendorObj._id;
+              objRet.UUID = vendorObj.UUID;
+              objRet.name = vendorObj.name;
+              objRet.offers_qualified = offers_qualified;
+
+              console.log(objRet);
+
+              vendorDetails[index] = objRet;
+
+              if(index == array.length - 1) {
+                res.end(JSON.stringify(vendorDetails));
+              }
+            });
+
+          });
+          
+        });
+
+      });
+
 });
 
 router.get('/get', function (req, res) {
@@ -210,7 +260,7 @@ router.get('/upload-policy', function( req, res ){
       Vendor.findOne({
         _id : req.query.vendor_id
       }, function( err, vendor ){
-        
+
         if( !vendor ){
           error.err( res, "200" );
         }
