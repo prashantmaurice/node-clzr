@@ -121,7 +121,7 @@ $scope.getDetails = function(){
     });
 }
 }
-var upload=angular.module('clozerr',['ngImgCrop','ngSanitize', 'ngS3upload']);	
+var upload=angular.module('clozerr',['ngImgCrop','ngSanitize', 'ngS3upload']);
 
 function Ctrl($scope, $rootScope) {
   $scope.myImage='';
