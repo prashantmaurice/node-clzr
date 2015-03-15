@@ -90,6 +90,26 @@
             font-size:17px;
         }
 
+        .leftNavBtn>a {
+            color: #945b0d !important;
+            background: #ffd7a1 !important;
+        }
+
+        .leftNavBtn>a:hover {
+            color: #ffd7a1 !important;
+            background: #945b0d !important;
+        }
+
+        .leftNavBtn {
+            color: #945b0d !important;
+            background: #ffd7a1 !important;
+        }
+
+        .navHovered {
+            color: #fff !important;
+            background: #000 !important;
+        }
+
         #dropdown:hover{
             background-color:#FFF;
             color:#d79a47;
@@ -127,7 +147,7 @@
         <script type="text/javascript" src="index_analytics.js"></script>
 
         <script type="text/javascript" src="js/bootstrap-switch.js"></script>
- 
+
         <script type="text/javascript" src="login.js"></script>
         
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
@@ -141,7 +161,8 @@
         <script src="vendor_charts.js"></script>
         <script>
         var CLOZERR_API = location.origin + "/";
-        </script>
+
+</script>
     <!--<script type="text/javascript" src="index_signup.js"></script>
     <script type="text/javascript" src="index_profile_handler.js"></script>
     <script type="text/javascript" src="index_analytics.js"></script>
@@ -199,9 +220,9 @@
         </ul>
         <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
         <div class="collapse navbar-collapse navbar-ex1-collapse" ng-show="loggedIn">
-            <ul class="nav navbar-nav side-nav">
+            <ul id="leftNav" class="nav navbar-nav side-nav">
                 <!-- Leave it for now.. -->
-                <li class="active">
+                <li id="nav1">
                     <a href="javascript:void(0)" ng-click="pageChange('home')"><i class="fa fa-fw fa-dashboard"></i>Home</a>
                 </li>
                 <!-- Analytics. empty for now.. -->
@@ -212,14 +233,14 @@
                       Settings is to set features: Birthday notifications, delayed push notifications & review questions.
                       Also, have a button to bring up the offers modal.
                   -->
-                  <li>
+                  <li id="nav2">
                     <a href="javascript:void(0)" ng-click="pageChange('profile')"><i class="fa fa-fw fa-edit"></i>Profile</a>
                 </li>
-                <li>
+                <li id="nav3">
                     <a href="javascript:void(0)" ng-click="pageChange('preferences');console.log('clicked on preferences');"><i class="fa fa-fw fa-table"></i>Preferences</a>
                 </li>
 
-                <li>
+                <li id="nav4">
                     <a href="javascript:void(0)" ng-click="pageChange('settings')"><i class="fa fa-fw fa-gear"></i>Settings</a>
                 </li>
                 <!-- Profile page is to contain profile stuff like public name, image, city, address etc. -->
@@ -263,7 +284,7 @@
 <script src="js/jspdf/dist/jspdf.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 
 
 
