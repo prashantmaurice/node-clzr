@@ -187,6 +187,9 @@ router.get('/get', function (req, res) {
           }
         }, function (err, offers) {
           if(err) console.log(err);
+            vendor.name=decodeURI(vendor.name);
+            vendor.address=decodeURI(vendor.address);
+            vendor.description=decodeURI(vendor.description);
           var vendor_json = vendor.toJSON();
           vendor_json.offers = offers;
             //debugger;

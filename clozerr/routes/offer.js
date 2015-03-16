@@ -22,7 +22,8 @@ router.get('/get', function (req, res) {
     }, function (err, data) {
     	if (err) console.log(err);
     	if (data) {
-
+            data.caption=decodeURI(data.caption);
+            data.description=decodeURI(data.description);
     		res.send(JSON.stringify({
 					result:true,
 					data:data
