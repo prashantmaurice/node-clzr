@@ -113,6 +113,7 @@ var login = function( $rootScope, $scope, $http ){
     $rootScope.$broadcast("page-close");
     $rootScope.$broadcast("page-login");
     $rootScope.loggedIn = false;
+    console.log('loggedIn : '+$rootScope.loggedIn);
   }
   /*
     TODO: Register for SocketIO messages here.

@@ -111,24 +111,49 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				 --><h4 class="modal-title" id="myModalLabel"><center>YOUR OFFERS</center></h4>
-			</div>
-			<br>
-			<div class="modal-body" style="height:auto">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<ul class="timeline">
-							<li ng-class="{'timeline-inverted': $index%2==0}" ng-repeat="offer in vendor.offers track by $index">
-								<div class="timeline-badge non-blue-theme" ng-mouseover="toggleHover($index)" ng-mouseleave="toggleHover($index)" ng-click="toggleEditSaveOffer(offer, $index)"><i ng-show="textInfoVis[$index] && !hoverCheck[$index]">{{$index+1}}</i>
-									<i ng-show="hoverCheck[$index] || !textInfoVis[$index]" ng-class="{'fa fa-pencil fa-1x pvert-center2':textInfoVis[$index],'fa fa-floppy-o fa-1x pvert-center2':!textInfoVis[$index]}"></i>
+			--><h4 class="modal-title" id="myModalLabel"><center>YOUR OFFERS</center></h4>
+		</div>
+		<br>
+		<div class="modal-body" style="height:auto">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-lg-11">
+						</div>
+						<div class="col-lg-1">
+							<a href="javascript:void(0)" class="font-size-normal non-blue-a-theme" ng-click="addOffer()">
+								<i class="fa fa-plus-circle fa-4x"></i>
+							</a>
+						</div>
+					</div>
+						<!-- ng-mouseover="toggleHover($index)" ng-mouseleave="toggleHover($index)" ng-click="toggleEditSaveOffer(offer, $index)"
+					--><ul class="timeline">
+					<li ng-class="{'timeline-inverted': $index%2==0}" ng-repeat="offer in vendor.offers track by $index">
+						<div class="timeline-badge non-blue-theme"    ><i>{{$index+1}}</i>
+								<!-- 
+								<i ng-show="hoverCheck[$index] || !textInfoVis[$index]" ng-class="{'fa fa-pencil fa-1x pvert-center2':textInfoVis[$index],'fa fa-floppy-o fa-1x pvert-center2':!textInfoVis[$index]}"></i> -->
+							</div>
+							<div class="timeline-panel">
+								<div class="timeline-heading" ng-show="textInfoVis[$index]">
+									<h4 class="timeline-title" ng-bind="vendor.offers[$index].caption"></h4>
 								</div>
-								<div class="timeline-panel">
-									<div class="timeline-heading" ng-show="textInfoVis[$index]">
-										<h4 class="timeline-title" ng-bind="vendor.offers[$index].caption"></h4>
-									</div>
-									<div ng-show="!textInfoVis[$index]">
-										<input type="text" class="form-control" ng-model="vendor.offers[$index].caption"/>
-									</div>
+								<div ng-show="!textInfoVis[$index]">
+									<input type="text" class="form-control" placeholder="Enter your offer.." ng-model="vendor.offers[$index].caption"/>
+								</div>
+
+								<div class="row pull-right">
+									<a href="javascript:void(0)" style="margin-right:10px">
+										<button type="button" class="page-header btn btn-default" ng-click="toggleEditSaveOffer(offer, $index)">
+											<i class="fa fa-pencil fa-1x" ng-show="textInfoVis[$index]">&nbsp&nbspEdit</i>
+											<i class="fa fa-floppy-o fa-1x" ng-show="!textInfoVis[$index]">&nbsp&nbspSave</i>
+										</button>
+									</a>
+
+									<a href="javascript:void(0)" style="margin-right:10px">
+										<button type="button" class="page-header btn btn-default" ng-click="removeOffer($index)">
+											<i class="fa fa-times fa-1x">&nbsp&nbspRemove</i>
+										</button>
+									</a>
 								</div>
 							</li>
 						</ul>

@@ -9,7 +9,7 @@
             <th>TIME</th>
             <th>OFFER</th>
             <th>OFFER-LEVEL</th>
-            <th>RATING</th>
+            <th>RATING</th> 
             <th>REVIEWS</th>
             <th>BILL</th>
           </tr>
@@ -23,7 +23,7 @@
             <td>{{ checkin.offer.stamps }}</td>
             <td>{{getAvgStars(checkin.review.stars)}}</td>
             <!-- <td>{{ checkin.review.remarks }}</td> -->
-            <td><a href="javascript:void(0)" class="btn btn-primary" ng-click="showPopUpReview($event,checkin, $index)" ng-disabled="getAvgStars(checkin.review.stars)=='N/A' || getAvgStars(checkin.review.stars) == '-NIL-'">SHOW</a></td>
+            <td><a href="javascript:void(0)" class="btn btn-primary" ng-click="showPopUpReview($event,checkin,$index)" ng-disabled="getAvgStars(checkin.review.stars) == 'N/A' || getAvgStars(checkin.review.stars) == '-NIL-'">SHOW</a></td>
           <td><a href="javascript:void(0)" class="btn btn-primary" id="makeBill" ng-click="createBill( checkin )">MAKE BILL</a></td>
         </tr>
       </tbody>

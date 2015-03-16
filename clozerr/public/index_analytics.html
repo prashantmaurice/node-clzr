@@ -1,7 +1,14 @@
+<link href="css/plugins/morris.css" rel="stylesheet">
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="js/plugins/graphael/g.raphael.js"></script>
+<script src="js/plugins/graphael/g.dot.js"></script>
+<script src="js/plugins/morris/morris.min.js"></script>
+<script src="vendor_charts.js"></script>
 <div ng-controller="index_analytics">
+    Analytics!
     <div ng-show="visibility">
         <div id="checkin_date" style="height: 250px; width: auto">
-
         </div>
         <div id="checkin_day_time">
         </div>
@@ -35,5 +42,5 @@
         xLabelFormat: date_month,
         xLabelAngle: 60
     });
-    checkin_time_day_data(sample_checkins);
+    //TODO call with $rootscope.all_checkins or similar objectnd
     </script>
