@@ -31,7 +31,7 @@
 
 }
  $scope.uploadVendorPhotoBackend = function(){
-    $http.get(CLOZERR_VENDORS_URL+"/upload-policy?vendor_id=54f37ae23009ee8c2fe33667&access_token="+localStorage.token).
+    $http.get(CLOZERR_VENDORS_URL+"/upload-policy?vendor_id="+$rootScope.vendor._id+"&access_token="+localStorage.token).
     success(function(data,status,headers,config){
       console.log(data);
       $rootScope.options = data;
