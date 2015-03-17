@@ -89,7 +89,9 @@ $scope.getAvgStars = function(stars) {
   for(var i=0;i<stars.length;i++) {
     avg = avg + stars[i];
   }
-  return avg/stars.length + "/5.0";
+  avg = avg/stars.length;
+  avg = avg.toFixed(2);
+  return avg + "/5.00";
 }
 
 var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
