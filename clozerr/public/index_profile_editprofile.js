@@ -15,8 +15,15 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
   }
 
   $scope.UploadPhoto=function(){
+$rootScope.performUpload=true;
+                    var access_token = localStorage.token;
 
-    
+      $http.get( CLOZERR_VENDORS_URL + "/update?vendor_id=" + $rootScope.vendor._id + "&access_token=" + access_token+"&image=https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/"+$rootScope.vendor.resource_name+".jpg" ).
+          success(function(data, status, headers, config) {
+            console.log(data);
+          }).error(function(data, status, headers, config) {
+            console.log(error);
+      });
   }
 
   $scope.getAddress = function(lat, lon) {
@@ -158,9 +165,9 @@ function Ctrl($scope, $rootScope) {
         $scope.$watch('myCroppedImage', function(newValue, oldValue) {
          console.log($scope.myCroppedImage);
        });
-        $scope.$watch('performUpload',function(newValue,oldValue){
-        	console.log($scope.performUpload);
-        	if($scope.performUpload==true){
+        $rootScope.$watch('performUpload',function(newValue,oldValue){
+        	console.log($rootScope.performUpload);
+        	if($rootScope.performUpload==true){
         		console.log(true);
         		console.log($rootScope.file[0]);
             console.log($rootScope.options);
@@ -170,6 +177,7 @@ function Ctrl($scope, $rootScope) {
         			$rootScope.file);
         	}
         })
+
         angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
       };
       function upload_image(scope, uri, key, acl, type, accessKey, policy, signature, file) {
