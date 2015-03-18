@@ -436,7 +436,8 @@ router.get('/get/near', function (req, res) {
           Vendor.find({location:{
             $near:[lat,lon]
           },
-          test:true
+          test:true,
+          visible:true
         }).limit(limit).skip(offset).exec().then(function (vendors){
          debugger;
          getoff(vendors, req.user,typelist,function( vendors ){
