@@ -23,6 +23,10 @@
 	width:300px;
 	height:200px;
 }
+.display-pic {
+	width: 400px;
+	height: 250px;
+}
 </style>
 <div ng-controller="index_profile_editprofile">
 	<div class="container-fluid card-view">
@@ -31,7 +35,9 @@
 
 			<h4><center>PROFILE DETAILS</center></h4>
 
-			<br>
+			<!-- 
+			<img src="vendor.image" class="display-pic"></img> -->
+
 			<div class="input-group">
 				<span class="input-group-addon" id="basic-addon4">&nbsp&nbsp&nbspPublic name&nbsp&nbsp&nbsp&nbsp</span>
 				<input type="text" class="form-control" ng-model="vendor.name" placeholder="Public name" aria-describedby="basic-addon4">

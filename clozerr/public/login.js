@@ -68,6 +68,7 @@ var login = function( $rootScope, $scope, $http ){
       success(function(data, status, headers, config) {
         console.log( data );
         $rootScope.vendor = data;
+        console.log($rootScope.vendor);
       }).error(function(data, status, headers, config) {
         /*
         TODO: Throw error here.

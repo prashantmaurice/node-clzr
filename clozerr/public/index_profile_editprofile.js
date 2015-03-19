@@ -5,6 +5,8 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
   $scope.myImage='';
   $scope.myCroppedImage='';
   var policy,signature;
+
+  console.log($rootScope.vendor);
   
   $scope.focusShowNothing = function() {
     console.log("focussed");		
