@@ -86,7 +86,5 @@ var current_checkins = function( $rootScope, $scope, $http ){
         $scope.update();
     });
   }
-
   $scope.reg_socket();
-
 }

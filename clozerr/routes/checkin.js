@@ -199,8 +199,6 @@ router.get("/create", function (req, res) {
           }));
 
 });
-
-
       global.io.emit('signal', JSON.stringify({vendor_id:obj.vendor._id}) );
 
   });
