@@ -188,6 +188,11 @@ router.get('/get', function (req, res) {
         }, function (err, offers) {
           if(err) console.log(err);
           var vendor_json = vendor.toJSON();
+          offers = _.sortBy(offers, function(offer) {
+            if(offer.stamps)
+              return offer.stamps;
+            else return 0;
+          });
           vendor_json.offers = offers;
             //debugger;
             var offers_qualified = _.filter(offers, function(offer) {
@@ -648,7 +653,7 @@ router.get('/settings/save', function (req, res) {
             console.log(res); 
             console.log(err);
           });
-          res.send(JSON.stringify({result:true}));
+          res.send(JSON.stringify({result:true,vendor:vendor}));
         }
         else {
 
