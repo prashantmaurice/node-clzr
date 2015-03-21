@@ -541,6 +541,7 @@ router.get('/settings/save', function (req, res) {
     var latitude, longitude, image, fid, name, visible, address, city, phone, description, settings={};
     var question;
     var UUID;
+    var flags;
     var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
@@ -616,6 +617,10 @@ router.get('/settings/save', function (req, res) {
           if(req.query.UUID){
             UUID=req.query.UUID;
           }else UUID=vendor.UUID;
+          if(req.query.flags){
+            flags=req.query.flags;
+          }else flags=vendor.flags;
+
           var date_created = vendor.date_created;
           vendor.location = [latitude, longitude];
           vendor.image = image;
