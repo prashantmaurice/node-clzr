@@ -128,7 +128,7 @@
 					</div>
 						<!-- ng-mouseover="toggleHover($index)" ng-mouseleave="toggleHover($index)" ng-click="toggleEditSaveOffer(offer, $index)"
 					--><ul class="timeline">
-					<li ng-class="{'timeline-inverted': $index%2==0}" ng-repeat="offer in vendor.offers track by $index">
+					<li ng-class="{'timeline-inverted animated fadeInRight': $index%2==0,'animated fadeInLeft': $index%2!=0}" ng-repeat="offer in vendor.offers track by $index">
 						<div class="timeline-badge non-blue-theme"    ><i>{{$index+1}}</i>
 								<!-- 
 								<i ng-show="hoverCheck[$index] || !textInfoVis[$index]" ng-class="{'fa fa-pencil fa-1x pvert-center2':textInfoVis[$index],'fa fa-floppy-o fa-1x pvert-center2':!textInfoVis[$index]}"></i> -->
@@ -138,7 +138,14 @@
 									<h4 class="timeline-title" ng-bind="vendor.offers[$index].caption"></h4>
 								</div>
 								<div ng-show="!textInfoVis[$index]">
-									<input type="text" class="form-control" placeholder="Enter your offer.." ng-model="vendor.offers[$index].caption"/>
+									Caption :
+									<input type="text" class="form-control" placeholder="Offer caption" ng-model="vendor.offers[$index].caption"/>
+								</div>
+								<br>
+								<div ng-show="!textInfoVis[$index]">
+									Description :
+									<textarea class="form-control" rows="5" cols="50" placeholder="Offer descripton" ng-model="vendor.offers[$index].description">
+									</textarea>
 								</div>
 
 								<div class="row pull-right">

@@ -23,19 +23,56 @@
 	width:300px;
 	height:200px;
 }
-</style>
-<div ng-controller="index_profile_editprofile">
-	<div class="container-fluid card-view">
-		<div class="col-md-12">
-			<br>
+.display-pic {
+	width: 400px;
+	height: 250px;
+	margin-bottom: 15px;
+	margin-top: 15px;
+	border: 0px solid #333;
+	padding: 0px;
+	border-radius: 4px;
+	opacity:1.0;
+}
+/*.display-pic:hover {
+	width: 400px;
+	height: 250px;
+	margin-bottom: 15px;
+	margin-top: 15px;
+	border: 0px solid #333;
+	padding: 0px;
+	border-radius: 4px;
+	opacity: 0.8;
+	}*/
+	</style>
+	<div ng-controller="index_profile_editprofile">
+		<div class="container-fluid card-view">
+			<div class="col-md-12">
+				<br>
 
-			<h4><center>PROFILE DETAILS</center></h4>
+				<div class=" animated fadeInRight">
+					<h4><center>PROFILE DETAILS</center></h4>
 
-			<br>
-			<div class="input-group">
-				<span class="input-group-addon" id="basic-addon4">&nbsp&nbsp&nbspPublic name&nbsp&nbsp&nbsp&nbsp</span>
-				<input type="text" class="form-control" ng-model="vendor.name" placeholder="Public name" aria-describedby="basic-addon4">
-			</div><br>
+					<div class="row">
+						<div class="col-lg-9">
+						</div>
+						<div class="col-lg-2">
+							<a href="javascript:void(0)"><button type="button" data-toggle="modal" data-target="#modalUploadPhoto" class="page-header btn btn-default" ng-click="uploadVendorPhotoBackend()"><i class="fa fa-camera">&nbsp&nbspSelect image</i></button></a>
+						</div>
+					</div>
+				</div>
+				<div class="row animated fadeInLeft" style="padding:0px !important;margin:0px !important;">
+					<div class="col-md-6">
+					</div>
+					<div class="col-md-4" style="padding:0px">
+						<img ng-src="{{vendor.image}}" class="display-pic" ng-mouseover="hoverDisplayPic=true" ng-mouseleave="hoverDisplayPic=false">
+					</img>
+				</div>
+				<br>
+				<div class=" animated fadeInUp">
+					<div class="input-group">
+						<span class="input-group-addon" id="basic-addon4">&nbsp&nbsp&nbspPublic name&nbsp&nbsp&nbsp&nbsp</span>
+						<input type="text" class="form-control" ng-model="vendor.name" placeholder="Public name" aria-describedby="basic-addon4">
+					</div><br>
 			<!-- 
 			<div class="input-group">
 				<span class="input-group-addon" id="basic-addon5">Franchise  name</span>
@@ -56,55 +93,49 @@
 					<i id="statusLocationIndicator" class=""></i>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-lg-9">
-				</div>
-				<div class="col-lg-2">
-					<a href="javascript:void(0)"><button type="button" data-toggle="modal" data-target="#modalUploadPhoto" class="page-header btn btn-default" ng-click="uploadVendorPhotoBackend()"><i class="fa fa-camera">&nbsp&nbspSelect image</i></button></a>
-				</div>
-			</div>
 		</div>
-		
 	</div>
-	<div class="modal fade in" id="modalChangePassword" tabindex="-1" role="dialog" aria-labelledby="modalChangePasswordLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="modalChangePasswordLabel"><center>Change password</center></h4>
+
+</div>
+<div class="modal fade in" id="modalChangePassword" tabindex="-1" role="dialog" aria-labelledby="modalChangePasswordLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modalChangePasswordLabel"><center>Change password</center></h4>
+			</div>
+			<div class="modal-body">
+				<h4 class="text-danger bg-danger" style="padding:5px;border-radius:3px;" ng-show="wrongData">Password mismatch</h4>
+				<h4 class="text-danger bg-danger" style="padding:5px;border-radius:3px;" ng-show="wrongPassword">Incorrect old password</h4>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon1"><big>*</big></span>
+					<input type="password" class="form-control" id="old_password" placeholder="Old password" aria-describedby="basic-addon1">
+				</div><br>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon2"><big>*</big></span>
+					<input type="password" class="form-control" id="new_password" placeholder="New Password" aria-describedby="basic-addon2">
+				</div><br>
+				<div class="input-group">
+					<span class="input-group-addon" id="basic-addon3"><big>*</big></span>
+					<input type="password" class="form-control" id="new_password_again" placeholder="Confirm new password" aria-describedby="basic-addon3">
 				</div>
-				<div class="modal-body">
-					<h4 class="text-danger bg-danger" style="padding:5px;border-radius:3px;" ng-show="wrongData">Password mismatch</h4>
-					<h4 class="text-danger bg-danger" style="padding:5px;border-radius:3px;" ng-show="wrongPassword">Incorrect old password</h4>
-					<div class="input-group">
-						<span class="input-group-addon" id="basic-addon1"><big>*</big></span>
-						<input type="password" class="form-control" id="old_password" placeholder="Old password" aria-describedby="basic-addon1">
-					</div><br>
-					<div class="input-group">
-						<span class="input-group-addon" id="basic-addon2"><big>*</big></span>
-						<input type="password" class="form-control" id="new_password" placeholder="New Password" aria-describedby="basic-addon2">
-					</div><br>
-					<div class="input-group">
-						<span class="input-group-addon" id="basic-addon3"><big>*</big></span>
-						<input type="password" class="form-control" id="new_password_again" placeholder="Confirm new password" aria-describedby="basic-addon3">
-					</div>
-				</div>		
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" ng-click="verifyPasswordChange()">Update password</button>
-				</div>
+			</div>		
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" ng-click="verifyPasswordChange()">Update password</button>
 			</div>
 		</div>
 	</div>
-	<div ng-controller="Ctrl" class="modal fade in" id="modalUploadPhoto" tabindex="-1" role="dialog" aria-labelledby="modalUploadPhotoLabel" aria-hidden="true" ng-show="uploadModal">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="modalUploadPhotoLabel"><center>Upload image</center></h4>
-				</div>
-				<div class="modal-body" >
-					<center>
-					<div s3-upload bucket="'test'" ng-model="files.first" s3-upload-options="{getOptionsUri:'http://localhost:3000/vendor/upload-policy?vendor_id=54f37ae23009ee8c2fe33667&access_token=623b8953dba03aa3b413ba0bbe60c301'}" do-upload="performUpload">
+</div>
+<div ng-controller="Ctrl" class="modal fade in" id="modalUploadPhoto" tabindex="-1" role="dialog" aria-labelledby="modalUploadPhotoLabel" aria-hidden="true" ng-show="uploadModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modalUploadPhotoLabel"><center>Upload image</center></h4>
+			</div>
+			<div class="modal-body" >
+				<center>
+					<div s3-upload bucket="'test'" ng-model="files.first" s3-upload-options="{getOptionsUri:'vendor/upload-policy?vendor_id=54f37ae23009ee8c2fe33667&access_token=623b8953dba03aa3b413ba0bbe60c301'}" do-upload="performUpload">
 						<center>
 							<button type="button" class="btn btn-default" ng-click="openPhotoUploadDialog()"><i class="fa fa-search">&nbsp&nbspBrowse image</i>
 							</button>
@@ -125,11 +156,11 @@
   					<div><img ng-src="{{myCroppedImage}}" /></div> -->
   					<!-- <iframe src="example.html" width="550" height="650"></iframe> -->
   				</center>
-  				</div>	
-  				<div class="modal-footer">
-  					<button type="button" class="btn btn-default" ng-click="UploadPhoto()"><i class="fa fa-cloud-upload">&nbsp&nbspUpload image</i></button>
-  				</div>
+  			</div>	
+  			<div class="modal-footer">
+  				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="UploadPhoto()"><i class="fa fa-cloud-upload">&nbsp&nbspUpload image</i></button>
   			</div>
   		</div>
   	</div>
   </div>
+</div>
