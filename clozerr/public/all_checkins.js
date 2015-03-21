@@ -140,24 +140,6 @@ $scope.update = function(){
   });
 
 }
-$scope.getTimeInFormat = function(dateStr) {
-    //10/21/2013 3:29 PM
-    var date = new Date(dateStr);
-    var str = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ';
-    var ampm = "";
-    if(date.getHours()>12) {
-      str = str + (date.getHours() - 12);
-      ampm = "PM";
-    }
-    else {
-      str = str + date.getHours();
-      ampm = "AM";
-    }
-
-    str = str + ':' + date.getMinutes() + ' ' + ampm;
-    console.log(str);
-    return str;
-  }
 
 $scope.createBill = function( checkin ){
   getBillHTML(checkin, function(imgData) {
@@ -172,7 +154,7 @@ $scope.createBill = function( checkin ){
     dataInBillValues.push(checkin.user.profile.name);
     dataInBillValues.push(checkin.offer.caption);
     dataInBillValues.push(checkin.offer.stamps);
-    dataInBillValues.push( new Date( $scope.checkin.date_created ).toString());
+    dataInBillValues.push( new Date( checkin.date_created ).toString());
     var doc = new jsPDF('p', 'mm', [200, 250]);
     doc.addImage(imgData, "JPEG", 0, 0, 250, 50);
 
