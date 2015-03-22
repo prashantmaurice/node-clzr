@@ -25,7 +25,7 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
 $rootScope.performUpload=true;
                     var access_token = localStorage.token;
 
-      $http.get( CLOZERR_VENDORS_URL + "/update?vendor_id=" + $rootScope.vendor._id + "&access_token=" + access_token+"&image=https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/"+$rootScope.vendor.resource_name+".jpg" ).
+      $http.get( CLOZERR_VENDORS_URL + "/update?vendor_id=" + $rootScope.vendor._id + "&access_token=" + access_token+"&image=https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/"+$rootScope.vendor.resource_name).
           success(function(data, status, headers, config) {
             console.log(data);
             $rootScope.vendor = data.vendor;
