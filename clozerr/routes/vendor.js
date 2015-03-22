@@ -188,6 +188,11 @@ router.get('/get', function (req, res) {
         }, function (err, offers) {
           if(err) console.log(err);
           var vendor_json = vendor.toJSON();
+          offers = _.sortBy(offers, function(offer) {
+            if(offer.stamps)
+              return offer.stamps;
+            else return 0;
+          });
           vendor_json.offers = offers;
             //debugger;
             var offers_qualified = _.filter(offers, function(offer) {
@@ -268,14 +273,14 @@ router.get('/upload-policy', function( req, res ){
           secret: settings.s3.secret_key,
           length: 50000000,
           bucket: settings.s3.bucket,
-          name: settings.s3.base_path + "/" + vendor.resource_name+".jpg",
+          name: settings.s3.base_path + "/" + vendor.resource_name,
           expires: new Date(Date.now() + 600000),
           acl: 'public-read'
         });
 
         var obj = p;
         obj.access_key=settings.s3.access_key;
-        obj.key=settings.s3.base_path + "/" + vendor.resource_name+".jpg";
+        obj.key=settings.s3.base_path + "/" + vendor.resource_name;
         
         res.end( JSON.stringify(obj) );
       });
@@ -541,6 +546,7 @@ router.get('/settings/save', function (req, res) {
     var latitude, longitude, image, fid, name, visible, address, city, phone, description, settings={};
     var question;
     var UUID;
+    var flags;
     var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
@@ -616,6 +622,10 @@ router.get('/settings/save', function (req, res) {
           if(req.query.UUID){
             UUID=req.query.UUID;
           }else UUID=vendor.UUID;
+          if(req.query.flags){
+            flags=req.query.flags;
+          }else flags=vendor.flags;
+
           var date_created = vendor.date_created;
           vendor.location = [latitude, longitude];
           vendor.image = image;
@@ -643,7 +653,7 @@ router.get('/settings/save', function (req, res) {
             console.log(res); 
             console.log(err);
           });
-          res.send(JSON.stringify({result:true}));
+          res.send(JSON.stringify({result:true,vendor:vendor}));
         }
         else {
 

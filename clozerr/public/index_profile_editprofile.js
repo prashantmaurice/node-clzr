@@ -8,6 +8,13 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
 
   console.log($rootScope.vendor);
   
+  $rootScope.$watch(function($rootScope) {
+    return $rootScope.vendor;
+  }, function(newVal,oldVal) {
+    if(newVal)
+      $scope.getAddress(newVal.location[0], newVal.location[1]);
+  });
+
   $scope.focusShowNothing = function() {
     console.log("focussed");		
     $('#statusLocationIndicator').removeClass('fa fa-spinner fa-pulse fa-2x');
@@ -20,9 +27,10 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
 $rootScope.performUpload=true;
                     var access_token = localStorage.token;
 
-      $http.get( CLOZERR_VENDORS_URL + "/update?vendor_id=" + $rootScope.vendor._id + "&access_token=" + access_token+"&image=https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/"+$rootScope.vendor.resource_name+".jpg" ).
+      $http.get( CLOZERR_VENDORS_URL + "/update?vendor_id=" + $rootScope.vendor._id + "&access_token=" + access_token+"&image=https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/"+$rootScope.vendor.resource_name).
           success(function(data, status, headers, config) {
             console.log(data);
+            $rootScope.vendor = data.vendor;
           }).error(function(data, status, headers, config) {
             console.log(error);
       });
@@ -38,6 +46,7 @@ $rootScope.performUpload=true;
    });
  }
  $scope.$on('page-editprofile',function() {
+  console.log('editprofile');
   $scope.vendorAddressRevGeoCoded = $scope.getAddress($rootScope.vendor.location[0],$rootScope.vendor.location[1]);
 });	
 
@@ -133,7 +142,7 @@ $scope.getDetails = function(){
 var upload=angular.module('clozerr',['ngImgCrop','ngSanitize', 'ngS3upload']);
 
 function Ctrl($scope, $rootScope) {
-  $scope.myImage='';
+  $scope.myImage=$rootScope.vendor.image;
   $scope.myCroppedImage='';
        /* $scope.files = {
        };*/

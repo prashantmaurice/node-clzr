@@ -28,15 +28,18 @@ var punchCardType = function($scope, $rootScope, $http) {
 		$scope.textInfoVis[$rootScope.vendor.offers.length] = false;
 		$scope.tempOffer.description = "";
 
-		$rootScope.vendor.offers.push($scope.tempOffer);
 		$http.get( CLOZERR_OFFERS_URL + "/create?caption=" + $scope.tempOffer.caption + "&description=" + $scope.tempOffer.description + "&access_token=" + localStorage.token ).
 		success(function(data, status, headers, config) {
 			console.log(data);
+			$scope.tempOffer = data.data;
+			console.log($scope.tempOffer);
+			$scope.tempOffer.caption = "";
+			$scope.tempOffer.description = "";
+			$rootScope.vendor.offers.push($scope.tempOffer);
 
 			$http.get( CLOZERR_VENDORS_URL + "/addoffer?vendor_id=" + $rootScope.vendor._id + "&offer_id=" + data.data._id + "&access_token=" + localStorage.token ).
 			success(function(data, status, headers, config) {
 				console.log(data);
-
 				$rootScope.pageChange("home");
 				$rootScope.pageChange("preferences");
 			}).error(function(data, status, headers, config) {
