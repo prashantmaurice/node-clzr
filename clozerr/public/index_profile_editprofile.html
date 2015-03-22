@@ -26,53 +26,40 @@
 .display-pic {
 	width: 400px;
 	height: 250px;
-	margin-bottom: 15px;
-	margin-top: 15px;
-	border: 0px solid #333;
-	padding: 0px;
+	margin-bottom: 20px;
 	border-radius: 4px;
-	opacity:1.0;
 }
-/*.display-pic:hover {
-	width: 400px;
-	height: 250px;
-	margin-bottom: 15px;
-	margin-top: 15px;
-	border: 0px solid #333;
-	padding: 0px;
-	border-radius: 4px;
-	opacity: 0.8;
-	}*/
-	</style>
-	<div ng-controller="index_profile_editprofile">
-		<div class="container-fluid card-view">
-			<div class="col-md-12">
-				<br>
+</style>
+<div ng-controller="index_profile_editprofile">
+	<div class="container-fluid card-view">
+		<div class="col-md-12">
+			<br>
 
-				<div class=" animated fadeInRight">
-					<h4><center>PROFILE DETAILS</center></h4>
-
-					<div class="row">
-						<div class="col-lg-9">
-						</div>
-						<div class="col-lg-2">
-							<a href="javascript:void(0)"><button type="button" data-toggle="modal" data-target="#modalUploadPhoto" class="page-header btn btn-default" ng-click="uploadVendorPhotoBackend()"><i class="fa fa-camera">&nbsp&nbspSelect image</i></button></a>
-						</div>
-					</div>
+			<div class=" animated fadeInRight">
+				<h4><center>PROFILE DETAILS</center></h4>
+			<!-- 
+			<img src="vendor.image" class="display-pic"></img> -->
+			<div class="row">
+				<div class="col-lg-9">
 				</div>
-				<div class="row animated fadeInLeft" style="padding:0px !important;margin:0px !important;">
-					<div class="col-md-6">
-					</div>
-					<div class="col-md-4" style="padding:0px">
-						<img ng-src="{{vendor.image}}" class="display-pic" ng-mouseover="hoverDisplayPic=true" ng-mouseleave="hoverDisplayPic=false">
-					</img>
+				<div class="col-lg-2">
+					<a href="javascript:void(0)"><button type="button" data-toggle="modal" data-target="#modalUploadPhoto" class="page-header btn btn-default" ng-click="uploadVendorPhotoBackend()"><i class="fa fa-camera">&nbsp&nbspSelect image</i></button></a>
 				</div>
-				<br>
-				<div class=" animated fadeInUp">
-					<div class="input-group">
-						<span class="input-group-addon" id="basic-addon4">&nbsp&nbsp&nbspPublic name&nbsp&nbsp&nbsp&nbsp</span>
-						<input type="text" class="form-control" ng-model="vendor.name" placeholder="Public name" aria-describedby="basic-addon4">
-					</div><br>
+			</div>
+		</div>
+		<div class="row animated fadeInLeft" style="padding:0px !important;margin:20px !important;">
+			<div class="col-md-6">
+			</div>
+			<div class="col-md-4" style="padding:0px">
+				<img ng-src="{{vendor.image}}" class="display-pic" ng-mouseover="hoverDisplayPic=true" ng-mouseleave="hoverDisplayPic=false">
+			</img>
+		</div>
+		<br>
+		<div class=" animated fadeInUp">
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon4">&nbsp&nbsp&nbspPublic name&nbsp&nbsp&nbsp&nbsp</span>
+				<input type="text" class="form-control" ng-model="vendor.name" placeholder="Public name" aria-describedby="basic-addon4">
+			</div><br>
 			<!-- 
 			<div class="input-group">
 				<span class="input-group-addon" id="basic-addon5">Franchise  name</span>
