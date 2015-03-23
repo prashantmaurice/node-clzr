@@ -81,7 +81,13 @@ var punchCardType = function($scope, $rootScope, $http) {
 			$scope.textInfoVis[$index] = false;
 		}
 		else {
-			$scope.textInfoVis[$index] = true;
+			var access_token = localStorage.token;
+			$http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + $rootScope.vendor.offers[$index]._id + "&caption=" + $rootScope.vendor.offers[$index].caption + "&description=" + $rootScope.vendor.offers[$index].description + "&access_token=" + access_token ).
+			success(function(data, status, headers, config) {
+				console.log(data);
+				$scope.textInfoVis[$index] = true;
+			}).error(function(data, status, headers, config) {
+			});
 		}
 	}
 	$scope.toggleHover = function($index) {
