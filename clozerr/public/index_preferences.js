@@ -37,15 +37,6 @@
       console.log(data);
     }).error(function(data, status, headers, config) {
     });
-
-    for(var u = 0; u<arr.length; u++) {
-      $http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + arr[u]._id + "&caption=" + arr[u].caption + "&description=" + arr[u].description + "&access_token=" + access_token ).
-      success(function(data, status, headers, config) {
-        console.log(data);
-        $rootScope.pageChange("home");
-      }).error(function(data, status, headers, config) {
-      });
-    }
   }
 //call update offer url and not vendor update
 
