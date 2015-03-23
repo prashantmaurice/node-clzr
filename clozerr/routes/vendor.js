@@ -37,6 +37,7 @@ router.get('/create', function (req, res) {
     var image = req.query.image;
     var fid = req.query.fid;
     var name = req.query.name;
+    var resource_name=name.toLowerCase();
     var settings = req.query.settings;
     var offers = [],
     offers_old = [],
@@ -53,7 +54,8 @@ router.get('/create', function (req, res) {
         fid: fid,
         date_created: date_created,
         dateUpdated:date_created,
-        settings:settings
+        settings:settings,
+        resource_name:resource_name
       });
     res.send({
       result: true,
