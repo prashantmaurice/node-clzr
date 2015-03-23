@@ -3,7 +3,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 
 	$scope.textInfoVis = [];
 	$scope.hoverCheck = [];
-	$scope.tempOffer = {};
+	$scope.tempOffer = null;
 
 
 	var CLOZERR_API = location.origin + '/';
@@ -24,6 +24,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 
 	$scope.addOffer = function() {
 
+		$scope.tempOffer = {};
 		$scope.tempOffer.caption = "";
 		$scope.textInfoVis[$rootScope.vendor.offers.length] = false;
 		$scope.tempOffer.description = "";
@@ -82,12 +83,15 @@ var punchCardType = function($scope, $rootScope, $http) {
 		}
 		else {
 			var access_token = localStorage.token;
-			$http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + $rootScope.vendor.offers[$index]._id + "&caption=" + $rootScope.vendor.offers[$index].caption + "&description=" + $rootScope.vendor.offers[$index].description + "&access_token=" + access_token ).
+			if($scope.tempOffer)
+				$rootScope.vendor.offers[$index] = $scope.tempOffer;
+			$http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + $rootScope.vendor.offers[$index]._id + "&caption=" + $rootScope.vendor.offers[$index].caption + "&description=" + $rootScope.vendor.offers[$index].description + "&access_token=" + access_token + "&type=" + $rootScope.vendor.offers[$index].type + "&stamps=" + ($index + 1)).
 			success(function(data, status, headers, config) {
 				console.log(data);
 				$scope.textInfoVis[$index] = true;
 			}).error(function(data, status, headers, config) {
 			});
+			$scope.tempOffer = null;
 		}
 	}
 	$scope.toggleHover = function($index) {
