@@ -181,7 +181,7 @@ function Ctrl($scope, $rootScope) {
         		console.log($rootScope.file[0]);
             console.log($rootScope.options);
             console.log($scope.key);
-        		upload_image($scope,'https://clozerr.s3.amazonaws.com/',$scope.options.key,'public-read','jpg',$rootScope.options.access_key,$rootScope.options.policy,
+        		upload_image($scope,'https://clozerr.s3.amazonaws.com/',$rootScope.options.key,'public-read','jpg',$rootScope.options.access_key,$rootScope.options.policy,
         			$rootScope.options.signature,
         			$rootScope.file);
         	}

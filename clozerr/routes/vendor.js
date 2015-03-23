@@ -53,7 +53,8 @@ router.get('/create', function (req, res) {
         fid: fid,
         date_created: date_created,
         dateUpdated:date_created,
-        settings:settings
+        settings:settings,
+        resource_name=name.toLowerCase()
       });
     res.send({
       result: true,

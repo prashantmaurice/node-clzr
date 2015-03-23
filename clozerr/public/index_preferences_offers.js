@@ -82,7 +82,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 		}
 		else {
 			var access_token = localStorage.token;
-			$http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + $rootScope.vendor.offers[$index]._id + "&caption=" + $rootScope.vendor.offers[$index].caption + "&description=" + $rootScope.vendor.offers[$index].description + "&access_token=" + access_token ).
+			$http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + $rootScope.vendor.offers[$index]._id + "&caption=" + $rootScope.vendor.offers[$index].caption + "&description=" + $rootScope.vendor.offers[$index].description + "&access_token=" + access_token+"&type="+$rootScope.vendor.offers[$index].type+"&stamps="+$rootScope.vendor.offers[$index].stamps).
 			success(function(data, status, headers, config) {
 				console.log(data);
 				$scope.textInfoVis[$index] = true;
