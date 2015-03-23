@@ -85,7 +85,7 @@ router.get('/create', function (req, res) {
     	caption: caption,
     	description: description
     });
-
+    console.log(offer);
     res.send( JSON.stringify( { result:true, data:offer } ) );
     offer.save(function (err) {
     	if (err) console.log(err);
