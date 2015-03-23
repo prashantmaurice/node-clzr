@@ -67,7 +67,8 @@ var punchCardType = function($scope, $rootScope, $http) {
 		for(var i=1;i<=$scope.num;i++) {	
 			$scope.textInfoVis.push(true);
 			$scope.hoverCheck.push(false);
-			$rootScope.vendor.offers[i-1].caption = unescape($rootScope.vendor.offers[i-1].caption);
+			$rootScope.vendor.offers[i-1].caption = unescape($rootScope.vendor.offers[i-1].caption);			
+			$rootScope.vendor.offers[i-1].description = unescape($rootScope.vendor.offers[i-1].description);
 			console.log($rootScope.vendor.offers[i-1].caption);
 		}
 	}
