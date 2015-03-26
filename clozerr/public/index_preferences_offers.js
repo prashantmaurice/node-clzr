@@ -3,7 +3,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 
 	$scope.textInfoVis = [];
 	$scope.hoverCheck = [];
-	$scope.tempOffer = null;
+	$scope.tempOffers = null;
 
 
 	var CLOZERR_API = location.origin + '/';
@@ -24,19 +24,21 @@ var punchCardType = function($scope, $rootScope, $http) {
 
 	$scope.addOffer = function() {
 
-		$scope.tempOffer = {};
-		$scope.tempOffer.caption = "";
+		$scope.tempOffers = [];
+		var index = $rootScope.vendor.offers.length;
 		$scope.textInfoVis[$rootScope.vendor.offers.length] = false;
-		$scope.tempOffer.description = "";
+		$scope.tempOffers[index] = {};
+		$scope.tempOffers[index].caption = "";
+		$scope.tempOffers[index].description = "";
 
-		$http.get( CLOZERR_OFFERS_URL + "/create?caption=" + $scope.tempOffer.caption + "&description=" + $scope.tempOffer.description + "&access_token=" + localStorage.token ).
+		$http.get( CLOZERR_OFFERS_URL + "/create?caption=" + $scope.tempOffers[index].caption + "&description=" + $scope.tempOffers[index].description + "&access_token=" + localStorage.token ).
 		success(function(data, status, headers, config) {
 			console.log(data);
-			$scope.tempOffer = data.data;
-			console.log($scope.tempOffer);
-			$scope.tempOffer.caption = "";
-			$scope.tempOffer.description = "";
-			$rootScope.vendor.offers.push($scope.tempOffer);
+			$scope.tempOffers[index] = data.data;
+			console.log($scope.tempOffers);
+			$scope.tempOffers[index].caption = "";
+			$scope.tempOffers[index].description = "";
+			$rootScope.vendor.offers.push($scope.tempOffers[index]);
 
 			$http.get( CLOZERR_VENDORS_URL + "/addoffer?vendor_id=" + $rootScope.vendor._id + "&offer_id=" + data.data._id + "&access_token=" + localStorage.token ).
 			success(function(data, status, headers, config) {
@@ -84,15 +86,17 @@ var punchCardType = function($scope, $rootScope, $http) {
 		}
 		else {
 			var access_token = localStorage.token;
-			if($scope.tempOffer)
-				$rootScope.vendor.offers[$index] = $scope.tempOffer;
+			if($scope.tempOffers) {
+				if($scope.tempOffers[$index])
+					$rootScope.vendor.offers[$index] = $scope.tempOffers[$index];
+			}
 			$http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + $rootScope.vendor.offers[$index]._id + "&caption=" + $rootScope.vendor.offers[$index].caption + "&description=" + $rootScope.vendor.offers[$index].description + "&access_token=" + access_token + "&type=" + $rootScope.vendor.offers[$index].type + "&stamps=" + ($index + 1)).
 			success(function(data, status, headers, config) {
 				console.log(data);
 				$scope.textInfoVis[$index] = true;
 			}).error(function(data, status, headers, config) {
 			});
-			$scope.tempOffer = null;
+			$scope.tempOffers[$index] = null;
 		}
 	}
 	$scope.toggleHover = function($index) {
