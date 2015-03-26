@@ -59,6 +59,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		geocoder.geocode({ 'address': address }, function (results, status) {
 
 			if (status == google.maps.GeocoderStatus.OK) {
+				console.log(results);
 				var latitude = results[0].geometry.location.lat();
 				var longitude = results[0].geometry.location.lng();
 				console.log('latitude : ' + latitude);
