@@ -101,13 +101,13 @@ router.get('/send/push', function (req, res) {
 
 router.get('/get/all/uuid', function(req, res) {
 
-  var errobj = error.err_insuff_params(res, req, ["user_id"]);
+  var errobj = error.err_insuff_params(res, req, ["access_token"]);
   if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
       }
 
-      var user_id = req.query.user_id;
+      var user_id = req.user._id;
 
       User.findOne({_id:user_id}, function(err, userObj) {
         if(err) {
