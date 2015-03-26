@@ -107,7 +107,7 @@ router.get('/get/all/uuid', function(req, res) {
         return;
       }
 
-      var user_id = req.user.id;
+      var user_id = req.user._id;
 
       User.findOne({_id:user_id}, function(err, userObj) {
         if(err) {
