@@ -7,17 +7,17 @@
 }
 </style>
 
-<div ng-controller="visitReminderCtrl" class="col-md-12">
+<div ng-controller="enableSxCtrl" class="col-md-12">
 	<div class="flip">			
 		<div class="card" ng-class="{'flipped':flipped}">
 			<div class="face front">
-				<div class="panel panel-yellow">
-					<div class="panel-yellow">
+				<div class="panel panel-green">
+					<div class="panel-green">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-xs-8 text-left">
 									<div>
-										<big>Visit reminder</big>
+										<big>Multiple Stamped Offers</big>
 									</div>
 								</div>
 								<div class="col-xs-4">
@@ -29,12 +29,12 @@
 					<div class="panel-footer">
 						<div class="panel-front-text">
 							<div class="panel-options">											
-								Bring your customers back with a tempting offer<br>
+								Give your customers more stamps based on their bill<br>
 							</div>	
 							<br><br>
 							<center>
 								<label>
-									<input type="checkbox" id="enableVisitreminderPref" ng-model="vp.activated"/>
+									<input type="checkbox" id="sxEnabled" ng-model="miscellaneous.sxEnabled"/>
 								</label>
 							</center>
 						</div>
@@ -43,13 +43,13 @@
 			</div>
 			<div class="face back">
 				<div class="row">
-					<div class="panel panel-yellow">
-						<div class="panel-yellow">
+					<div class="panel panel-green">
+						<div class="panel-green">
 							<div class="panel-heading">
 								<div class="row">
 									<div class="col-xs-8 text-left">
 										<div>
-											<big>&nbsp&nbspVisit reminder</big>
+											<big>&nbsp&nbspMultiple Stamped Offers</big>
 										</div>
 									</div>
 									<div class="col-xs-4">
@@ -59,19 +59,7 @@
 							</div>
 						</div>
 						<div class="panel-footer">
-							<div class="panel-front-text">
-								<div class="panel-options">											
-									<div class="col-xs-12">
-										<input type="textarea" id="temptingOffer" ng-model="vp.visitMessage" rows="5" class="form-control" placeholder="Enter your offer..">
-									</div><br><br>
-											<!-- <div class="row">
-												<div class="radio col-xs-12">
-													<label>
-														<input type="checkbox" id="notify1st">&nbsp&nbsp&nbsp&nbspNotify user on first of month</input>
-													</label>
-												</div>
-											</div> -->
-										</div>								
+							<div class="panel-front-text">							
 										<div class="row" style="text-align:left;">
 											<div class="col-xs-1">
 											</div>
@@ -79,11 +67,10 @@
 												<!-- <label>
 													<input type="checkbox" id="notifyExact">&nbsp&nbsp&nbsp&nbspNotify user on exact date</input>
 												</label> -->
-												Send this message to customers <br>who haven't visited in :
-												<div class="pull-right" id="DIVnotVisitedDaysCount">
-													<input type="number" class="form-control" id="notVisitedDaysCount" ng-model="vp.days" min="0" max="100" step="1" value="7"
+												Value of one stamp :
+												<div class="pull-right" id="stampValue">
+													<input type="number" class="form-control" id="stampValue" ng-model="miscellaneous.billAmt" min="0" step="1" 
 													/>
-													<big> days </big>
 												</div>
 											</div>
 										</div><br>
@@ -91,8 +78,8 @@
 											<div class="col-md-4">
 											</div>
 											<div class="col-md-2">
-												<a href="javascript:void(0)" class="restore-color-yellow">
-													<button type="button" class="btn btn-warning" id="saveVisitReminderPref" ng-click="flipped=!flipped;saveVisitReminderPref();"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspSAVE</i></button>
+												<a href="javascript:void(0)" class="restore-color-green">
+													<button type="button" class="btn btn-success" id="saveSxSettingsPref" ng-click="flipped=!flipped;saveSxSPref();"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspSAVE</i></button>
 												</a>
 											</div>
 										</div>
