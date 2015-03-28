@@ -8,9 +8,9 @@
             <th>USERNAME</th>
             <th>TIME</th>
             <th>OFFER</th>
-            <th>OFFER-LEVEL</th>
+            <th>VISIT NO</th>
             <th>RATING</th> 
-            <th>REVIEWS</th>
+            <th>FEEDBACK</th>
             <th>BILL</th>
           </tr>
         </thead>
@@ -18,7 +18,7 @@
         <tbody>
           <tr ng-repeat="checkin in checkins">
             <td>{{ checkin.user.profile.name }}</td>
-            <td>{{ checkin.date_created | humanize_date }}</td>
+            <td>{{ getTimeInFormat(checkin.date_created || humanize_date) }}</td>
             <td>{{ checkin.offer.caption }}</td>
             <td>{{ checkin.offer.stamps }}</td>
             <td>{{getAvgStars(checkin.review.stars)}}</td>
@@ -34,29 +34,31 @@
     <img src="loader.gif" class="spinner-img">
   </div>
 </div>
-<div class="pop-panel fade in" ng-show="popUpReviewVisibility" ng-style="popUpReviewStyle">
+<div class="pop-panel fade in" ng-show="popUpReviewVisibility" style="width:33%;border-radius:4px;-moz-box-shadow: 0 0 35px rgb(252,15,15);
+  -webkit-box-shadow: 0 0 35px rgb(252,15,15);
+  box-shadow: 0px 0px 35px rgb(252,15,15);" ng-style="popUpReviewStyle">
   <div class="card" style="width:100%">
-    <div class="panel">
-      <div class="panel-default">
+    <div class="panel" style="margin-bottom:0px !important">
+      <div class="panel-red">
         <div class="panel-heading">
           <div class="row">
-            <div class="col-xs-8">
+            <div class="col-lg-8">
               <div>
                 <br>
-                <big><big>Reviews</big></big>
+                <big><big>Feedback</big></big>
               </div>
             </div>
-            <div class="col-xs-1"></div>
-            <div class="col-xs-2">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-2">
               <i class="fa fa-question fa-4x"></i> 
             </div>
-            <div class="col-xs-1"><button type="button" class="close" ng-click="hidePopUpReview()" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+            <div class="col-lg-1"><button type="button" class="close" ng-click="hidePopUpReview()" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
           </div>
         </div>
       </div>
       <div class="panel-default">
-        <div class="panel-footer" style="background:#fff" ng-show="visShowQuestions">
-          <table class="table table-hover">
+        <div class="panel-footer" style="background:#eee" ng-show="visShowQuestions">
+          <table class="table">
             <thead>
               <tr>
                 <th>QUESTION</th>
@@ -72,16 +74,16 @@
           </table>
           <div class="row">
             <div class="col-xs-9">
-              <b>REMARKS</b> : {{popReview.remarks}}
+              <b>REMARKS</b> : {{popReview.review.remarks || "-NIL-"}}
             </div>
             <div class="col-xs-3">
-              <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalNotifyUser"><i class="fa fa-reply"></i>&nbspReply</button>
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalNotifyUser"><i class="fa fa-reply"></i>&nbspReply</button>
             </div>
           </div>
         </div>
         <div class="panel-footer" style="background:#fff" ng-show="!visShowQuestions">
           <div style="width:100%;">
-            Sorry, no reviews available.
+            Sorry, no feedback available.
             </div>
         </div>
       </div>

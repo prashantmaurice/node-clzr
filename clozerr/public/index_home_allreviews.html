@@ -1,5 +1,6 @@
 <div ng-controller="index_home_allreviews">
-  <div ng-show="visibility">
+  <div ng-show="visibility" class="animated fadeIn slowest">
+    <br>
     <div class="row">
       <div class="col-lg-3">
         <div class="pull-right">
@@ -12,7 +13,7 @@
     <div class="col-lg-9">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Latest Reviews</h3>
+          <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Latest Feedbacks</h3>
         </div>
         <div class="panel-body">
             <div class="list-group"><!-- 
@@ -20,14 +21,17 @@
                 <span class="badge">just now</span>
                 Sai Praveen <i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i>
               </a> -->
-              <div ng-repeat="obj in allCheckinObjectsWithReviews track by $index">
-               <a href="#" class="list-group-item">
-                <span class="badge">{{obj.review.date_created_modified}}</span>
-                {{obj.user.profile.name || (obj.user.profile.first_name  + " " + obj.user.profile.last_name)}} 
-                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                {{getStatusOfReviewStars(obj.review.stars)}}
-                <!-- <i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i> -->
-                <i ng-repeat="st in getNumber(obj.review.stars) track by $index" class="fa fa-fw fa-star"></i>
+              <div ng-repeat="obj in allCheckinObjectsWithReviews track by $index" style="margin:5px">
+               <a href="#" class="list-group-item row">
+                <div class="col-lg-4">
+                  {{obj.user.profile.name || (obj.user.profile.first_name  + " " + obj.user.profile.last_name)}} 
+                </div>
+                <div class="col-lg-4">
+                  {{getAvgStars(obj.review.stars)}}
+                </div>
+                <div class="col-lg-4">
+                  <span class="badge">{{obj.review.date_created_modified}}</span>
+                </div>
               </a>
             </div>
           </div>

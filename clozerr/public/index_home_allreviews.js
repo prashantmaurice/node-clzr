@@ -18,6 +18,17 @@ var index_home_allreviews = function( $rootScope, $scope, $http ){
 			return "No ratings available";
 		}
 	}
+	$scope.getAvgStars = function(stars) {
+		if(stars=="N/A") return "N/A";
+		var avg = 0;
+		for(var i=0;i<stars.length;i++) {
+			avg = avg + stars[i];
+		}
+		avg = avg/stars.length;
+		avg = avg.toFixed(2);
+		return avg + "/5.00";
+	}
+
 	console.log('controller home-all-reviews');
 	var PAGE_NAME = "home-all-reviews";
 	$scope.$on("page-" + PAGE_NAME, function(){

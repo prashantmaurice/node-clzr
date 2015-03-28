@@ -24,6 +24,23 @@ var index_home = function( $rootScope, $scope, $http ){
     avgst = parseInt(avgst+"");
     return new Array(avgst);   
   }
+
+  $scope.getArray = function(num) {
+  return new Array(num);
+}
+
+  $scope.showReviewDetails = function(element, index) {
+    console.log(index);
+    for(var i=0;i<$rootScope.latestCheckinObjectsWithReviews.length;i++) {
+      if(i==index) {
+        $scope.latestReviewsArrVis[index] = true;
+      }
+      else {
+        $scope.latestReviewsArrVis[i] = false;
+      }
+    }
+  }
+
   $scope.getTimeInFormat = function(dateStr) {
     //10/21/2013 3:29 PM
     var date = new Date(dateStr);
@@ -41,6 +58,17 @@ var index_home = function( $rootScope, $scope, $http ){
     str = str + ':' + date.getMinutes() + ' ' + ampm;
     console.log(str);
     return str;
+  }
+
+  $scope.getAvgStars = function(stars) {
+    if(stars=="N/A") return "N/A";
+    var avg = 0;
+    for(var i=0;i<stars.length;i++) {
+      avg = avg + stars[i];
+    }
+    avg = avg/stars.length;
+    avg = avg.toFixed(2);
+    return avg + "/5.00";
   }
 
   $scope.loadStats = function() {
@@ -64,7 +92,13 @@ var index_home = function( $rootScope, $scope, $http ){
           $rootScope.latestCheckinObjects.push(data[i]);      //may or may not contain a review
           if(data[i].review) {
             data[i].review.date_created_modified = $scope.getTimeInFormat(data[i].review.date_created);
-            $rootScope.latestCheckinObjectsWithReviews.push(data[i]);            
+            $rootScope.latestCheckinObjectsWithReviews.push(data[i]);
+
+
+            $scope.latestReviewsArrVis = [];
+            for(var i=0;i<$rootScope.latestCheckinObjectsWithReviews.length;i++) {
+              $scope.latestReviewsArrVis.push(false);
+            }
           }
         }
         if(data[i].review) {
