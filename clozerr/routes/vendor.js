@@ -36,9 +36,23 @@ router.get('/create', function (req, res) {
     var lon = req.query.longitude;
     var image = req.query.image;
     var fid = req.query.fid;
-    var name = req.query.name;
+    var name = unescape(req.query.name);
     var resource_name=name.toLowerCase();
-    var settings = req.query.settings;
+    if(req.query.settings) {
+      var settings = req.query.settings;
+      if(settings.birthday)
+        settings.birthday.birthdayWish = unescape(settings.birthday.birthdayWish);
+      if(settings.visitreminder)
+        settings.visitreminder.visitMessage = unescape(settings.visitreminder.visitMessage);
+      if(settings.neighbourhoodperks)
+        settings.neighbourhoodperks.message = unescape(settings.neighbourhoodperks.message);
+    }
+    if(req.query.question) {
+      var question = req.query.question;
+      _.forEach(question, function(q, index, question) {
+        question[index] = unescape(question[index]);
+      });
+    }
     var offers = [],
     offers_old = [],
     date_created = new Date();
@@ -48,7 +62,7 @@ router.get('/create', function (req, res) {
         name: name,
         offers: offers,
         phone: req.query.phone,
-        question:req.query.question,
+        question:question,
         image: image,
         offers_old: offers_old,
         fid: fid,
@@ -160,7 +174,7 @@ router.get('/get/all/uuid', function(req, res) {
           
         });
 
-      });
+});
 
 });
 
@@ -586,8 +600,8 @@ router.get('/settings/save', function (req, res) {
             fid = req.query.fid;
           } else fid = vendor.fid;
 
-          if(req.query.vendor_name){
-            name=req.query.vendor_name;
+          if(req.query.name){
+            name=unescape(req.query.name);
           }else name=vendor.name;
 
           if(req.query.phone){
@@ -595,7 +609,7 @@ router.get('/settings/save', function (req, res) {
           }else phone = vendor.phone;
 
           if(req.query.address){
-            address = req.query.address;
+            address = unescape(req.query.address);
           }else address=vendor.address;
 
           if(req.query.city){
@@ -607,7 +621,7 @@ router.get('/settings/save', function (req, res) {
           }else visible = vendor.visible;
 
           if( req.query.description ){
-            description = req.query.description;
+            description = unescape(req.query.description);
           }else description = vendor.description;
 
           if( req.query.resource_name ){
@@ -619,6 +633,13 @@ router.get('/settings/save', function (req, res) {
           }else question=vendor.question;
           if(req.query.settings) {
             settings = req.query.settings;
+            var settings = req.query.settings;
+            if(settings.birthday)
+              settings.birthday.birthdayWish = unescape(settings.birthday.birthdayWish);
+            if(settings.visitreminder)
+              settings.visitreminder.visitMessage = unescape(settings.visitreminder.visitMessage);
+            if(settings.neighbourhoodperks)
+              settings.neighbourhoodperks.message = unescape(settings.neighbourhoodperks.message);
             console.log(settings);
           }
           else settings = vendor.settings;
@@ -645,6 +666,9 @@ router.get('/settings/save', function (req, res) {
           vendor.phone = phone;
           vendor.description = description;
           vendor.resource_name = resource_name;
+          _.forEach(question, function(q, index, question) {
+            question[index] = unescape(question[index]);
+          });
           vendor.question=question;
           vendor.settings = settings;
           vendor.UUID=UUID; 

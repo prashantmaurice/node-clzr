@@ -90,7 +90,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 				if($scope.tempOffers[$index])
 					$rootScope.vendor.offers[$index] = $scope.tempOffers[$index];
 			}
-			$http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + $rootScope.vendor.offers[$index]._id + "&caption=" + $rootScope.vendor.offers[$index].caption + "&description=" + $rootScope.vendor.offers[$index].description + "&access_token=" + access_token + "&type=" + $rootScope.vendor.offers[$index].type + "&stamps=" + ($index + 1)).
+			$http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + $rootScope.vendor.offers[$index]._id + "&caption=" + unescape($rootScope.vendor.offers[$index].caption) + "&description=" + unescape($rootScope.vendor.offers[$index].description) + "&access_token=" + access_token + "&type=" + $rootScope.vendor.offers[$index].type + "&stamps=" + ($index + 1)).
 			success(function(data, status, headers, config) {
 				console.log(data);
 				$scope.textInfoVis[$index] = true;

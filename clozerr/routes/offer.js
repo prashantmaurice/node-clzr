@@ -73,8 +73,8 @@ router.get('/create', function (req, res) {
 
 		var caption = "default";
 		var description = "default";
-    if ( req.query.caption ) caption = req.query.caption;
-    if ( req.query.description ) description = req.query.description;
+    if ( req.query.caption ) caption = unescape(req.query.caption);
+    if ( req.query.description ) description = unescape(req.query.description);
 
     var dateCreated = new Date();
 
@@ -123,10 +123,10 @@ router.get('/update', function (req, res) {
     } else stamps = offer.stamps;
     dateUpdated = new Date();
     if (req.query.caption) {
-    	caption = req.query.caption;
+    	caption = unescape(req.query.caption);
     } else caption = offer.caption;
     if (req.query.description) {
-    	description = req.query.description;
+    	description = unescape(req.query.description);
     } else description = offer.description;
 
     var date_created = offer.date_created;
