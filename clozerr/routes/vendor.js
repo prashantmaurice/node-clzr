@@ -549,6 +549,7 @@ router.get('/settings/save', function (req, res) {
     var question;
     var UUID;
     var flags;
+    var sxEnabled;
     var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
@@ -627,6 +628,9 @@ router.get('/settings/save', function (req, res) {
           if(req.query.flags){
             flags=req.query.flags;
           }else flags=vendor.flags;
+          if(req.query.sxEnabled){
+            sxEnabled=req.query.sxEnabled;
+          }else sxEnabled=vendor.sxEnabled;
 
           var date_created = vendor.date_created;
           vendor.location = [latitude, longitude];

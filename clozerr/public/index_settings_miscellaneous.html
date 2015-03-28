@@ -1,0 +1,39 @@
+<style>
+.display-none {
+	display: none;
+}
+</style>
+<div class="container-fluid card-view animated fadeIn slowest" ng-controller="index_settings_miscellaneous">
+	<div class="row">
+		<div class="col-lg-10">
+			<h3>Multiple Stamped Offers</h3>
+		</div>
+		<div class="col-lg-2">
+			<div class="checkbox" style="margin-top:18%;">
+				<input type="checkbox" ng-model="vendor.settings.sxEnabled" id="enableSx" name="enableSx" />
+				<label for="enableSx"></label>
+			</div>
+		</div>
+	</div>
+	<div ng-class="{'display-none':!vendor.settings.sxEnabled}" id="sxOfferPanel">
+		<div class="row">
+			<div class="panel">
+				<div class="panel-heading">
+					<div class="panel-front-text">
+						<div class="panel-options">											
+						</div>		
+						<br><br>						
+						<div class="row">
+							<div class="radio col-lg-8 col-lg-offset-1">
+								Value of One Stamp : 
+							</div>
+							<div class="col-lg-2">
+								<input type="number" class="form-control" id="stampValue" min="0" step="1" ng-model="vendor.settings.billAmt" style="margin-top:26%"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
