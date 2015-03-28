@@ -42,7 +42,7 @@
               </div>
               <div class="col-xs-9 text-right">
                 <div class="huge">{{latestCheckinObjectsWithReviews.length}}</div>
-                <div>New Reviews in this week</div>
+                <div>New Feedbacks in this week</div>
               </div>
             </div>
           </div>
@@ -137,31 +137,67 @@
   <div class="col-lg-6 animated fadeInRight">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Latest Reviews</h3>
+        <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Latest Feedbacks</h3>
       </div>
       <div class="panel-body">
-            <div class="list-group"><!-- 
+            <div class="list-group" id="latestReviews"><!-- 
               <a href="#" class="list-group-item">
                 <span class="badge">just now</span>
                 Sai Praveen <i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i>
               </a> -->
-              <div ng-repeat="obj in latestCheckinObjectsWithReviews track by $index">
-               <a href="#" class="list-group-item">
-                <span class="badge">{{obj.review.date_created_modified}}</span>
-                {{obj.user.profile.name || (obj.user.profile.first_name  + " " + obj.user.profile.last_name)}} 
-                <!-- <i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i> -->
-                  <i ng-repeat="st in getNumber(obj.review.stars) track by $index" class="fa fa-fw fa-star"></i>
-              </a>
-            </div>
+              <div ng-repeat="obj in latestCheckinObjectsWithReviews track by $index" style="margin:5px">
+               <a href="#" class="list-group-item row" ng-click="showReviewDetails($element, $index)">
+                <div class="col-lg-4">
+                  {{obj.user.profile.name || (obj.user.profile.first_name  + " " + obj.user.profile.last_name)}} 
+                </div>
+                <div class="col-lg-4">
+                  {{getAvgStars(obj.review.stars)}}
+                </div>
+                <div class="col-lg-4">
+                  <span class="badge">{{obj.review.date_created_modified}}</span>
+                </div>
+                <div class="reviewSlideDetails" ng-show="latestReviewsArrVis[$index]">
+                  <br><br>
+                 <div class="panel-default">
+                  <div class="panel-footer" style="background:transparent;padding:10px 0px;">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>QUESTION</th>
+                          <th>RATING</th>
+                        </tr>
+                      </thead>
+                      <tbody >
+                        <tr ng-repeat="question in obj.vendor.question track by $index">
+                          <td>{{question}}</td>
+                          <td><i ng-repeat="st in getArray(obj.review.stars[$index]) track by $index" class="fa fa-fw fa-star"></i></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="row">
+                      <div class="col-xs-9">
+                        <b>REMARKS</b> : {{obj.review.remarks || "-NIL-"}}
+                      </div>
+                    </div>
+                  </div>
+                 <!--  <div class="panel-footer" style="background:#fff" ng-show="!visShowQuestions">
+                    <div style="width:100%;">
+                      Sorry, no feedback available.
+                    </div>
+                  </div> -->
+                </div>
+              </div>
+            </a>
           </div>
-          <div class="text-right">
-            <a href="javascript:void(0)" ng-click="pageChange('home-all-reviews')">View All Reviews <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
+        </div>
+        <div class="text-right">
+          <a href="javascript:void(0)" ng-click="pageChange('home-all-reviews')">View All Feedbacks <i class="fa fa-arrow-circle-right"></i></a>
         </div>
       </div>
     </div>
-    
   </div>
+
+</div>
 </div>
 <!-- /.row -->
 

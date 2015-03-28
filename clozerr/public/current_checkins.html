@@ -9,8 +9,9 @@
             <th>PIN</th>
             <th>TIME</th>
             <th>OFFER</th>
-            <th>OFFER-LEVEL</th>
+            <th>VISIT NO</th>
             <th>EXPIRES</th>
+            <th>BILL</th>
             <th>ACTION</th>
           </tr>
         </thead>
@@ -18,10 +19,11 @@
             <tr ng-repeat="checkin in checkins">
                 <td>{{ checkin.user.profile.name }}</td>
                 <td>{{ checkin.pin }}</td>
-                <td>{{ checkin.date_created | humanize_date }}</td>
+                <td>{{ getTimeInFormat(checkin.date_created || humanize_date) }}</td>
                 <td>{{ checkin.offer.caption }}</td>
                 <td>{{ checkin.offer.stamps }}</td>
                 <td data-time="{{ checkin.date_created }}" class="timer"></td>
+                <td><input type="number" id="billAmount" ng-show="sxEnabled" ng-model="billAmt"></td>
                 <td><a href="javascript:void(0)" ng-click="invokeTypeRequirement( checkin )" class="btn btn-primary">VALIDATE</a></td>
             </tr>
         </tbody>

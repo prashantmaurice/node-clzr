@@ -22,7 +22,7 @@ a.non-blue-a-theme:hover {
 		<div class="modal-content">
 			<div class="modal-header">
 				<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				 --><h4 class="modal-title" id="myModalLabel"><center>REVIEW QUESTIONS</center></h4>
+				 --><h4 class="modal-title" id="myModalLabel"><center>FEEDBACK QUESTIONS</center></h4>
 			</div>
 			<div class="modal-body" style="height:auto">
 				<div class="panel panel-default">
@@ -44,12 +44,12 @@ a.non-blue-a-theme:hover {
 										<span class="input-group-addon">
 											{{$index + 1}}
 										</span>
-										<input type="text" placeholder="Your question.." ng-model="vendor.question[$index]" class="form-control" aria-label="...">
+										<input type="text" placeholder="Your question.." ng-model="vendor.question[$index]" ng-blur="updateVendorPreferencesBackend()" class="form-control" aria-label="...">
 									</div>
 
 								</div>
 								<div class="col-lg-1" id="divRemoveM">
-									<a href="javascript:void(0)"  id="divRemove" ng-click="removeQuestion($index)">
+									<a href="javascript:void(0)"  id="divRemove" ng-click="removeQuestion($index);updateVendorPreferencesBackend();">
 										<i class="fa fa-times fa-1x"></i>
 									</a>
 								</div>

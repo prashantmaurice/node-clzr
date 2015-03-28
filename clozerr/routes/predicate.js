@@ -21,6 +21,8 @@ var predicates = {
 
     if( user.stamplist && (user.stamplist[vendor.fid]>=temp))
       return true;
+    else if(user.stamplist && !user.stamplist[vendor.fid]&&offer.stamps=="1")
+      return true;
     else
       return false;
 

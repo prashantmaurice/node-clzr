@@ -22,22 +22,7 @@
   // Page change controllers end.
 
   console.log('in index_preferences controller');
-
-  $scope.updateVendorPreferencesBackend = function() {
-    var access_token = localStorage.token;
-
-    var arr = $rootScope.vendor.offers;
-    var str = decodeURIComponent(jQuery.param({question:$rootScope.vendor.question}));
-
-    $http.get( CLOZERR_VENDORS_URL + "/update?vendor_id=" + $rootScope.vendor._id + "&" + str + "&access_token=" + access_token ).
-    success(function(data, status, headers, config) {
-
-      console.log('success - question');
-      console.log( CLOZERR_VENDORS_URL + "/update?vendor_id=" + $rootScope.vendor._id + "&" + str + "&access_token=" + access_token );
-      console.log(data);
-    }).error(function(data, status, headers, config) {
-    });
-  }
+  
 //call update offer url and not vendor update
 
 }

@@ -38,6 +38,11 @@ var index_settings = function( $rootScope, $scope, $http ){
       else
       {$rootScope.vendor.settings.neighbourhoodperks.activated =false;
         $rootScope.vendor.settings.neighbourhoodperks.distance=0;
+      }
+      if(!$rootScope.vendor.settings.sxEnabled)
+      {
+        $rootScope.vendor.settings.sxEnabled=false;
+        $rootScope.vendor.settings.billAmt=0;
       } 
   });
 
