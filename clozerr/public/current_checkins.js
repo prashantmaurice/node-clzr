@@ -27,7 +27,6 @@ var current_checkins = function( $rootScope, $scope, $http ){
   var CLOZERR_CURRENT_CHECKINS_URL = CLOZERR_API + "checkin/active";
   // TODO: update this url somewhere.
   $scope.showData = true;
-  $scope.sxEnabled=true;
   $scope.update = function(){
     var access_token = localStorage.token;
     $scope.spinner = true;
@@ -86,6 +85,7 @@ var current_checkins = function( $rootScope, $scope, $http ){
   $scope.$on("page-current-checkins", function(){
     $scope.visibility = true;
     $scope.update();
+    $scope.sxEnabled=$rootScope.vendor.settings.sxEnabled;
   });
   $scope.$on("logged-in", function(){
     $scope.visibility = true;

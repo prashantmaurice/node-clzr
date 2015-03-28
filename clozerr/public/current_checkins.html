@@ -11,7 +11,7 @@
             <th>OFFER</th>
             <th>VISIT NO</th>
             <th>EXPIRES</th>
-            <th>BILL</th>
+            <th ng-show="sxEnabled">BILL</th>
             <th>ACTION</th>
           </tr>
         </thead>
@@ -23,7 +23,7 @@
                 <td>{{ checkin.offer.caption }}</td>
                 <td>{{ checkin.offer.stamps }}</td>
                 <td data-time="{{ checkin.date_created }}" class="timer"></td>
-                <td><input type="number" id="billAmount" ng-show="sxEnabled" ng-model="billAmt"></td>
+                <td ng-show="sxEnabled"><input type="number" class="form-control" id="billAmount"  ng-model="billAmt"></td>
                 <td><a href="javascript:void(0)" ng-click="invokeTypeRequirement( checkin )" class="btn btn-primary">VALIDATE</a></td>
             </tr>
         </tbody>
