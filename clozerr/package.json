@@ -9,11 +9,14 @@
     "bcrypt": "0.7.7",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.8.1",
+    "chai": "*",
     "cookie-parser": "~1.3.3",
     "debug": "~2.0.0",
     "express": "~4.9.0",
+    "googleapis": "^2.0.2",
     "hat": "0.0.3",
     "jade": "~1.6.0",
+    "mocha": "*",
     "morgan": "~1.3.0",
     "node-gcm": "^0.9.14",
     "node-gcm-service": "^0.2.8",
@@ -21,10 +24,8 @@
     "s3-policy": "^0.2.0",
     "s3policy": "0.0.1",
     "serve-favicon": "~2.1.3",
+    "should": "*",
     "socket.io": "^1.3.3",
-    "underscore": "^1.7.0",
-    "chai": "*",
-    "mocha": "*",
-    "should":"*"
+    "underscore": "^1.7.0"
   }
 }
