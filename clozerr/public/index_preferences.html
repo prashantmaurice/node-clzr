@@ -10,17 +10,18 @@
 <div ng-controller="index_preferences" class="col-lg-10 col-lg-offset-2">
 	<div class="container-fluid" ng-show="visibility">
 
-		<div class="row">
-			<div class="col-lg-10">
+		<div class="row animated fadeInDown">
+			<div class="col-lg-12">
 				<h1 class="page-header">Preferences
 				</h1>
 			</div>
+			<!-- 
 			<div class="col-lg-2">
 				<a href="javascript:void(0)"><button type="button" class="page-header btn btn-default" ng-click="updateVendorPreferencesBackend()"><i class="fa fa-floppy-o fa-1x">&nbsp&nbspSAVE</i></button></a>
-			</div>
+			</div> -->
 		</div>
 
-		<div class="col-md-12 jumbotron" style="padding:20px">
+		<div class="col-md-12 animated fadeIn jumbotron" style="padding:20px">
 			<div ng-include="'index_preferences_offers.html'"></div>
 			<div ng-include="'index_preferences_reviewquestions.html'"></div>		
 		</div>

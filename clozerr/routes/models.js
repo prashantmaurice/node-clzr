@@ -23,7 +23,9 @@ var vendorSchema = new Schema({
 	question : [String],
 	UUID : [String],
 	test : Boolean,
-	settings : Schema.Types.Mixed	
+	settings : Schema.Types.Mixed,
+	flags : [String]	,
+	sxEnabled : Boolean
 });
 vendorSchema.index({ location: '2d' });
 

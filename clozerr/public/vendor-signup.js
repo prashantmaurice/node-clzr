@@ -78,6 +78,8 @@ var vendorSignup = function($scope, $rootScope, $http) {
 	$scope.createVendor = function() {
 		var access_token = localStorage.token;
 		var settings = {};
+		settings.sxEnabled=$rootScope.miscellaneous.sxEnabled;
+		settings.billAmt=$rootScope.miscellaneous.billAmt;
 		settings.birthday = $rootScope.bp;
 		settings.neighbourhoodperks = $rootScope.np;
 		settings.visitreminder = $rootScope.vp;
@@ -96,6 +98,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 			$http.get( CLOZERR_API +  "auth/create" + "?vendor_id=" + $scope.vendor_id + "&username=" + $scope.vusername + "&password=" + $scope.vpassword).
 			success(function(data, status, headers, config) {
 				console.log("Created : User account");
+				console.log(data);
 				console.log($scope.vusername);
 				$http.get(CLOZERR_API + "auth/login/password?username=" + $scope.vusername + "&password=password" /*+ $scope.vpassword*/).
 				success(function(data, status, headers, config) {

@@ -73,8 +73,8 @@ router.get('/create', function (req, res) {
 
 		var caption = "default";
 		var description = "default";
-    if ( req.query.caption ) caption = req.query.caption;
-    if ( req.query.description ) description = req.query.description;
+    if ( req.query.caption ) caption = unescape(req.query.caption);
+    if ( req.query.description ) description = unescape(req.query.description);
 
     var dateCreated = new Date();
 
@@ -85,7 +85,7 @@ router.get('/create', function (req, res) {
     	caption: caption,
     	description: description
     });
-
+    console.log(offer);
     res.send( JSON.stringify( { result:true, data:offer } ) );
     offer.save(function (err) {
     	if (err) console.log(err);
@@ -123,10 +123,10 @@ router.get('/update', function (req, res) {
     } else stamps = offer.stamps;
     dateUpdated = new Date();
     if (req.query.caption) {
-    	caption = req.query.caption;
+    	caption = unescape(req.query.caption);
     } else caption = offer.caption;
     if (req.query.description) {
-    	description = req.query.description;
+    	description = unescape(req.query.description);
     } else description = offer.description;
 
     var date_created = offer.date_created;
@@ -191,9 +191,10 @@ router.get('/update', function (req, res) {
         	var len = arr_offers.length;
         	for(var i=0;i<len;i++) {
         		if(arr_offers[i] != offer_id) {
-        			arr_updated_offers[i] = arr_offers[i];
+        			arr_updated_offers.push( arr_offers[i] );
         		}
         	}
+
         	vendor.offers = arr_updated_offers;
           vendor.save(function(err) {
           	if(err)	console.log(err);

@@ -24,6 +24,7 @@
 <script type="text/javascript" src="punchcard.js"></script>
 <script type="text/javascript" src="neighbourhoodperks.js"></script>
 <script type="text/javascript" src="visitreminder.js"></script>
+<script type="text/javascript" src="miscellaneous.js"></script>
 <script type="text/javascript" src="birthday.js"></script>
 <script type="text/javascript" src="js/bootstrap-switch.js"></script>
 <script type="text/javascript" src="js/bootstrap-slider.js"></script>
@@ -221,7 +222,7 @@ body {
 		<div ng-show="visStep3">
 			<center>
 				<div class="container-fluid">
-					<div class="whitebox" style="width:40%;height:110%;">
+					<div class="whitebox" style="width:40%;height:120%;">
 						<h4><center>PREFERENCES</center></h4>
 						<br>
 						<div class="row">
@@ -342,7 +343,7 @@ body {
 		<div ng-show="visStep4">
 			<center>
 				<div class="container-fluid">
-					<div class="whitebox-settings" style="width:80%;height:130%;">
+					<div class="whitebox-settings" style="width:80%;height:140%;">
 						<h4><center>SETTINGS</center></h4>
 						<br>
 						<div class="row">
@@ -352,8 +353,9 @@ body {
 						</div>
 						<br><br><br><br><br><br><br>
 						<div class="row">
-							<div class="col-lg-4"></div>
-							<div ng-include="'neighbourhoodperks.html'" class="col-lg-4"></div>
+							<div class="col-lg-1 less padding-left"></div>
+							<div ng-include="'neighbourhoodperks.html'" class="col-lg-5"></div>
+							<div ng-include="'miscellaneous.html'" class="col-lg-5"></div>
 						</div>
 						<br><br><br><br><br><br><br><br><br>
 						<div class="row">

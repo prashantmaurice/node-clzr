@@ -67,13 +67,31 @@ function downloadCanvas(link, canvasId, filename) {
         $scope.visShowQuestions = false;
       }
       else if(checkin.vendor.question.length == checkin.review.stars.length) {
-          $scope.popReview = checkin;
-          $scope.visShowQuestions = true;
-        }
-    $scope.popUpReviewVisibility = true;
-    $scope.popUpReviewStyle = {'position':'absolute','z-index':100,'background':'#fff','top':$scope.popUpReviewY-200,'left':$scope.popUpReviewX};
-  }
+        $scope.popReview = checkin;
+        $scope.visShowQuestions = true;
+      }
+      $scope.popUpReviewVisibility = true;
+      $scope.popUpReviewStyle = {'position':'absolute','z-index':100,'background':'#fff','top':$scope.popUpReviewY-200,'left':$scope.popUpReviewX - 500};
+    }
 
+    $scope.getTimeInFormat = function(dateStr) {
+    //10/21/2013 3:29 PM
+    var date = new Date(dateStr);
+    var str = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ';
+    var ampm = "";
+    if(date.getHours()>12) {
+      str = str + (date.getHours() - 12);
+      ampm = "PM";
+    }
+    else {
+      str = str + date.getHours();
+      ampm = "AM";
+    }
+
+    str = str + ':' + date.getMinutes() + ' ' + ampm;
+    console.log(str);
+    return str;
+  }
 
   $scope.hidePopUpReview = function() {
    $scope.popUpReviewVisibility = false;
@@ -89,7 +107,9 @@ $scope.getAvgStars = function(stars) {
   for(var i=0;i<stars.length;i++) {
     avg = avg + stars[i];
   }
-  return avg/stars.length + "/5.0";
+  avg = avg/stars.length;
+  avg = avg.toFixed(2);
+  return avg + "/5.00";
 }
 
 var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
@@ -152,21 +172,24 @@ $scope.createBill = function( checkin ){
     dataInBillValues.push(checkin.user.profile.name);
     dataInBillValues.push(checkin.offer.caption);
     dataInBillValues.push(checkin.offer.stamps);
-    dataInBillValues.push( new Date( checkin.date_created ).toString());
+    dataInBillValues.push( $scope.getTimeInFormat(new Date( checkin.date_created )));
     var doc = new jsPDF('p', 'mm', [200, 250]);
     doc.addImage(imgData, "JPEG", 0, 0, 250, 50);
 
     doc.setFontSize(18);
     doc.setTextColor(255,255,255);
-    doc.text(80, 20, checkin.vendor.name);
+    doc.text(80, 15, checkin.vendor.name);
 
-    doc.setFontSize(14);
+    doc.setFontSize(12);
     doc.setTextColor(255,255,255);
 
     $http.get( "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + checkin.vendor.location[0] + "," + checkin.vendor.location[1]).
     success(function(data, status, headers, config) {
-     doc.text(80, 30, data.results[0].formatted_address.substring(0, 45)+"-");
-     doc.text(80,40,data.results[0].formatted_address.substring(45,  data.results[0].formatted_address.length));
+      var lineLen = 45;
+      for(var i=0;i<(data.results[0].formatted_address.length/lineLen) - 1;i++) {
+        doc.text(80, 25 + 7*i, data.results[0].formatted_address.substring(lineLen*i, lineLen*(i+1))+"-");
+     }
+        doc.text(80, 25 + 7*i, data.results[0].formatted_address.substring(lineLen*i, lineLen*(i+1)));
      doc.setFontSize(16);
      doc.setTextColor(255,255,255);
      doc.text(80, 60, "CHECKIN DETAILS");

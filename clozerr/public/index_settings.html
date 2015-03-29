@@ -10,7 +10,7 @@
 <div ng-controller="index_settings" class="col-lg-10 col-lg-offset-2">
 	<div class="container-fluid" ng-show="visibility">
 
-		<div class="row">
+		<div class="row animated fadeInDown">
 			<div class="col-lg-10">
 				<h1 class="page-header">Settings
 				</h1>
@@ -21,9 +21,17 @@
 		</div>
 
 		<div class="col-md-12 jumbotron" style="padding:20px">
+			<div class="row">
+				<div class="col-md-9">
+				</div>
+				<div class="col-md-3">
+					<big>( Enable / Disable )</big>
+				</div>
+			</div>
 			<div ng-include="'index_settings_birthday.html'"></div>
 			<div ng-include="'index_settings_visitreminder.html'"></div>
-			<div ng-include="'index_settings_neighbourhoodperks.html'"></div>			
+			<div ng-include="'index_settings_neighbourhoodperks.html'"></div>
+			<div ng-include="'index_settings_miscellaneous.html'"></div>			
 		</div>
 
 	</div>

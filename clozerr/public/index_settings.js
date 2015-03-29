@@ -16,19 +16,34 @@ var index_settings = function( $rootScope, $scope, $http ){
   var PAGE_NAME = "settings";
   $scope.$on("page-" + PAGE_NAME, function(){
   	$scope.visibility = true;
-
-    $rootScope.vendor.settings.birthday.activated = $scope.extractBool($rootScope.vendor.settings.birthday.activated);
+    if($rootScope.vendor.settings.birthday.activated)
+    {$rootScope.vendor.settings.birthday.activated = $scope.extractBool($rootScope.vendor.settings.birthday.activated);
+    $rootScope.vendor.settings.birthday.notifyFirst = $scope.extractBool($rootScope.vendor.settings.birthday.notifyFirst);
+    $rootScope.vendor.settings.birthday.notifyExact = $scope.extractBool($rootScope.vendor.settings.birthday.notifyExact);}
+    else
+     { $rootScope.vendor.settings.birthday.activated=false;
+      $rootScope.vendor.settings.birthday.notifyFirst=false;
+      $rootScope.vendor.settings.birthday.notifyExact=false;}
     console.log('birthday-act');
     console.log($rootScope.vendor.settings.birthday.activated);
-    $rootScope.vendor.settings.birthday.notifyFirst = $scope.extractBool($rootScope.vendor.settings.birthday.notifyFirst);
-    $rootScope.vendor.settings.birthday.notifyExact = $scope.extractBool($rootScope.vendor.settings.birthday.notifyExact);
-
-    $rootScope.vendor.settings.visitreminder.activated = $scope.extractBool($rootScope.vendor.settings.visitreminder.activated);
-    $rootScope.vendor.settings.visitreminder.days = $rootScope.vendor.settings.visitreminder.days * 1;
-
-    $rootScope.vendor.settings.neighbourhoodperks.activated = $scope.extractBool($rootScope.vendor.settings.neighbourhoodperks.activated);
-    $rootScope.vendor.settings.neighbourhoodperks.distance =  $rootScope.vendor.settings.neighbourhoodperks.distance * 1;   
-
+    if($rootScope.vendor.settings.visitreminder.activated) 
+    {$rootScope.vendor.settings.visitreminder.activated = $scope.extractBool($rootScope.vendor.settings.visitreminder.activated);
+    $rootScope.vendor.settings.visitreminder.days = $rootScope.vendor.settings.visitreminder.days * 1;}
+    else
+      {$rootScope.vendor.settings.visitreminder.activated=false;
+      $rootScope.vendor.settings.visitreminder.days=30;}
+      if($rootScope.vendor.settings.neighbourhoodperks.activated)
+      {$rootScope.vendor.settings.neighbourhoodperks.activated = $scope.extractBool($rootScope.vendor.settings.neighbourhoodperks.activated);
+      $rootScope.vendor.settings.neighbourhoodperks.distance =  $rootScope.vendor.settings.neighbourhoodperks.distance * 1;   }
+      else
+      {$rootScope.vendor.settings.neighbourhoodperks.activated =false;
+        $rootScope.vendor.settings.neighbourhoodperks.distance=0;
+      }
+      if(!$rootScope.vendor.settings.sxEnabled)
+      {
+        $rootScope.vendor.settings.sxEnabled=false;
+        $rootScope.vendor.settings.billAmt=0;
+      } 
   });
 
   $scope.$on("page-close", function(){

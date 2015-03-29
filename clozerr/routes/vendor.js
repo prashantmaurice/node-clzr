@@ -36,8 +36,23 @@ router.get('/create', function (req, res) {
     var lon = req.query.longitude;
     var image = req.query.image;
     var fid = req.query.fid;
-    var name = req.query.name;
-    var settings = req.query.settings;
+    var name = unescape(req.query.name);
+    var resource_name=name.toLowerCase();
+    if(req.query.settings) {
+      var settings = req.query.settings;
+      if(settings.birthday)
+        settings.birthday.birthdayWish = unescape(settings.birthday.birthdayWish);
+      if(settings.visitreminder)
+        settings.visitreminder.visitMessage = unescape(settings.visitreminder.visitMessage);
+      if(settings.neighbourhoodperks)
+        settings.neighbourhoodperks.message = unescape(settings.neighbourhoodperks.message);
+    }
+    if(req.query.question) {
+      var question = req.query.question;
+      _.forEach(question, function(q, index, question) {
+        question[index] = unescape(question[index]);
+      });
+    }
     var offers = [],
     offers_old = [],
     date_created = new Date();
@@ -47,13 +62,14 @@ router.get('/create', function (req, res) {
         name: name,
         offers: offers,
         phone: req.query.phone,
-        question:req.query.question,
+        question:question,
         image: image,
         offers_old: offers_old,
         fid: fid,
         date_created: date_created,
         dateUpdated:date_created,
-        settings:settings
+        settings:settings,
+        resource_name:resource_name
       });
     res.send({
       result: true,
@@ -99,13 +115,13 @@ router.get('/send/push', function (req, res) {
 
 router.get('/get/all/uuid', function(req, res) {
 
-  var errobj = error.err_insuff_params(res, req, ["user_id"]);
+  var errobj = error.err_insuff_params(res, req, ["access_token"]);
   if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
       }
 
-      var user_id = req.query.user_id;
+      var user_id = req.user._id;
 
       User.findOne({_id:user_id}, function(err, userObj) {
         if(err) {
@@ -158,7 +174,7 @@ router.get('/get/all/uuid', function(req, res) {
           
         });
 
-      });
+});
 
 });
 
@@ -187,10 +203,12 @@ router.get('/get', function (req, res) {
           }
         }, function (err, offers) {
           if(err) console.log(err);
-            vendor.name=decodeURI(vendor.name);
-            vendor.address=decodeURI(vendor.address);
-            vendor.description=decodeURI(vendor.description);
           var vendor_json = vendor.toJSON();
+          offers = _.sortBy(offers, function(offer) {
+            if(offer.stamps)
+              return offer.stamps;
+            else return 0;
+          });
           vendor_json.offers = offers;
             //debugger;
             var offers_qualified = _.filter(offers, function(offer) {
@@ -277,7 +295,8 @@ router.get('/upload-policy', function( req, res ){
         });
 
         var obj = p;
-        obj.key=settings.s3.access_key;
+        obj.access_key=settings.s3.access_key;
+        obj.key=settings.s3.base_path + "/" + vendor.resource_name;
         
         res.end( JSON.stringify(obj) );
       });
@@ -437,8 +456,9 @@ router.get('/get/near', function (req, res) {
         {
           Vendor.find({location:{
             $near:[lat,lon]
-          },
-          test:true
+          },$or:[
+          {test:true},
+          {visible:true}]
         }).limit(limit).skip(offset).exec().then(function (vendors){
          debugger;
          getoff(vendors, req.user,typelist,function( vendors ){
@@ -542,6 +562,8 @@ router.get('/settings/save', function (req, res) {
     var latitude, longitude, image, fid, name, visible, address, city, phone, description, settings={};
     var question;
     var UUID;
+    var flags;
+    var sxEnabled;
     var errobj = error.err_insuff_params(res, req, ["vendor_id","access_token"]);
     if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
@@ -578,8 +600,8 @@ router.get('/settings/save', function (req, res) {
             fid = req.query.fid;
           } else fid = vendor.fid;
 
-          if(req.query.vendor_name){
-            name=req.query.vendor_name;
+          if(req.query.name){
+            name=unescape(req.query.name);
           }else name=vendor.name;
 
           if(req.query.phone){
@@ -587,7 +609,7 @@ router.get('/settings/save', function (req, res) {
           }else phone = vendor.phone;
 
           if(req.query.address){
-            address = req.query.address;
+            address = unescape(req.query.address);
           }else address=vendor.address;
 
           if(req.query.city){
@@ -599,7 +621,7 @@ router.get('/settings/save', function (req, res) {
           }else visible = vendor.visible;
 
           if( req.query.description ){
-            description = req.query.description;
+            description = unescape(req.query.description);
           }else description = vendor.description;
 
           if( req.query.resource_name ){
@@ -611,12 +633,26 @@ router.get('/settings/save', function (req, res) {
           }else question=vendor.question;
           if(req.query.settings) {
             settings = req.query.settings;
+            var settings = req.query.settings;
+            if(settings.birthday)
+              settings.birthday.birthdayWish = unescape(settings.birthday.birthdayWish);
+            if(settings.visitreminder)
+              settings.visitreminder.visitMessage = unescape(settings.visitreminder.visitMessage);
+            if(settings.neighbourhoodperks)
+              settings.neighbourhoodperks.message = unescape(settings.neighbourhoodperks.message);
             console.log(settings);
           }
           else settings = vendor.settings;
           if(req.query.UUID){
             UUID=req.query.UUID;
           }else UUID=vendor.UUID;
+          if(req.query.flags){
+            flags=req.query.flags;
+          }else flags=vendor.flags;
+          if(req.query.sxEnabled){
+            sxEnabled=req.query.sxEnabled;
+          }else sxEnabled=vendor.sxEnabled;
+
           var date_created = vendor.date_created;
           vendor.location = [latitude, longitude];
           vendor.image = image;
@@ -630,6 +666,9 @@ router.get('/settings/save', function (req, res) {
           vendor.phone = phone;
           vendor.description = description;
           vendor.resource_name = resource_name;
+          _.forEach(question, function(q, index, question) {
+            question[index] = unescape(question[index]);
+          });
           vendor.question=question;
           vendor.settings = settings;
           vendor.UUID=UUID; 
@@ -644,7 +683,7 @@ router.get('/settings/save', function (req, res) {
             console.log(res); 
             console.log(err);
           });
-          res.send(JSON.stringify({result:true}));
+          res.send(JSON.stringify({result:true,vendor:vendor}));
         }
         else {
 

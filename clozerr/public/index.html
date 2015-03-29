@@ -12,9 +12,10 @@
     <title>Clozerr Admin</title>
 
     <!-- Bootstrap Core CSS -->
+    <link href="animate-it/css/animations.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-switch.css" rel="stylesheet">
-    
+    <link href="css/animate.css" rel="stylesheet">    
     
     <link href="css/timeline.css" rel="stylesheet">
     <link href="css/animated-check-box.css" rel="stylesheet">
@@ -129,6 +130,7 @@
         <div id="fb-root"></div>
         <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
         <script type='text/javascript' src="js/fblogin.js"></script>
+        <script type="text/javascript" src="animate-it/js/css3-animate-it.js"></script>
 
         <script type="text/javascript" src="index_home.js"></script>
         <script type="text/javascript" src="index_home_allcheckins.js"></script>
@@ -138,6 +140,7 @@
         <script type="text/javascript" src="index_settings_birthday.js"></script>
         <script type="text/javascript" src="index_settings_visitreminder.js"></script>
         <script type="text/javascript" src="index_settings_neighbourhoodperks.js"></script>
+        <script type="text/javascript" src="index_settings_miscellaneous.js"></script>
 
         <script type="text/javascript" src="index_preferences.js"></script>
 
@@ -188,8 +191,8 @@
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
 
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                <li class="dropdown"><!-- 
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a> -->
                     <ul class="dropdown-menu alert-dropdown">
                         <!--<li>
                             <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
@@ -228,10 +231,10 @@
                 <li id="nav1">
                     <a href="javascript:void(0)" ng-click="pageChange('home')"><i class="fa fa-fw fa-dashboard"></i>&nbsp&nbsp&nbspHome</a>
                 </li>
-                <!-- Analytics. empty for now.. -->
+                <!-- Analytics. empty for now.. --><!-- 
                 <li>
                     <a href="javascript:void(0)" ng-click="pageChange('analytics')"><i class="fa fa-fw fa-bar-chart-o"></i>&nbsp&nbsp&nbspAnalytics</a>
-                </li>
+                </li> -->
                     <!--
                       Settings is to set features: Birthday notifications, delayed push notifications & review questions.
                       Also, have a button to bring up the offers modal.

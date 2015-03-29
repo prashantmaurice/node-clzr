@@ -1,8 +1,28 @@
 
 
 var current_checkins = function( $rootScope, $scope, $http ){
+  $scope.billAmt=0;
   $scope.checkins = [];
   $scope.visibility = false;
+
+  $scope.getTimeInFormat = function(dateStr) {
+    //10/21/2013 3:29 PM
+    var date = new Date(dateStr);
+    var str = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ';
+    var ampm = "";
+    if(date.getHours()>12) {
+      str = str + (date.getHours() - 12);
+      ampm = "PM";
+    }
+    else {
+      str = str + date.getHours();
+      ampm = "AM";
+    }
+
+    str = str + ':' + date.getMinutes() + ' ' + ampm;
+    console.log(str);
+    return str;
+  }
 
   var CLOZERR_CURRENT_CHECKINS_URL = CLOZERR_API + "checkin/active";
   // TODO: update this url somewhere.
@@ -28,10 +48,12 @@ var current_checkins = function( $rootScope, $scope, $http ){
   $rootScope.validating = false;
   var CLOZERR_VALIDATE_URL = CLOZERR_API + "checkin/validate";
   $rootScope.validate = function( checkin, validate_data ){
+    validate_data.billAmt=$scope.billAmt;
     console.log("Validating: ");
     console.log( checkin );
     console.log( validate_data );
     $scope.spinner = true;
+
     //$scope.invokeTypeRequirement( checkin );
     $rootScope.validating = true;
     var access_token = localStorage.token;
@@ -63,6 +85,7 @@ var current_checkins = function( $rootScope, $scope, $http ){
   $scope.$on("page-current-checkins", function(){
     $scope.visibility = true;
     $scope.update();
+    $scope.sxEnabled=$rootScope.vendor.settings.sxEnabled;
   });
   $scope.$on("logged-in", function(){
     $scope.visibility = true;
