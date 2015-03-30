@@ -1,7 +1,7 @@
 
 
 var current_checkins = function( $rootScope, $scope, $http ){
-  $scope.billAmt=0;
+  $rootScope.billAmt=0;
   $scope.checkins = [];
   $scope.visibility = false;
 
@@ -48,7 +48,6 @@ var current_checkins = function( $rootScope, $scope, $http ){
   $rootScope.validating = false;
   var CLOZERR_VALIDATE_URL = CLOZERR_API + "checkin/validate";
   $rootScope.validate = function( checkin, validate_data ){
-    validate_data.billAmt=$scope.billAmt;
     console.log("Validating: ");
     console.log( checkin );
     console.log( validate_data );
