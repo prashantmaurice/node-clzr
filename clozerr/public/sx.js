@@ -7,8 +7,10 @@ var ctype_sx = function( $rootScope, $scope, $http ){
   $scope.$on("page-ctype-SX", function(){
 
     $scope.visibility = true;
+    $scope.validate_data = {};
+    $scope.validate_data.billAmt=$rootScope.billAmt;
     $scope.checkin = $rootScope.checkin;
-    $rootScope.validate( $scope.checkin, {} );
+    $rootScope.validate( $scope.checkin, validate_data );
 
   });
 
