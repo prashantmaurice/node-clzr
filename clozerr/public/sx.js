@@ -4,13 +4,14 @@ var ctype_sx = function( $rootScope, $scope, $http ){
   $scope.visibility = false;
 
 
-  $scope.$on("page-ctype-SX", function(){
+  $rootScope.$on("page-ctype-SX", function(){
 
     $scope.visibility = true;
+    console.log($rootScope.billAmt);
     $scope.validate_data = {};
-    $scope.validate_data.billAmt=$rootScope.billAmt;
+    $scope.validate_data.billAmt=$rootScope.checkin.validate_data.billAmt;
     $scope.checkin = $rootScope.checkin;
-    $rootScope.validate( $scope.checkin, validate_data );
+    $rootScope.validate( $scope.checkin, $scope.checkin.validate_data );
 
   });
 
@@ -18,7 +19,7 @@ var ctype_sx = function( $rootScope, $scope, $http ){
     $scope.visibility = false;
   });
 
-  $scope.update();
+  //$scope.update();
   /*
     TODO: Register for SocketIO messages here.
   */
@@ -33,6 +34,6 @@ var ctype_sx = function( $rootScope, $scope, $http ){
     });
   }
 
-  $scope.reg_socket();
+ // $scope.reg_socket();
 
 }

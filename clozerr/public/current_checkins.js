@@ -1,7 +1,6 @@
 
 
 var current_checkins = function( $rootScope, $scope, $http ){
-  $rootScope.billAmt=0;
   $scope.checkins = [];
   $scope.visibility = false;
 
@@ -49,6 +48,8 @@ var current_checkins = function( $rootScope, $scope, $http ){
   var CLOZERR_VALIDATE_URL = CLOZERR_API + "checkin/validate";
   $rootScope.validate = function( checkin, validate_data ){
     console.log("Validating: ");
+    //console.log($scope.billAmount);
+    //console.log($rootScope.billAmt);
     console.log( checkin );
     console.log( validate_data );
     $scope.spinner = true;
@@ -78,6 +79,8 @@ var current_checkins = function( $rootScope, $scope, $http ){
     console.log( checkin );
     $scope.spinner = true;
     $scope.showData = false;
+
+    //$rootScope.billAmt = $scope.billAmount;
     $rootScope.$broadcast( "page-ctype-"+checkin.offer.type );
   }
 
