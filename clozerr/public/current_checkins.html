@@ -23,7 +23,8 @@
                 <td>{{ checkin.offer.caption }}</td>
                 <td>{{ checkin.offer.stamps }}</td>
                 <td data-time="{{ checkin.date_created }}" class="timer"></td>
-                <td ng-show="sxEnabled"><input type="number" class="form-control" id="billAmount"  ng-model="billAmt"></td>
+                <td ng-show="sxEnabled">
+                <input type="number" class="form-control" id="billAmount" ng-model="checkin.validate_data.billAmt"></td>
                 <td><a href="javascript:void(0)" ng-click="invokeTypeRequirement( checkin )" class="btn btn-primary">VALIDATE</a></td>
             </tr>
         </tbody>

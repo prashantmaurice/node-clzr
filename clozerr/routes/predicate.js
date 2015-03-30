@@ -19,7 +19,7 @@ var predicates = {
   "SX": function( user, vendor, offer ){
     var temp = parseInt( offer.stamps );
 
-    if( user.stamplist && (user.stamplist[vendor.fid]>=temp))
+    if( user.stamplist && (user.stamplist[vendor.fid]==temp-1))
       return true;
     else if(user.stamplist && !user.stamplist[vendor.fid]&&offer.stamps=="1")
       return true;
@@ -45,10 +45,12 @@ var handlers = {
       user.stamplist[vendor.fid] = 0;
   },
   "SX": function( user, vendor, offer, validate_data ) {
-    if( user.stamplist[vendor.fid] )
+    if( user.stamplist[vendor.fid] ){
       user.stamplist[vendor.fid] += parseInt(validate_data.stamps);
+    }
     else
       user.stamplist[vendor.fid] = parseInt(validate_data.stamps);
+     user.markModified("stamplist");
   }
 }
 module.exports.qualify = function( user, vendor, offer ){
