@@ -84,6 +84,8 @@ var index_home = function( $rootScope, $scope, $http ){
 
       $rootScope.allCheckinObjects = data;
 
+      $rootScope.loadAnalytics();
+
       for(var i=0;i<data.length;i++) {
         data[i].offer.caption = unescape(data[i].offer.caption);
         data[i].offer.description = unescape(data[i].offer.description);
