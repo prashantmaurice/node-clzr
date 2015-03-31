@@ -31,6 +31,16 @@ module.exports = {
 	},
 	"birthday":{
 		"birthdayWishMessage": "wishes you a Happy Birthday"
+	},
+	"sidebar":{
+		url:[
+		"https://s3-ap-southeast-1.amazonaws.com/www.clozerr.com/img/bg.jpg",
+		"https://s3-ap-southeast-1.amazonaws.com/www.clozerr.com/img/phone.png"]
+	},
+	"homepage":{
+		url:[
+		"https://s3-ap-southeast-1.amazonaws.com/clozerrsite/img/mainbg.jpg",
+         "https://s3-ap-southeast-1.amazonaws.com/clozerrsite/img/phone.png"]
 	}
 	
 };
