@@ -26,7 +26,11 @@
 .display-pic {
 	width: 400px;
 	height: 250px;
+	<<<<<<< HEAD
+	margin-bottom: 20px;
+	=======
 	margin-bottom: 0px;
+	>>>>>>> 8eba278c224dae7b77a3e11d19e923ae8bc6437a
 	border-radius: 4px;
 }
 </style>
@@ -48,42 +52,41 @@
 			</div>
 		</div>
 		<div class="row animated fadeInLeft" style="padding:0px !important;margin:20px !important;">
-			<div class="col-md-6">
-            </div>
+			<div class="col-md-7">
+			</div>
 			<div class="col-md-4" style="padding:0px">
-				<img ng-src="{{vendor.image}}" class="display-pic" ng-mouseover="hoverDisplayPic=true" ng-mouseleave="hoverDisplayPic=false">
+				<img ng-src="{{vendor.image}}" class="display-pic" ng-mouseover="hoverDisplayPic=true" ng-mouseleave="hoverDisplayPic=false"></img>
 			</div>
 		</div>
-        <br>
-        <div class="row">
-		    <div class="animated fadeInUp">
-			    <div class="input-group">
-				    <span class="input-group-addon" id="basic-addon4">&nbsp&nbsp&nbspPublic name&nbsp&nbsp&nbsp&nbsp</span>
-				    <input type="text" class="form-control" ng-model="vendor.name" placeholder="Public name" aria-describedby="basic-addon4">
-			    </div><br>
+		<br>
+		<div class=" animated fadeInUp">
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon4">&nbsp&nbsp&nbspPublic name&nbsp&nbsp&nbsp&nbsp</span>
+				<input type="text" class="form-control" ng-model="vendor.name" placeholder="Public name" aria-describedby="basic-addon4"/>
+			</div><br>
 			<!-- 
 			<div class="input-group">
 				<span class="input-group-addon" id="basic-addon5">Franchise  name</span>
 				<input type="text" class="form-control" ng-model="vendor.name" placeholder="Franchise name" aria-describedby="basic-addon5">
 			</div><br> -->
-	    		<div class="input-group" >
-		    		<span class="input-group-addon" id="basic-addon6">&nbspPhone  number&nbsp</span>
-			    	<input type="text" class="form-control" ng-model="vendor.phone" placeholder="Phone number" aria-describedby="basic-addon6">
-			    </div><br>
-			    <div class="row">
-				    <div class="col-md-11">
-					    <div class="input-group">
-						    <span class="input-group-addon" id="basic-addon6">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAddress&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-						    <input type="text" class="form-control custom-margin" ng-focus="focusShowNothing()" ng-blur="getLocation(vendorAddressRevGeoCoded)" placeholder="Address" ng-model="vendorAddressRevGeoCoded">
-					    </div>
-				    </div>
-				    <div class="col-md-1">
-					    <i id="statusLocationIndicator" class=""></i>
-				    </div>
-			    </div>
-            </div>
-        </div>
+			<div class="input-group" >
+				<span class="input-group-addon" id="basic-addon6">&nbspPhone  number&nbsp</span>
+				<input type="text" class="form-control" ng-model="vendor.phone" placeholder="Phone number" aria-describedby="basic-addon6"/>
+			</div><br>
+			<div class="row">
+				<div class="col-md-11">
+					<div class="input-group">
+						<span class="input-group-addon" id="basic-addon6">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAddress&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+						<input type="text" class="form-control custom-margin" ng-focus="focusShowNothing()" ng-blur="getLocation(vendorAddressRevGeoCoded)" placeholder="Address" ng-model="vendorAddressRevGeoCoded"/>
+					</div>
+				</div>
+				<div class="col-md-1">
+					<i id="statusLocationIndicator" class=""></i>
+				</div>
+			</div>
+		</div>
 	</div>
+</div>
 
 </div>
 <div class="modal fade in" id="modalChangePassword" tabindex="-1" role="dialog" aria-labelledby="modalChangePasswordLabel" aria-hidden="true">

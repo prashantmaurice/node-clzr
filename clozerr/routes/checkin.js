@@ -279,10 +279,11 @@ router.get("/validate", function (req, res) {
                 }).exec();
             }).then(function (vendor) {
                 obj.vendor = vendor;
-                if(obj.vendor.settings.stampAmt)
-                obj.checkin.validate_data.stamps=obj.checkin.validate_data.billAmt/obj.vendor.settings.stampAmt;
+                if(obj.vendor.settings.billAmt){
+                obj.checkin.validate_data.stamps=obj.checkin.validate_data.billAmt/obj.vendor.settings.billAmt;
                 obj.checkin.markModified("validate_data");
-                //debugger;
+                console.log(validate_data);}
+                debugger;
                 OfferHandler.onCheckin( obj.user, obj.vendor, obj.offer, validate_data );
                 //debugger;
                 if( !( req.query.test == "true" ) )

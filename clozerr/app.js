@@ -10,6 +10,7 @@ var Token = models.Token;
 var User = models.User;
 
 var auth = require('./routes/user');
+var common =require('./routes/common');
 var offer = require('./routes/offer');
 var vendor = require('./routes/vendor');
 var checkin = require('./routes/checkin');
@@ -73,6 +74,7 @@ app.use('/', function( req, res, next ){
 });
 app.use('/auth', auth);
 app.use('/offer', offer);
+app.use('/common',common);
 app.use('/vendor', vendor);
 app.use('/checkin', checkin);
 app.use('/content',content);
