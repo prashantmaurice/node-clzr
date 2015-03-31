@@ -1,6 +1,7 @@
 <link href="css/plugins/morris.css" rel="stylesheet">
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
 <script src="js/plugins/graphael/g.raphael.js"></script>
 <script src="js/plugins/graphael/g.dot.js"></script>
 <script src="js/plugins/morris/morris.min.js"></script>
@@ -12,6 +13,10 @@
         </div>
         <div id="checkin_day_time">
         </div>
+    </div>
+    <div ng-app="index_analytics">
+
+        <button ng-click="userData(new Date('2013-10-5'),new Date('2013-10-7'));">Click {{Me}}</button>
     </div>
 </div>
 <script>
@@ -30,8 +35,8 @@
     }, function () {
         this.marker && this.marker.hide();
     });
-    </script>
-    <script>
+</script>
+<script>
     Morris.Line({
         element: 'checkin_date',
         data: checkin_date_data(sample_checkins),
@@ -42,5 +47,6 @@
         xLabelFormat: date_month,
         xLabelAngle: 60
     });
-    //TODO call with $rootscope.all_checkins or similar objectnd
-    </script>
+    //TODO call with $rootscope.all_checkins or similar object
+
+</script>
