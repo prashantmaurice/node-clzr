@@ -16,6 +16,7 @@ var s3 = require("s3policy");
 var policy = require("s3-policy");
 var settings = require("./settings");
 var push = require("./util/push");
+var qualify = require('./util/qualify');
 
 router.get('/create', function (req, res) {
   var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
@@ -405,7 +406,29 @@ request.save();
 res.end(JSON.stringify( {result:true} ) ) ;
 });
 
-
+router.get('/offers/myofferspage',function(req,res){
+  debugger;
+ var errobj = error.err_insuff_params(res,req,["access_token","vendor_id"]);
+ if(!errobj){
+  return;
+ }
+ var user =req.user;
+ debugger;
+ var result ={};
+qualify.getPastOffers(user,req.query.vendor_id,function(pastOffers,vendor){
+    result.pastOffers=pastOffers;
+  debugger;
+  qualify.getUpcomingOffer(user,req.query.vendor_id,function(upcomingOffer,vendor){
+  result.upcomingOffer=upcomingOffer;
+  debugger;
+  qualify.getFutureOffers(user,req.query.vendor_id,function(futureOffers,vendor){
+  result.futureOffers=futureOffers;
+  debugger;
+  res.send(result);
+ });
+ });
+ });
+});
 router.get('/get/near', function (req, res) {
 
   var errobj = error.err_insuff_params(res, req, ["latitude", "longitude"]);

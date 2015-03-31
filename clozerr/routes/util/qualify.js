@@ -1,7 +1,9 @@
+var models = require("../models");
 var Vendor = models.Vendor;
 var Offer = models.Offer;
 var Checkin = models.CheckIn;
 var User = models.User;
+var _ = require("underscore");
 
 function stampcount(vendor,offer){
     if(offer.type=="S1") return offer.stamps;
@@ -25,7 +27,7 @@ function getAllOffers(vendor_id,callback) {
         return;
       }
       callback(vendor,offers);
-    })
+    });
   });
   }
 
@@ -108,6 +110,10 @@ function getOfferDisplay(offer){
     return offerDisplay;
 }
 
-//function checkDummy(offer){
-//    if(offer.type=="SX" && user.stamplist[vendor.fid] +parseInt(validate_data.stamps)>((vendor.settings.SXLimit)?vendor.settings.SXLimit:10)+offer.stamps)
-//}
+module.exports={getAllOffers:getAllOffers,
+                handleOffer:handleOffer,
+                handleSXOffer:handleSXOffer,
+                handleS1Offer:handleS1Offer,
+                getPastOffers:getPastOffers,
+                getUpcomingOffer:getUpcomingOffer,
+                getFutureOffers:getFutureOffers};
