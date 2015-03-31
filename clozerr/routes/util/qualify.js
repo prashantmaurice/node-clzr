@@ -1,7 +1,9 @@
+var models = require("../models");
 var Vendor = models.Vendor;
 var Offer = models.Offer;
 var Checkin = models.CheckIn;
 var User = models.User;
+var _ = require("underscore");
 
 function getAllOffers(vendor_id,callback) {
   Vendor.findOne({
@@ -21,7 +23,7 @@ function getAllOffers(vendor_id,callback) {
         return;
       }
       callback(vendor,offers);
-    }
+    });
   });
   }
 
@@ -68,7 +70,7 @@ function getAllOffers(vendor_id,callback) {
       user.stamplist[vendor.fid] += parseInt(validate_data.stamps);
     }
     else
-      user.stamplist[vendor.fid] = parseInt(validate_data.stamps);
+    {  user.stamplist[vendor.fid] = parseInt(validate_data.stamps);
     user.markModified("stamplist");
   }
   user.markModified("stamplist");
@@ -85,3 +87,10 @@ function handleOffer(user, vendor_id, validate_data) {
     }
   });
 }
+module.exports={getAllOffers:getAllOffers,
+                handleOffer:handleOffer,
+                handleSXOffer:handleSXOffer,
+                handleS1Offer:handleS1Offer,
+                getPastOffers:getPastOffers,
+                getUpcomingOffer:getUpcomingOffer,
+                getFutureOffers:getFutureOffers};
