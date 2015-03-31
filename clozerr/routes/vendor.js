@@ -178,6 +178,13 @@ router.get('/get/all/uuid', function(req, res) {
 
 });
 
+router.get('/offers/myOfferPage', function (req, res) {
+  var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
+  if (!errobj) {
+    return;
+  }
+});
+
 router.get('/get', function (req, res) {
 
   var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
