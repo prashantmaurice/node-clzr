@@ -24,8 +24,7 @@ var vendorSchema = new Schema({
 	UUID : [String],
 	test : Boolean,
 	settings : Schema.Types.Mixed,
-	flags : [String]	,
-	sxEnabled : Boolean
+	flags : [String]
 });
 vendorSchema.index({ location: '2d' });
 
