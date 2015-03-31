@@ -16,7 +16,7 @@ var authClient = new JWT(
     ['https://www.googleapis.com/auth/analytics.readonly']
 );
 router.get('/',function(req,res){
-    var metrics="",dimensions="",startdate="",enddate="",filter="";
+    var metrics="",dimensions="",startdate="",enddate="",filter="ga:screenName=~.";
     if(req.query.metrics) metrics=req.query.metrics;
     if(req.query.dimensions) dimensions=req.query.dimensions;
     if(req.query.startdate) startdate=req.query.startdate;
