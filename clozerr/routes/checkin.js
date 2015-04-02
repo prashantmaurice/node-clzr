@@ -39,17 +39,17 @@ function policyCheckTimeDelayBetweenCheckins( user, vendor, offer ) {
     if( Math.abs( new Date().getTime() - checkin.date_created.getTime() ) < settings.checkin.delay_between_checkins ) {
       process.nextTick( function(){
         deferred.resolve( false );
-      });
-    }
-    else{
+    });
+  }
+  else{
       process.nextTick( function(){
         deferred.resolve( true );
-      });
-    }
+    });
+  }
 
-    return deferred.promise;
+  return deferred.promise;
 
-  });
+});
 
 }
 
@@ -62,17 +62,17 @@ function policyCheckDuplicateCheckins( user, vendor, offer ) {
     if( checkin ) {
       process.nextTick( function(){
         deferred.resolve( checkin );
-      });
-    }
-    else{
+    });
+  }
+  else{
       process.nextTick( function(){
         deferred.resolve( );
-      });
-    }
+    });
+  }
 
-    return deferred.promise;
+  return deferred.promise;
 
-  });
+});
 
 }
 
@@ -86,25 +86,25 @@ function policyCheckTimeDelayBetweenCheckins( user, vendor, offer ) {
     if( !checkin ){
       process.nextTick( function(){
         deferred.resolve( true );
-      });
+    });
       return deferred.promise;
-    }
+  }
 
 
-    if( Math.abs( new Date().getTime() - checkin.date_created.getTime() ) < settings.checkin.delay_between_checkins ) {
+  if( Math.abs( new Date().getTime() - checkin.date_created.getTime() ) < settings.checkin.delay_between_checkins ) {
       process.nextTick( function(){
         deferred.resolve( false );
-      });
-    }
-    else{
+    });
+  }
+  else{
       process.nextTick( function(){
         deferred.resolve( true );
-      });
-    }
+    });
+  }
 
-    return deferred.promise;
+  return deferred.promise;
 
-  });
+});
 
 }
 
@@ -112,99 +112,117 @@ router.get("/create", function (req, res) {
 
 
     var errobj = error.err_insuff_params( res, req, ["vendor_id", "offer_id"] ); //,"gcm_id"]);
-    if ( !errobj ) {
-        return;
-    }
+if ( !errobj ) {
+    return;
+}
 
-    var user = req.user;
-    var gcm_id = req.query.gcm_id || 0;
+var user = req.user;
+var gcm_id = req.query.gcm_id || 0;
 
-    var obj = {
-        user: req.user
-    };
-    Vendor.findOne({
-        _id: req.query.vendor_id
-    }).exec().then(function (vendor) {
-        debugger;
-        if(!vendor) {
-            error.err(res,"801");
-            return;
-        }
-        obj.vendor = vendor;
-        return Offer.findOne({
-            _id: req.query.offer_id
-        }).exec();
-
-    }).then(function (offer) {
-
-      if (!offer) {
-        error.err(res,"802");
-        return;
-      }
-    obj.offer = offer;
-
-    var d = obj.vendor.offers.indexOf(obj.offer._id);
-    if(d==-1) {
-        error.err(res,"671");
-        return;
-    }
-
+var obj = {
+    user: req.user
+};
+Vendor.findOne({
+    _id: req.query.vendor_id
+}).exec().then(function (vendor) {
     debugger;
-    if (!OfferHandler.qualify(obj.user, obj.vendor, obj.offer)) {
-
-        error.err(res, "568");
+    if(!vendor) {
+        error.err(res,"801");
         return;
     }
+    obj.vendor = vendor;
+    return Offer.findOne({
+        _id: req.query.offer_id
+    }).exec();
 
-    debugger;
+}).then(function (offer) {
 
-    policyCheckDuplicateCheckins( obj.user, obj.vendor, obj.offer ).then( function( result ) {
-      console.log("Detecting duplicates");
-      if( result ){
-        console.log("Duplicate detected:");
-        res.end( JSON.stringify({ result:true, checkin:result }) );
-        return;
-      }
+  if (!offer) {
+    error.err(res,"802");
+    return;
+}
+obj.offer = offer;
 
-      return policyCheckTimeDelayBetweenCheckins( obj.user, obj.vendor, obj.offer );
+var d = obj.vendor.offers.indexOf(obj.offer._id);
+if(d==-1) {
+    error.err(res,"671");
+    return;
+}
 
-    }).then(function( result ){
-        console.log("Validating timedelay");
-        if( !result ){
-          console.log("Time delay not sufficient");
-          error.err( res, "100" );
-          return;
-        }
-        debugger;
+debugger;
+if (!OfferHandler.qualify(obj.user, obj.vendor, obj.offer)) {
 
-          var checkin = new CheckIn({
-            user: obj.user._id,
-            vendor: obj.vendor._id,
-            offer: obj.offer._id,
-            state: CHECKIN_STATE_ACTIVE,
-            date_created: new Date(),
-            pin: rack(),
-            gcm_id: gcm_id
-          });
-          debugger;
+    error.err(res, "568");
+    return;
+}
 
-          checkin.save(function (err, res, num) {
-            console.log(err);
-            console.log("Successfully saved checkin");
-          });
+debugger;
 
-          res.end(JSON.stringify({
-              result: true,
-              checkin: checkin
-          }));
+policyCheckDuplicateCheckins( obj.user, obj.vendor, obj.offer ).then( function( result ) {
+  console.log("Detecting duplicates");
+  if( result ){
+    console.log("Duplicate detected:");
+    res.end( JSON.stringify({ result:true, checkin:result }) );
+    return;
+}
+
+return policyCheckTimeDelayBetweenCheckins( obj.user, obj.vendor, obj.offer );
+
+}).then(function( result ){
+    console.log("Validating timedelay");
+    if( !result ){
+      console.log("Time delay not sufficient");
+      error.err( res, "100" );
+      return;
+  }
+  debugger;
+
+  var checkin = new CheckIn({
+    user: obj.user._id,
+    vendor: obj.vendor._id,
+    offer: obj.offer._id,
+    state: CHECKIN_STATE_ACTIVE,
+    date_created: new Date(),
+    pin: rack(),
+    gcm_id: gcm_id
+});
+  debugger;
+
+  checkin.save(function (err, res, num) {
+    console.log(err);
+    console.log("Successfully saved checkin");
+});
+
+  res.end(JSON.stringify({
+      result: true,
+      checkin: checkin
+  }));
 
 });
 
 
-      global.io.emit('signal', JSON.stringify({vendor_id:obj.vendor._id}) );
+global.io.emit('signal', JSON.stringify({vendor_id:obj.vendor._id}) );
 
-  });
+});
 
+});
+
+router.get("/validateV2", function (req, res) {
+    var errobj = error.err_insuff_params(res, req, ["checkin_id","access_token"]);
+    if (!errobj) {
+        return;
+    }
+
+    if (!(req.user.type == "Vendor")) {
+        //Throw error.
+        error.err(res, "909");
+        return;
+    }
+
+    var userOfVendor = req.user;
+    var checkin_id = req.query.checkin_id;
+
+    Checkin.findOne()
 });
 
 
@@ -256,15 +274,15 @@ router.get("/validate", function (req, res) {
             if( req.query.validate_data ){
               try{
                 validate_data = JSON.parse( req.query.validate_data );
-              }catch( e ){
+            }catch( e ){
 
-              }
             }
-            obj.checkin.validate_data = validate_data;
-            obj.checkin.markModified("validate_data");
+        }
+        obj.checkin.validate_data = validate_data;
+        obj.checkin.markModified("validate_data");
 
-            if( !( req.query.test == "true" ) )
-              obj.checkin.save();
+        if( !( req.query.test == "true" ) )
+          obj.checkin.save();
 
             //Note : There may be a need to modify the parameters to be sent to the notification,
             //depending on what frontend needs.
@@ -280,11 +298,11 @@ router.get("/validate", function (req, res) {
             }).then(function (vendor) {
                 obj.vendor = vendor;
                 if(obj.vendor.settings.billAmt){
-                obj.checkin.validate_data.stamps=obj.checkin.validate_data.billAmt/obj.vendor.settings.billAmt;
-                obj.checkin.markModified("validate_data");
-                console.log(validate_data);}
-                debugger;
-                OfferHandler.onCheckin( obj.user, obj.vendor, obj.offer, validate_data );
+                    obj.checkin.validate_data.stamps=obj.checkin.validate_data.billAmt/obj.vendor.settings.billAmt;
+                    obj.checkin.markModified("validate_data");
+                    console.log(validate_data);}
+                    debugger;
+                    OfferHandler.onCheckin( obj.user, obj.vendor, obj.offer, validate_data );
                 //debugger;
                 if( !( req.query.test == "true" ) )
                   obj.user.save();
@@ -299,17 +317,17 @@ router.get("/validate", function (req, res) {
                   chfull.vendor = obj.vendor;
                   chfull.offer = obj.offer;
                   new ReviewScheduler( chfull ).request();
-                }
+              }
 
-                res.end(JSON.stringify({
-                    result: true
-                }));
-            });
+              res.end(JSON.stringify({
+                result: true
+            }));
+          });
 
-        } else error.err(res, "435");
-    }, function (err) {
-        console.log(err);
-    });
+} else error.err(res, "435");
+}, function (err) {
+    console.log(err);
+});
 
 });
 
@@ -335,7 +353,7 @@ function cancelCheckins( checkins ){
   _.each( checkins, function( checkin, index, array ){
     checkin.state = CHECKIN_STATE_CANCELLED;
     checkin.save();
-  });
+});
 
   return;
 }
@@ -398,8 +416,8 @@ for (var i = 0; i < len; i++) {
 Q.all(plist).then(function () {
     console.log("ALL DUN");
     chdummy_ret_arr =  _.sortBy(chdummy_ret_arr, function(chdummyobj) {
-                    return (-chdummyobj.date_created.getTime());
-                });
+        return (-chdummyobj.date_created.getTime());
+    });
     res.end(JSON.stringify( { result:true, data:chdummy_ret_arr } ));
 });
 
@@ -465,13 +483,13 @@ Q.all(plist).then(function () {
                 plist.push(pr);
 
             });
-            Q.all(plist).then(function () {
-              console.log("ALL DUN");
-              chdummy_ret_arr =  _.sortBy(chdummy_ret_arr, function(chdummyobj) {
-                    return (-chdummyobj.date_created.getTime());
-                });
-              res.end(JSON.stringify({ result:true, data:chdummy_ret_arr }));
-            });
+Q.all(plist).then(function () {
+  console.log("ALL DUN");
+  chdummy_ret_arr =  _.sortBy(chdummy_ret_arr, function(chdummyobj) {
+    return (-chdummyobj.date_created.getTime());
+});
+  res.end(JSON.stringify({ result:true, data:chdummy_ret_arr }));
+});
 });
 
 }else{
@@ -535,20 +553,20 @@ router.get("/confirmed", function (req, res) {
                     debugger;
                     if( review )
                       chfull.review=review.toJSON();
-                    var deferred = Q.defer();
-                    chfull._id = ch._id;
-                    chfull.state = ch.state;
-                    chfull.pin = ch.pin;
-                    chfull.date_created = ch.date_created;
-                    chfull.gcm_id = ch.gcm_id;
-                    chdummy_ret_arr.push(chfull);
+                  var deferred = Q.defer();
+                  chfull._id = ch._id;
+                  chfull.state = ch.state;
+                  chfull.pin = ch.pin;
+                  chfull.date_created = ch.date_created;
+                  chfull.gcm_id = ch.gcm_id;
+                  chdummy_ret_arr.push(chfull);
 
-                    process.nextTick(function () {
-                        deferred.resolve();
-                    });
-                    console.log("DUN");
-                    return deferred.promise;
+                  process.nextTick(function () {
+                    deferred.resolve();
                 });
+                  console.log("DUN");
+                  return deferred.promise;
+              });
 
                 plist.push(pr);
             });

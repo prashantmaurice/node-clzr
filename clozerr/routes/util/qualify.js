@@ -6,7 +6,7 @@ var User = models.User;
 var _ = require("underscore");
 
 function stampCount(vendor,offer){
-    if(offer.type=="S1") return offer.stamps;
+    if(offer.type=="S1") return (offer.stamps*1);
     else return (offer.stamps*1)+(vendor.settings.SXLimit*1);
 }
 function getAllOffers(vendor_id,callback) {
@@ -46,6 +46,8 @@ function getAllOffers(vendor_id,callback) {
       var futureOffers = _.filter(allOffers, function(offer) {
         console.log("stampcount");
         console.log(stampCount(vendor,offer));
+        if(!user.stamplist[vendor.fid])
+          user.stamplist[vendor.fid] = 0;
         return (user.stamplist[vendor.fid] >= stampCount(vendor,offer))
       });
       callback(futureOffers, vendor);
