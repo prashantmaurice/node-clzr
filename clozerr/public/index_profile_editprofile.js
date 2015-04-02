@@ -141,8 +141,9 @@ $scope.getDetails = function(){
 var upload=angular.module('clozerr',['ngImgCrop','ngSanitize', 'ngS3upload']);
 
 function Ctrl($scope, $rootScope) {
- $scope.myImage=$rootScope.vendor.image;
+ //$scope.myImage=$rootScope.vendor.image;
   $scope.myCroppedImage='';
+    $scope.cropType='rectangle';
        /* $scope.files = {
        };*/
     	//$scope.options=

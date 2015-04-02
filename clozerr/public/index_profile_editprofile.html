@@ -26,12 +26,15 @@
 .display-pic {
 	width: 400px;
 	height: 250px;
-	<<<<<<< HEAD
 	margin-bottom: 20px;
-	=======
-	margin-bottom: 0px;
-	>>>>>>> 8eba278c224dae7b77a3e11d19e923ae8bc6437a
 	border-radius: 4px;
+}
+.block-margin{
+    display:block;
+    margin-top: 10px;
+}
+.modal-body{
+	height: 700px
 }
 </style>
 <div ng-controller="index_profile_editprofile">
@@ -135,11 +138,25 @@
 						<input type="file" style="visibility:hidden;opacity:0;" id="fileInput" />
 					</div>
 					<div class="cropArea">
-						<img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+						<img-crop image="myImage" result-image="myCroppedImage" area-type="{{cropType}}"
+						result-width="myCroppedImageW"
+               			result-height="myCroppedImageH"
+            
+            			result-x="myCroppedImageX"
+            			result-y="myCroppedImageY"
+             
+            			original-width="myOriginalW"
+            			original-height="myOriginalH"
+            
+            			original-crop-x="myOriginalX"
+            			original-crop-y="myOriginalY"
+            
+            			original-crop-width="myCroppedOriginalW"
+            		    original-crop-height="myCroppedOriginalH"></img-crop>
 					</div>
 					<br>
 					<div>Cropped Image:</div>
-					<div><img ng-src="{{myCroppedImage}}" /></div>
+					<div class="cropped"><img ng-src="{{myCroppedImage}}" width="{{myCroppedImageW}}"  height="{{myCroppedImageH}}" /></div>	
 <!-- 					  <div>Select an image file: <input type="file" id="fileInput" onchange="angular.element(this).scope().handleFileSelect(event)"/></div>
   						<div class="cropArea">
     						<img-crop image="myImage" result-image="myCroppedImage"></img-crop>
