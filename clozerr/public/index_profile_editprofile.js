@@ -21,7 +21,8 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
     $('#statusLocationIndicator').addClass('fa fa-spinner fa-pulse fa-2x');
   }
 
-  $scope.UploadPhoto=function(){
+  $rootScope.UploadPhoto = function(){
+  	console.log('uploading');
 $rootScope.performUpload=true;
                     var access_token = localStorage.token;
 
@@ -140,7 +141,7 @@ $scope.getDetails = function(){
 var upload=angular.module('clozerr',['ngImgCrop','ngSanitize', 'ngS3upload']);
 
 function Ctrl($scope, $rootScope) {
-  $scope.myImage=$rootScope.vendor.image;
+ $scope.myImage=$rootScope.vendor.image;
   $scope.myCroppedImage='';
        /* $scope.files = {
        };*/
