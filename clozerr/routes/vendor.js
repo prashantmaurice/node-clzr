@@ -408,26 +408,27 @@ res.end(JSON.stringify( {result:true} ) ) ;
 
 router.get('/offers/myofferspage',function(req,res){
   debugger;
- var errobj = error.err_insuff_params(res,req,["access_token","vendor_id"]);
- if(!errobj){
-  return;
- }
- var user =req.user;
- debugger;
- var result ={};
-qualify.getPastOffers(user,req.query.vendor_id,function(pastOffers,vendor){
+  var errobj = error.err_insuff_params(res,req,["access_token","vendor_id"]);
+  if(!errobj){
+    return;
+  }
+  var user =req.user;
+  debugger;
+  var result ={};
+  console.log(user);
+  qualify.getPastOffers(user,req.query.vendor_id,function(pastOffers,vendor){
     result.pastOffers=pastOffers;
-  debugger;
-  qualify.getUpcomingOffer(user,req.query.vendor_id,function(upcomingOffer,vendor){
-  result.upcomingOffer=upcomingOffer;
-  debugger;
-  qualify.getFutureOffers(user,req.query.vendor_id,function(futureOffers,vendor){
-  result.futureOffers=futureOffers;
-  debugger;
-  res.send(result);
- });
- });
- });
+    debugger;
+    qualify.getUpcomingOffer(user,req.query.vendor_id,function(upcomingOffer,vendor){
+      result.upcomingOffer=upcomingOffer;
+      debugger;
+      qualify.getFutureOffers(user,req.query.vendor_id,function(futureOffers,vendor){
+        result.futureOffers=futureOffers;
+        debugger;
+        res.send(result);
+      });
+    });
+  });
 });
 router.get('/get/near', function (req, res) {
 

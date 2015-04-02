@@ -5,9 +5,9 @@ var Checkin = models.CheckIn;
 var User = models.User;
 var _ = require("underscore");
 
-function stampcount(vendor,offer){
+function stampCount(vendor,offer){
     if(offer.type=="S1") return offer.stamps;
-    else return offer.stamps+vendor.settings.SXLimit;
+    else return (offer.stamps*1)+(vendor.settings.SXLimit*1);
 }
 function getAllOffers(vendor_id,callback) {
   Vendor.findOne({
@@ -34,7 +34,7 @@ function getAllOffers(vendor_id,callback) {
   function getFutureOffers(user, vendor_id, callback) {
     getAllOffers(vendor_id, function(vendor,allOffers) {
       var futureOffers = _.filter(allOffers, function(offer) {
-        return (user.stamplist[vendor.fid] > stampCount(vendor,offer))
+        return (user.stamplist[vendor.fid] < stampCount(vendor,offer))
       });
       callback(futureOffers, vendor);
     });
@@ -42,8 +42,11 @@ function getAllOffers(vendor_id,callback) {
 
   function getPastOffers(user, vendor_id, callback) {
     getAllOffers(vendor_id, function(vendor,allOffers) {
+      console.log(allOffers);
       var futureOffers = _.filter(allOffers, function(offer) {
-        return (user.stamplist[vendor.fid] <= stampCount(vendor,offer))
+        console.log("stampcount");
+        console.log(stampCount(vendor,offer));
+        return (user.stamplist[vendor.fid] >= stampCount(vendor,offer))
       });
       callback(futureOffers, vendor);
     });
