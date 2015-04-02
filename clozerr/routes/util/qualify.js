@@ -6,8 +6,11 @@ var User = models.User;
 var _ = require("underscore");
 
 function stampCount(vendor,offer){
-    if(offer.type=="S1") return (offer.stamps*1);
-    else return (offer.stamps*1)+(vendor.settings.SXLimit*1);
+
+  console.log("fun");
+  console.log((offer.stamps*1)+(vendor.settings.SXLimit*1));
+  if(offer.type=="S1") return (offer.stamps*1);
+  else return (offer.stamps*1)+(vendor.settings.SXLimit*1);
 }
 function getAllOffers(vendor_id,callback) {
   Vendor.findOne({
@@ -29,69 +32,66 @@ function getAllOffers(vendor_id,callback) {
       callback(vendor,offers);
     });
   });
-  }
+}
 
-  function getFutureOffers(user, vendor_id, callback) {
-    getAllOffers(vendor_id, function(vendor,allOffers) {
-      var futureOffers = _.filter(allOffers, function(offer) {
-        return (user.stamplist[vendor.fid] < stampCount(vendor,offer))
-      });
-      callback(futureOffers, vendor);
+function getFutureOffers(user, vendor_id, callback) {
+  getAllOffers(vendor_id, function(vendor,allOffers) {
+    var futureOffers = _.filter(allOffers, function(offer) {
+      return (user.stamplist[vendor.fid] < stampCount(vendor,offer))
     });
-  }
+    futureOffers = _.sortBy(futureOffers,function(offer){return stampCount(vendor,offer)});
+    callback(futureOffers, vendor);
+  });
+}
 
-  function getPastOffers(user, vendor_id, callback) {
-    getAllOffers(vendor_id, function(vendor,allOffers) {
-      console.log(allOffers);
-      var futureOffers = _.filter(allOffers, function(offer) {
-        console.log("stampcount");
-        console.log(stampCount(vendor,offer));
-        if(!user.stamplist[vendor.fid])
-          user.stamplist[vendor.fid] = 0;
-        return (user.stamplist[vendor.fid] >= stampCount(vendor,offer))
-      });
-      callback(futureOffers, vendor);
+function getPastOffers(user, vendor_id, callback) {
+  getAllOffers(vendor_id, function(vendor,allOffers) {
+    var futureOffers = _.filter(allOffers, function(offer) {
+      if(!user.stamplist[vendor.fid])
+        user.stamplist[vendor.fid] = 0;
+      return (user.stamplist[vendor.fid] >= stampCount(vendor,offer))
     });
-  }
+    callback(futureOffers, vendor);
+  });
+}
 
-  function getUpcomingOffer(user, vendor_id, callback) {
-    getFutureOffers(user, vendor_id, function(futureOffers, vendor) {
-      if(futureOffers && futureOffers.length!=0) {
-          _.sortBy(futureOffers,function(offer){return stampCount(vendor,offer)});
-        callback(futureOffers[0], vendor);
-      }
-      else callback(null, vendor);
-    });
-  }
+function getUpcomingOffer(user, vendor_id, callback) {
+  getFutureOffers(user, vendor_id, function(futureOffers, vendor) {
+    if(futureOffers && futureOffers.length!=0) {
+      callback(futureOffers[0], vendor);
+    }
+    else callback(null, vendor);
+  });
+}
 
-  function handleS1Offer(user, vendor, offer,validate_data) {
-    if( user.stamplist[vendor.fid] ) {
-      user.stamplist[vendor.fid] ++;
-    }
-    else {
-      user.stamplist[vendor.fid] = 1;
-    }
-    user.markModified("stamplist");
-    user.save();
+function handleS1Offer(user, vendor, offer,validate_data) {
+  if( user.stamplist[vendor.fid] ) {
+    user.stamplist[vendor.fid] ++;
   }
+  else {
+    user.stamplist[vendor.fid] = 1;
+  }
+  user.markModified("stamplist");
+  user.save();
+}
 
-  function handleSXOffer(user, vendor, offer,validate_data) {
-    if( user.stamplist[vendor.fid] ){
-      if(user.stamplist[vendor.fid] +parseInt(validate_data.stamps)>((vendor.settings.SXLimit)?vendor.settings.SXLimit:10)+offer.stamps){
-          user.stamplist[vendor.fid]=((vendor.settings.SXLimit)?vendor.settings.SXLimit:10)+offer.stamps;
-      } else {
-          user.stamplist[vendor.fid] +=parseInt(validate_data.stamps);
-      }
+function handleSXOffer(user, vendor, offer,validate_data) {
+  if( user.stamplist[vendor.fid] ){
+    if(user.stamplist[vendor.fid] +parseInt(validate_data.stamps)>((vendor.settings.SXLimit)?vendor.settings.SXLimit:10)+offer.stamps){
+      user.stamplist[vendor.fid]=((vendor.settings.SXLimit)?vendor.settings.SXLimit:10)+offer.stamps;
+    } else {
+      user.stamplist[vendor.fid] +=parseInt(validate_data.stamps);
     }
-    else {
-        if(parseInt(validate_data.stamps)>((vendor.settings.SXLimit)?vendor.settings.SXLimit:10)+offer.stamps){
-            user.stamplist[vendor.fid]=((vendor.settings.SXLimit)?vendor.settings.SXLimit:10)+offer.stamps;
-        } else {
-            user.stamplist[vendor.fid] =parseInt(validate_data.stamps);
-        }
+  }
+  else {
+    if(parseInt(validate_data.stamps)>((vendor.settings.SXLimit)?vendor.settings.SXLimit:10)+offer.stamps){
+      user.stamplist[vendor.fid]=((vendor.settings.SXLimit)?vendor.settings.SXLimit:10)+offer.stamps;
+    } else {
+      user.stamplist[vendor.fid] =parseInt(validate_data.stamps);
     }
-    user.markModified("stamplist");
-    user.save();
+  }
+  user.markModified("stamplist");
+  user.save();
 }
 
 function handleOffer(user, vendor_id, validate_data) {
@@ -101,24 +101,57 @@ function handleOffer(user, vendor_id, validate_data) {
     }
     else if(offer.type == "SX") {
       handleSXOffer(user, vendor, offer,validate_data);
-
     }
   });
 }
 
-function getOfferDisplay(offer){
-    var offerDisplay={};
-    offerDisplay.image=null;//todo
+function getOfferDisplay(user, vendor, offer){
+  var offerDisplay={};
+  offerDisplay.type=offer.type;
+    offerDisplay.image=null;//TODO
+    offerDisplay.optionalImage=null;//TODO
     offerDisplay.caption=offer.caption;
     offerDisplay.description=offer.description;
     offerDisplay.stamps=offer.stamps;
-    return offerDisplay;
-}
 
-module.exports={getAllOffers:getAllOffers,
-                handleOffer:handleOffer,
-                handleSXOffer:handleSXOffer,
-                handleS1Offer:handleS1Offer,
-                getPastOffers:getPastOffers,
-                getUpcomingOffer:getUpcomingOffer,
-                getFutureOffers:getFutureOffers};
+    if(offerDisplay.type=="SX") {
+      offerDisplay.stampStatus = {};
+      if(user.stamplist[vendor.fid] > offer.stamps) {
+        offerDisplay.stampStatus.current = (user.stamplist[vendor.fid]*1) % vendor.settings.SXLimit;
+      }
+      else {
+        offerDisplay.stampStatus.current = 0;
+      }
+      offerDisplay.stampStatus.total = vendor.settings.SXLimit;
+    }    
+    return offerDisplay;
+  }
+
+  function getHomePageVendorDisplay(user, vendor_id, callback) {
+
+    getUpcomingOffer(user, vendor._id, function(user, vendor_id, function (offer, vendor) {
+     var vendorDisplay = {};
+     vendorDisplay.name = vendor.name;
+     vendorDisplay.location = vendor.location;
+     vendorDisplay.image = vendor.image;
+     vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
+     callback(vendor, vendorDisplay);
+   }));
+  }
+
+  function getVendorPageDisplay(user, vendor_id, callback) {
+    getHomePageVendorDisplay(user, vendor_id, function(vendor, vendorDisplay) {
+      vendorDisplay.phone = vendor.phone;
+      vendorDisplay.description = vendor.description;
+      callback(vendor, vendorDisplay);
+    });
+  }
+
+  module.exports={getAllOffers:getAllOffers,
+    handleOffer:handleOffer,
+    handleSXOffer:handleSXOffer,
+    handleS1Offer:handleS1Offer,
+    getPastOffers:getPastOffers,
+    getUpcomingOffer:getUpcomingOffer,
+    getOfferDisplay:getOfferDisplay,
+    getFutureOffers:getFutureOffers};

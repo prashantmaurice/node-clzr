@@ -207,26 +207,6 @@ global.io.emit('signal', JSON.stringify({vendor_id:obj.vendor._id}) );
 
 });
 
-router.get("/validateV2", function (req, res) {
-    var errobj = error.err_insuff_params(res, req, ["checkin_id","access_token"]);
-    if (!errobj) {
-        return;
-    }
-
-    if (!(req.user.type == "Vendor")) {
-        //Throw error.
-        error.err(res, "909");
-        return;
-    }
-
-    var userOfVendor = req.user;
-    var checkin_id = req.query.checkin_id;
-
-    Checkin.findOne()
-});
-
-
-
 router.get("/validate", function (req, res) {
 
     if (!(req.user.type == "Vendor")) {
