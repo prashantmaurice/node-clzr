@@ -1,11 +1,4 @@
-<link href="css/plugins/morris.css" rel="stylesheet">
-<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="js/plugins/graphael/g.raphael.js"></script>
-<script src="js/plugins/graphael/g.dot.js"></script>
-<script src="js/plugins/morris/morris.min.js"></script>
-<script src="vendor_charts.js"></script>
-<div ng-controller="index_analytics">
+<div ng-controller="index_analytics" class="col-lg-10 col-lg-offset-2">
     Analytics!
     <div ng-show="visibility">
         <div id="checkin_date" style="height: 250px; width: auto">
@@ -14,33 +7,3 @@
         </div>
     </div>
 </div>
-<script>
-    //dot chart - checkin day+time
-    var r = Raphael("checkin_day_time"),
-    axisy = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    axisx = ["12am", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12pm", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
-    var dt_table=checkin_time_day_data(sample_checkins);
-    var xs=dt_table[0],ys=dt_table[1],data=dt_table[2];
-    r.dotchart(10, 10, 620, 260, xs, ys, data, {symbol: "o", max: 10, heat: false, axis: "0 0 1 1", axisxstep: 23, axisystep: 6, axisxlabels: axisx, axisxtype: " ", axisytype: " ", axisylabels: axisy}).
-    hover(function () {
-        if(this.value>0) {
-            this.marker = this.marker || r.tag(this.x, this.y, "Visits : " + this.value, 0, this.r + 2).insertBefore(this);
-            this.marker.show();
-        }
-    }, function () {
-        this.marker && this.marker.hide();
-    });
-    </script>
-    <script>
-    Morris.Line({
-        element: 'checkin_date',
-        data: checkin_date_data(sample_checkins),
-        xkey: 'date',
-        xLabels: 'day',
-        ykeys: ['visits'],
-        labels: ['Visits'],
-        xLabelFormat: date_month,
-        xLabelAngle: 60
-    });
-    //TODO call with $rootscope.all_checkins or similar objectnd
-    </script>

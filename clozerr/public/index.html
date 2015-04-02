@@ -15,7 +15,8 @@
     <link href="animate-it/css/animations.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-switch.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">    
+    <link href="css/animate.css" rel="stylesheet"> 
+    <link href="css/ng-img-crop.css" rel="stylesheet">   
     
     <link href="css/timeline.css" rel="stylesheet">
     <link href="css/animated-check-box.css" rel="stylesheet">
@@ -24,7 +25,6 @@
     <link href="css/sb-admin.css" rel="stylesheet">
     <!-- <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"> -->
 
-    <!-- Morris Charts CSS -->
     <link href="css/plugins/morris.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
@@ -32,12 +32,15 @@
 
     <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-sanitize.min.js"></script>
     <script src="js/plugins/morris/morris.min.js"></script>
     <script src=" http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="js/plugins/graphael/g.raphael.js"></script>
     <script src="js/plugins/graphael/g.dot.js"></script>
+
+    <!--<script src="vendor_charts.js"></script>-->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -128,7 +131,6 @@
 
     <body style="font-family:'Raleway'">
         <div id="fb-root"></div>
-        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
         <script type='text/javascript' src="js/fblogin.js"></script>
         <script type="text/javascript" src="animate-it/js/css3-animate-it.js"></script>
 
@@ -158,17 +160,10 @@
         
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <link href="css/plugins/morris.css" rel="stylesheet">
-        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-        <script src="js/plugins/graphael/g.raphael.js"></script>
-        <script src="js/plugins/graphael/g.dot.js"></script>
-        <script src="js/plugins/morris/morris.min.js"></script>
-        <script src="vendor_charts.js"></script>
         <script>
         var CLOZERR_API = location.origin + "/";
 
-</script>
+        </script>
     <!--<script type="text/javascript" src="index_signup.js"></script>
     <script type="text/javascript" src="index_profile_handler.js"></script>
     <script type="text/javascript" src="index_analytics.js"></script>
@@ -231,10 +226,10 @@
                 <li id="nav1">
                     <a href="javascript:void(0)" ng-click="pageChange('home')"><i class="fa fa-fw fa-dashboard"></i>&nbsp&nbsp&nbspHome</a>
                 </li>
-                <!-- Analytics. empty for now.. --><!-- 
+                <!-- Analytics. empty for now.. -->
                 <li>
                     <a href="javascript:void(0)" ng-click="pageChange('analytics')"><i class="fa fa-fw fa-bar-chart-o"></i>&nbsp&nbsp&nbspAnalytics</a>
-                </li> -->
+                </li>
                     <!--
                       Settings is to set features: Birthday notifications, delayed push notifications & review questions.
                       Also, have a button to bring up the offers modal.
@@ -274,18 +269,26 @@
     <div id="page-wrapper" ng-include="'index_settings.html'"></div>
     <div id="page-wrapper" ng-include="'index_preferences.html'"></div>
     <div id="page-wrapper" ng-include="'index_profile.html'"></div>
+    <div id="page-wrapper" >
+        <div ng-controller="index_analytics" class="col-lg-10 col-lg-offset-2">
+    <div ng-show="visibility">
+        <br>
+        <div id="checkin_date" class="whitebox" style="height: 250px; width: auto;">
+        </div>
+        <br>
+        <div id="checkin_day_time" class="whitebox" style="height: 350px; width: auto;">
+        </div>
+    </div>
+</div>
+</div>
 
     <!--<div id="page-wrapper" ng-include="index_signup.html"></div>-->
-    
-    <div id="page-wrapper" ng-include="index_analytics.html"></div>
 
 </div>
 <!-- /#page-wrapper -->
 
 </div>
 <!-- /#wrapper -->
-
-<!-- jQuery -->
 
 <script src="js/jspdf/dist/jspdf.min.js"></script>
 
@@ -294,14 +297,16 @@
 
 
 
-<script type="text/javascript" src="ngImgCrop/compile/unminified/ng-img-crop.js"></script>
-<link rel="stylesheet" href="ngImgCrop/compile/unminified/ng-img-crop.css"/>
+<script src="ng-img-crop.js"></script>
 <script src="ng-s3upload-0.0.5/build/ng-s3upload.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 
-<script src="js/plugins/morris/raphael.min.js"></script>
-<script src="js/plugins/morris/morris.min.js"></script>
-<script src="js/plugins/morris/morris-data.js"></script>
+<script>
+
+    //dot chart - checkin day+time
+  
+</script>
+
 <script>
 var app = angular.module("clozerr",['ngImgCrop']);
 app.filter("humanize_date", function(){

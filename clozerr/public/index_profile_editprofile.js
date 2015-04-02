@@ -1,7 +1,7 @@
 
 var index_profile_editprofile = function( $rootScope, $scope, $http) {
-	var CLOZERR_API = location.origin + '/';
-	var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
+  var CLOZERR_API = location.origin + '/';
+  var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";
   $scope.myImage='';
   $scope.myCroppedImage='';
   var policy,signature;
@@ -16,14 +16,15 @@ var index_profile_editprofile = function( $rootScope, $scope, $http) {
   });
 
   $scope.focusShowNothing = function() {
-    console.log("focussed");		
+    console.log("focussed");    
     $('#statusLocationIndicator').removeClass('fa fa-spinner fa-pulse fa-2x');
     $('#statusLocationIndicator').removeClass('fa fa-times fa-2x');
     $('#statusLocationIndicator').removeClass('fa fa-check fa-2x');
     $('#statusLocationIndicator').addClass('fa fa-spinner fa-pulse fa-2x');
   }
 
-  $scope.UploadPhoto=function(){
+  $rootScope.UploadPhoto = function(){
+  	console.log('uploading');
 $rootScope.performUpload=true;
                     var access_token = localStorage.token;
 
@@ -48,7 +49,7 @@ $rootScope.performUpload=true;
  $scope.$on('page-editprofile',function() {
   console.log('editprofile');
   $scope.vendorAddressRevGeoCoded = $scope.getAddress($rootScope.vendor.location[0],$rootScope.vendor.location[1]);
-});	
+}); 
 
  $scope.getLocation = function(address) {
   var geocoder = new google.maps.Geocoder();
@@ -60,7 +61,7 @@ $rootScope.performUpload=true;
     var latitude = results[0].geometry.location.lat();
     var longitude = results[0].geometry.location.lng();
     console.log('latitude : ' + latitude);
-    console.log('longitude : ' + longitude);	
+    console.log('longitude : ' + longitude);  
 
     $scope.vlatitude = latitude;
     $scope.vlongitude = longitude;
@@ -69,7 +70,7 @@ $rootScope.performUpload=true;
     $rootScope.vendor.location[1] = $scope.vlongitude;
 
     $('#statusLocationIndicator').addClass('fa fa-check fa-2x');
-  } else {		
+  } else {    
     $('#statusLocationIndicator').addClass('fa fa-times fa-2x');
   }
 
@@ -142,11 +143,12 @@ $scope.getDetails = function(){
 var upload=angular.module('clozerr',['ngImgCrop','ngSanitize', 'ngS3upload']);
 
 function Ctrl($scope, $rootScope) {
-  $scope.myImage=$rootScope.vendor.image;
+ //$scope.myImage=$rootScope.vendor.image;
   $scope.myCroppedImage='';
+    $scope.cropType='rectangle';
        /* $scope.files = {
        };*/
-    	//$scope.options=
+      //$scope.options=
 
       $scope.openPhotoUploadDialog = function() {
         $('#fileInput').trigger('click');
@@ -177,16 +179,16 @@ function Ctrl($scope, $rootScope) {
          console.log($scope.myCroppedImage);
        });
         $rootScope.$watch('performUpload',function(newValue,oldValue){
-        	console.log($rootScope.performUpload);
-        	if($rootScope.performUpload==true){
-        		console.log(true);
-        		console.log($rootScope.file[0]);
+          console.log($rootScope.performUpload);
+          if($rootScope.performUpload==true){
+            console.log(true);
+            console.log($rootScope.file[0]);
             console.log($rootScope.options);
             console.log($scope.key);
-        		upload_image($scope,'https://clozerr.s3.amazonaws.com/',$rootScope.options.key,'public-read','jpg',$rootScope.options.access_key,$rootScope.options.policy,
-        			$rootScope.options.signature,
-        			$rootScope.file);
-        	}
+            upload_image($scope,'https://clozerr.s3.amazonaws.com/',$rootScope.options.key,'public-read','jpg',$rootScope.options.access_key,$rootScope.options.policy,
+              $rootScope.options.signature,
+              $rootScope.file);
+          }
         })
 
         angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
