@@ -252,11 +252,10 @@ router.get("/validate", function (req, res) {
 
             var validate_data = {};
             if( req.query.validate_data ){
-              try{
-                validate_data = JSON.parse( req.query.validate_data );
-            }catch( e ){
-
-            }
+              validate_data = req.query.validate_data;
+          }
+          else {
+            validate_data = {stamps:1};
         }
         obj.checkin.validate_data = validate_data;
         obj.checkin.markModified("validate_data");
@@ -277,12 +276,16 @@ router.get("/validate", function (req, res) {
                 }).exec();
             }).then(function (vendor) {
                 obj.vendor = vendor;
-                if(obj.vendor.settings.billAmt){
-                    obj.checkin.validate_data.stamps=obj.checkin.validate_data.billAmt/obj.vendor.settings.billAmt;
-                    obj.checkin.markModified("validate_data");
-                    console.log(validate_data);}
-                    debugger;
-                    OfferHandler.onCheckin( obj.user, obj.vendor, obj.offer, validate_data );
+                console.log(validate_data);
+                if(obj.vendor.settings) {
+                    if(obj.vendor.settings.billAmt){
+                        obj.checkin.validate_data.stamps=obj.checkin.validate_data.billAmt/obj.vendor.settings.billAmt;
+                        obj.checkin.markModified("validate_data");
+                    }
+
+                }
+                debugger;
+                OfferHandler.onCheckin( obj.user, obj.vendor, obj.offer, validate_data );
                 //debugger;
                 if( !( req.query.test == "true" ) )
                   obj.user.save();
