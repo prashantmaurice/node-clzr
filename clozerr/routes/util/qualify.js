@@ -7,10 +7,9 @@ var _ = require("underscore");
 
 function stampCount(vendor,offer){
 
-  console.log("fun");
-  console.log((offer.stamps*1)+(vendor.settings.SXLimit*1));
   if(offer.type=="S1") return (offer.stamps*1);
-  else return (offer.stamps*1)+(vendor.settings.SXLimit*1);
+  else if(vendor.settings) return (offer.stamps*1)+((vendor.settings.SXLimit||10)*1);
+  else return (offer.stamps*1)+((10)*1);
 }
 function getAllOffers(vendor_id,callback) {
   Vendor.findOne({
@@ -107,7 +106,8 @@ function handleOffer(user, vendor_id, validate_data) {
 
 function getOfferDisplay(user, vendor, offer){
   var offerDisplay={};
-  offerDisplay.type=offer.type;
+  if(offer) {
+    offerDisplay.type=offer.type;
     offerDisplay.image=null;//TODO
     offerDisplay.optionalImage=null;//TODO
     offerDisplay.caption=offer.caption;
@@ -126,32 +126,55 @@ function getOfferDisplay(user, vendor, offer){
     }    
     return offerDisplay;
   }
+  else return null;
+}
 
-  function getHomePageVendorDisplay(user, vendor_id, callback) {
+function getHomePageVendorDisplay(user, vendor_id, callback) {
 
-    getUpcomingOffer(user, vendor._id, function(user, vendor_id, function (offer, vendor) {
-     var vendorDisplay = {};
-     vendorDisplay.name = vendor.name;
-     vendorDisplay.location = vendor.location;
-     vendorDisplay.image = vendor.image;
-     vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
-     callback(vendor, vendorDisplay);
-   }));
-  }
+  getUpcomingOffer(user, vendor_id, function (offer, vendor) {
+   var vendorDisplay = {};
+   vendorDisplay.name = vendor.name;
+   vendorDisplay.location = vendor.location;
+   vendorDisplay.image = vendor.image;
+   vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
+   callback(vendorDisplay);
+ });
+}
 
-  function getVendorPageDisplay(user, vendor_id, callback) {
-    getHomePageVendorDisplay(user, vendor_id, function(vendor, vendorDisplay) {
-      vendorDisplay.phone = vendor.phone;
-      vendorDisplay.description = vendor.description;
-      callback(vendor, vendorDisplay);
+function getHomePageDisplay(user, vendors, callback) {
+
+  var vendorDisplays = [];
+
+  for(var i=0;i<vendors.length;i++) {
+    getUpcomingOffer(user, vendors[i]._id, function(offer, vendor) {
+      var vendorDisplay = {};
+      vendorDisplay.name = vendor.name;
+      vendorDisplay.location = vendor.location;
+      vendorDisplay.image = vendor.image;
+      vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
+
+      vendorDisplays[i] = vendorDisplay;
     });
   }
+  //return vendorDisplays;
+  callback(vendorDisplays);
+}
 
-  module.exports={getAllOffers:getAllOffers,
-    handleOffer:handleOffer,
-    handleSXOffer:handleSXOffer,
-    handleS1Offer:handleS1Offer,
-    getPastOffers:getPastOffers,
-    getUpcomingOffer:getUpcomingOffer,
-    getOfferDisplay:getOfferDisplay,
-    getFutureOffers:getFutureOffers};
+function getVendorPageDisplay(user, vendor_id, callback) {
+  getHomePageVendorDisplay(user, vendor_id, function(vendor, vendorDisplay) {
+    vendorDisplay.phone = vendor.phone;
+    vendorDisplay.description = vendor.description;
+    callback(vendor, vendorDisplay);
+  });
+}
+
+module.exports={getAllOffers:getAllOffers,
+  handleOffer:handleOffer,
+  handleSXOffer:handleSXOffer,
+  handleS1Offer:handleS1Offer,
+  getPastOffers:getPastOffers,
+  getUpcomingOffer:getUpcomingOffer,
+  getOfferDisplay:getOfferDisplay,
+  getVendorPageDisplay:getVendorPageDisplay,
+  getHomePageVendorDisplay:getHomePageVendorDisplay,
+  getFutureOffers:getFutureOffers};
