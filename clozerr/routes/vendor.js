@@ -463,7 +463,21 @@ router.get('/myhomepage', function (req, res) {
         var plist = [];
         var vendorDisplays = [];
         for(var index=0;index<vendors.length;index++) {
-         /* vendorDisplays[index] = */
+
+         pr = qualify.getUpcomingOffer(user, vendor_id, function (offer, vendor) {
+          var deferred = Q.defer();
+          process.nextTick(function () {
+            deferred.resolve();
+          });
+          var vendorDisplay = {};
+          vendorDisplay.name = vendor.name;
+          vendorDisplay.location = vendor.location;
+          vendorDisplay.image = vendor.image;
+          vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
+          vendorDisplays[index] = vendorDisplay;
+
+        });
+/*
          pr = qualify.getHomePageVendorDisplay(user, vendors[index]._id, function(vendorDisplay) {
           var deferred = Q.defer();
           process.nextTick(function () {
@@ -471,35 +485,62 @@ router.get('/myhomepage', function (req, res) {
           });
           vendorDisplays[index] = vendorDisplay;
           return deferred.promise;
-        });
+        });*/
          plist.push(pr);
+         console.log(index);
        }
        Q.all(plist).then(function() {
 
         res.end(JSON.stringify({result:true,data:vendorDisplays}));
       });
-      });
-    });
-  }
-  else   
-  {
-    Vendor.find({location:{
-      $near:[latitude,longitude]
-    },$or:[
-    {test:true},
-    {visible:true}]
-  }).limit(limit).skip(offset).exec().then(function (vendors){
-   debugger;
-   getoff(vendors, req.user,typelist,function( vendors ){
-    var vendorDisplays = [];
-    _.each(vendors, function( vendorObj, index, array ) {
-      vendorDisplays[index] = qualify.getHomePageVendorDisplay(user, array[index]._id);
-      if(index == array.length - 1) {
+
+     /* var finishedOneIteration = _.after(vendors.length, function() {
         res.end(JSON.stringify({result:true,data:vendorDisplays}));
-      }
+      });
+
+      var vendorDisplays = [];
+
+      for(var index=0;index<vendors.length;index++) {
+        var vendor_id = vendors[index]._id;
+        qualify.getUpcomingOffer(user, vendor_id, function (offer, vendor) {
+         var vendorDisplay = {};
+         vendorDisplay.name = vendor.name;
+         vendorDisplay.location = vendor.location;
+         vendorDisplay.image = vendor.image;
+         vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
+         vendorDisplays[index] = vendorDisplay;
+         finishedOneIteration();
+       });
+*/
+        /*var vendorDisplay = qualify.getHomePageVendorDisplay(user, vendor_id);
+        vendorDisplays[index] = vendorDisplay;
+        finishedOneIteration();
+        console.log("done one");*/
+      
+
+
     });
+});
+}
+else   
+{
+  Vendor.find({location:{
+    $near:[latitude,longitude]
+  },$or:[
+  {test:true},
+  {visible:true}]
+}).limit(limit).skip(offset).exec().then(function (vendors){
+ debugger;
+ getoff(vendors, req.user,typelist,function( vendors ){
+  var vendorDisplays = [];
+  _.each(vendors, function( vendorObj, index, array ) {
+    vendorDisplays[index] = qualify.getHomePageVendorDisplay(user, array[index]._id);
+    if(index == array.length - 1) {
+      res.end(JSON.stringify({result:true,data:vendorDisplays}));
+    }
   });
- });  
+});
+});  
 }
 
 }); 

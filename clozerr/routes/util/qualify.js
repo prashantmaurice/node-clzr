@@ -129,24 +129,27 @@ function getOfferDisplay(user, vendor, offer){
   else return null;
 }
 
-function getHomePageVendorDisplay(user, vendor_id, callback) {
+/*function getHomePageVendorDisplay(user, vendor_id, callback1) {
 
+  console.log(callback1);
+  console.log(user._id);
+  console.log(vendor_id);
   getUpcomingOffer(user, vendor_id, function (offer, vendor) {
    var vendorDisplay = {};
    vendorDisplay.name = vendor.name;
    vendorDisplay.location = vendor.location;
    vendorDisplay.image = vendor.image;
    vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
-   callback(vendorDisplay);
+   callback1(vendorDisplay);
  });
-}
-
+}*/
+/*
 function getHomePageDisplay(user, vendors, callback) {
 
   var vendorDisplays = [];
 
   for(var i=0;i<vendors.length;i++) {
-    getUpcomingOffer(user, vendors[i]._id, function(offer, vendor) {
+    getUpcomingOffer(user, vendors[i]._id, function (offer, vendor) {
       var vendorDisplay = {};
       vendorDisplay.name = vendor.name;
       vendorDisplay.location = vendor.location;
@@ -158,7 +161,7 @@ function getHomePageDisplay(user, vendors, callback) {
   }
   //return vendorDisplays;
   callback(vendorDisplays);
-}
+}*/
 
 function getVendorPageDisplay(user, vendor_id, callback) {
   getHomePageVendorDisplay(user, vendor_id, function(vendor, vendorDisplay) {
@@ -176,5 +179,4 @@ module.exports={getAllOffers:getAllOffers,
   getUpcomingOffer:getUpcomingOffer,
   getOfferDisplay:getOfferDisplay,
   getVendorPageDisplay:getVendorPageDisplay,
-  getHomePageVendorDisplay:getHomePageVendorDisplay,
   getFutureOffers:getFutureOffers};
