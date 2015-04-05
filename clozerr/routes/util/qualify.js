@@ -5,6 +5,12 @@ var Checkin = models.CheckIn;
 var User = models.User;
 var _ = require("underscore");
 
+textToImage = {
+  "used" : "http://icons.iconarchive.com/icons/iconarchive/red-orb-alphabet/256/Letter-U-icon.png",
+  "now" : "http://icons.iconarchive.com/icons/iconarchive/red-orb-alphabet/256/Letter-N-icon.png",
+  "later" : "http://icons.iconarchive.com/icons/iconarchive/red-orb-alphabet/256/Letter-L-icon.png"
+}
+
 function stampCount(vendor,offer){
 
   if(offer.type=="S1") return (offer.stamps*1);
@@ -190,4 +196,5 @@ module.exports={getAllOffers:getAllOffers,
   getUpcomingOffer:getUpcomingOffer,
   getOfferDisplay:getOfferDisplay,
   getVendorPageDisplay:getVendorPageDisplay,
+  textToImage:textToImage,
   getFutureOffers:getFutureOffers};
