@@ -45,17 +45,27 @@ function getFutureOffers(user, vendor_id, callback) {
 
 function getPastOffers(user, vendor_id, callback) {
   getAllOffers(vendor_id, function(vendor,allOffers) {
-    var futureOffers = _.filter(allOffers, function(offer) {
+    var pastOffers = _.filter(allOffers, function(offer) {
       if(!user.stamplist[vendor.fid])
         user.stamplist[vendor.fid] = 0;
       return (user.stamplist[vendor.fid] >= stampCount(vendor,offer))
     });
-    callback(futureOffers, vendor);
-  });
+ /*   _.each(pastOffers, function(element, array, index) {
+      pastOffers[index].flagState = "used";
+      if(index == array.length - 1) {
+        callback(pastOffers, vendor);
+      }
+    });*/
+  /*for(var index=0;index<pastOffers.length;index++) {
+    pastOffers[index].flagState = "used";
+  }*/
+  callback(pastOffers, vendor);
+});
 }
 
 function getUpcomingOffer(user, vendor_id, callback) {
   getFutureOffers(user, vendor_id, function(futureOffers, vendor) {
+    futureOffers[0].flagState = "upcoming";
     if(futureOffers && futureOffers.length!=0) {
       callback(futureOffers[0], vendor);
     }
@@ -104,25 +114,26 @@ function handleOffer(user, vendor_id, validate_data) {
   });
 }
 
-function getOfferDisplay(user, vendor, offer){
+function getOfferDisplay(user, vendor, offer, flagState){
   var offerDisplay={};
   if(offer) {
     offerDisplay.type=offer.type;
-    offerDisplay.image=null;//TODO
+    offerDisplay.image=flagState;//TODO
     offerDisplay.optionalImage=null;//TODO
     offerDisplay.caption=offer.caption;
     offerDisplay.description=offer.description;
-    offerDisplay.stamps=offer.stamps;
+    offerDisplay.stamps=offer.stamps*1;
 
     if(offerDisplay.type=="SX") {
       offerDisplay.stampStatus = {};
+      offerDisplay.billAmt = vendor.settings.billAmt*1;
       if(user.stamplist[vendor.fid] > offer.stamps) {
         offerDisplay.stampStatus.current = (user.stamplist[vendor.fid]*1) % vendor.settings.SXLimit;
       }
       else {
         offerDisplay.stampStatus.current = 0;
       }
-      offerDisplay.stampStatus.total = vendor.settings.SXLimit;
+      offerDisplay.stampStatus.total = vendor.settings.SXLimit*1;
     }    
     return offerDisplay;
   }
