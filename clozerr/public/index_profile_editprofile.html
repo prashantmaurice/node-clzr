@@ -157,6 +157,9 @@
 					<br>
 					<div>Cropped Image:</div>
 					<div class="cropped"><img ng-src="{{myCroppedImage}}" width="{{myCroppedImageW}}"  height="{{myCroppedImageH}}" /></div>	
+					<div class="spinner"ng-show="spinner">
+                      <img src="727.GIF" class="spinner-img">
+                    </div>
 <!-- 					  <div>Select an image file: <input type="file" id="fileInput" onchange="angular.element(this).scope().handleFileSelect(event)"/></div>
   						<div class="cropArea">
     						<img-crop image="myImage" result-image="myCroppedImage"></img-crop>
@@ -167,7 +170,7 @@
   				</center>
   			</div>	
   			<div class="modal-footer">
-  				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="UploadPhoto()"><i class="fa fa-cloud-upload">&nbsp&nbspUpload image</i></button>
+  				<button type="button" class="btn btn-default" ng-click="UploadPhoto()"><i class="fa fa-cloud-upload">&nbsp&nbspUpload image</i></button>
   			</div>
   		</div>
   	</div>
