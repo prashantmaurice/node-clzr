@@ -84,6 +84,7 @@ function date_month(date){
         axisy = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         axisx = ["12am", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12pm", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"];
         var dt_table=checkin_time_day_data($rootScope.allCheckinObjects);
+        //console.log(dt_table);
         var xs=dt_table[0],ys=dt_table[1],data=dt_table[2];
         r.dotchart(10, 10, 620, 260, xs, ys, data, {symbol: "o", max: 10, heat: false, axis: "0 0 1 1", axisxstep: 23, axisystep: 6, axisxlabels: axisx, axisxtype: " ", axisytype: " ", axisylabels: axisy}).
         hover(function () {

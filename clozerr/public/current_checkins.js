@@ -57,7 +57,8 @@ var current_checkins = function( $rootScope, $scope, $http ){
     //$scope.invokeTypeRequirement( checkin );
     $rootScope.validating = true;
     var access_token = localStorage.token;
-    $http.get( CLOZERR_VALIDATE_URL + "?access_token=" + access_token + "&checkin_id=" + checkin._id + "&validate_data=" + encodeURIComponent( JSON.stringify(validate_data) ) ).
+    var str = decodeURIComponent(jQuery.param(validate_data));
+    $http.get( CLOZERR_VALIDATE_URL + "?access_token=" + access_token + "&checkin_id=" + checkin._id + "&validate_data=" + str ).
     success(function(data, status, headers, config) {
       $rootScope.validating = false;
       $rootScope.pageChange( "current-checkins" );
@@ -87,7 +88,11 @@ var current_checkins = function( $rootScope, $scope, $http ){
   $scope.$on("page-current-checkins", function(){
     $scope.visibility = true;
     $scope.update();
-    $scope.sxEnabled=$rootScope.vendor.settings.sxEnabled;
+    if($rootScope.vendor.settings) {
+
+    $scope.sxEnabled=$rootScope.vendor.settings.sxEnabled || false;
+    }
+    else $scope.sxEnabled = false;
   });
   $scope.$on("logged-in", function(){
     $scope.visibility = true;
