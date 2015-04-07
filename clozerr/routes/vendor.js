@@ -406,6 +406,145 @@ request.save();
 res.end(JSON.stringify( {result:true} ) ) ;
 });
 
+router.get('/myvendorpage', function (req, res) {
+  var errobj = error.err_insuff_params(res,req,["access_token","vendor_id"]);
+  if(!errobj){
+    return;
+  }
+  var user =req.user;
+  var vendor_id = req.query.vendor_id;
+
+  qualify.getVendorPageDisplay(user, vendor_id, function(vendor, vendorDisplay) {
+    var result = {};
+    result.result = true;
+    result.data.vendorDisplay = vendorDisplay; 
+    res.end(JSON.stringify(result));
+  });
+});
+
+router.get('/myhomepage', function (req, res) {
+  var errobj = error.err_insuff_params(res,req,["access_token","latitude","longitude"]);
+  if(!errobj){
+    return;
+  }
+
+  var type = req.query.type;
+
+  if( !type )
+    type = JSON.stringify(["S0","S1","SX"]);
+
+  var limit = req.query.limit;
+
+  if( !limit )
+    limit = settings.api.default_limit;
+
+  var offset = req.query.offset;
+  if( !offset )
+    offset = 0;
+
+  var user=req.user;
+  var latitude = req.query.latitude;
+  var longitude = req.query.longitude;
+  var distance = req.query.distance;
+  var typelist = JSON.parse( type );
+  var vendorResult;
+
+  if(user.type!='TestUser'){
+    debugger;
+    Vendor.find({
+      location: {
+        $near: [latitude, longitude]
+      },
+      visible:true
+    }).limit( limit ).skip( offset ).exec().then(function (vendors) {
+      debugger;
+      getoff(vendors, req.user,typelist,function( vendors ){
+
+        var plist = [];
+        var vendorDisplays = [];
+        for(var index=0;index<vendors.length;index++) {
+
+         pr = qualify.getUpcomingOffer(user, vendor_id, function (offer, vendor) {
+          var deferred = Q.defer();
+          process.nextTick(function () {
+            deferred.resolve();
+          });
+          var vendorDisplay = {};
+          vendorDisplay.name = vendor.name;
+          vendorDisplay.location = vendor.location;
+          vendorDisplay.image = vendor.image;
+          vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
+          vendorDisplays[index] = vendorDisplay;
+
+        });
+/*
+         pr = qualify.getHomePageVendorDisplay(user, vendors[index]._id, function(vendorDisplay) {
+          var deferred = Q.defer();
+          process.nextTick(function () {
+            deferred.resolve();
+          });
+          vendorDisplays[index] = vendorDisplay;
+          return deferred.promise;
+        });*/
+         plist.push(pr);
+         console.log(index);
+       }
+       Q.all(plist).then(function() {
+
+        res.end(JSON.stringify({result:true,data:vendorDisplays}));
+      });
+
+     /* var finishedOneIteration = _.after(vendors.length, function() {
+        res.end(JSON.stringify({result:true,data:vendorDisplays}));
+      });
+
+      var vendorDisplays = [];
+
+      for(var index=0;index<vendors.length;index++) {
+        var vendor_id = vendors[index]._id;
+        qualify.getUpcomingOffer(user, vendor_id, function (offer, vendor) {
+         var vendorDisplay = {};
+         vendorDisplay.name = vendor.name;
+         vendorDisplay.location = vendor.location;
+         vendorDisplay.image = vendor.image;
+         vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
+         vendorDisplays[index] = vendorDisplay;
+         finishedOneIteration();
+       });
+*/
+        /*var vendorDisplay = qualify.getHomePageVendorDisplay(user, vendor_id);
+        vendorDisplays[index] = vendorDisplay;
+        finishedOneIteration();
+        console.log("done one");*/
+      
+
+
+    });
+});
+}
+else   
+{
+  Vendor.find({location:{
+    $near:[latitude,longitude]
+  },$or:[
+  {test:true},
+  {visible:true}]
+}).limit(limit).skip(offset).exec().then(function (vendors){
+ debugger;
+ getoff(vendors, req.user,typelist,function( vendors ){
+  var vendorDisplays = [];
+  _.each(vendors, function( vendorObj, index, array ) {
+    vendorDisplays[index] = qualify.getHomePageVendorDisplay(user, array[index]._id);
+    if(index == array.length - 1) {
+      res.end(JSON.stringify({result:true,data:vendorDisplays}));
+    }
+  });
+});
+});  
+}
+
+}); 
+
 router.get('/offers/myofferspage',function(req,res){
   debugger;
   var errobj = error.err_insuff_params(res,req,["access_token","vendor_id"]);
@@ -414,7 +553,7 @@ router.get('/offers/myofferspage',function(req,res){
   }
   var user =req.user;
   debugger;
-  var result ={};
+  var result =[];
   console.log(user);
   qualify.getPastOffers(user,req.query.vendor_id,function(pastOffers,vendor){
     var pastOffersDisplay = [];
@@ -422,24 +561,25 @@ router.get('/offers/myofferspage',function(req,res){
       pastOffersDisplay[index] = qualify.getOfferDisplay(user, vendor, offer);
     });*/
   for(var i=0;i<pastOffers.length;i++) {
-    pastOffersDisplay[i] = qualify.getOfferDisplay(user, vendor, pastOffers[i]);
+    pastOffersDisplay[i] = qualify.getOfferDisplay(user, vendor, pastOffers[i], qualify.textToImage["used"]);
     console.log('doin');
   }
-  result.pastOffersDisplay=pastOffersDisplay;
+  result=pastOffersDisplay;
   debugger;
   qualify.getUpcomingOffer(user,req.query.vendor_id,function(upcomingOffer,vendor){
-    result.upcomingOfferDisplay=qualify.getOfferDisplay(user, vendor, upcomingOffer);
+    result.push(qualify.getOfferDisplay(user, vendor, upcomingOffer, qualify.textToImage["now"]));
     debugger;
     qualify.getFutureOffers(user,req.query.vendor_id,function(futureOffers,vendor){
      var futureOffersDisplay = [];
      /*_.each(pastOffers, function(offer, index, list) {
       futureOffersDisplay[index] = qualify.getOfferDisplay(user, vendor, offer);
     });*/
-    for(var i=0;i<futureOffers.length;i++) {
-      futureOffersDisplay[i] = qualify.getOfferDisplay(user, vendor, futureOffers[i]);
+    for(var i=1;i<futureOffers.length;i++) {
+      futureOffersDisplay[i] = qualify.getOfferDisplay(user, vendor, futureOffers[i], qualify.textToImage["later"]);
+      result.push(futureOffersDisplay[i]);
       console.log('doin');
     }
-    result.futureOffersDisplay=futureOffersDisplay;
+    //result=result.concat(futureOffersDisplay);
     debugger;
     res.send(result);
     console.log('sent');

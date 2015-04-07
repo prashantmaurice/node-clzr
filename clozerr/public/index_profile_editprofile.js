@@ -214,6 +214,7 @@ function Ctrl($scope, $rootScope) {
       // Define event handlers
       function uploadProgress(e) {
         scope.$apply(function () {
+          scope.spinner=true;
           if (e.lengthComputable) {
             scope.progress = Math.round(e.loaded * 100 / e.total);
           } else {
@@ -234,6 +235,8 @@ function Ctrl($scope, $rootScope) {
           scope.uploading = false;
           if (xhr.status === 204) { // successful upload
             scope.success = true;
+            scope.spinner = false;
+            $('#modalUploadPhoto').modal('hide');
             //deferred.resolve(xhr);
             scope.$emit('s3upload:success', xhr, {path: uri + key});
           } else {

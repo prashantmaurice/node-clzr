@@ -5,12 +5,17 @@ var Checkin = models.CheckIn;
 var User = models.User;
 var _ = require("underscore");
 
+textToImage = {
+  "used" : "http://icons.iconarchive.com/icons/iconarchive/red-orb-alphabet/256/Letter-U-icon.png",
+  "now" : "http://icons.iconarchive.com/icons/iconarchive/red-orb-alphabet/256/Letter-N-icon.png",
+  "later" : "http://icons.iconarchive.com/icons/iconarchive/red-orb-alphabet/256/Letter-L-icon.png"
+}
+
 function stampCount(vendor,offer){
 
-  //console.log("fun");
-  console.log((offer.stamps*1)+(vendor.settings.SXLimit*1));
   if(offer.type=="S1") return (offer.stamps*1);
-  else return (offer.stamps*1)+(vendor.settings.SXLimit*1);
+  else if(vendor.settings) return (offer.stamps*1)+((vendor.settings.SXLimit||10)*1);
+  else return (offer.stamps*1)+((10)*1);
 }
 function getAllOffers(vendor_id,callback) {
   Vendor.findOne({
@@ -46,17 +51,27 @@ function getFutureOffers(user, vendor_id, callback) {
 
 function getPastOffers(user, vendor_id, callback) {
   getAllOffers(vendor_id, function(vendor,allOffers) {
-    var futureOffers = _.filter(allOffers, function(offer) {
+    var pastOffers = _.filter(allOffers, function(offer) {
       if(!user.stamplist[vendor.fid])
         user.stamplist[vendor.fid] = 0;
       return (user.stamplist[vendor.fid] >= stampCount(vendor,offer))
     });
-    callback(futureOffers, vendor);
-  });
+ /*   _.each(pastOffers, function(element, array, index) {
+      pastOffers[index].flagState = "used";
+      if(index == array.length - 1) {
+        callback(pastOffers, vendor);
+      }
+    });*/
+  /*for(var index=0;index<pastOffers.length;index++) {
+    pastOffers[index].flagState = "used";
+  }*/
+  callback(pastOffers, vendor);
+});
 }
 
 function getUpcomingOffer(user, vendor_id, callback) {
   getFutureOffers(user, vendor_id, function(futureOffers, vendor) {
+    futureOffers[0].flagState = "upcoming";
     if(futureOffers && futureOffers.length!=0) {
       callback(futureOffers[0], vendor);
     }
@@ -105,53 +120,81 @@ function handleOffer(user, vendor_id, validate_data) {
   });
 }
 
-function getOfferDisplay(user, vendor, offer){
+function getOfferDisplay(user, vendor, offer, flagState){
   var offerDisplay={};
-  offerDisplay.type=offer.type;
-    offerDisplay.image=null;//TODO
+  if(offer) {
+    offerDisplay.type=offer.type;
+    offerDisplay.image=flagState;//TODO
     offerDisplay.optionalImage=null;//TODO
     offerDisplay.caption=offer.caption;
     offerDisplay.description=offer.description;
-    offerDisplay.stamps=offer.stamps;
+    offerDisplay.stamps=offer.stamps*1;
 
     if(offerDisplay.type=="SX") {
       offerDisplay.stampStatus = {};
+      offerDisplay.billAmt = vendor.settings.billAmt*1;
       if(user.stamplist[vendor.fid] > offer.stamps) {
         offerDisplay.stampStatus.current = (user.stamplist[vendor.fid]*1) % vendor.settings.SXLimit;
       }
       else {
         offerDisplay.stampStatus.current = 0;
       }
-      offerDisplay.stampStatus.total = vendor.settings.SXLimit;
+      offerDisplay.stampStatus.total = vendor.settings.SXLimit*1;
     }    
     return offerDisplay;
   }
+  else return null;
+}
 
-  function getHomePageVendorDisplay(user, vendor_id, callback) {
+/*function getHomePageVendorDisplay(user, vendor_id, callback1) {
 
-    getUpcomingOffer(user, vendor._id, function(user, vendor_id, function (offer, vendor) {
-     var vendorDisplay = {};
-     vendorDisplay.name = vendor.name;
-     vendorDisplay.location = vendor.location;
-     vendorDisplay.image = vendor.image;
-     vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
-     callback(vendor, vendorDisplay);
-   }));
-  }
+  console.log(callback1);
+  console.log(user._id);
+  console.log(vendor_id);
+  getUpcomingOffer(user, vendor_id, function (offer, vendor) {
+   var vendorDisplay = {};
+   vendorDisplay.name = vendor.name;
+   vendorDisplay.location = vendor.location;
+   vendorDisplay.image = vendor.image;
+   vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
+   callback1(vendorDisplay);
+ });
+}*/
+/*
+function getHomePageDisplay(user, vendors, callback) {
 
-  function getVendorPageDisplay(user, vendor_id, callback) {
-    getHomePageVendorDisplay(user, vendor_id, function(vendor, vendorDisplay) {
-      vendorDisplay.phone = vendor.phone;
-      vendorDisplay.description = vendor.description;
-      callback(vendor, vendorDisplay);
+  var vendorDisplays = [];
+
+  for(var i=0;i<vendors.length;i++) {
+    getUpcomingOffer(user, vendors[i]._id, function (offer, vendor) {
+      var vendorDisplay = {};
+      vendorDisplay.name = vendor.name;
+      vendorDisplay.location = vendor.location;
+      vendorDisplay.image = vendor.image;
+      vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
+
+      vendorDisplays[i] = vendorDisplay;
     });
   }
+  //return vendorDisplays;
+  callback(vendorDisplays);
+}*/
 
-  module.exports={getAllOffers:getAllOffers,
-    handleOffer:handleOffer,
-    handleSXOffer:handleSXOffer,
-    handleS1Offer:handleS1Offer,
-    getPastOffers:getPastOffers,
-    getUpcomingOffer:getUpcomingOffer,
-    getOfferDisplay:getOfferDisplay,
-    getFutureOffers:getFutureOffers};
+function getVendorPageDisplay(user, vendor_id, callback) {
+  getHomePageVendorDisplay(user, vendor_id, function(vendor, vendorDisplay) {
+    vendorDisplay.phone = vendor.phone;
+    vendorDisplay.description = vendor.description;
+    callback(vendor, vendorDisplay);
+  });
+}
+
+module.exports={getAllOffers:getAllOffers,
+  handleOffer:handleOffer,
+  handleSXOffer:handleSXOffer,
+  handleS1Offer:handleS1Offer,
+  getPastOffers:getPastOffers,
+  getUpcomingOffer:getUpcomingOffer,
+  getOfferDisplay:getOfferDisplay,
+  getVendorPageDisplay:getVendorPageDisplay,
+  textToImage:textToImage,
+  getFutureOffers:getFutureOffers};
