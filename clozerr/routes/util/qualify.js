@@ -7,7 +7,7 @@ var _ = require("underscore");
 
 function stampCount(vendor,offer){
 
-  console.log("fun");
+  //console.log("fun");
   console.log((offer.stamps*1)+(vendor.settings.SXLimit*1));
   if(offer.type=="S1") return (offer.stamps*1);
   else return (offer.stamps*1)+(vendor.settings.SXLimit*1);
