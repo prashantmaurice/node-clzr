@@ -8,14 +8,25 @@
 var Registry = function(){
     this.registry = {};
 
+    this.forwards = {};
+
     this.register = function( key, object ){
         this.registry[key] = object;
     }
 
     this.getSharedObject = function( key ){
-        return this.registry[key];
-    }
+        if( !key )
+            return null;
 
+        if( this.registry[key] )
+            return this.registry[key];
+        else
+            return this.getSharedObject( this.forwards[key] );
+    }
+    
+    this.forwardObject = function( src, dest ){
+        this.forwards[src] = dest;
+    }
 }
 
 globals.registry = new Registry();

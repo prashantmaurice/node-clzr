@@ -72,7 +72,7 @@ globals.registry.register("data_vendor", {get:data_vendor} );
 var http_vendor_offers = function( params, callback ){
 
     var deferred = Q.defer();
-    var vendor_link = registry.getSharedObject("http_vendor");
+    var vendor_link = registry.getSharedObject("data_vendor");
 
     var vendor_obj = null;
 

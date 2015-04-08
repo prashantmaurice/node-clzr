@@ -43,14 +43,18 @@ var load_checkin = function( params, user ){
 var create_checkin = function( params ){
     /*
      * Create a new checkin and return the checkin object.
+     * No need to use promises for this, no parallel IO necessary.
      */
+    var Checkin = registry.get("models_Checkin");
+    return new Checkin();
 }
 
-var save_checkin = function( params ){
+var save_checkin = function( params, checkin ){
     /*
      * Save the checkin. Do other stuff here that is to be done while checking in.
      */
+    return checkin.save();
 }
 
-registry.register("http_checkin", {get:load_checkin, save:save_checkin, create: create_checkin} );
+registry.register("data_checkin", {get:load_checkin, save:save_checkin, create: create_checkin} );
 
