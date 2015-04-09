@@ -15,7 +15,7 @@ var requireAllFiles = function( normalizedPath ) {
 		}
 		else {
 			require(normalizedPathChild);
-			console.log("file required : " + normalizedPathChild);
+			console.log("LOADED Module : " + normalizedPathChild);
 		}
 	});
 }
