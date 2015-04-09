@@ -1,4 +1,4 @@
-var registry = globals.registry;
+var registry = global.registry;
 
 
 var data_vendor_SX = function( params, vendors ){

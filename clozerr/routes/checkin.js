@@ -394,7 +394,6 @@ for (var i = 0; i < len; i++) {
     });
 
     plist.push(pr);
-
 }
 Q.all(plist).then(function () {
     console.log("ALL DUN");

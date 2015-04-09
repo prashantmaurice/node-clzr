@@ -1,6 +1,6 @@
 
 var Q = require("Q");
-var registry = globals.registry;
+var registry = global.registry;
 
 var handle_freebie_checkin = function( params, user, vendor ){
     var deferred = Q.defer();

@@ -1,5 +1,5 @@
 var Q = require("Q");
-var registry = globals.registry;
+var registry = global.registry;
 
 
 var http_vendor_withOffers = function( params, callback ){
@@ -67,7 +67,7 @@ var data_vendor = function( params, callback ){
 
 }
 
-globals.registry.register("data_vendor", {get:data_vendor} );
+global.registry.register("data_vendor", {get:data_vendor} );
 
 var http_vendor_offers = function( params, callback ){
 

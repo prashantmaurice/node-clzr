@@ -18,7 +18,7 @@ router.get("/:object/:handler/:view", function( req, res ){
     var handler = req.params.handler;
     var view = req.params.view;
 
-    var registry = globals.registry;
+    var registry = global.registry;
     if( !registry ){
         logger.err();   
     }

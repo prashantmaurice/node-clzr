@@ -1,4 +1,4 @@
-var registry = globals.registry;
+var registry = global.registry;
 var Q = require("Q");
 
 var view_vendor_offers_offersPage = function( params ){
@@ -23,7 +23,7 @@ var view_vendor_offers_offersPage = function( params ){
 
 }
 
-globals.registry.register("view_vendor_offers_offersPage", {get:view_vendor_offers_offersPage});
+global.registry.register("view_vendor_offers_offersPage", {get:view_vendor_offers_offersPage});
 // Put other vendor types here.
 
 var view_vendor_homepage = function( params, user ){

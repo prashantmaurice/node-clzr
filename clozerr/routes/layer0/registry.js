@@ -29,7 +29,7 @@ var Registry = function(){
     }
 }
 
-globals.registry = new Registry();
+global.registry = new Registry();
 
 /*
  * A publisher subscriber framework for further 
@@ -64,4 +64,4 @@ var MessageControl = function(){
 
 }
 
-globals.messaging = new MessageConrol();
+global.messaging = new MessageConrol();

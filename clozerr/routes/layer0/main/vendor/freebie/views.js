@@ -1,6 +1,6 @@
 
 var Q = require("Q");
-var registry = globals.registry;
+var registry = global.registry;
 
 var view_freebies_page = function( params, user ){
     // return the freebies to be displayed and the styling required for the Freebies page here.

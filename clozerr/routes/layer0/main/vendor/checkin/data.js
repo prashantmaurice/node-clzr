@@ -1,6 +1,6 @@
 
 var Q = require("Q");
-var registry = globals.registry;
+var registry = global.registry;
 
 var load_checkin = function( params, user ){
     var deferred = Q.defer();
@@ -57,4 +57,3 @@ var save_checkin = function( params, checkin ){
 }
 
 registry.register("data_checkin", {get:load_checkin, save:save_checkin, create: create_checkin} );
-

@@ -1,4 +1,4 @@
-var registry = globals.registry;
+var registry = global.registry;
 var Q = require("Q");
 
 var data_vendor_S1 = function( params, vendor ){
