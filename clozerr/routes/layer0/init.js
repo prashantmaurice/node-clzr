@@ -12,7 +12,6 @@ var requireAllFiles = function( normalizedPath ) {
 		var normalizedPathChild = normalizedPath + "/" + child;
 		if(fs.lstatSync(normalizedPathChild).isDirectory()) {
 			requireAllFiles(normalizedPathChild);
-			console.log("file required : " + normalizedPathChild);
 		}
 		else {
 			require(normalizedPathChild);
