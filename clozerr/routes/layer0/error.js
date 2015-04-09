@@ -1,10 +1,10 @@
 
 // register error handlers.
 
+var registry = global.registry;
 
 var view_error = function(){
     this.production = false;
-
     this.makeError = function( params ){
         if( this.production ){
             return { result:false, err:{ code: params.code, description: params.description } };

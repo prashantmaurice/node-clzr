@@ -463,8 +463,9 @@ router.get('/myhomepage', function (req, res) {
         var plist = [];
         var vendorDisplays = [];
         for(var index=0;index<vendors.length;index++) {
-
-         pr = qualify.getUpcomingOffer(user, vendor_id, function (offer, vendor) {
+            
+            var i = index;
+         var pr = qualify.getUpcomingOffer(user, vendor_id, function (offer, vendor) {
           var deferred = Q.defer();
           process.nextTick(function () {
             deferred.resolve();
@@ -474,7 +475,7 @@ router.get('/myhomepage', function (req, res) {
           vendorDisplay.location = vendor.location;
           vendorDisplay.image = vendor.image;
           vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
-          vendorDisplays[index] = vendorDisplay;
+          vendorDisplays[i] = vendorDisplay;
 
         });
 /*

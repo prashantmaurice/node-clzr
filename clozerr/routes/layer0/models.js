@@ -1,7 +1,7 @@
 
 var models = require("../models");
 
-var registry = globals.registry;
+var registry = global.registry;
 
 registry.register("models_User", models.User);
 registry.register("models_Vendor", models.Vendor);
