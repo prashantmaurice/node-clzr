@@ -1,4 +1,4 @@
-var Q = require("Q");
+var Q = require("q");
 var registry = global.registry;
 
 
@@ -80,7 +80,7 @@ var http_vendor_offers = function( params, callback ){
         vendor_obj = vendor.toJSON();
         return Offer.find({
             _id:{
-                "$in":vendor.offers;
+                "$in":vendor.offers
                 }
         });
 

@@ -1,5 +1,5 @@
 var registry = global.registry;
-var Q = require("Q");
+var Q = require("q");
 
 var view_vendor_offers_offersPage = function( params ){
     var deferred = Q.defer();

@@ -1,5 +1,5 @@
 
-var Q = require("Q");
+var Q = require("q");
 var registry = global.registry;
 
 var handle_freebie_checkin = function( params, user, vendor ){
@@ -59,4 +59,4 @@ var handle_freebie_list = function( params, vendor, user ){
 
 registry.register("handle_freebie_validate", { get: handle_freebie_validate});
 registry.register("handle_freebie_list",{ get: handle_freebie_list} );
-registry.register("handle_freebie_checkin", { get: handle_freebiew_checkin } );
+registry.register("handle_freebie_checkin", { get: handle_freebie_checkin } );

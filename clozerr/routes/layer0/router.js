@@ -12,6 +12,7 @@ function makeRegLookupError( lookup ){
 }
 
 router.get("/:object/:handler/:view", function( req, res ){
+    var registry = global.registry;
     var logger = registry.getSharedObject("logger");
     
     var dataClass = req.params.object;
@@ -23,9 +24,9 @@ router.get("/:object/:handler/:view", function( req, res ){
         logger.err();   
     }
 
-    var httpObjView = registry.getSharedObject( "view_" dataClass + "_" + handler + "_" + view );
+    var httpObjView = registry.getSharedObject( "view_" + dataClass + "_" + handler + "_" + view );
     if( !httpObjView ){
-        res.send( JSON.stringify(registry.getSharedObject("view_error").makeError( makeRegLookupError( "http_" dataClass + "_" + handler + "_" + view ) )) );
+        res.send( JSON.stringify(registry.getSharedObject("view_error").makeError( makeRegLookupError( "http_" + dataClass + "_" + handler + "_" + view ) )) );
     }
     
     httpObjView.get( req.params ).then( function( output ){

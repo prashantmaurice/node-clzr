@@ -1,5 +1,5 @@
-var registry = globals.registry;
-var Q = require("Q");
+var registry = global.registry;
+var Q = require("q");
 
 var vendor_checkin_S1 = function( params, vendor, user ){
     var deferred = Q.defer();
@@ -45,5 +45,5 @@ var vendor_validate_S1 = function( params, vendor, user, checkin ){
     return deferred.promise;
 }
 
-globals.registry.register("handler_checkin_S1", {get:vendor_checkin_S1});
-globals.registry.register("handler_validate_S1", {get:vendor_validate_S1});
+global.registry.register("handler_checkin_S1", {get:vendor_checkin_S1});
+global.registry.register("handler_validate_S1", {get:vendor_validate_S1});

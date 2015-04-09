@@ -51,7 +51,7 @@ var MessageControl = function(){
         this.ensure( key );
         
         var callbacks = this.registry[key];
-        for( int i = 0; i < callbacks.length; i++ ){
+        for( var i = 0; i < callbacks.length; i++ ){
             callbacks[i]( key, message );
         }
 
@@ -64,4 +64,4 @@ var MessageControl = function(){
 
 }
 
-global.messaging = new MessageConrol();
+global.messaging = new MessageControl();

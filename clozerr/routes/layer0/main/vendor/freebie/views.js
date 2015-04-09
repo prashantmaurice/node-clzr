@@ -1,5 +1,5 @@
 
-var Q = require("Q");
+var Q = require("q");
 var registry = global.registry;
 
 var view_freebies_page = function( params, user ){

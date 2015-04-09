@@ -1,5 +1,5 @@
 
-var Q = require("Q");
+var Q = require("q");
 var registry = global.registry;
 
 var load_checkin = function( params, user ){
@@ -16,7 +16,7 @@ var load_checkin = function( params, user ){
     }).exec().then( function( checkin ){
         checkin_obj = checkin.toJSON();
         return Vendor.findOne({
-            _id: checkin_obj.vendor;
+            _id: checkin_obj.vendor
         });
 
     }, function(err){
@@ -24,7 +24,7 @@ var load_checkin = function( params, user ){
     }).then(function( vendor ){
         checkin_obj.vendor = vendor;
         return User.findOne({
-            _id: checkin_obj.vendor_id;
+            _id: checkin_obj.vendor_id
         });
 
     }, function(err){
