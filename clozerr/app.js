@@ -20,6 +20,7 @@ var rev = require('./routes/review');
 var error = require('./routes/error');
 var data = require('./routes/data');
 var ganalytics = require('./routes/util/google_analytics');
+var v2 = require('./routes/layer0/router');
 var app = express();
 
 // view engine setup
@@ -80,6 +81,7 @@ app.use('/checkin', checkin);
 app.use('/content',content);
 app.use('/review',rev);
 app.use('/analytics',ganalytics);
+app.use('/v2', v2);
 //app.use('/data',data);
 // --------- DB ----------
 var db=mongoose.connection;
