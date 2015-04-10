@@ -6,15 +6,20 @@ var loadReg = require("./registry");
 var router = require("./router");
 var fs = require("fs");
 
-var requireAllFiles = function( normalizedPath ) {
+var modules = [];
+
+var requireAllFiles = function( normalizedPath , modules, prefix) {
 	fs.readdirSync(normalizedPath).forEach(function(child) {
 
 		var normalizedPathChild = normalizedPath + "/" + child;
 		if(fs.lstatSync(normalizedPathChild).isDirectory()) {
-			requireAllFiles(normalizedPathChild);
+			var childCapitalised = child.charAt(0).toUpperCase() + child.slice(1);
+			modules = requireAllFiles(normalizedPathChild, modules, prefix + childCapitalised);
 		}
 		else {
-			require(normalizedPathChild);
+			var var_name = child.split(".")[0];
+			var_name = prefix.charAt(0).toLowerCase() + prefix.slice(1) + var_name.charAt(0).toUpperCase() + var_name.slice(1);
+			modules[var_name] = require(normalizedPathChild);
 			console.log("LOADED Module : " + normalizedPathChild);
 		}
 	});
@@ -31,4 +36,6 @@ var normalizedPath = require("path").join(__dirname, "main");
 var requireDirectory = require('require-directory');
 var routes = requireDirectory(module, './');
 
-requireAllFiles(normalizedPath);
+modules = requireAllFiles(normalizedPath, [], "");
+console.log(modules);
+//console.log(global);
