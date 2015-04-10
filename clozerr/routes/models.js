@@ -59,7 +59,8 @@ Models.User = mongoose.model('User',new Schema({
 	dateLastLogin:Date,
 	dateLastLogout:Date,
 	upgraded:Date,
-	gcm_id: String
+	gcm_id: String,
+    stateList: Schema.Types.Mixed
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
