@@ -1,6 +1,6 @@
 var Q = require("q");
 var registry = global.registry;
-
+var ObjectId = require('mongoose').Types.ObjectId;
 
 var http_vendor_withOffers = function( params, callback ){
     var _id = params.vendor_id;
@@ -43,6 +43,10 @@ var http_vendor_withOffers = function( params, callback ){
 
 var data_vendor = function( params, callback ){
 
+    debugger;
+    console.log("Vendor Main Data Access");
+    console.log(params);
+
     var _id = params.vendor_id;
     var Vendor = registry.getSharedObject("models_Vendor");
 
@@ -50,8 +54,12 @@ var data_vendor = function( params, callback ){
 
     var deferred = Q.defer();
 
+    if( !_id ){
+        return Q.fcall(function(){ throw new Error( "Vendor_id missing" ); });
+    }
+
     Vendor.findOne({
-        _id:_id
+        _id: new ObjectId(_id)
     }).exec().then(function( vendor ){
 
         vendor_obj = vendor.toJSON();
