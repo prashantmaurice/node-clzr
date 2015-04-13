@@ -4,7 +4,7 @@
  */
 
 var express = require("express");
-
+var init = require("./init");
 var router = new express.Router();
 
 function makeRegLookupError( lookup ){
@@ -19,12 +19,12 @@ router.get("/:object/:handler/:view", function( req, res ){
     var handler = req.params.handler;
     var view = req.params.view;
 
-    var registry = global.registry;
     if( !registry ){
         logger.err();   
     }
 
     var httpObjView = registry.getSharedObject( "view_" + dataClass + "_" + handler + "_" + view );
+    console.log(httpObjView);
     if( !httpObjView ){
         res.send( JSON.stringify(registry.getSharedObject("view_error").makeError( makeRegLookupError( "http_" + dataClass + "_" + handler + "_" + view ) )) );
     }
@@ -38,3 +38,5 @@ router.get("/:object/:handler/:view", function( req, res ){
     
 
 });
+
+module.exports = router;

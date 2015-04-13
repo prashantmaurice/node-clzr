@@ -54,3 +54,4 @@ var view_vendor_homepage = function( params, user ){
     return deferred.promise;
 }
 
+module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};

@@ -12,6 +12,7 @@ var Registry = function(){
 
     this.register = function( key, object ){
         this.registry[key] = object;
+        console.log("REGISTERED : " + key + " -> " + object);
     }
 
     this.getSharedObject = function( key ){

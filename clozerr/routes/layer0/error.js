@@ -14,4 +14,4 @@ var view_error = function(){
     }
 }
 
-registry.register("view_error", view_error);
+registry.register("view_error", new view_error());
