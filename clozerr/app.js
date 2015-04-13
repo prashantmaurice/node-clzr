@@ -9,6 +9,8 @@ var models = require("./routes/models");
 var Token = models.Token;
 var User = models.User;
 
+
+
 var auth = require('./routes/user');
 var common =require('./routes/common');
 var offer = require('./routes/offer');
@@ -20,7 +22,13 @@ var rev = require('./routes/review');
 var error = require('./routes/error');
 var data = require('./routes/data');
 var ganalytics = require('./routes/util/google_analytics');
-var v2 = require('./routes/layer0/router');
+
+// --------- DB ----------
+var db=mongoose.connection;
+db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
+// --------- DB ----------
+
+var v2 = require('./routes/layer0/init');
 var app = express();
 
 // view engine setup
@@ -83,10 +91,6 @@ app.use('/review',rev);
 app.use('/analytics',ganalytics);
 app.use('/v2', v2);
 //app.use('/data',data);
-// --------- DB ----------
-var db=mongoose.connection;
-db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
-// --------- DB ----------
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

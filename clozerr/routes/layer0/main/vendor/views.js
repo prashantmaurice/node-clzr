@@ -2,7 +2,9 @@ var registry = global.registry;
 var Q = require("q");
 
 var view_vendor_offers_offersPage = function( params ){
+    console.log("OfferPage Main View");
     var deferred = Q.defer();
+
     var vendorObjectM = registry.getSharedObject("data_vendor");
     var userObjectM = registry.getSharedObject("util_session");
 
@@ -20,6 +22,8 @@ var view_vendor_offers_offersPage = function( params ){
         deferred.reject( err );
     })
     .then(function( res ){deferred.resolve( res )}, function( err ){ deferred.reject( err ) });
+    
+    return deferred.promise;
 
 }
 
@@ -34,7 +38,7 @@ var view_vendor_homepage = function( params, user ){
     var vendorListF = [];
     vendorObjectsM.get( params ).then(function( vendors ){
         var prList = [];
-
+        debugger;
         for( var i = 0; i < params.length; i++ ){
             var typeSpecificM = registry.getSharedObject("view_vendor_homepage_" + vendors[i].type);
             vendor_obj = vendor;
@@ -44,12 +48,13 @@ var view_vendor_homepage = function( params, user ){
         }
         return Q.all()
     }, function( err ){
+        debugger;
         deferred.reject( err );
     }).then( function( user ){
         deferred.resolve( vendorListF );
     }, function( err ){
         deferred.reject( err );
-    });
+    }).done();
 
     return deferred.promise;
 }
