@@ -59,4 +59,6 @@ var view_vendor_homepage = function( params, user ){
     return deferred.promise;
 }
 
+global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
+
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};

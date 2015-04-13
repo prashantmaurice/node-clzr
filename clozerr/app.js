@@ -28,7 +28,7 @@ var db=mongoose.connection;
 db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
 // --------- DB ----------
 
-var v2 = require('./routes/layer0/init');
+var v2 = require('./routes/layer0/router');
 var app = express();
 
 // view engine setup

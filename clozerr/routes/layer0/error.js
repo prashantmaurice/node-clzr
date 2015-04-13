@@ -9,7 +9,7 @@ var view_error = function(){
         if( this.production ){
             return { result:false, err:{ code: params.code, description: params.error.message } };
         }else{
-            return { result:false, err:{ code: params.code }, full_error: params.error.stack };
+            return { result:false, err:{ code: params.code }, full_error: params.error };
         }
     }
 }
