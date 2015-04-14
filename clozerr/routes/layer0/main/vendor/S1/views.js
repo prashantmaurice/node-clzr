@@ -1,4 +1,6 @@
-var http_vendor_offers_offerPage_S1 = function( params, vendor, user ){
+var registry = global.registry;
+
+var view_vendor_offers_offerPage_S1 = function( params, vendor, user ){
     var vendorObjectData = registry.getSharedObject("http_vendor_S1");
     vendorObjectData.get( params, vendor ).then( function( vendor ){
     
@@ -6,12 +8,16 @@ var http_vendor_offers_offerPage_S1 = function( params, vendor, user ){
      * Implement S1 type vendor's my offers page return.
      */
 
+     
+
     }, function( user ){
     
     } );
 }
 
-var http_vendor_homepage_S1 = function( params, vendor, user ){
+registry.register('view_vendor_offers_offerPage_S1', {get:view_vendor_offers_offerPage_S1});
+
+var view_vendor_homepage_S1 = function( params, vendor, user ){
     /*
      * Calculate the required offer and place it in vendor.offer
      * Use any means necessary. use special properties in the vendor if necessary

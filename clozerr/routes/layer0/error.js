@@ -7,11 +7,11 @@ var view_error = function(){
     this.production = false;
     this.makeError = function( params ){
         if( this.production ){
-            return { result:false, err:{ code: params.code, description: params.description } };
+            return { result:false, err:{ code: params.code, description: params.error.message } };
         }else{
-            return { result:false, err:{ code: params.code, description: params.description }, full_error: params };
+            return { result:false, err:{ code: params.code }, full_error: params.error };
         }
     }
 }
 
-registry.register("view_error", view_error);
+registry.register("view_error", new view_error());
