@@ -1,4 +1,4 @@
-
+ 
 var Q = require("q");
 var registry = global.registry;
 
