@@ -5,7 +5,10 @@ var data_user = function( params ){
     // Get all relevant fields for the User object.
     var deferred = Q.defer();
     var User = registry.getSharedObject("models_User");
-    User.findOne( { _id: params._id } ).then( function( result ){
+    var criteria = { _id: params.user_id };
+
+    User.findOne( criteria ).exec().then( function( result ){
+        debugger;
         deferred.resolve( result );
     }, function( err ){
         deferred.resolve( err );
@@ -13,6 +16,8 @@ var data_user = function( params ){
 
     return deferred.promise;
 }
+
+registry.register('util_session', {get:data_user});
 
 var data_user_token = function( params ){
     var token = params.access_token;
