@@ -215,6 +215,11 @@ router.get('/get', function (req, res) {
             var offers_qualified = _.filter(offers, function(offer) {
               return OfferHandler.qualify(req.user,vendor,offer);
             });
+            offers_qualified = _.sortBy(offers_qualified, function(offer) {
+              if(offer.stamps)
+                return offer.stamps;
+              else return 0;
+            });
             vendor_json.offers_qualified = offers_qualified;
             res.send(JSON.stringify(vendor_json));
             res.end();
