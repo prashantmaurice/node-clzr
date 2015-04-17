@@ -7,8 +7,9 @@ var view_vendor_offers_offerPage_S1 = function( params, vendor, user ){
     /*
      * Implement S1 type vendor's my offers page return.
      */
-
-     
+     Offer.find({$in : {_id : vendor.offers}}, function (err, offers) {
+        console.log(offers);
+     });     
 
     }, function( user ){
     

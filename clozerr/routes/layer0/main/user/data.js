@@ -20,20 +20,26 @@ var data_user = function( params ){
 registry.register('util_session', {get:data_user});
 
 var data_user_token = function( params ){
-    var token = params.access_token;
+     var deferred = Q.defer();
+    var access_token = params.access_token;
+    var curr_token=null;
     
     var User = registry.getSharedObject("models_User");
     var Token = registry.getSharedObject("models_Token");
 
-    Token.findOne( { access_token: token } )
+    Token.findOne( { access_token: access_token } ).exec()
     .then( function( token ){
-        return User.findOne({_id:token.account});
+        curr_token=token.toJSON();
+        return User.findOne({_id:curr_token.account}).exec();
     }, function(err){
         deferred.reject( err )
     })
     .then( function( user ){
         deferred.resolve( user );
     }, function( err ){
-        deferred.resolve( err );
+        deferred.reject( err );
     });
+    return deferred.promise;
 }
+   
+registry.register('live_session',{get:data_user_token});

@@ -38,6 +38,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 			console.log($scope.tempOffers);
 			$scope.tempOffers[index].caption = "";
 			$scope.tempOffers[index].description = "";
+			$scope.tempOffers[index].stamps = $rootScope.vendor.offers.length + 1;
 			$rootScope.vendor.offers.push($scope.tempOffers[index]);
 
 			$http.get( CLOZERR_VENDORS_URL + "/addoffer?vendor_id=" + $rootScope.vendor._id + "&offer_id=" + data.data._id + "&access_token=" + localStorage.token ).
@@ -90,7 +91,7 @@ var punchCardType = function($scope, $rootScope, $http) {
 				if($scope.tempOffers[$index])
 					$rootScope.vendor.offers[$index] = $scope.tempOffers[$index];
 			}
-			$http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + $rootScope.vendor.offers[$index]._id + "&caption=" + unescape($rootScope.vendor.offers[$index].caption) + "&description=" + unescape($rootScope.vendor.offers[$index].description) + "&access_token=" + access_token + "&type=" + $rootScope.vendor.offers[$index].type + "&stamps=" + ($index + 1)).
+			$http.get( CLOZERR_OFFERS_URL + "/update?offer_id=" + $rootScope.vendor.offers[$index]._id + "&caption=" + unescape($rootScope.vendor.offers[$index].caption) + "&description=" + unescape($rootScope.vendor.offers[$index].description) + "&access_token=" + access_token + "&type=" + $rootScope.vendor.offers[$index].type + "&stamps=" + $rootScope.vendor.offers[$index].stamps).
 			success(function(data, status, headers, config) {
 				console.log(data);
 				$scope.textInfoVis[$index] = true;
