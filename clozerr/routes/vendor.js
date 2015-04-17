@@ -222,13 +222,18 @@ router.get('/get', function (req, res) {
             var offers_qualified = _.filter(offers, function(offer) {
               return OfferHandler.qualify(req.user,vendor,offer);
             });
+            offers_qualified = _.sortBy(offers_qualified, function(offer) {
+              if(offer.stamps)
+                return offer.stamps;
+              else return 0;
+            });
             vendor_json.offers_qualified = offers_qualified;
             res.send(JSON.stringify(vendor_json));
             res.end();
           });
 
       });
-    })
+})
 
 router.get('/addoffer', function (req, res) {
   var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id","access_token"]);
@@ -470,21 +475,21 @@ router.get('/myhomepage', function (req, res) {
         var plist = [];
         var vendorDisplays = [];
         for(var index=0;index<vendors.length;index++) {
-            
-            var i = index;
-         var pr = qualify.getUpcomingOffer(user, vendor_id, function (offer, vendor) {
-          var deferred = Q.defer();
-          process.nextTick(function () {
-            deferred.resolve();
-          });
-          var vendorDisplay = {};
-          vendorDisplay.name = vendor.name;
-          vendorDisplay.location = vendor.location;
-          vendorDisplay.image = vendor.image;
-          vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
-          vendorDisplays[i] = vendorDisplay;
+          
+          var i = index;
+          var pr = qualify.getUpcomingOffer(user, vendor_id, function (offer, vendor) {
+            var deferred = Q.defer();
+            process.nextTick(function () {
+              deferred.resolve();
+            });
+            var vendorDisplay = {};
+            vendorDisplay.name = vendor.name;
+            vendorDisplay.location = vendor.location;
+            vendorDisplay.image = vendor.image;
+            vendorDisplay.currentOfferDisplay = getOfferDisplay(user, vendor, offer);
+            vendorDisplays[i] = vendorDisplay;
 
-        });
+          });
 /*
          pr = qualify.getHomePageVendorDisplay(user, vendors[index]._id, function(vendorDisplay) {
           var deferred = Q.defer();
@@ -494,13 +499,13 @@ router.get('/myhomepage', function (req, res) {
           vendorDisplays[index] = vendorDisplay;
           return deferred.promise;
         });*/
-         plist.push(pr);
-         console.log(index);
-       }
-       Q.all(plist).then(function() {
+plist.push(pr);
+console.log(index);
+}
+Q.all(plist).then(function() {
 
-        res.end(JSON.stringify({result:true,data:vendorDisplays}));
-      });
+  res.end(JSON.stringify({result:true,data:vendorDisplays}));
+});
 
      /* var finishedOneIteration = _.after(vendors.length, function() {
         res.end(JSON.stringify({result:true,data:vendorDisplays}));
@@ -524,10 +529,10 @@ router.get('/myhomepage', function (req, res) {
         vendorDisplays[index] = vendorDisplay;
         finishedOneIteration();
         console.log("done one");*/
-      
+        
 
 
-    });
+      });
 });
 }
 else   
@@ -568,31 +573,31 @@ router.get('/offers/myofferspage',function(req,res){
     /*_.each(pastOffers, function(offer, index, list) {
       pastOffersDisplay[index] = qualify.getOfferDisplay(user, vendor, offer);
     });*/
-  for(var i=0;i<pastOffers.length;i++) {
-    pastOffersDisplay[i] = qualify.getOfferDisplay(user, vendor, pastOffers[i], qualify.textToImage["used"]);
-    console.log('doin');
-  }
-  result=pastOffersDisplay;
+for(var i=0;i<pastOffers.length;i++) {
+  pastOffersDisplay[i] = qualify.getOfferDisplay(user, vendor, pastOffers[i], qualify.textToImage["used"]);
+  console.log('doin');
+}
+result=pastOffersDisplay;
+debugger;
+qualify.getUpcomingOffer(user,req.query.vendor_id,function(upcomingOffer,vendor){
+  result.push(qualify.getOfferDisplay(user, vendor, upcomingOffer, qualify.textToImage["now"]));
   debugger;
-  qualify.getUpcomingOffer(user,req.query.vendor_id,function(upcomingOffer,vendor){
-    result.push(qualify.getOfferDisplay(user, vendor, upcomingOffer, qualify.textToImage["now"]));
-    debugger;
-    qualify.getFutureOffers(user,req.query.vendor_id,function(futureOffers,vendor){
-     var futureOffersDisplay = [];
+  qualify.getFutureOffers(user,req.query.vendor_id,function(futureOffers,vendor){
+   var futureOffersDisplay = [];
      /*_.each(pastOffers, function(offer, index, list) {
       futureOffersDisplay[index] = qualify.getOfferDisplay(user, vendor, offer);
     });*/
-    for(var i=1;i<futureOffers.length;i++) {
-      futureOffersDisplay[i] = qualify.getOfferDisplay(user, vendor, futureOffers[i], qualify.textToImage["later"]);
-      result.push(futureOffersDisplay[i]);
-      console.log('doin');
-    }
+  for(var i=1;i<futureOffers.length;i++) {
+    futureOffersDisplay[i] = qualify.getOfferDisplay(user, vendor, futureOffers[i], qualify.textToImage["later"]);
+    result.push(futureOffersDisplay[i]);
+    console.log('doin');
+  }
     //result=result.concat(futureOffersDisplay);
     debugger;
     res.send(result);
     console.log('sent');
   });
-  });
+});
 });
 });
 router.get('/get/near', function (req, res) {
