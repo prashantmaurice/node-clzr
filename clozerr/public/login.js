@@ -68,6 +68,16 @@ var login = function( $rootScope, $scope, $http ){
       success(function(data, status, headers, config) {
         console.log( data );
         $rootScope.vendor = data;
+        $rootScope.vendor.offers.sort(function(offer1, offer2) {
+          if(offer1.stamps*1 > offer2.stamps*1) {
+            return 1;
+          }
+          else {
+            return -1;
+          }
+        });
+        console.log('sorting');
+        console.log($rootScope.vendor.offers);
       }).error(function(data, status, headers, config) {
         /*
         TODO: Throw error here.

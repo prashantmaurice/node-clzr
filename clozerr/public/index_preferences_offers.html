@@ -129,7 +129,7 @@
 						<!-- ng-mouseover="toggleHover($index)" ng-mouseleave="toggleHover($index)" ng-click="toggleEditSaveOffer(offer, $index)"
 					--><ul class="timeline">
 					<li ng-class="{'timeline-inverted animated fadeInRight': $index%2==0,'animated fadeInLeft': $index%2!=0}" ng-repeat="offer in vendor.offers track by $index">
-						<div class="timeline-badge non-blue-theme"    ><i>{{$index+1}}</i>
+						<div class="timeline-badge non-blue-theme"    ><i>{{offer.stamps}}</i>
 								<!-- 
 								<i ng-show="hoverCheck[$index] || !textInfoVis[$index]" ng-class="{'fa fa-pencil fa-1x pvert-center2':textInfoVis[$index],'fa fa-floppy-o fa-1x pvert-center2':!textInfoVis[$index]}"></i> -->
 							</div>
