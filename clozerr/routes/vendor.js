@@ -213,8 +213,8 @@ router.get('/get', function (req, res) {
           if(err) console.log(err);
           var vendor_json = vendor.toJSON();
           offers = _.sortBy(offers, function(offer) {
-            if(offer.stamps)
-              return offer.stamps;
+            if(offer.stamps*1)
+              return offer.stamps*1;
             else return 0;
           });
           vendor_json.offers = offers;
@@ -223,8 +223,8 @@ router.get('/get', function (req, res) {
               return OfferHandler.qualify(req.user,vendor,offer);
             });
             offers_qualified = _.sortBy(offers_qualified, function(offer) {
-              if(offer.stamps)
-                return offer.stamps;
+              if(offer.stamps*1)
+                return offer.stamps*1;
               else return 0;
             });
             vendor_json.offers_qualified = offers_qualified;
