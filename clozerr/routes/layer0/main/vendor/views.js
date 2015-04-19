@@ -2,11 +2,11 @@ var registry = global.registry;
 var Q = require("q");
 
 function getVendorType(vendor) {
-    if(vendor.settings) {
-        if(vendor.settings.sxEnabled) {
-            console.log("SX");
-            return "SX";
-        }
+    console.log('in getVendorType');
+    debugger;
+    if(vendor.settings.sxEnabled == true || vendor.settings.sxEnabled == "true") {
+        console.log("SX");
+        return "SX";
     }
     else {
         console.log("S1");  
@@ -21,7 +21,7 @@ var view_vendor_offers_offersPage = function( params ){
     console.log(params);
 
     var vendorObjectM = registry.getSharedObject("data_vendor");
-    var userObjectM = registry.getSharedObject("util_session");
+    var userObjectM = registry.getSharedObject("live_session");
 
     var vendor_obj = null;
     vendorObjectM.get( params ).then(function( vendor ){
@@ -35,10 +35,11 @@ var view_vendor_offers_offersPage = function( params ){
         debugger;
         return typeSpecificM.get( params, vendor_obj, user );
     }, function( err ){
+        console.log(err);
         deferred.reject( err );
     })
     .then(function( res ){deferred.resolve( res )}, function( err ){ deferred.reject( err ) });
-    
+    console.log('returning from view_vendor_offers_offersPage');
     return deferred.promise;
 
 }

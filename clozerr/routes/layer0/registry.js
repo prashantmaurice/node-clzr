@@ -21,6 +21,8 @@ var Registry = function(){
             return null;
         }
 
+        console.log('GOT : ' + key);
+
         if( this.registry[key] )
             return this.registry[key];
         else

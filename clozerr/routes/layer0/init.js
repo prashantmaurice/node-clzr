@@ -37,7 +37,7 @@ require("./error");
 require("./settings");
 require("./models");
 //require("./");
-var normalizedPath = require("path").join(__dirname, "main");
+var normalizedPath = require("path").join(__dirname, "");
 
 var requireDirectory = require('require-directory');
 var routes = requireDirectory(module, './');
@@ -53,6 +53,7 @@ var settings = global.registry.getSharedObject("settings");
 
 try{
     var db=mongoose.connection;
+    console.log('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
     db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
 }catch( err ){
     console.log(" layer0 couldn't open connection. assuming that the connection is already open. ");
