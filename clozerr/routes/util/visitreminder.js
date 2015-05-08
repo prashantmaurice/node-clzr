@@ -9,17 +9,19 @@ var Checkin = Models.CheckIn;
 var _ = require('underscore');
 
 db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
-
-Vendor.find({"settings.visitreminder.activated" : {$exists : true}, "settings.visitreminder.activated" : "true"}, function(err, allVendors) {
+console.log('mongodb opened');
+Vendor.find({"settings":{$exists:true},"settings.visitreminder" : {$exists:true},"settings.visitreminder.activated" : {$exists : true}, "settings.visitreminder.activated" : "true"}, function(err, allVendors) {
 	var visitDays = _.max(allVendors, function(dvendor) {
 		return dvendor.settings.visitreminder.days;
 	}).settings.visitreminder.days;
 
 	var allVendorIds = [];
-
+	console.log(allVendors);
 	_.each(allVendors, function(ivendor, index, list0) {
-		allVendorIds.push(ivendor._id);
+		allVendorIds.push(ivendor._id+"");
 	});
+
+	console.log(allVendorIds);
 
 	console.log("allVendorIds");
 	//console.log(allVendorIds);
@@ -46,7 +48,7 @@ Vendor.find({"settings.visitreminder.activated" : {$exists : true}, "settings.vi
 	//partition by vendors
 
 	console.log("allLatestCheckins");
-	//console.log(allLatestCheckins);
+	console.log(allLatestCheckins);
 
 	var grpVendors = _.groupBy(allLatestCheckins, function(lCheckin) {
 		return lCheckin.vendor;
