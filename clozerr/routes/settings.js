@@ -4,7 +4,10 @@ module.exports = {
 			"app_token":"643340145745435|nyelclS2lAU75ksOpYtfOLNtwOg"
 		},
 		"google":{
-			"app_id":"496568600186-q67jdokmmuofba4updq7v8kl9j4niaoe.apps.googleusercontent.com",
+			"app_id":["496568600186-q67jdokmmuofba4updq7v8kl9j4niaoe.apps.googleusercontent.com",
+                      "496568600186-ku41clmavuaam8dru15iheg4lnn66inb.apps.googleusercontent.com",
+                      " 496568600186-25gp2rukpdi85euh02ud8i32ua3g5jvh.apps.googleusercontent.com"]
+
 		},
 		"password":{
 			"default":"password"
