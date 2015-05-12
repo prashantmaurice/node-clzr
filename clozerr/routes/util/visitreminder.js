@@ -9,6 +9,7 @@ var Checkin = Models.CheckIn;
 var _ = require('underscore');
 
 db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
+debugger;
 console.log('mongodb opened');
 Vendor.find({"settings":{$exists:true},"settings.visitreminder" : {$exists:true},"settings.visitreminder.activated" : {$exists : true}, "settings.visitreminder.activated" : "true"}, function(err, allVendors) {
 	var visitDays = _.max(allVendors, function(dvendor) {

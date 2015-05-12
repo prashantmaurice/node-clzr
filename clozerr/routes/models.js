@@ -75,13 +75,13 @@ Models.VendorRequest = mongoose.model('VendorRequest', new Schema({
 }));
 
 Models.Offer = mongoose.model('Offer',new Schema({
-
 	type:String,
 	stamps:String,
 	date_created:Date,
 	caption:String,
 	description:String,
-	dateUpdated:Date
+	dateUpdated:Date,
+	params: Schema.Types.Mixed
 }));
 
 Models.Review = mongoose.model('Review',new Schema({
