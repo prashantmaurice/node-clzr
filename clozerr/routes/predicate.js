@@ -1,5 +1,8 @@
 module.exports = {};
 
+var _ = require('underscore');
+var Checkin = require("models").Checkin;
+
 var predicates = {
   "S1": function( user, vendor, offer ){
 
@@ -13,7 +16,7 @@ var predicates = {
   },
 
   "S0": function( user, vendor, offer ){
-    return true;
+    return predicatesS0[offer.params.type](user, vendor, offer);
   },
 
   "SX": function( user, vendor, offer ){
@@ -28,6 +31,40 @@ var predicates = {
 
   }
 };
+
+var predicatesS0 = {
+  "limitedTime": function( user, vendor, offer) {
+   var currentDate = new Date();
+   if(currentDate > offer.params.offerStart && currentDate < offer.params.offerEnd) {
+    return true;
+   }
+   else {
+    return false;
+   }
+  },
+  "limitedCustomers": function( user, vendor, offer) {
+    Checkin.find({
+      offer:offer._id
+    }, function(err, allCheckins) {
+      if(allCheckins.length >= offer.params.maxCustomers) {
+        return false;
+      }
+      //maximum number of checkins is fixed by the vendor - maximum number of customers
+      else {
+        var checkinsByUser = _.filter(allCheckins, function(checkin) {
+          return (checkin.user == user._id);
+        });
+        //user has not used the offer already
+        if(checkinsByUser.length == 0) {
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+    });
+  }
+}
 
 var handlers = {
   "S1": function( user, vendor, offer ){
