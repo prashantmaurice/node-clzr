@@ -6,6 +6,7 @@ var mongoose=require('mongoose');
 var models = require("./models");
 var error = require("./error");
 var bcrypt = require("bcrypt-nodejs");
+var _ = require("underscore");
 
 var router = express.Router();
 var user = models.User;
@@ -171,7 +172,7 @@ router.get('/login/google', function(req, res) {
             debugger;
             d=JSON.parse(dat.toString());
             //console.log(d);
-            if( d.issued_to && d.issued_to == settings.auth.google.app_id )
+            if( d.issued_to && _.find(settings.auth.google.app_id,function(app_id){return(d.issued_to == app_id)} ))
             {
 
                 user.findOne({ social_id:d.user_id }, function(err, result) {
