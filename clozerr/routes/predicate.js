@@ -39,14 +39,16 @@ var predicatesS0 = {
   "limitedTime": function( user, vendor, offer) {
    var currentDate = new Date();
    debugger;
+   var deferred = Q.defer();
    if(currentDate > offer.params.offerStart && currentDate < offer.params.offerEnd) {
-    return true;
+    deferred.resolve(true);
   }
   else {
-    return false;
+    deferred.resolve(false);
   }
+  return deferred.promise;
 },
-"limitedCustomers": function( user, vendor, offer, callback) {
+"limitedCustomers": function( user, vendor, offer) {
   debugger;
   var Checkin = require("./models").CheckIn;
   debugger;
@@ -61,6 +63,7 @@ var predicatesS0 = {
     }
       //maximum number of checkins is fixed by the vendor - maximum number of customers
       else {
+        debugger;
         var checkinsByUser = _.filter(allCheckins, function(checkin) {
           return (checkin.user == user._id);
         });
@@ -72,10 +75,10 @@ var predicatesS0 = {
         }
         else {
          deferred.resolve(false);
-        }
-      }
-    });
-    return deferred.promise;
+       }
+     }
+   });
+  return deferred.promise;
 }
 }
 
