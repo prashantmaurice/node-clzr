@@ -75,7 +75,8 @@ router.get('/create', function (req, res) {
 		var description = "default";
     if ( req.query.caption ) caption = unescape(req.query.caption);
     if ( req.query.description ) description = unescape(req.query.description);
-
+    params={}
+    if(req.query.params) params=JSON.parse(req.query.params)
     var dateCreated = new Date();
 
     var offer = new Offer({
@@ -83,7 +84,8 @@ router.get('/create', function (req, res) {
     	stamps: stamps,
     	dateCreated: dateCreated,
     	caption: caption,
-    	description: description
+    	description: description,
+        params: params
     });
     console.log(offer);
     res.send( JSON.stringify( { result:true, data:offer } ) );
