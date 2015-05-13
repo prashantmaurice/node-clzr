@@ -1,0 +1,47 @@
+<style>
+    .freebies-tab{
+        margin-top:40px;
+    }
+    .freebies-tab-content{
+        margin-left: 250px;
+        margin-right:10px;
+    }    
+</style>
+<div ng-controller="index_freebies" class="freebies-tab"id="freebies-tab" ng-show="visibility">
+    <div class="freebies-tab-content">
+      <div class="row animated fadeInDown">
+        <div class="col-lg-8">
+            <h1 class="page-header">Freebies
+            </h1>
+        </div>
+    </div>
+    <div class="whitebox top-banner card">
+       <div class="left-box">
+          <div class="freebies-icon icon"></div>
+          <div class="title">Rewards</div>
+          <div class="right-box">
+             <div class="title">
+                Keep them coming back for more!
+                <br>
+                Create exiting offers for your restraurant.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="welcome-reward-box">
+   <div ng-include="'index_freebies_welcome.html'"></div>	
+</div>
+<div class="happy-hour-reward-box">
+   <div ng-include="'index_freebies_happyhours.html'"></div>
+</div>
+<div class="facebook-checkin-reward-box">
+   <div ng-include="'index_freebies_checkin.html'"></div>
+</div>
+<div class="facebook-referral-reward-box">
+   <div ng-include="'index_freebies_referral.html'"></div>
+</div>
+<div class="lucky-customer-reward-box">
+   <div ng-include="'index_freebies_lucky.html'"></div>
+</div>
+</div>	
+</div>

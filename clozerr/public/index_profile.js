@@ -1,4 +1,4 @@
- var index_profile = function( $rootScope, $scope, $http ) {
+ var index_profile = function( $rootScope, $scope, $http ) {  
 
   var CLOZERR_API = location.origin + '/';
   var CLOZERR_VENDORS_URL = CLOZERR_API + "vendor";

@@ -143,6 +143,10 @@
         <script type="text/javascript" src="index_settings_visitreminder.js"></script>
         <script type="text/javascript" src="index_settings_neighbourhoodperks.js"></script>
         <script type="text/javascript" src="index_settings_miscellaneous.js"></script>
+        <script type="text/javascript" src="index_freebies_welcome.js"></script>
+        <script type="text/javascript" src="index_freebies_happyhours.js"></script>
+        <script type="text/javascript" src="index_freebies_referral.js"></script>
+        <script type="text/javascript" src="index_freebies_lucky.js"></script>
 
         <script type="text/javascript" src="index_preferences.js"></script>
 
@@ -155,8 +159,10 @@
         <script type="text/javascript" src="index_analytics.js"></script>
 
         <script type="text/javascript" src="js/bootstrap-switch.js"></script>
-
         <script type="text/javascript" src="login.js"></script>
+        <script type="text/javascript" src="index_freebies.js"></script>
+        <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
+        <script type="text/javascript" src="index_freebies_checkin.js"></script>
         
         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
@@ -244,6 +250,8 @@
                 <li id="nav4">
                     <a href="javascript:void(0)" ng-click="pageChange('settings')"><i class="fa fa-fw fa-gear"></i>&nbsp&nbsp&nbspSettings</a>
                 </li>
+                <li id="nav5">
+                <a href="javascript:void(0)" ng-click="pageChange('freebies');console.log('clicked on freebies');"><i class="fa fa-fw fa-gift"></i>&nbsp&nbsp&nbspFreebies</a> 
                 <!-- Profile page is to contain profile stuff like public name, image, city, address etc. -->
                 
                <!--  <li>
@@ -269,6 +277,7 @@
     <div id="page-wrapper" ng-include="'index_settings.html'"></div>
     <div id="page-wrapper" ng-include="'index_preferences.html'"></div>
     <div id="page-wrapper" ng-include="'index_profile.html'"></div>
+    <div id="page-wrapper" ng-include="'index_freebies.html'"></div>
     <div id="page-wrapper" >
         <div ng-controller="index_analytics" class="col-lg-10 col-lg-offset-2">
     <div ng-show="visibility">
@@ -308,7 +317,7 @@
 </script>
 
 <script>
-var app = angular.module("clozerr",['ngImgCrop']);
+var app = angular.module("clozerr",['ngImgCrop','ui.bootstrap']);
 app.filter("humanize_date", function(){
     return function( input ){
       return new Date( input ).toLocaleString()

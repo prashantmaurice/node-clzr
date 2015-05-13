@@ -1,0 +1,48 @@
+
+<style type="text/css">
+	.welcome_box{
+		margin-top: 10px;
+	}
+	.display-none {
+		display: none;
+	}
+	.row1{
+		margin-left: 3px;
+	}
+</style>
+<div class="referral_box" ng-controller="index_freebies_referral" ng-show="visibility">
+	<div class="whitebox top-banner card" style="padding-bottom:100px;margin-top:10px;">
+		<div class="header">
+			<div class='icon-holder icon'></div>
+			<div class='title'>
+				FACEBOOK REFERRAL REWARD
+			</div>
+		</div>
+		<div class="content">
+			<div class="description">
+				Incentivize your customers to invite their friends to your business
+			</div>
+			<div class="options-holder">
+				<div class="selection-duration-holder">
+					<div class="row1" >
+						<div class="radio col-xs-6" style="float:left;padding-left:0px;">
+							<label style="padding-left:0px";>&nbsp&nbsp&nbsp&nbspREWARD EXPIRES IN</label>
+							<input type="checkbox" ng-model="slide" id="slider"></input>					
+						</div>
+						<div class="col-xs-6" ng-show="slide" id="checklist" style="float:left;">
+							<div class=" animated fadeInRight">
+								<input type="checkbox" id="month" /><label for="month">&nbsp&nbsp&nbsp&nbsp1 MONTH</label>
+								<input type="checkbox" id="year"/><label for="year">&nbsp&nbsp&nbsp&nbsp1 YEAR</label>
+								<input type="checkbox" id="day"/><label for="day">&nbsp&nbsp&nbsp&nbsp1 DAY</label>
+								<input type="checkbox" id="hour"/><label for="hour">&nbsp&nbsp&nbsp&nbsp1 HOUR</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12" style="padding-left:0px;">	
+				<input type="textarea" id="offer" 	ng-model="offercontent" rows="5" class="form-control" placeholder="Offer Description...">
+			</div>
+		</div>
+	</div>
+</div>	

@@ -1,0 +1,82 @@
+<style type="text/css">
+	.btn-circle {
+		width: 30px;
+		height: 30px;
+		text-align: center;
+		padding: 6px 0;
+		font-size: 12px;
+		line-height: 1.428571429;
+		border-radius: 15px;
+	}
+	dd{
+		margin-left: 12px;
+	}
+</style>
+<div class="welcome_box" ng-controller="index_freebies_happyhours"ng-show="visibility">
+	<div class="whitebox top-banner card" style="padding-bottom:50px;">
+		<div class="header">
+			<div class='icon-holder icon'></div>
+			<div class='title'>
+				HAPPY HOUR REWARD
+			</div>
+		</div>
+		<div class="content">
+			<div class="description">
+				Incentivize your customers to come in during typically slow hours
+			</div>
+			<div class="row">
+				<div class="col-xs-6" style="font-size:15px;width:20%;padding-top:30px;">
+					SELECT YOUR 
+					<br>
+					SLOW HOURS
+				</div>
+				<div class="col-xs-6" style="width:20%;">
+					<timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>	
+				</div>
+				<div class="col-xs-6" style="width:12%;padding-top:40px;padding-left:50px;">
+					TO
+				</div>
+				<div class="col-xs-6" style="width:20%;">
+					<timepicker ng-model="mytime1" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></timepicker>	
+				</div>
+			</div>
+			<div class="row">
+				<div class="slow-days" style="margin-top:10px;">
+					<div class="col-sm-4" style="width:20%;">
+						SELECT YOUR 
+						<br>
+						SLOW DAYS
+					</div>
+					<div class='col-sm-8'>
+						<dl class='week-list' style="float:left;display:inline;">
+							<dd style="float:left;">
+								<button type="button" class="btn btn-default btn-circle">M</i></button>
+							</dd>
+							<dd style="float:left;">
+								<button type="button" class="btn btn-default btn-circle">T</button>
+							</dd>
+							<dd style="float:left;">
+								<button type="button" class="btn btn-default btn-circle">W</button>
+							</dd>
+							<dd style="float:left;">
+								<button type="button" class="btn btn-default btn-circle">T</button>
+							</dd>
+							<dd style="float:left;">
+								<button type="button" class="btn btn-default btn-circle">F</button>
+							</dd>
+							<dd style="float:left;">
+								<button type="button" class="btn btn-default btn-circle">S</button>
+							</dd>
+							<dd style="float:left;">
+								<button type="button" class="btn btn-default btn-circle">S</button>
+							</dd>
+						</dl>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12" style="padding-left:0px;">	
+				<input type="textarea" id="offer" 	ng-model="offercontent" rows="5" class="form-control" placeholder="Offer Description...">
+			</div>			
+		</div>
+	</div>
+</div>
