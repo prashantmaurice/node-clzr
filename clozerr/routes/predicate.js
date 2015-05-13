@@ -1,7 +1,7 @@
 module.exports = {};
 
 var _ = require('underscore');
-var Checkin = require("models").Checkin;
+var Q = require('q');
 
 var predicates = {
   "S1": function( user, vendor, offer ){
@@ -12,11 +12,14 @@ var predicates = {
       return true;
     else
       return false;
-
   },
 
   "S0": function( user, vendor, offer ){
-    return predicatesS0[offer.params.type](user, vendor, offer);
+    debugger;
+    predicatesS0[offer.params.type](user, vendor, offer).then(function(retval) {
+      debugger;
+      return retval;
+    })
   },
 
   "SX": function( user, vendor, offer ){
@@ -35,35 +38,45 @@ var predicates = {
 var predicatesS0 = {
   "limitedTime": function( user, vendor, offer) {
    var currentDate = new Date();
+   debugger;
    if(currentDate > offer.params.offerStart && currentDate < offer.params.offerEnd) {
     return true;
-   }
-   else {
+  }
+  else {
     return false;
-   }
-  },
-  "limitedCustomers": function( user, vendor, offer) {
-    Checkin.find({
-      offer:offer._id
-    }, function(err, allCheckins) {
-      if(allCheckins.length >= offer.params.maxCustomers) {
-        return false;
-      }
+  }
+},
+"limitedCustomers": function( user, vendor, offer, callback) {
+  debugger;
+  var Checkin = require("./models").CheckIn;
+  debugger;
+  var deferred = Q.defer();
+  Checkin.find({
+    offer:offer._id
+  }).exec().then(function(err, allCheckins) {
+    debugger;
+    if(allCheckins.length >= offer.params.maxCustomers) {
+      debugger;
+      deferred.resolve(false);
+    }
       //maximum number of checkins is fixed by the vendor - maximum number of customers
       else {
         var checkinsByUser = _.filter(allCheckins, function(checkin) {
           return (checkin.user == user._id);
         });
+        debugger;
         //user has not used the offer already
         if(checkinsByUser.length == 0) {
-          return true;
+          debugger;
+          deferred.resolve(true);
         }
         else {
-          return false;
+         deferred.resolve(false);
         }
       }
     });
-  }
+    return deferred.promise;
+}
 }
 
 var handlers = {
@@ -87,16 +100,16 @@ var handlers = {
     }
     else
       user.stamplist[vendor.fid] = parseInt(validate_data.stamps);
-     user.markModified("stamplist");
+    user.markModified("stamplist");
   }
 }
 module.exports.qualify = function( user, vendor, offer ){
 
 
-  //debugger;
+  debugger;
   console.log("Calculating: "+user._id + " " + vendor._id + " "+offer._id);
   console.log("Offer type: "+offer.type);
-  //debugger;
+  debugger;
   if( !predicates[offer.type] ){
     console.log("Type of offer is unsupported");
     return false;
