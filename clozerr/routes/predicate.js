@@ -16,10 +16,8 @@ var predicates = {
 
   "S0": function( user, vendor, offer ){
     debugger;
-    predicatesS0[offer.params.type](user, vendor, offer).then(function(retval) {
-      debugger;
-      return retval;
-    })
+    var pr = predicatesS0[offer.params.type](user, vendor, offer);
+    return pr;
   },
 
   "SX": function( user, vendor, offer ){
@@ -40,10 +38,13 @@ var predicatesS0 = {
    var currentDate = new Date();
    debugger;
    var deferred = Q.defer();
+   debugger;
    if(currentDate > offer.params.offerStart && currentDate < offer.params.offerEnd) {
+    debugger;
     deferred.resolve(true);
   }
   else {
+    debugger;
     deferred.resolve(false);
   }
   return deferred.promise;
@@ -55,7 +56,7 @@ var predicatesS0 = {
   var deferred = Q.defer();
   Checkin.find({
     offer:offer._id
-  }).exec().then(function(err, allCheckins) {
+  }).exec().then(function(allCheckins) {
     debugger;
     if(allCheckins.length >= offer.params.maxCustomers) {
       debugger;
@@ -112,13 +113,12 @@ module.exports.qualify = function( user, vendor, offer ){
   debugger;
   console.log("Calculating: "+user._id + " " + vendor._id + " "+offer._id);
   console.log("Offer type: "+offer.type);
-  debugger;
+  debugger; 
   if( !predicates[offer.type] ){
     console.log("Type of offer is unsupported");
     return false;
   }
   return predicates[offer.type]( user, vendor, offer );
-
 }
 
 module.exports.onCheckin = function( user, vendor, offer, validate_data ){
