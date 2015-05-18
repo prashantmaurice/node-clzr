@@ -154,11 +154,12 @@ router.get('/get/all/uuid', function(req, res) {
               });
 
               console.log(offers_qualified);
-
+              debugger;
               var objRet = {};
-
+              debugger;
               objRet._id = vendorObj._id;
               objRet.UUID = vendorObj.UUID;
+              debugger;
               objRet.name = vendorObj.name;
               objRet.offers_qualified = offers_qualified;
 

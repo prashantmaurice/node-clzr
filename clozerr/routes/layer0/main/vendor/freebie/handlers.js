@@ -1,4 +1,4 @@
- 
+
 var Q = require("q");
 var registry = global.registry;
 
@@ -6,15 +6,14 @@ var handle_freebie_checkin = function( params, user, vendor ){
     var deferred = Q.defer();
     // Make a freebie checkin.
     var checkinM = registry.getSharedObject("data_checkin");
-    var freebieM = registry.getSharedObject("data_freebie");
 
     var checkin = checkinM.create();
 
     checkin.vendor = vendor;
     checkin.user = user;
     
-    var _id = params.freebie_id;
-    freebieM.get( {_id:_id} ).then( function( freebie ){
+    var _id = params._id;
+    checkinM.get( {_id:_id} ).then( function( freebie ){
 
         // do some freebie checking here.
 

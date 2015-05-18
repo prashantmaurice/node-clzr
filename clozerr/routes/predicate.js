@@ -16,8 +16,9 @@ var predicates = {
 
   "S0": function( user, vendor, offer ){
     debugger;
-    var pr = predicatesS0[offer.params.type](user, vendor, offer);
-    return pr;
+    Checkin.find({offer:offer._id}, function(err, allCheckins) {
+      return predicatesS0[offer.params.type](user, vendor, offer);
+    });
   },
 
   "SX": function( user, vendor, offer ){
@@ -37,17 +38,14 @@ var predicatesS0 = {
   "limitedTime": function( user, vendor, offer) {
    var currentDate = new Date();
    debugger;
-   var deferred = Q.defer();
-   debugger;
    if(currentDate > offer.params.offerStart && currentDate < offer.params.offerEnd) {
     debugger;
-    deferred.resolve(true);
+    return true;
   }
   else {
     debugger;
-    deferred.resolve(false);
+    return false;
   }
-  return deferred.promise;
 },
 "limitedCustomers": function( user, vendor, offer) {
   debugger;
