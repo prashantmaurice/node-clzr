@@ -17,7 +17,7 @@ var policyCheckTimeDelayBetweenCheckins = function( user, vendor, offer ) {
 
   if( Math.abs( new Date().getTime() - checkin.date_created.getTime() ) < settings.checkin.delay_between_checkins ) {
       process.nextTick( function(){
-        deferred.resolve( false , checkin);
+        deferred.resolve( false );
     });
   }
   else{
