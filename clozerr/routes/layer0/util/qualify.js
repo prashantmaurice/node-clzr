@@ -56,6 +56,14 @@ var assignFlagsToOffer = function(user, vendor) {
   return deferred.promise;
 }
 
+var getCheckinOnCheckinDisplay = function(checkin) {
+  return checkin;
+}
+
+var getCheckinOnValidateDisplay = function(checkin) {
+  return checkin;
+}
+
 var getOfferDisplay = function (user, vendor, offer){
   var offerDisplay={};
   var deferred = Q.defer();
