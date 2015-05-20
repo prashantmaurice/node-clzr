@@ -1,5 +1,6 @@
 var registry = global.registry;
 var Q = require("q");
+var util = registry.getSharedObject("util");
 
 var CHECKIN_STATE_ACTIVE = 0;
 var CHECKIN_STATE_CONFIRMED = 1;
@@ -53,25 +54,42 @@ var vendor_checkin_S0_predicates = {
 
 }
 
-var vendor_checkin_S0 = function( params, vendor, user ){
+var vendor_checkin_S0 = function( params, user, vendor, offer ){
     var deferred = Q.defer();
 
     var checkinM = registry.getSharedObject("data_checkin");
     var checkinObj = checkinM.create();
 
-    //TODO : check time delay between multiple checkins - then resolve the same checkin object
-
     //TODO : Also if the checkin is not validated within 2 hrs, just cancel it i.e set its state to cancelled and save it
 
-    checkinObj.vendor = params.vendor_id;
-    checkinObj.user = user._id;
-    checkinObj.offer = params.offer_id;
-    checkinObj.state = CHECKIN_STATE_ACTIVE;
+    util.policyCheckDuplicateCheckins(user, vendor, offer).then(function(checkin) {
+        if(checkin) {
+            deferred.resolve(checkin);
+        }
+        else {
+            util.policyCheckTimeDelayBetweenCheckins(user, vendor, offer).then(function(retval, checkin) {
+                if(retval) {
+                    checkinObj.vendor = params.vendor_id;
+                    checkinObj.user = user._id;
+                    checkinObj.offer = params.offer_id;
+                    checkinObj.state = CHECKIN_STATE_ACTIVE;
 
-    checkinM.save( checkinObj ).then( function( checkin ){
-        deferred.resolve( checkin );
-    }, function( err ){
-        deferred.reject( err );
+                    checkinM.save( checkinObj ).then( function( checkin ){
+                        deferred.resolve( checkin );
+                    }, function( err ){
+                        deferred.reject( err );
+                    });
+                }
+                else {
+                        //TODO : throw error here.. can't use that offer
+                        //deferred.reject(err);
+                }
+            }, function(err) {
+                deferred.reject(err);
+            });
+        }
+    }, function(err) {
+        deferred.reject(err);
     });
 
     return deferred.promise;

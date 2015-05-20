@@ -1,7 +1,7 @@
 var registry = global.registry;
 var Q = require("q");
 var _ = require("underscore");
-var util = require("../../../../util/qualify");
+var qualify = registry.getSharedObject("qualify");
 
 var view_vendor_offers_offerPage_S0 = function(params, user) {
 	var deferred = Q.defer();
@@ -13,7 +13,7 @@ var view_vendor_offers_offerPage_S0 = function(params, user) {
 		_.each(vendor.offers, function(element, index, array) {
 			var deferred1 = Q.defer();
 			var pr = predicate.get(user, vendor, element).then(function(offer) {
-				displayOffers.push(util.getOfferDisplay(user, vendor, offer));
+				displayOffers.push(qualify.getOfferDisplay(user, vendor, offer));
 			});
 			plist.push(pr);
 		});
@@ -26,7 +26,7 @@ var view_vendor_offers_offerPage_S0 = function(params, user) {
 	}, function(err) {
 		deferred.reject(err);
 	});
-	
+
 	return deferred.promise;
 }
 
@@ -39,18 +39,18 @@ var view_vendor_offers_checkin_S0 = function(params, user) {
 			return (offer._id == offer_id);
 		});
 		if(offer == null) {
-			//throw error : request made with an offer id which is not an offer given by that particular vendor
+			//TODO : throw error : request made with an offer id which is not an offer given by that particular vendor
 		}
 		registry.getSharedObject("handler_predicate_S0").get(user, vendor, offer).then(function(offer) {
 			if(offer) {
-				registry.getSharedObject("vendor_checkin_S0").get(params, vendor, user).then(function(checkin) {
-					deferred.resolve(util.getCheckinOnCheckinDisplay(checkin));
+				registry.getSharedObject("vendor_checkin_S0").get(params, user, vendor, offer).then(function(checkin) {
+					deferred.resolve(qualify.getCheckinOnCheckinDisplay(checkin));
 				}, function(err) {
 					deferred.reject(err);
 				});
 			}
 			else {
-				//throw error here -- object empty here.. not an offer for the user
+				//TODO : throw error here -- object empty here.. not an offer for the user
 			}
 		}, function(err) {
 			deferred.reject(err);
@@ -69,7 +69,7 @@ var view_vendor_offers_validate_S0 = function(params, user) {
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
 		registry.getSharedObject("data_checkin").get(params, user).then(function(checkin_obj) {
 			registry.getSharedObject("vendor_validate_S0").get(params,vendor,user,checkin).then(function(checkin) {
-				deferred.resolve(util.getCheckinOnValidateDisplay(checkin));
+				deferred.resolve(qualify.getCheckinOnValidateDisplay(checkin));
 			}, function(err) {
 				deferred.reject(err);
 			});
