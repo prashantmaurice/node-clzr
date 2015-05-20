@@ -16,11 +16,13 @@ var predicates = {
 
   "S0": function( user, vendor, offer ){
     debugger;
-    Checkin.find({offer:offer._id}, function(allCheckins) {
-      predicatesS0[offer.params.type](user, vendor, offer).then(function(retval) {
-        return retval;
-      });
+    var deferred = Q.defer();
+    predicatesS0[offer.type](user, vendor, offer).then(function(retval) {
+      deferred.resolve(retval);
+    }, function(err) {
+      deferred.reject(err);
     });
+    return deferred.promise;
   },
 
   "SX": function( user, vendor, offer ){

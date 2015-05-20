@@ -2,7 +2,7 @@ var Q = require("q");
 var registry = global.registry;
 var ObjectId = require('mongoose').Types.ObjectId;
 
-var http_vendor_withOffers = function( params, callback ){
+var data_vendor_withOffers = function( params, callback ){
     var _id = params.vendor_id;
     var Vendor = registry.getSharedObject("models_Vendor");
     var Offer = registry.getSharedObject("models_Offer");
