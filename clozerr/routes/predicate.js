@@ -16,8 +16,10 @@ var predicates = {
 
   "S0": function( user, vendor, offer ){
     debugger;
-    Checkin.find({offer:offer._id}, function(err, allCheckins) {
-      return predicatesS0[offer.params.type](user, vendor, offer);
+    Checkin.find({offer:offer._id}, function(allCheckins) {
+      predicatesS0[offer.params.type](user, vendor, offer).then(function(retval) {
+        return retval;
+      });
     });
   },
 
