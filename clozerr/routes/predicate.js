@@ -15,7 +15,6 @@ var predicates = {
   },
 
   "S0": function( user, vendor, offer ){
-    debugger;
     predicatesS0[offer.params.type](user, vendor, offer).then(function(retval) {
       debugger;
       return retval;
@@ -38,7 +37,6 @@ var predicates = {
 var predicatesS0 = {
   "limitedTime": function( user, vendor, offer) {
    var currentDate = new Date();
-   debugger;
    var deferred = Q.defer();
    if(currentDate > offer.params.offerStart && currentDate < offer.params.offerEnd) {
     deferred.resolve(true);
@@ -49,28 +47,21 @@ var predicatesS0 = {
   return deferred.promise;
 },
 "limitedCustomers": function( user, vendor, offer) {
-  debugger;
   var Checkin = require("./models").CheckIn;
-  debugger;
   var deferred = Q.defer();
   Checkin.find({
     offer:offer._id
   }).exec().then(function(err, allCheckins) {
-    debugger;
     if(allCheckins.length >= offer.params.maxCustomers) {
-      debugger;
       deferred.resolve(false);
     }
       //maximum number of checkins is fixed by the vendor - maximum number of customers
       else {
-        debugger;
         var checkinsByUser = _.filter(allCheckins, function(checkin) {
           return (checkin.user == user._id);
         });
-        debugger;
         //user has not used the offer already
         if(checkinsByUser.length == 0) {
-          debugger;
           deferred.resolve(true);
         }
         else {
@@ -109,10 +100,8 @@ var handlers = {
 module.exports.qualify = function( user, vendor, offer ){
 
 
-  debugger;
   console.log("Calculating: "+user._id + " " + vendor._id + " "+offer._id);
   console.log("Offer type: "+offer.type);
-  debugger;
   if( !predicates[offer.type] ){
     console.log("Type of offer is unsupported");
     return false;
@@ -122,11 +111,8 @@ module.exports.qualify = function( user, vendor, offer ){
 }
 
 module.exports.onCheckin = function( user, vendor, offer, validate_data ){
-
-  debugger;
   console.log("Checking in: "+user._id + " " + vendor._id + " "+offer._id);
   console.log("Offer type: "+offer.type);
-  debugger;
   if( !handlers[offer.type] ){
     console.log("Type of offer is unsupported");
     return false;

@@ -138,12 +138,13 @@ router.get('/get/all/uuid', function(req, res) {
 
           var vendorDetails = [];
           var pr =  _.each( data, function( vendorObj, index, array ){
+           
 
             Offer.find({
               _id: {
                 $in: vendorObj.offers
               }
-            }, function (err, offers) {
+            }, function (err, offers) { 
               if(err) {
                 console.log(err);
                 return;
@@ -162,7 +163,8 @@ router.get('/get/all/uuid', function(req, res) {
               objRet.name = vendorObj.name;
               objRet.offers_qualified = offers_qualified;
 
-              console.log(objRet);
+              console.log(objRet.name);
+              if(objRet==null){debugger;}
 
               vendorDetails[index] = objRet;
 
