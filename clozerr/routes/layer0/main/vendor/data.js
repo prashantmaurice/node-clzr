@@ -120,3 +120,4 @@ var data_vendors = function( params ){
 }
 
 registry.register("data_vendors",{get:data_vendors});
+registry.register("data_vendor_withOffers",{get:data_vendor_withOffers});

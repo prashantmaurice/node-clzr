@@ -80,3 +80,11 @@ var view_vendor_offers_validate_S0 = function(params, user) {
 
 	return deferred.promise;
 }
+
+registry.register("view_vendor_offers_offerPage_S0", {get:view_vendor_offers_offerPage_S0});
+registry.register("view_vendor_offers_checkin_S0", {get:view_vendor_offers_checkin_S0});
+registry.register("view_vendor_offers_validate_S0", {get:view_vendor_offers_validate_S0});
+
+
+
+
