@@ -10,14 +10,11 @@ var vendor_checkin_S0_predicates = {
     "limitedTime": function(user, vendor, offer) {
         var currentDate = new Date();
         var deferred = Q.defer();
-        debugger;
         if(currentDate > offer.params.offerStart && currentDate < offer.params.offerEnd) {
-            debugger;
-            deferred.resolve(offer);
+            deferred.resolve(true);
         }
         else {
-            debugger;
-            deferred.reject({});
+            deferred.resolve(false);
         }
         return deferred.promise;
     },
@@ -96,7 +93,7 @@ var vendor_checkin_S0 = function( params, user, vendor, offer ){
 }
 
 var vendor_predicate_S0 = function(user, vendor, offer) {
-    // return vendor_predicate_S0[offer.type](user, vendor, offer);
+    return vendor_checkin_S0_predicates[offer.params.type](user, vendor, offer);
     var deferred = Q.defer();
     deferred.resolve(Math.random()>0.5)
     return deferred.promise
