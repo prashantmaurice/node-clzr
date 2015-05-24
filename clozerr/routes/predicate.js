@@ -16,13 +16,14 @@ var predicates = {
 
   "S0": function( user, vendor, offer ){
     debugger;
-    var deferred = Q.defer();
-    predicatesS0[offer.type](user, vendor, offer).then(function(retval) {
-      deferred.resolve(retval);
-    }, function(err) {
-      deferred.reject(err);
-    });
-    return deferred.promise;
+    // var deferred = Q.defer();
+    // predicatesS0[offer.type](user, vendor, offer).then(function(retval) {
+    //   deferred.resolve(retval);
+    // }, function(err) {
+    //   deferred.reject(err);
+    // });
+    // return deferred.promise;
+    return true;
   },
 
   "SX": function( user, vendor, offer ){

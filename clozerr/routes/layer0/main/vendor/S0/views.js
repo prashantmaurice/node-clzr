@@ -29,7 +29,23 @@ var view_vendor_offers_offerPage_S0 = function(params, user) {
 
 	return deferred.promise;
 }
-
+var view_vendor_offers_offers_S0=function(params,user){
+	var deferred = Q.defer();
+	registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+		registry.getSharedObject("data_vendor_S0").get(params,vendor).then(function(vendor_offers){
+			debugger;
+			var predicate = registry.getSharedObject("handler_predicate_S0");
+			var plist=[]
+			_.each(vendor_offers.offers,function(element,index,array){
+				plist.push(predicate.get(user,vendor,element))
+			})
+			Q.all(plist).then(function(predlist){
+				deferred.resolve(_.filter(vendor_offers.offers,function(val,idx){return predlist[idx]}))
+			})
+		})
+	});
+	return deferred.promise;
+}
 var view_vendor_offers_checkin_S0 = function(params, user) {
 	var deferred = Q.defer();
 
@@ -84,6 +100,7 @@ var view_vendor_offers_validate_S0 = function(params, user) {
 registry.register("view_vendor_offers_offerPage_S0", {get:view_vendor_offers_offerPage_S0});
 registry.register("view_vendor_offers_checkin_S0", {get:view_vendor_offers_checkin_S0});
 registry.register("view_vendor_offers_validate_S0", {get:view_vendor_offers_validate_S0});
+registry.register("view_vendor_offers_offers_S0", {get:view_vendor_offers_offers_S0});
 
 
 
