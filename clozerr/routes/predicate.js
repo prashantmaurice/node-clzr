@@ -38,13 +38,15 @@ var predicatesS0 = {
   "limitedTime": function( user, vendor, offer) {
    var currentDate = new Date();
    var deferred = Q.defer();
+
    if(currentDate > offer.params.offerStart && currentDate < offer.params.offerEnd) {
-    deferred.resolve(true);
+    debugger;
+    return true;
   }
   else {
-    deferred.resolve(false);
+    debugger;
+    return false;
   }
-  return deferred.promise;
 },
 "limitedCustomers": function( user, vendor, offer) {
   var Checkin = require("./models").CheckIn;
@@ -52,6 +54,7 @@ var predicatesS0 = {
   Checkin.find({
     offer:offer._id
   }).exec().then(function(err, allCheckins) {
+
     if(allCheckins.length >= offer.params.maxCustomers) {
       deferred.resolve(false);
     }
@@ -102,12 +105,12 @@ module.exports.qualify = function( user, vendor, offer ){
 
   console.log("Calculating: "+user._id + " " + vendor._id + " "+offer._id);
   console.log("Offer type: "+offer.type);
+
   if( !predicates[offer.type] ){
     console.log("Type of offer is unsupported");
     return false;
   }
   return predicates[offer.type]( user, vendor, offer );
-
 }
 
 module.exports.onCheckin = function( user, vendor, offer, validate_data ){

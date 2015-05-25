@@ -6,6 +6,7 @@ var data_user = function( params ){
     var deferred = Q.defer();
     var User = registry.getSharedObject("models_User");
     var criteria = { _id: params.user_id };
+    debugger;
 
     User.findOne( criteria ).exec().then( function( result ){
         debugger;

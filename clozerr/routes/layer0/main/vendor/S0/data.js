@@ -1,14 +1,8 @@
 var registry = global.registry;
 var Q = require("q");
 
-var data_vendor_S1 = function( params, vendor ){
+var data_vendor_S0 = function( params, vendor ){
     var deferred = Q.defer();
-    /*
-     * Fill the raw vendor object with the properties from the
-     * server that is required for processing the S1 object further.
-     * */
-    // For this example fill the object with the offers list.
-    debugger;
 
     vendor = JSON.parse(JSON.stringify(vendor));
 
@@ -32,4 +26,4 @@ var data_vendor_S1 = function( params, vendor ){
     return deferred.promise;
 }
 
-registry.register("data_vendor_S1", {get:data_vendor_S1});
+registry.register("data_vendor_S0", {get:data_vendor_S0});
