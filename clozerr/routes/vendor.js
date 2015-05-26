@@ -114,7 +114,7 @@ router.get('/send/push', function (req, res) {
 
 });
 
-router.get('/get/all/beacons', function(req, res) {
+router.get('/get/all/beacons_old', function(req, res) {
 
   var errobj = error.err_insuff_params(res, req, ["access_token"]);
   if (!errobj) {
@@ -177,6 +177,41 @@ router.get('/get/all/beacons', function(req, res) {
 
 });
 
+});
+router.get('/get/all/beacons', function(req, res) {
+  var errobj = error.err_insuff_params(res, req, ["access_token"]);
+  if (!errobj) return;
+  var retObj={UUID:settings.UUID,vendors:[]}
+  Vendor.find({},function(err,vendors){
+    if(err) {
+      console.log(err);
+      return;
+    }
+    // console.log(vendors[0])
+    var resendFunc=_.after(vendors.length,function(obj){res.end(JSON.stringify(obj))})
+    _.each(vendors,function(vendor){
+      Offer.find({_id: {$in: vendor.offers }}, function(err,offers){
+        if(err) {
+          console.log(err);
+          return;
+        }
+        var offers_qualified = _.filter(offers, function(offer) {
+          return OfferHandler.qualify(req.user,vendor,offer);
+        });
+        retObj.vendors.push({
+          _id: vendor._id,
+          beacons: {
+            major:vendor.beacons_major,
+            minor:vendor.beacons_minor
+          },
+          name: vendor.name,
+          // offers: offers_qualified,
+          hasOffers: (offers_qualified.length > 0)
+        })
+        resendFunc(retObj)
+      })
+    })
+  })
 });
 router.get('/offers/myOfferPage', function (req, res) {
   var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
