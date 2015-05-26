@@ -66,16 +66,17 @@ var getCheckinOnValidateDisplay = function(checkin) {
 
 var getOfferDisplay = function (user, vendor, offer){
   var offerDisplay={};
-  var deferred = Q.defer();
   if(offer) {
     offerDisplay.type=offer.type;
-    offerDisplay.image=textToImage[offer.flagState];//TODO
-    offerDisplay.optionalImage=null;//TODO
     offerDisplay.caption=offer.caption;
     offerDisplay.description=offer.description;
     offerDisplay.stamps=offer.stamps*1;
-
+    offerDisplay.params={};
+    if(offerDisplay.type=="S1") {
+      offerDisplay.params.stamps=offer.stamps
+    }
     if(offerDisplay.type=="SX") {
+      offerDisplay.params.stamps=offer.stamps
       offerDisplay.stampStatus = {};
       offerDisplay.billAmt = vendor.settings.billAmt*1;
       if(user.stamplist[vendor.fid] > offer.stamps) {
@@ -85,11 +86,13 @@ var getOfferDisplay = function (user, vendor, offer){
         offerDisplay.stampStatus.current = 0;
       }
       offerDisplay.stampStatus.total = vendor.settings.SXLimit*1;
-    }    
-    deferred.resolve(offerDisplay);
+    }
+    if(offerDisplay.type=="S0") {    
+      offerDisplay.params=offer.params
+    }
+    return offerDisplay;
   }
-  else deferred.resolve(null);
-  return deferred.promise;
+  else return null;
 }
 
 /*
@@ -271,4 +274,4 @@ module.exports={
   getOfferDisplay:getOfferDisplay};
 
   var registry = global.registry;
-  registry.register("qualify", module.exports);
+registry.register("qualify", module.exports)

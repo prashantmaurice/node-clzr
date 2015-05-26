@@ -1,7 +1,6 @@
 var registry = global.registry;
 var Q = require("q");
 var _ = require("underscore");
-var qualify = registry.getSharedObject("qualify");
 
 var view_vendor_offers_offerPage_S0 = function(params, user) {
 	var deferred = Q.defer();
@@ -13,7 +12,7 @@ var view_vendor_offers_offerPage_S0 = function(params, user) {
 		_.each(vendor.offers, function(element, index, array) {
 			var deferred1 = Q.defer();
 			var pr = predicate.get(user, vendor, element).then(function(offer) {
-				displayOffers.push(qualify.getOfferDisplay(user, vendor, offer));
+				displayOffers.push(registry.getSharedObject("qualify").getOfferDisplay(user, vendor, offer));
 			});
 			plist.push(pr);
 		});
@@ -34,14 +33,19 @@ var view_vendor_offers_offers_S0=function(params,user){
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
 		registry.getSharedObject("data_vendor_S0").get(params,vendor).then(function(vendor_offers){
 			debugger;
-			console.log(vendor_offers)
 			var predicate = registry.getSharedObject("handler_predicate_S0");
 			var plist=[]
 			_.each(vendor_offers.offers,function(element,index,array){
 				plist.push(predicate.get(user,vendor,element))
 			})
 			Q.all(plist).then(function(predlist){
-				deferred.resolve(_.filter(vendor_offers.offers,function(val,idx){return predlist[idx]}))
+				deferred.resolve(
+					_.map(_.filter(vendor_offers.offers,
+						function(val,idx){return predlist[idx]})
+					,function(offer){
+						// return offer
+						return registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer)
+					}))
 			})
 		})
 	});

@@ -1,5 +1,6 @@
 var registry = global.registry;
 var Q = require("q");
+var _ = require("underscore")
 var util = registry.getSharedObject("util");
 
 var CHECKIN_STATE_ACTIVE = 0;
@@ -21,39 +22,20 @@ var vendor_checkin_S0_predicates = {
     "limitedCustomers": function( user, vendor, offer) {
         var deferred = Q.defer();
         var CheckinByVendor=registry.getSharedObject("data_checkins");
-        CheckinByVendor.get({"offer":offer.id}).then(function(checkins){
-            console.log(checkins)
+        CheckinByVendor.get({
+            "offer":offer.id,
+            "state":{$in:[CHECKIN_STATE_ACTIVE,CHECKIN_STATE_CONFIRMED]}
+        }).then(function(checkins){
+            if(checkins.length<(offer.params.maxCustomers || 0)){
+                if(_.find(checkins,function(ch){ch.user==user.id}))
+                    deferred.resolve(false)
+                else
+                    deferred.resolve(true)
+            }
+            else
+                deferred.resolve(false)
         })
-        deferred.resolve(true);
         return deferred.promise;
-    //   debugger;
-    //   var Checkin = require("./models").CheckIn;
-    //   debugger;
-    //   var deferred = Q.defer();
-    //   Checkin.find({
-    //     offer:offer._id
-    // }).exec().then(function(allCheckins) {
-    //     debugger;
-    //     if(allCheckins.length >= offer.params.maxCustomers) {
-    //       debugger;
-    //       deferred.resolve(false);
-    //   }
-    //   else {
-    //     debugger;
-    //     var checkinsByUser = _.filter(allCheckins, function(checkin) {
-    //       return (checkin.user == user._id);
-    //   });
-    //     debugger;
-    //     if(checkinsByUser.length == 0) {
-    //       debugger;
-    //       deferred.resolve(true);
-    //   }
-    //   else {
-    //     deferred.resolve(false);
-    // }
-    // }
-    // });
-    //     return deferred.promise;
     }
 
 }
