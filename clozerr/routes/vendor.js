@@ -152,9 +152,6 @@ router.get('/get/all/beacons', function(req, res) {
               var offers_qualified = _.filter(offers, function(offer) {
                 return OfferHandler.qualify(req.user,vendorObj,offer);
               });
-
-              console.log(offers_qualified);
-              debugger;
               var objRet = {};
               debugger;
               objRet._id = vendorObj._id;
@@ -164,14 +161,13 @@ router.get('/get/all/beacons', function(req, res) {
               };
               debugger;
               objRet.name = vendorObj.name;
-              objRet.offers_qualified = offers_qualified;
-
-              console.log(objRet);
+              // objRet.offers_qualified = offers_qualified;
+              objRet.hasOffers = (offers_qualified.length > 0)
 
               vendorDetails[index] = objRet;
 
               if(index == array.length - 1) {
-                res.end(JSON.stringify(vendorDetails));
+                res.end(JSON.stringify({UUID:settings.UUID,vendors:vendorDetails}));
               }
             });
 
@@ -182,7 +178,6 @@ router.get('/get/all/beacons', function(req, res) {
 });
 
 });
-
 router.get('/offers/myOfferPage', function (req, res) {
   var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
   if (!errobj) {
