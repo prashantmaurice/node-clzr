@@ -114,7 +114,7 @@ router.get('/send/push', function (req, res) {
 
 });
 
-router.get('/get/all/uuid', function(req, res) {
+router.get('/get/all/beacons', function(req, res) {
 
   var errobj = error.err_insuff_params(res, req, ["access_token"]);
   if (!errobj) {
@@ -158,7 +158,10 @@ router.get('/get/all/uuid', function(req, res) {
               var objRet = {};
               debugger;
               objRet._id = vendorObj._id;
-              objRet.UUID = vendorObj.UUID;
+              objRet.beacons = {
+                "major":vendorObj.beacons_major,
+                "minor":vendorObj.beacons_minor
+              };
               debugger;
               objRet.name = vendorObj.name;
               objRet.offers_qualified = offers_qualified;

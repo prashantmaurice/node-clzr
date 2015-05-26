@@ -34,6 +34,7 @@ var view_vendor_offers_offers_S0=function(params,user){
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
 		registry.getSharedObject("data_vendor_S0").get(params,vendor).then(function(vendor_offers){
 			debugger;
+			console.log(vendor_offers)
 			var predicate = registry.getSharedObject("handler_predicate_S0");
 			var plist=[]
 			_.each(vendor_offers.offers,function(element,index,array){

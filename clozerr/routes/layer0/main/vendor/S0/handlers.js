@@ -19,35 +19,42 @@ var vendor_checkin_S0_predicates = {
         return deferred.promise;
     },
     "limitedCustomers": function( user, vendor, offer) {
-      debugger;
-      var Checkin = require("./models").CheckIn;
-      debugger;
-      var deferred = Q.defer();
-      Checkin.find({
-        offer:offer._id
-    }).exec().then(function(allCheckins) {
-        debugger;
-        if(allCheckins.length >= offer.params.maxCustomers) {
-          debugger;
-          deferred.resolve(false);
-      }
-      else {
-        debugger;
-        var checkinsByUser = _.filter(allCheckins, function(checkin) {
-          return (checkin.user == user._id);
-      });
-        debugger;
-        if(checkinsByUser.length == 0) {
-          debugger;
-          deferred.resolve(true);
-      }
-      else {
-        deferred.resolve(false);
+        var deferred = Q.defer();
+        var CheckinByVendor=registry.getSharedObject("data_checkins");
+        CheckinByVendor.get({"offer":offer.id}).then(function(checkins){
+            console.log(checkins)
+        })
+        deferred.resolve(true);
+        return deferred.promise;
+    //   debugger;
+    //   var Checkin = require("./models").CheckIn;
+    //   debugger;
+    //   var deferred = Q.defer();
+    //   Checkin.find({
+    //     offer:offer._id
+    // }).exec().then(function(allCheckins) {
+    //     debugger;
+    //     if(allCheckins.length >= offer.params.maxCustomers) {
+    //       debugger;
+    //       deferred.resolve(false);
+    //   }
+    //   else {
+    //     debugger;
+    //     var checkinsByUser = _.filter(allCheckins, function(checkin) {
+    //       return (checkin.user == user._id);
+    //   });
+    //     debugger;
+    //     if(checkinsByUser.length == 0) {
+    //       debugger;
+    //       deferred.resolve(true);
+    //   }
+    //   else {
+    //     deferred.resolve(false);
+    // }
+    // }
+    // });
+    //     return deferred.promise;
     }
-}
-});
-    return deferred.promise;
-}
 
 }
 

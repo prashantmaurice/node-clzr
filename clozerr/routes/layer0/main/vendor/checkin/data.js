@@ -40,6 +40,10 @@ var load_checkin = function( params, user ){
 
     return deferred.promise;
 }
+var data_checkins = function(params){
+    var Checkin = registry.getSharedObject("models_Checkin");
+    return Checkin.find(params).exec()
+}
 var create_checkin = function( params ){
     /*
      * Create a new checkin and return the checkin object.
@@ -57,3 +61,4 @@ var save_checkin = function( params, checkin ){
 }
 
 registry.register("data_checkin", {get:load_checkin, save:save_checkin, create: create_checkin} );
+registry.register("data_checkins", {get: data_checkins})

@@ -21,7 +21,8 @@ var vendorSchema = new Schema({
 	description: String,
 	resource_name: String,
 	question : [String],
-	UUID : [String],
+	beacons_major : Number,
+	beacons_minor : Number,
 	test : Boolean,
 	settings : Schema.Types.Mixed,
 	flags : [String]
