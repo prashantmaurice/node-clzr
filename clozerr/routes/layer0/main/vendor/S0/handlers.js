@@ -36,8 +36,19 @@ var vendor_checkin_S0_predicates = {
                 deferred.resolve(false)
         })
         return deferred.promise;
+    },
+    "happyHours": function(user,vendor,offer){
+        var days=offer.params.days; //array containing 0-6 , 0 => Sunday
+        var startHour=offer.params.startHour;//hours in 0-23
+        var endHour=offer.params.endHour;//inclusive of end hour
+        var date=new Date();
+        console.log(date.getDay(),date.getHours())
+        return Q(_.contains(days,date.getDay()) && date.getHours()<=endHour && date.getHours()>=startHour)
+    },
+    "welcomeReward": function(user,vendor,offer){
+        //TODO: are we initializing to zero or one?
+        return Q((!user.stamplist)||(!user.stamplist[vendor.fid])||(user.stamplist[vendor.fid]==0))
     }
-
 }
 
 var vendor_checkin_S0 = function( params, user, vendor, offer ){

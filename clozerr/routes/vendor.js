@@ -663,18 +663,14 @@ router.get('/get/near', function (req, res) {
       var access_token = req.query.access_token;
       var typelist = JSON.parse( type );
       var vendorResult;
-      console.log( typelist );
-      debugger;
 
       if(user.type!='TestUser'){
-        debugger;
         Vendor.find({
           location: {
             $near: [lat, lon]
           },
           visible:true
         }).limit( limit ).skip( offset ).exec().then(function (vendors) {
-          debugger;
           getoff(vendors, req.user,typelist,function( vendors ){
             res.send(JSON.stringify( vendors ));
             res.end();

@@ -55,7 +55,17 @@ var policyCheckDuplicateCheckins = function( user, vendor, offer ) {
 
 }
 
+var getVendorNearDisplay=function(vendor){
+  var retVendor={
+    _id:vendor._id||0,
+    name:vendor.name||0,
+    address:vendor.address||0,
+    visible:vendor.visible||0
+  };
+  return retVendor;
+}
 module.exports = {
+  getVendorNearDisplay:getVendorNearDisplay,
   policyCheckTimeDelayBetweenCheckins:policyCheckTimeDelayBetweenCheckins,
   policyCheckDuplicateCheckins:policyCheckDuplicateCheckins
 }

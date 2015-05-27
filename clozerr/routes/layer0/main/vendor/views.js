@@ -1,5 +1,6 @@
 var registry = global.registry;
 var Q = require("q");
+var _ = require('underscore')
 
 function getVendorType(vendor) {
     console.log('in getVendorType');
@@ -75,7 +76,26 @@ var view_vendor_homepage = function( params, user ){
 
     return deferred.promise;
 }
-
+var view_vendor_list_near = function(params,user){
+    var deferred = Q.defer();
+    var vendors = registry.getSharedObject("data_vendor_near");
+    params.limit=params.limit || registry.getSharedObject("settings").api.default_limit;
+    params.offset=params.offset || 0;
+    if(!params.lat || !params.lon || !params.distance)
+        deferred.reject("distance params missing");
+    console.log(params)
+    vendors.get(params).then(function(vendors){
+        console.log(vendors[0])
+        if(params.category)
+            deferred.resolve(_.map(
+                _.filter(vendors,function(vendor){return vendor.category==params.category})
+                ,registry.getSharedObject("util").getVendorNearDisplay));
+        else
+            deferred.resolve(_.map(vendors,registry.getSharedObject("util").getVendorNearDisplay));
+    })
+    return deferred.promise
+}
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
+global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};
