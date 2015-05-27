@@ -4,7 +4,6 @@ var Models = {};
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
-var categories=['Food']
 
 var vendorSchema = new Schema({
 	location : {type:[Number],index:'2dsphere'} ,

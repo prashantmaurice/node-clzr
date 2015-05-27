@@ -46,5 +46,6 @@ module.exports = {
 		"https://s3-ap-southeast-1.amazonaws.com/clozerrsite/img/mainbg.jpg",
          "https://s3-ap-southeast-1.amazonaws.com/clozerrsite/img/phone.png"]
 	},
-	"UUID":"EBEFD083-70A2-47C8-9837-E7B5634DF524"
+	"UUID":"EBEFD083-70A2-47C8-9837-E7B5634DF524",
+	"categories":["Food"]
 };
