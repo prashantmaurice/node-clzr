@@ -21,7 +21,8 @@ var vendorSchema = new Schema({
 	description: String,
 	resource_name: String,
 	question : [String],
-	UUID : [String],
+	beacons_major : Number,
+	beacons_minor : Number,
 	test : Boolean,
 	settings : Schema.Types.Mixed,
 	flags : [String]
@@ -60,6 +61,7 @@ Models.User = mongoose.model('User',new Schema({
 	dateLastLogout:Date,
 	upgraded:Date,
 	gcm_id: String,
+	favourites:Schema.Types.Mixed,
     stateList: Schema.Types.Mixed
 }));
 
