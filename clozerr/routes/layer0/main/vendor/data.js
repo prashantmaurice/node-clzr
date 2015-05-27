@@ -51,14 +51,27 @@ var data_vendor = function( params){
         _id: new ObjectId(_id)
     }).exec()
     .then(function( vendor ){
-        vendor_obj = vendor.toJSON();
-        var offerList = vendor.offers;
         deferred.resolve( vendor ); 
     }, function( err ){
         deferred.reject( err );
     }); 
     return deferred.promise;
-
+}
+var data_vendor_near = function( params){
+    var Vendor = registry.getSharedObject("models_Vendor");
+    var deferred = Q.defer();
+    Vendor.find({
+        location: {
+            $near: [params.lat, params.lon]
+        },
+        visible:true
+    }).limit(params.limit ).skip(params.offset ).exec()
+    .then(function( vendor ){
+        deferred.resolve( vendor ); 
+    }, function( err ){
+        deferred.reject( err );
+    }); 
+    return deferred.promise;
 }
 
 global.registry.register("data_vendor", {get:data_vendor} );
@@ -106,4 +119,5 @@ var data_vendors = function( params ){
 }
 
 registry.register("data_vendors",{get:data_vendors});
+registry.register("data_vendor_near",{get:data_vendor_near});
 registry.register("data_vendor_withOffers",{get:data_vendor_withOffers});
