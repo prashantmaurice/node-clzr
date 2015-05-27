@@ -19,31 +19,26 @@ router.get("/:object/:handler/:view", function( req, res ){
     var handler = req.params.handler;
     var view = req.params.view;
 
-    debugger;
-
     if( !registry ){
         logger.err();   
     }
 
     var httpObjView = registry.getSharedObject( "view_" + dataClass + "_" + handler + "_" + view );
-    debugger;
-        console.log(httpObjView);
     if( !httpObjView ){
-        debugger;
         res.send( JSON.stringify(registry.getSharedObject("view_error").makeError( makeRegLookupError( "http_" + dataClass + "_" + handler + "_" + view ) )) );
-        debugger;
         res.end();
     }
 
     else {
-        debugger;
         try{
-            httpObjView.get( req.query ).then( function( output ){
+            httpObjView.get( req.query ,req.user).then( function( output ){
+                debugger;
                 res.send( JSON.stringify( output ) );
             }, function( err ){
                 throw err;
             }).done();
         } catch( err ){
+            console.log("caught error : "+err);
             var error = registry.getSharedObject("view_error").makeError({ error:err, code:500 });
             res.send( error );
             res.end();

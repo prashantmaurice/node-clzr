@@ -2,7 +2,7 @@ var Q = require("q");
 var registry = global.registry;
 var ObjectId = require('mongoose').Types.ObjectId;
 
-var http_vendor_withOffers = function( params, callback ){
+var data_vendor_withOffers = function( params ){
     var _id = params.vendor_id;
     var Vendor = registry.getSharedObject("models_Vendor");
     var Offer = registry.getSharedObject("models_Offer");
@@ -10,16 +10,14 @@ var http_vendor_withOffers = function( params, callback ){
     var vendor_obj = null;
 
     var deferred = Q.defer();
-
     Vendor.findOne({
         _id:_id
     }).exec().then(function( vendor ){
         vendor_obj = vendor.toJSON();
-
         var offerList = vendor.offers;
         return Offer.find({
             _id:{
-                    _in: offerList
+                    $in: offerList
                 }
         }).exec();
         
@@ -28,7 +26,7 @@ var http_vendor_withOffers = function( params, callback ){
         deferred.reject( err );
 
     }).then( function( offers ){ 
-
+        debugger;
         vendor_obj.offers = offers;
         deferred.resolve( vendor_obj );
 
@@ -41,35 +39,23 @@ var http_vendor_withOffers = function( params, callback ){
     return deferred.promise;
 }
 
-var data_vendor = function( params, callback ){
-
-    debugger;
-    console.log("Vendor Main Data Access");
-    console.log(params);
-
+var data_vendor = function( params){
     var _id = params.vendor_id;
     var Vendor = registry.getSharedObject("models_Vendor");
-
     var vendor_obj = null;
-
     var deferred = Q.defer();
-
     if( !_id ){
         return Q.fcall(function(){ throw new Error( "Vendor_id missing" ); });
     }
-
     Vendor.findOne({
         _id: new ObjectId(_id)
-    }).exec().then(function( vendor ){
-
+    }).exec()
+    .then(function( vendor ){
         vendor_obj = vendor.toJSON();
-
         var offerList = vendor.offers;
         deferred.resolve( vendor ); 
     }, function( err ){
-
         deferred.reject( err );
-
     }); 
     return deferred.promise;
 
@@ -77,7 +63,7 @@ var data_vendor = function( params, callback ){
 
 global.registry.register("data_vendor", {get:data_vendor} );
 
-var http_vendor_offers = function( params, callback ){
+var http_vendor_offers = function( params){
 
     var deferred = Q.defer();
     var vendor_link = registry.getSharedObject("data_vendor");
@@ -120,3 +106,4 @@ var data_vendors = function( params ){
 }
 
 registry.register("data_vendors",{get:data_vendors});
+registry.register("data_vendor_withOffers",{get:data_vendor_withOffers});

@@ -19,6 +19,7 @@ var predicates = {
       debugger;
       return retval;
     })
+
   },
 
   "SX": function( user, vendor, offer ){

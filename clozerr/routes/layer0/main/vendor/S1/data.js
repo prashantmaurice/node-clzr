@@ -17,7 +17,8 @@ var data_vendor_S1 = function( params, vendor ){
     
     Offer.find({
         _id:{
-            "$in": vendor.offers
+            "$in": vendor.offers,
+            "type":"S1"
             }
     }).exec().then( function( offers ){
         console.log(offers);
