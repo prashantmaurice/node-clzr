@@ -60,7 +60,8 @@ var getVendorNearDisplay=function(vendor){
     _id:vendor._id||0,
     name:vendor.name||0,
     address:vendor.address||0,
-    visible:vendor.visible||0
+    visible:vendor.visible||0,
+    settings:vendor.settings||{}
   };
   return retVendor;
 }
