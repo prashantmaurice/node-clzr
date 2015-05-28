@@ -1,12 +1,21 @@
 var registry = global.registry;
 var Q = require("q");
 
+var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
+
 var vendor_checkin = function(params, user, vendor, offer) {
 	return registry.getSharedObject("handler_checkin_" + offer.type).get(params, user, vendor, offer);
 }
 
 var vendor_predicate = function(user, vendor, offer) {
-	return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
+	if(vendor.offers.contains(ObjectId(offer._id))) {
+		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
+	}
+	else {
+		return Q(false);
+	}
 }
 
 var vendor_validate = function(params, vendor, user, checkin) {
