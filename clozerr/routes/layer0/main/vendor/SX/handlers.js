@@ -1,7 +1,7 @@
 var registry = global.registry;
 var Q = require("q");
 
-var vendor_checkin_S1 = function( params, user, vendor, offer ){
+var vendor_checkin_SX = function( params, user, vendor, offer ){
     var deferred = Q.defer();
 
     var checkinM = registry.getSharedObject("data_checkin");
@@ -42,7 +42,7 @@ var vendor_checkin_S1 = function( params, user, vendor, offer ){
     return deferred.promise;
 }
 
-var vendor_predicate_S1 = function(user, vendor, offer) {
+var vendor_predicate_SX = function(user, vendor, offer) {
     var deferred = Q.defer();
 
     if(user.stamplist[vendor.fid]) {
@@ -60,7 +60,7 @@ var vendor_predicate_S1 = function(user, vendor, offer) {
     return deferred.promise;
 }
 
-var vendor_validate_S1 = function( params, vendor, user, checkin ){
+var vendor_validate_SX = function( params, vendor, user, checkin ){
     var deferred = Q.defer();
 
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
@@ -80,6 +80,6 @@ var vendor_validate_S1 = function( params, vendor, user, checkin ){
     return deferred.promise;
 }
 
-global.registry.register("handler_checkin_S1", {get:vendor_checkin_S1});
-global.registry.register("handler_validate_S1", {get:vendor_validate_S1});
-global.registry.register("handler_predicate_S1", {get:vendor_predicate_S1});
+global.registry.register("handler_checkin_SX", {get:vendor_checkin_SX});
+global.registry.register("handler_validate_SX", {get:vendor_validate_SX});
+global.registry.register("handler_predicate_SX", {get:vendor_predicate_SX});
