@@ -6,7 +6,6 @@ var view_vendor_offers_offers_S0=function(params,user){
 	var deferred = Q.defer();
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
 		registry.getSharedObject("data_vendor_S0").get(params,vendor).then(function(vendor_offers){
-			debugger;
 			var predicate = registry.getSharedObject("handler_predicate_S0");
 			var plist=[]
 			_.each(vendor_offers.offers,function(element,index,array){

@@ -67,6 +67,7 @@ var getCheckinOnValidateDisplay = function(checkin) {
 var getOfferDisplay = function (user, vendor, offer){
   var offerDisplay={};
   if(offer) {
+    offerDisplay._id=offer._id;
     offerDisplay.type=offer.type;
     offerDisplay.caption=offer.caption;
     offerDisplay.description=offer.description;
@@ -78,7 +79,7 @@ var getOfferDisplay = function (user, vendor, offer){
     if(offerDisplay.type=="SX") {
       offerDisplay.params.stamps=offer.stamps
       offerDisplay.stampStatus = {};
-      offerDisplay.billAmt = vendor.settings.billAmt*1;
+      offerDisplay.params.billAmt = vendor.settings.billAmt*1;
       if(user.stamplist[vendor.fid] > offer.stamps) {
         offerDisplay.stampStatus.current = (user.stamplist[vendor.fid]*1) % vendor.settings.SXLimit;
       }
