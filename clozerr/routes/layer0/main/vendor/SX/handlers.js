@@ -1,6 +1,10 @@
 var registry = global.registry;
 var Q = require("q");
 
+var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
+
 var vendor_checkin_SX = function( user, vendor, offer ){
     var deferred = Q.defer();
 
@@ -72,7 +76,7 @@ var vendor_validate_SX = function( vendor, user, checkin ){
     user.stamplist[vendor.fid] += stamps*1;
     user.save();
 
-    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.contains(checkin.offer_id)) {
+    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.contains(ObjectId(checkin.offer_id))) {
         checkin.state = CHECKIN_STATE_CONFIRMED;
         checkin.save(function(err) {
             deferred.reject(err);

@@ -3,6 +3,10 @@ var Q = require("q");
 var _ = require("underscore")
 var util = registry.getSharedObject("util");
 
+var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
+
 var CHECKIN_STATE_ACTIVE = 0;
 var CHECKIN_STATE_CONFIRMED = 1;
 var CHECKIN_STATE_CANCELLED = 2;
@@ -101,7 +105,7 @@ var vendor_validate_S0 = function( vendor, user, checkin ){
 
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
 
-    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.contains(checkin.offer_id)) {
+    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.contains(ObjectId(checkin.offer_id))) {
         checkin.state = CHECKIN_STATE_CONFIRMED;
         checkin.save(function(err) {
             deferred.reject(err);

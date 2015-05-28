@@ -2,15 +2,15 @@ var registry = global.registry;
 var Q = require("q");
 
 var vendor_checkin = function(params, user, vendor, offer) {
-	return registry.getSharedObject("handler_checkin" + offer.type).get(params, user, vendor, offer);
+	return registry.getSharedObject("handler_checkin_" + offer.type).get(params, user, vendor, offer);
 }
 
 var vendor_predicate = function(user, vendor, offer) {
-	return registry.getSharedObject("handler_predicate" + offer.type).get(user, vendor, offer);
+	return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 }
 
 var vendor_validate = function(params, vendor, user, checkin) {
-	return registry.getSharedObject("handler_validate" + params.offer.type).get(params, vendor, user, checkin);
+	return registry.getSharedObject("handler_validate_" + params.offer.type).get(params, vendor, user, checkin);
 }
 
 global.registry.register("handler_checkin", {get:vendor_checkin});
