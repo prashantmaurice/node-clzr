@@ -94,9 +94,6 @@ var vendor_checkin_S0 = function( params, user, vendor, offer ){
 
 var vendor_predicate_S0 = function(user, vendor, offer) {
     return vendor_checkin_S0_predicates[offer.params.type](user, vendor, offer);
-    var deferred = Q.defer();
-    deferred.resolve(Math.random()>0.5)
-    return deferred.promise
 }
 
 var vendor_validate_S0 = function( params, vendor, user, checkin ){
