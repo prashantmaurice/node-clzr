@@ -1,7 +1,7 @@
 var registry = global.registry;
 var Q = require("q");
 
-var vendor_checkin_SX = function( params, user, vendor, offer ){
+var vendor_checkin_SX = function( user, vendor, offer ){
     var deferred = Q.defer();
 
     var checkinM = registry.getSharedObject("data_checkin");
@@ -16,9 +16,9 @@ var vendor_checkin_SX = function( params, user, vendor, offer ){
         else {
             util.policyCheckTimeDelayBetweenCheckins(user, vendor, offer).then(function(retval, checkin) {
                 if(retval) {
-                    checkinObj.vendor = params.vendor_id;
+                    checkinObj.vendor = vendor._id;
                     checkinObj.user = user._id;
-                    checkinObj.offer = params.offer_id;
+                    checkinObj.offer = offer._id;
                     checkinObj.state = CHECKIN_STATE_ACTIVE;
 
                     checkinM.save( checkinObj ).then( function( checkin ){
@@ -60,29 +60,28 @@ var vendor_predicate_SX = function(user, vendor, offer) {
     return deferred.promise;
 }
 
-var vendor_validate_SX = function( params, vendor, user, checkin ){
+var vendor_validate_SX = function( vendor, user, checkin ){
     var deferred = Q.defer();
 
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
 
     //increase stamps
 
-    var stamps = (params.billAmt*1)/(vendor.settings.billAmt*1);
+    var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
 
     user.stamplist[vendor.fid] += stamps*1;
     user.save();
 
-    var checkinM = registry.getSharedObject("data_checkin");
-    checkinM.get( params ).then( function( checkin ){
+    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.contains(checkin.offer_id)) {
         checkin.state = CHECKIN_STATE_CONFIRMED;
-        return checkinM.save(params, checkin);
-    }, function( err ){
-        deferred.reject( err );
-    }). then( function( checkin ){
-        deferred.resolve( checkin );
-    }, function( err ){
-        deferred.reject( err );
-    });
+        checkin.save(function(err) {
+            deferred.reject(err);
+        });
+        deferred.resolve(checkin);
+    }
+    else {
+        deferred.resolve();
+    }
 
     return deferred.promise;
 }
