@@ -25,8 +25,7 @@ var data_vendor_withOffers = function( params ){
 
         deferred.reject( err );
 
-    }).then( function( offers ){ 
-        debugger;
+    }).then( function( offers ){
         vendor_obj.offers = offers;
         deferred.resolve( vendor_obj );
 
