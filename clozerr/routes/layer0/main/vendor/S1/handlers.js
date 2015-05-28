@@ -65,6 +65,11 @@ var vendor_validate_S1 = function( params, vendor, user, checkin ){
 
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
 
+    //increase stamps
+    
+    user.stamplist[vendor.fid]++;
+    user.save();
+
     var checkinM = registry.getSharedObject("data_checkin");
     checkinM.get( params ).then( function( checkin ){
         checkin.state = CHECKIN_STATE_CONFIRMED;
