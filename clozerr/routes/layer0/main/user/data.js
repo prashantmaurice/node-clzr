@@ -12,7 +12,7 @@ var data_user = function( params ){
         debugger;
         deferred.resolve( result );
     }, function( err ){
-        deferred.resolve( err );
+        deferred.reject( err );
     });
 
     return deferred.promise;
