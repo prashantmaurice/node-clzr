@@ -1,6 +1,6 @@
 var registry = global.registry;
 var Q = require("q");
-
+var _ = require('underscore');
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
@@ -10,10 +10,11 @@ var vendor_checkin = function(params, user, vendor, offer) {
 }
 
 var vendor_predicate = function(user, vendor, offer) {
-	if(vendor.offers.contains(ObjectId(offer._id))) {
+	if(!_.find(vendor.offers,function(offerid){offerid.id=offer._id.id})) {
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}
 	else {
+		console.log("offer vendor mismatch")
 		return Q(false);
 	}
 }

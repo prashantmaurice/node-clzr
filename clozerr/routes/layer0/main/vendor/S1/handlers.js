@@ -48,19 +48,17 @@ var vendor_checkin_S1 = function( user, vendor, offer ){
 
 var vendor_predicate_S1 = function(user, vendor, offer) {
     var deferred = Q.defer();
-
-    if(user.stamplist[vendor.fid]) {
+    // return Q(true)
+    if(!user.stamplist[vendor.fid]) {
         user.stamplist[vendor.fid] = 0;
         user.save();
     }
-
     if(user.stamplist[vendor.fid] >= offer.stamps) {
         deferred.resolve(true);
     }
     else {
         deferred.resolve(false);
     }
-
     return deferred.promise;
 }
 
@@ -71,14 +69,15 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
 
     //increase stamps
 
-    user.stamplist[vendor.fid]++;
-    user.save();
+    
 
     if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.contains(ObjectId(checkin.offer_id))) {
         checkin.state = CHECKIN_STATE_CONFIRMED;
         checkin.save(function(err) {
             deferred.reject(err);
         });
+        user.stamplist[vendor.fid]++;
+        user.save();
         deferred.resolve(checkin);
     }
 

@@ -32,6 +32,7 @@ var vendor_checkin_SX = function( user, vendor, offer ){
                     });
                 }
                 else {
+                    deferred.resolve("{error:invalid checkin}")
                         //TODO : throw error here.. can't use that offer
                         //deferred.reject(err);
                 }
@@ -49,7 +50,7 @@ var vendor_checkin_SX = function( user, vendor, offer ){
 var vendor_predicate_SX = function(user, vendor, offer) {
     var deferred = Q.defer();
 
-    if(user.stamplist[vendor.fid]) {
+    if(!user.stamplist[vendor.fid]) {
         user.stamplist[vendor.fid] = 0;
         user.save();
     }
@@ -73,14 +74,15 @@ var vendor_validate_SX = function( vendor, user, checkin ){
 
     var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
 
-    user.stamplist[vendor.fid] += stamps*1;
-    user.save();
+    
 
     if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.contains(ObjectId(checkin.offer_id))) {
         checkin.state = CHECKIN_STATE_CONFIRMED;
         checkin.save(function(err) {
             deferred.reject(err);
         });
+        user.stamplist[vendor.fid] += stamps*1;
+    user.save();
         deferred.resolve(checkin);
     }
     else {

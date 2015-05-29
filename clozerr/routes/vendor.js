@@ -200,10 +200,7 @@ router.get('/get/all/beacons', function(req, res) {
         });
         retObj.vendors.push({
           _id: vendor._id,
-          beacons: {
-            major:vendor.beacons_major,
-            minor:vendor.beacons_minor
-          },
+          beacons: vendor.beacons || {},
           name: vendor.name,
           // offers: offers_qualified,
           hasOffers: (offers_qualified.length > 0)

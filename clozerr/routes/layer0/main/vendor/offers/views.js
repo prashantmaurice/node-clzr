@@ -5,12 +5,10 @@ var _ = require("underscore");
 var view_vendor_offers_allOffers=function(params,user){
 	var deferred = Q.defer()
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor){
-		console.log(vendor)
 		registry.getSharedObject("data_vendor_offer").get(params,vendor).then(function(offers){
 			var plist=[]
 			_.each(offers,function(offer,index,array){
-				plist.push(Q(true))
-				// plist.push(registry.getSharedObject("handler_predicate").get(user,vendor,offer))
+				plist.push(registry.getSharedObject("handler_predicate").get(user,vendor,offer))
 			})
 			Q.all(plist).then(function(predlist){
 				deferred.resolve(_.map(

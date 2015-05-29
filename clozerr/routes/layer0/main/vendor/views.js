@@ -81,7 +81,7 @@ var view_vendor_list_near = function(params,user){
     var vendors = registry.getSharedObject("data_vendor_near");
     params.limit=params.limit || registry.getSharedObject("settings").api.default_limit;
     params.offset=params.offset || 0;
-    if(!params.lat || !params.lon)
+    if(!params.latitude || !params.longitude)
         deferred.reject("distance params missing");
     vendors.get(params).then(function(vendors){
         if(params.category)
