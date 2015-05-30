@@ -1,4 +1,3 @@
-
 var models = require("../models");
 var Vendor = models.Vendor;
 var Offer = models.Offer;

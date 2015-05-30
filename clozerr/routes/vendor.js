@@ -18,6 +18,38 @@ var settings = require("./settings");
 var push = require("./util/push");
 var qualify = require('./util/qualify');
 
+router.get('/facebookpost', function(req, res) {
+  var access_token = req.query.facebook_access_token;
+  var user = req.user;
+  var message = req.query.message;
+  var place = req.query.page_id;
+
+  console.log(req.query);
+  debugger;
+
+  var https = require('https');
+
+  var options = {
+    host: 'graph.facebook.com',
+    port: 443,
+    path: '/'+user.profile.id+'/feed?access_token='+access_token,
+    method: 'POST',
+    headers: { 'message': message, 'place': place }
+  };
+
+  var req = https.request(options, function(res) {
+    console.log("statusCode: ", res.statusCode);
+    console.log("headers: ", res.headers);
+
+    debugger;
+
+    res.on('data', function(data) {
+      console.log(data);
+    });
+  });
+  req.end();
+});
+
 router.get('/create', function (req, res) {
   var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
   if (!errobj) {
@@ -171,9 +203,9 @@ router.get('/get/all/beacons_old', function(req, res) {
               }
             });
 
-          });
-          
-        });
+});
+
+});
 
 });
 
@@ -199,7 +231,9 @@ router.get('/get/all/beacons', function(req, res) {
           return OfferHandler.qualify(req.user,vendor,offer);
         });
         var settings = {};
-        settings.sxEnabled = vendor.settings.sxEnabled;
+        if(vendor.settings) {
+          settings.sxEnabled = vendor.settings.sxEnabled;
+        }
         retObj.vendors.push({
           _id: vendor._id,
           beacons: vendor.beacons,
@@ -509,7 +543,7 @@ router.get('/myhomepage', function (req, res) {
         var plist = [];
         var vendorDisplays = [];
         for(var index=0;index<vendors.length;index++) {
-          
+
           var i = index;
           var pr = qualify.getUpcomingOffer(user, vendor_id, function (offer, vendor) {
             var deferred = Q.defer();
