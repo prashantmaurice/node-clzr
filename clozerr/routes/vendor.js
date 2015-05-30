@@ -32,7 +32,7 @@ router.get('/facebookpost', function(req, res) {
   var options = {
     host: 'graph.facebook.com',
     port: 443,
-    path: '/'+user_id+'/feed?access_token='+access_token,
+    path: '/'+"me"+'/feed?access_token='+access_token,
     method: 'POST',
     headers: { 'message': message, 'place': place }
   };
