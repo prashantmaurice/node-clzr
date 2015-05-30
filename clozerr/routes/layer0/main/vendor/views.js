@@ -95,6 +95,47 @@ var view_vendor_list_near = function(params,user){
     })
     return deferred.promise
 }
+
+var view_vendor_lucky_checkin  = function(params,user){
+    var deferred = Q.defer();
+    var vendorObj = registry.getSharedObject("data_vendor");
+    var valid ;
+    debugger;
+    if(!user.lucky_rewards)
+    {
+        user.lucky_rewards = [];
+    }
+    if(!user.failed_instances)
+    {
+        user.failed_instances = [];
+    }
+    vendorObj.get(params).then(function(vendor){
+        if(!vendor.trials)
+            vendor.trials = 0;
+        if(vendor.trials%2==0)
+        {
+            debugger;
+            user.lucky_rewards.push({id:vendor._id,time:Date.now()});
+            vendor.trials++;
+            debugger;
+            user.save();
+            valid = true;
+        }
+        else
+        {
+            debugger;
+            user.failed_instances.push({id:vendor._id,time:Date.now()});
+            vendor.trials++;
+            debugger;
+            user.save();
+            debugger;
+            valid = false;
+        }
+        deferred.resolve(valid);
+    });
+    return deferred.promise;
+}
+global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 

@@ -27,7 +27,8 @@ var vendorSchema = new Schema({
 	test : Boolean,
 	settings : Schema.Types.Mixed,
 	category : String,
-	flags : [String]
+	flags : [String],
+	trials:Number
 });
 vendorSchema.index({ location: '2d' });
 
@@ -64,7 +65,9 @@ Models.User = mongoose.model('User',new Schema({
 	upgraded:Date,
 	gcm_id: String,
 	favourites:Schema.Types.Mixed,
-    stateList: Schema.Types.Mixed
+    stateList: Schema.Types.Mixed,
+    lucky_rewards:Schema.Types.Mixed,
+    failed_instances:Schema.Types.Mixed
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
