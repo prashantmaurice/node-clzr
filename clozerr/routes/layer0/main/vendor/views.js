@@ -81,11 +81,9 @@ var view_vendor_list_near = function(params,user){
     var vendors = registry.getSharedObject("data_vendor_near");
     params.limit=params.limit || registry.getSharedObject("settings").api.default_limit;
     params.offset=params.offset || 0;
-    if(!params.lat || !params.lon || !params.distance)
+    if(!params.lat || !params.lon)
         deferred.reject("distance params missing");
-    console.log(params)
     vendors.get(params).then(function(vendors){
-        console.log(vendors[0])
         if(params.category)
             deferred.resolve(_.map(
                 _.filter(vendors,function(vendor){return vendor.category==params.category})
@@ -136,7 +134,11 @@ var view_vendor_lucky_checkin  = function(params,user){
     return deferred.promise;
 }
 global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
+var view_vendor_get_categories=function(params,user){
+    return Q(registry.getSharedObject("settings").categories)
+}
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
+global.registry.register("view_vendor_get_categories", {get:view_vendor_get_categories});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};

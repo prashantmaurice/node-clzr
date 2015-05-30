@@ -4,7 +4,6 @@ var Models = {};
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
-var categories=['Food']
 
 var vendorSchema = new Schema({
 	location : {type:[Number],index:'2dsphere'} ,
@@ -22,8 +21,7 @@ var vendorSchema = new Schema({
 	description: String,
 	resource_name: String,
 	question : [String],
-	beacons_major : Number,
-	beacons_minor : Number,
+	beacons: Schema.Types.Mixed,
 	test : Boolean,
 	settings : Schema.Types.Mixed,
 	category : String,
