@@ -65,6 +65,7 @@ var getVendorNearDisplay=function(vendor){
   };
   return retVendor;
 }
+
 module.exports = {
   getVendorNearDisplay:getVendorNearDisplay,
   policyCheckTimeDelayBetweenCheckins:policyCheckTimeDelayBetweenCheckins,

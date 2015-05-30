@@ -198,13 +198,13 @@ router.get('/get/all/beacons', function(req, res) {
         var offers_qualified = _.filter(offers, function(offer) {
           return OfferHandler.qualify(req.user,vendor,offer);
         });
+        var settings = {};
+        settings.sxEnabled = vendor.settings.sxEnabled;
         retObj.vendors.push({
           _id: vendor._id,
-          beacons: {
-            major:vendor.beacons_major,
-            minor:vendor.beacons_minor
-          },
+          beacons: vendor.beacons,
           name: vendor.name,
+          settings: settings,
           // offers: offers_qualified,
           hasOffers: (offers_qualified.length > 0)
         })
