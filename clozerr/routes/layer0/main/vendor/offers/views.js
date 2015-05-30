@@ -28,15 +28,21 @@ var view_vendor_offers_allOffers=function(params,user){
 var view_vendor_offers_checkin=function(params,user){
 	var deferred = Q.defer()
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor){
-		registry.getSharedObject("data_vendor_offer").get(params,vendor).then(function(offer){
+		debugger;
+		registry.getSharedObject("data_offer").get(params,vendor).then(function(offer){
+			debugger;
 			registry.getSharedObject("handler_predicate").get(user,vendor,offer).then(function(valid){
+				debugger;
 				if(valid){
+					debugger;
 					registry.getSharedObject("handler_checkin").get(user,vendor,offer).then(function(checkin){
 						deferred.resolve(registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin))
 					})
 				}
-				else
+				else {
+					debugger;
 					deferred.resolve("{result:false,message:invalid checkin}")
+				}
 			})
 		})
 	})
@@ -57,4 +63,7 @@ var view_vendor_offers_validate=function(params,user){
 	})
 	return deferred.promise
 }
-registry.register("view_vendor_offers_allOffers",{get:view_vendor_offers_allOffers})
+
+registry.register("view_vendor_offers_alloffers", {get:view_vendor_offers_allOffers});
+registry.register("view_vendor_offers_validate", {get:view_vendor_offers_validate});
+registry.register("view_vendor_offers_checkin", {get:view_vendor_offers_checkin});

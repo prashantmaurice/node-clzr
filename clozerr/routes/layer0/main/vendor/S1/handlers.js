@@ -12,12 +12,14 @@ var vendor_checkin_S1 = function( user, vendor, offer ){
     var checkinObj = checkinM.create();
 
     //TODO : Also if the checkin is not validated within 2 hrs, just cancel it i.e set its state to cancelled and save it
-
+    debugger;
     util.policyCheckDuplicateCheckins(user, vendor, offer).then(function(checkin) {
         if(checkin) {
+            debugger;
             deferred.resolve(checkin);
         }
         else {
+            debugger;
             util.policyCheckTimeDelayBetweenCheckins(user, vendor, offer).then(function(retval, checkin) {
                 if(retval) {
                     checkinObj.vendor = vendor._id;
@@ -48,16 +50,20 @@ var vendor_checkin_S1 = function( user, vendor, offer ){
 
 var vendor_predicate_S1 = function(user, vendor, offer) {
     var deferred = Q.defer();
+    debugger;
 
     if(user.stamplist[vendor.fid]) {
+        debugger;
         user.stamplist[vendor.fid] = 0;
         user.save();
     }
 
     if(user.stamplist[vendor.fid] >= offer.stamps) {
+        debugger;
         deferred.resolve(true);
     }
     else {
+        debugger;
         deferred.resolve(false);
     }
 
