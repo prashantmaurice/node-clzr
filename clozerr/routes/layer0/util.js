@@ -1,5 +1,4 @@
 var registry = global.registry;
-var FB = require("fb");
 
 var policyCheckTimeDelayBetweenCheckins = function( user, vendor, offer ) {
 
