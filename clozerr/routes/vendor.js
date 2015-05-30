@@ -173,12 +173,13 @@ router.get('/get/all/beacons_old', function(req, res) {
 
           var vendorDetails = [];
           var pr =  _.each( data, function( vendorObj, index, array ){
+           
 
             Offer.find({
               _id: {
                 $in: vendorObj.offers
               }
-            }, function (err, offers) {
+            }, function (err, offers) { 
               if(err) {
                 console.log(err);
                 return;

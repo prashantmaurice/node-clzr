@@ -8,6 +8,7 @@ var data_vendor_S1 = function( params, vendor ){
      * server that is required for processing the S1 object further.
      * */
     // For this example fill the object with the offers list.
+    debugger;
 
     vendor = JSON.parse(JSON.stringify(vendor));
 
