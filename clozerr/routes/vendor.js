@@ -20,7 +20,7 @@ var qualify = require('./util/qualify');
 
 router.get('/facebookpost', function(req, res) {
   var access_token = req.query.facebook_access_token;
-  var user = req.user;
+  var user_id = req.query.user_id;
   var message = req.query.message;
   var place = req.query.page_id;
 
@@ -32,22 +32,25 @@ router.get('/facebookpost', function(req, res) {
   var options = {
     host: 'graph.facebook.com',
     port: 443,
-    path: '/'+user.profile.id+'/feed?access_token='+access_token,
+    path: '/'+user_id+'/feed?access_token='+access_token,
     method: 'POST',
     headers: { 'message': message, 'place': place }
   };
 
-  var req = https.request(options, function(res) {
-    console.log("statusCode: ", res.statusCode);
-    console.log("headers: ", res.headers);
+  var request = https.request(options, function(response) {
+    //console.log("statusCode: ", res.statusCode);
+    //console.log("headers: ", res.headers);
+    //console.log(res);
 
     debugger;
 
-    res.on('data', function(data) {
+    response.on('data', function(data) {
+      debugger;
       console.log(data);
+      res.end(data);
     });
   });
-  req.end();
+  request.end();
 });
 
 router.get('/create', function (req, res) {
