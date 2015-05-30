@@ -18,13 +18,43 @@ var settings = require("./settings");
 var push = require("./util/push");
 var qualify = require('./util/qualify');
 
+var request = require('request');
+
+function postMessage(access_token, message, response) {
+    // Specify the URL and query string parameters needed for the request
+    var url = 'https://graph.facebook.com/me/feed';
+    var params = {
+        access_token: access_token,
+        message: message
+    };
+
+  // Send the request
+    request.post({url: url, qs: params}, function(err, resp, body) {
+      
+      // Handle any errors that occur
+      if (err) return console.error("Error occured: ", err);
+      body = JSON.parse(body);
+      if (body.error) return console.error("Error returned from facebook: ", body.error);
+
+      // Generate output
+      var output = '<p>Message has been posted to your feed. Here is the id generated:</p>';
+      output += '<pre>' + JSON.stringify(body, null, '\t') + '</pre>';
+      
+      // Send output as the response
+      response.writeHeader(200, {'Content-Type': 'text/html'});
+      response.end(output);
+    });
+
+}
+
 router.get('/facebookpost', function(req, res) {
   var access_token = req.query.facebook_access_token;
   var user_id = req.query.user_id;
   var message = req.query.message;
   var place = req.query.page_id;
 
-  console.log(req.query);
+  postMessage(access_token, message, res);
+  /*console.log(req.query);
   debugger;
 
   var https = require('https');
@@ -32,7 +62,7 @@ router.get('/facebookpost', function(req, res) {
   var options = {
     host: 'graph.facebook.com',
     port: 443,
-    path: '/'+user_id+'/feed?access_token='+access_token,
+    path: '/'+"me"+'/feed?access_token='+access_token,
     method: 'POST',
     headers: { 'message': message, 'place': place }
   };
@@ -50,7 +80,7 @@ router.get('/facebookpost', function(req, res) {
       res.end(data);
     });
   });
-  request.end();
+  request.end();*/
 });
 
 router.get('/create', function (req, res) {
