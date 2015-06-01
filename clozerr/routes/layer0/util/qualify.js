@@ -65,7 +65,9 @@ var getCheckinOnValidateDisplay = function(checkin) {
 
 var getOfferDisplay = function (user, vendor, offer){
   var offerDisplay={};
+  var deferred = Q.defer();
   if(offer) {
+    debugger;
     offerDisplay._id=offer._id;
     offerDisplay.type=offer.type;
     offerDisplay.caption=offer.caption;
@@ -90,9 +92,13 @@ var getOfferDisplay = function (user, vendor, offer){
     if(offerDisplay.type=="S0") {    
       offerDisplay.params=offer.params
     }
-    return offerDisplay;
+    deferred.resolve(offerDisplay);
   }
-  else return null;
+  else {
+    deferred.resolve(null);
+  };
+
+  return deferred.promise;
 }
 
 /*

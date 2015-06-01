@@ -14,6 +14,40 @@ function getVendorType(vendor) {
         return "S1";
     }
 }
+function removeDuplicatesRewards(user,vendor_id){
+    var valid = true;
+    if(user.lucky_rewards.length==0)
+        return true;
+    for(var i=0;i<user.lucky_rewards.length;i++){
+        if(user.lucky_rewards[i].id.equals(vendor_id))
+            valid = false;
+        if(i==user.lucky_rewards.length-1)
+            return valid;
+    }
+}
+function removeDuplicatesFailed(user,vendor_id){
+    var valid = true;
+    if(user.failed_instances.length==0)
+        return true;
+    for(var i=0;i<user.failed_instances.length;i++){
+        if(user.failed_instances[i].id.equals(vendor_id))
+            valid = false;
+        if(i==user.failed_instances.length-1)
+            return valid;
+    }
+}
+
+var view_vendor_get_details = function( params ) {
+    var deferred = Q.defer();
+
+    registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+        deferred.resolve(vendor);
+    }, function(err) {
+        deferred.reject(err);
+    });
+
+    return deferred.promise;
+}
 
 var view_vendor_offers_offersPage = function( params ){
     console.log("OfferPage Main View");
@@ -45,9 +79,6 @@ var view_vendor_offers_offersPage = function( params ){
 
 }
 
-global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
-// Put other vendor types here.
-
 var view_vendor_homepage = function( params, user ){
     var deferred = Q.defer();
     
@@ -57,14 +88,14 @@ var view_vendor_homepage = function( params, user ){
     vendorObjectsM.get( params ).then(function( vendors ){
         var prList = [];
         debugger;
-        for( var i = 0; i < params.length; i++ ){
+        for( var i = 0; i < vendors.length; i++ ){
             var typeSpecificM = registry.getSharedObject("view_vendor_homepage_" + vendors[i].type);
             vendor_obj = vendor;
             var fI = i;
             var pr = typeSpecificM.get( params, vendor, user ).then( function( vendor ){ vendorListF[fI] = vendor }, function( err ){ deferred.reject(err); } );
             prList.push( pr );
         }
-        return Q.all()
+        return Q.all(prList);
     }, function( err ){
         debugger;
         deferred.reject( err );
@@ -76,12 +107,29 @@ var view_vendor_homepage = function( params, user ){
 
     return deferred.promise;
 }
+
+var view_vendor_list_category = function(params, user) {
+    var deferred = Q.defer();
+    debugger;
+
+    params.limit=params.limit || registry.getSharedObject("settings").api.default_limit;
+    params.offset=params.offset || 0;
+
+    registry.getSharedObject("data_vendors_category").get(params).then(function(vendors) {
+        deferred.resolve(vendors);
+    }, function(err) {
+        deferred.reject(err);
+    });
+
+    return deferred.promise;
+}
+
 var view_vendor_list_near = function(params,user){
     var deferred = Q.defer();
     var vendors = registry.getSharedObject("data_vendor_near");
     params.limit=params.limit || registry.getSharedObject("settings").api.default_limit;
     params.offset=params.offset || 0;
-    if(!params.lat || !params.lon)
+    if(!params.latitude || !params.longitude)
         deferred.reject("distance params missing");
     vendors.get(params).then(function(vendors){
         if(params.category)
@@ -110,35 +158,55 @@ var view_vendor_lucky_checkin  = function(params,user){
     vendorObj.get(params).then(function(vendor){
         if(!vendor.trials)
             vendor.trials = 0;
-        if(vendor.trials%2==0)
-        {
-            debugger;
-            user.lucky_rewards.push({id:vendor._id,time:Date.now()});
-            vendor.trials++;
-            debugger;
-            user.save();
-            valid = true;
-        }
-        else
-        {
-            debugger;
-            user.failed_instances.push({id:vendor._id,time:Date.now()});
-            vendor.trials++;
-            debugger;
-            user.save();
-            debugger;
-            valid = false;
-        }
-        deferred.resolve(valid);
-    });
-    return deferred.promise;
+        debugger;
+        if(removeDuplicatesFailed(user,vendor._id))
+        {   debugger;
+            if(removeDuplicatesRewards(user,vendor._id))
+            {
+                if(vendor.trials%2==0)
+                    {   debugger;
+                        user.lucky_rewards.push({id:vendor._id,time:Date.now()});
+                        vendor.trials++;
+                        user.markModified("lucky_rewards");
+                        user.save();
+                        valid = true;
+                        deferred.resolve(valid);
+                    }
+                    else
+                    {
+                        user.failed_instances.push({id:vendor._id,time:Date.now()});
+                        vendor.trials++;
+                        user.markModified("failed_instances");
+                        user.save();
+                        valid = false;
+                        deferred.resolve(valid);
+                    }
+                vendor.save();
+                }
+                else
+                {
+                    deferred.resolve("you have tried already and won it");
+                }
+            }
+            else
+            {
+                deferred.resolve("Try again after 24 hours");
+            }
+        });
+return deferred.promise;
 }
-global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
-var view_vendor_get_categories=function(params,user){
+
+var view_vendor_get_categories = function(params,user) {
     return Q(registry.getSharedObject("settings").categories)
 }
+
+global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
+global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
+global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 global.registry.register("view_vendor_get_categories", {get:view_vendor_get_categories});
+global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
+// Put other vendor types here.
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};

@@ -17,17 +17,20 @@ var data_vendor_S1 = function( params, vendor ){
     
     Offer.find({
         _id:{
-            "$in": vendor.offers,
-            "type":"S1"
-            }
+            "$in": vendor.offers
+            },
+        type:"S1"
     }).exec().then( function( offers ){
         console.log(offers);
         debugger;
 
         vendor.offers = offers;
+        debugger;
         deferred.resolve( vendor );
+        debugger;
 
     }, function( err ){
+        debugger;
         deferred.reject( err );
     });
     return deferred.promise;
