@@ -86,7 +86,7 @@ var view_vendor_homepage = function( params, user ){
             var pr = typeSpecificM.get( params, vendor, user ).then( function( vendor ){ vendorListF[fI] = vendor }, function( err ){ deferred.reject(err); } );
             prList.push( pr );
         }
-        return Q.all(prList)
+        return Q.all(prList);
     }, function( err ){
         debugger;
         deferred.reject( err );
@@ -169,10 +169,13 @@ var view_vendor_lucky_checkin  = function(params,user){
         });
 return deferred.promise;
 }
+
 global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
+
 var view_vendor_get_categories=function(params,user){
     return Q(registry.getSharedObject("settings").categories)
 }
+
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 global.registry.register("view_vendor_get_categories", {get:view_vendor_get_categories});

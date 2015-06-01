@@ -10,24 +10,18 @@ var view_vendor_offers_allOffers=function(params,user){
 			var plist=[]
 			_.each(offers,function(offer,index,array){
 				debugger;
+				//removing the dummy visit offer from all other offers..
+
 				if(offer._id.toString() != vendor.visitOfferId.toString()) {
 					plist.push(registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer));
 				}
-				//plist.push(Q(offer._id.toString() != vendor.visitOfferId.toString()))
-				//plist.push(registry.getSharedObject("handler_predicate").get(user,vendor,offer))
-			})
+			});
 			Q.all(plist).then(function(offerList){
-				/*deferred.resolve(_.map(
-					_.filter(offers,function(val,idx){return predlist[idx]})
-					,function(offer){
-						debugger;
-						return (registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer))
-					})
-				)*/
 				deferred.resolve(offerList);
-			})
-		})
+			});
+		});
 	});
+	
 	return deferred.promise;
 }
 
