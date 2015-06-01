@@ -79,14 +79,14 @@ var view_vendor_homepage = function( params, user ){
     vendorObjectsM.get( params ).then(function( vendors ){
         var prList = [];
         debugger;
-        for( var i = 0; i < params.length; i++ ){
+        for( var i = 0; i < vendors.length; i++ ){
             var typeSpecificM = registry.getSharedObject("view_vendor_homepage_" + vendors[i].type);
             vendor_obj = vendor;
             var fI = i;
             var pr = typeSpecificM.get( params, vendor, user ).then( function( vendor ){ vendorListF[fI] = vendor }, function( err ){ deferred.reject(err); } );
             prList.push( pr );
         }
-        return Q.all()
+        return Q.all(prList)
     }, function( err ){
         debugger;
         deferred.reject( err );
