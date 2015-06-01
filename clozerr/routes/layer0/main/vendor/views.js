@@ -37,6 +37,18 @@ function removeDuplicatesFailed(user,vendor_id){
     }
 }
 
+var view_vendor_get_details = function( params ) {
+    var deferred = Q.defer();
+
+    registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+        deferred.resolve(vendor);
+    }, function(err) {
+        deferred.reject(err);
+    });
+
+    return deferred.promise;
+}
+
 var view_vendor_offers_offersPage = function( params ){
     console.log("OfferPage Main View");
     var deferred = Q.defer();
@@ -66,9 +78,6 @@ var view_vendor_offers_offersPage = function( params ){
     return deferred.promise;
 
 }
-
-global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
-// Put other vendor types here.
 
 var view_vendor_homepage = function( params, user ){
     var deferred = Q.defer();
@@ -191,10 +200,13 @@ var view_vendor_get_categories = function(params,user) {
     return Q(registry.getSharedObject("settings").categories)
 }
 
+global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 global.registry.register("view_vendor_get_categories", {get:view_vendor_get_categories});
+global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
+// Put other vendor types here.
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};
