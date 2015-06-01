@@ -98,6 +98,23 @@ var view_vendor_homepage = function( params, user ){
 
     return deferred.promise;
 }
+
+var view_vendor_list_category = function(params, user) {
+    var deferred = Q.defer();
+    debugger;
+
+    params.limit=params.limit || registry.getSharedObject("settings").api.default_limit;
+    params.offset=params.offset || 0;
+
+    registry.getSharedObject("data_vendors_category").get(params).then(function(vendors) {
+        deferred.resolve(vendors);
+    }, function(err) {
+        deferred.reject(err);
+    });
+
+    return deferred.promise;
+}
+
 var view_vendor_list_near = function(params,user){
     var deferred = Q.defer();
     var vendors = registry.getSharedObject("data_vendor_near");
@@ -170,12 +187,12 @@ var view_vendor_lucky_checkin  = function(params,user){
 return deferred.promise;
 }
 
-global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
-
-var view_vendor_get_categories=function(params,user){
+var view_vendor_get_categories = function(params,user) {
     return Q(registry.getSharedObject("settings").categories)
 }
 
+global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
+global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 global.registry.register("view_vendor_get_categories", {get:view_vendor_get_categories});
