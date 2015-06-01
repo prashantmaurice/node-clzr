@@ -61,7 +61,7 @@ var data_vendor_near = function( params){
     var deferred = Q.defer();
     Vendor.find({
         location: {
-            $near: [params.lat, params.lon]
+            $near: [params.latitude, params.longitude]
         },
         visible:true
     }).limit(params.limit ).skip(params.offset ).exec()

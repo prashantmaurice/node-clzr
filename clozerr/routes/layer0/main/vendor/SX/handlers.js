@@ -53,8 +53,8 @@ var vendor_predicate_SX = function(user, vendor, offer) {
         user.stamplist[vendor.fid] = 0;
         user.save();
     }
-
-    if(user.stamplist[vendor.fid] >= offer.stamps) {
+    
+    if(user.stamplist[vendor.fid] >= offer.stamps || (offer._id == vendor.visitOfferId)) {
         deferred.resolve(true);
     }
     else {

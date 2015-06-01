@@ -21,10 +21,25 @@ var view_vendor_offers_offerPage_S1 = function( params){
  vendorObjectData.get(params, vendorObj).then(function(vendor) {
     //console.log(vendor);
     console.log(user);
+    debugger;
 
     registry.getSharedObject("qualify").assignFlagsToOffer(userObj, vendor).then(function(offers) {
         plist = [];
         var offersview = [];
+
+        debugger;
+        
+        //removing the dummy visit offer from the offersview
+
+        var visitOffer = _.find(offers, function(offer) {
+          return (offer._id == vendor.visitOfferId);
+        });
+        var index = offers.indexOf(visitOffer);
+
+        if(index > -1) {
+          offers.splice(index, 1);
+        }
+
         for(var i=0;i<offers.length;i++) {
             var pr = registry.getSharedObject("qualify").getOfferDisplay(userObj, vendor, offers[i])
             .then(function(offer) {
