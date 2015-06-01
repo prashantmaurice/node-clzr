@@ -14,6 +14,28 @@ function getVendorType(vendor) {
         return "S1";
     }
 }
+function removeDuplicatesRewards(user,vendor_id){
+    var valid = true;
+    if(user.lucky_rewards.length==0)
+        return true;
+    for(var i=0;i<user.lucky_rewards.length;i++){
+        if(user.lucky_rewards[i].id.equals(vendor_id))
+            valid = false;
+        if(i==user.lucky_rewards.length-1)
+            return valid;
+    }
+}
+function removeDuplicatesFailed(user,vendor_id){
+    var valid = true;
+    if(user.failed_instances.length==0)
+        return true;
+    for(var i=0;i<user.failed_instances.length;i++){
+        if(user.failed_instances[i].id.equals(vendor_id))
+            valid = false;
+        if(i==user.failed_instances.length-1)
+            return valid;
+    }
+}
 
 var view_vendor_offers_offersPage = function( params ){
     console.log("OfferPage Main View");
@@ -110,28 +132,42 @@ var view_vendor_lucky_checkin  = function(params,user){
     vendorObj.get(params).then(function(vendor){
         if(!vendor.trials)
             vendor.trials = 0;
-        if(vendor.trials%2==0)
-        {
-            debugger;
-            user.lucky_rewards.push({id:vendor._id,time:Date.now()});
-            vendor.trials++;
-            debugger;
-            user.save();
-            valid = true;
-        }
-        else
-        {
-            debugger;
-            user.failed_instances.push({id:vendor._id,time:Date.now()});
-            vendor.trials++;
-            debugger;
-            user.save();
-            debugger;
-            valid = false;
-        }
-        deferred.resolve(valid);
-    });
-    return deferred.promise;
+        debugger;
+        if(removeDuplicatesFailed(user,vendor._id))
+        {   debugger;
+            if(removeDuplicatesRewards(user,vendor._id))
+            {
+                if(vendor.trials%2==0)
+                    {   debugger;
+                        user.lucky_rewards.push({id:vendor._id,time:Date.now()});
+                        vendor.trials++;
+                        user.markModified("lucky_rewards");
+                        user.save();
+                        valid = true;
+                        deferred.resolve(valid);
+                    }
+                    else
+                    {
+                        user.failed_instances.push({id:vendor._id,time:Date.now()});
+                        vendor.trials++;
+                        user.markModified("failed_instances");
+                        user.save();
+                        valid = false;
+                        deferred.resolve(valid);
+                    }
+                vendor.save();
+                }
+                else
+                {
+                    deferred.resolve("you have tried already and won it");
+                }
+            }
+            else
+            {
+                deferred.resolve("Try again after 24 hours");
+            }
+        });
+return deferred.promise;
 }
 global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
 var view_vendor_get_categories=function(params,user){
