@@ -46,6 +46,9 @@ var data_vendor = function( params){
     if( !_id ){
         return Q.fcall(function(){ throw new Error( "Vendor_id missing" ); });
     }
+
+    debugger;
+    
     Vendor.findOne({
         _id: new ObjectId(_id)
     }).exec()
