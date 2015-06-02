@@ -36,7 +36,9 @@ var vendor_checkin_S1 = function( params, user, vendor, offer ){
                     checkinObj.offer = offer._id;
                     checkinObj.state = CHECKIN_STATE_ACTIVE;
 
-                    checkinObj.save();
+                    checkinObj.save(function(err) {
+                        deferred.reject(err);
+                    });
 
                     deferred.resolve(checkinObj);
                 }
@@ -86,10 +88,6 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
     //increase stamps
 
     //REMEMBER : user should be user object of vendor
-
-    /*user.stamplist[vendor.fid]++;
-    user.markModified("stamplist");
-    user.save();*/
 
     debugger;
 
