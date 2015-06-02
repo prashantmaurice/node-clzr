@@ -5,31 +5,41 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
+var CHECKIN_STATE_ACTIVE = 0;
+var CHECKIN_STATE_CONFIRMED = 1;
+var CHECKIN_STATE_CANCELLED = 2;
+
 var vendor_checkin_SX = function( params, user, vendor, offer ){
     var deferred = Q.defer();
 
     var checkinM = registry.getSharedObject("data_checkin");
+    debugger;
+
     var checkinObj = checkinM.create();
 
     //TODO : Also if the checkin is not validated within 2 hrs, just cancel it i.e set its state to cancelled and save it
-
+    debugger;
     util.policyCheckDuplicateCheckins(user, vendor, offer).then(function(checkin) {
         if(checkin) {
+            debugger;
             deferred.resolve(checkin);
         }
         else {
-            util.policyCheckTimeDelayBetweenCheckins(user, vendor, offer).then(function(retval, checkin) {
+            debugger;
+            util.policyCheckTimeDelayBetweenCheckins(user, vendor, offer).then(function(retval) {
+                debugger;
                 if(retval) {
+                    debugger;
                     checkinObj.vendor = vendor._id;
                     checkinObj.user = user._id;
                     checkinObj.offer = offer._id;
                     checkinObj.state = CHECKIN_STATE_ACTIVE;
 
-                    checkinM.save( checkinObj ).then( function( checkin ){
-                        deferred.resolve( checkin );
-                    }, function( err ){
-                        deferred.reject( err );
+                    checkinObj.save(function(err) {
+                        deferred.reject(err);
                     });
+
+                    deferred.resolve(checkinObj);
                 }
                 else {
                         //TODO : throw error here.. can't use that offer
@@ -72,10 +82,6 @@ var vendor_validate_SX = function( vendor, user, checkin ){
     //increase stamps
 
     var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
-
-    user.stamplist[vendor.fid] += stamps*1;
-    user.markModified("stamplist");
-    user.save();
 
     if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.indexOf(ObjectId(checkin.offer_id)) != -1) {
         checkin.state = CHECKIN_STATE_CONFIRMED;

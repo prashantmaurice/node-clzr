@@ -196,7 +196,7 @@ var view_vendor_lucky_checkin  = function(params,user){
 return deferred.promise;
 }
 
-var view_vendor_get_categories = function(params,user) {
+var view_vendor_categories_get = function(params,user) {
     return Q(registry.getSharedObject("settings").categories)
 }
 
@@ -205,7 +205,7 @@ global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_chec
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
-global.registry.register("view_vendor_get_categories", {get:view_vendor_get_categories});
+global.registry.register("view_vendor_categories_get", {get:view_vendor_categories_get});
 global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
 // Put other vendor types here.
 
