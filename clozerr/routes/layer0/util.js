@@ -1,57 +1,54 @@
 var registry = global.registry;
+var Q = require("q");
+
+var CHECKIN_STATE_ACTIVE = 0;
+var CHECKIN_STATE_CONFIRMED = 1;
+var CHECKIN_STATE_CANCELLED = 2;
+
+var CheckIn = registry.getSharedObject("models_Checkin");
 
 var policyCheckTimeDelayBetweenCheckins = function( user, vendor, offer ) {
 
-
-  return CheckIn.findOne( { user:user._id, vendor:vendor._id, state:CHECKIN_STATE_CONFIRMED} ).sort("date_created").exec().then(function( checkin ){
-    var deferred = Q.defer();
+  var deferred = Q.defer();
+  debugger;
+  CheckIn.find( { user:user._id, vendor:vendor._id, state:CHECKIN_STATE_CONFIRMED} ).sort("date_created").exec().then(function( checkins ){
+    debugger;
+    var checkin = checkins[0];
     debugger;
 
     if( !checkin ){
-      process.nextTick( function(){
-        deferred.resolve( true );
-      });
-      return deferred.promise;
+      deferred.resolve( true );
     }
 
-
-    if( Math.abs( new Date().getTime() - checkin.date_created.getTime() ) < settings.checkin.delay_between_checkins ) {
-      process.nextTick( function(){
-        deferred.resolve( false );
-      });
+    if( Math.abs( new Date().getTime() - checkin.date_created.getTime() ) < registry.getSharedObject("settings").checkin.delay_between_checkins ) {
+      deferred.resolve( false );
     }
     else{
-      process.nextTick( function(){
-        deferred.resolve( true );
-      });
+      deferred.resolve( true );
     }
-
-    return deferred.promise;
-
   });
+
+  return deferred.promise;
 
 }
 
 var policyCheckDuplicateCheckins = function( user, vendor, offer ) {
 
+  var deferred = Q.defer();
+  debugger;
+  CheckIn.findOne( { user:user._id, vendor:vendor._id, offer:offer._id, state:CHECKIN_STATE_ACTIVE} ).exec().then(function( checkin ){
 
-  return CheckIn.findOne( { user:user._id, vendor:vendor._id, offer:offer._id, state:CHECKIN_STATE_ACTIVE} ).exec().then(function( checkin ){
-    var deferred = Q.defer();
     debugger;
     if( checkin ) {
-      process.nextTick( function(){
-        deferred.resolve( checkin );
-      });
+      deferred.resolve( checkin );
     }
     else{
-      process.nextTick( function(){
-        deferred.resolve( );
-      });
+      deferred.resolve( );
     }
 
-    return deferred.promise;
-
   });
+
+  return deferred.promise;
 
 }
 

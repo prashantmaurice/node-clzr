@@ -49,7 +49,9 @@ var create_checkin = function( params ){
      * Create a new checkin and return the checkin object.
      * No need to use promises for this, no parallel IO necessary.
      */
-    var Checkin = registry.get("models_Checkin");
+     debugger;
+    var Checkin = registry.getSharedObject("models_Checkin");
+    debugger;
     return new Checkin();
 }
 
