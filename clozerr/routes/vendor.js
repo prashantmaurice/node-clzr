@@ -24,13 +24,13 @@ function postMessage(access_token, message, response) {
     // Specify the URL and query string parameters needed for the request
     var url = 'https://graph.facebook.com/me/feed';
     var params = {
-        access_token: access_token,
-        message: message
+      access_token: access_token,
+      message: message
     };
 
   // Send the request
-    request.post({url: url, qs: params}, function(err, resp, body) {
-      
+  request.post({url: url, qs: params}, function(err, resp, body) {
+
       // Handle any errors that occur
       if (err) return console.error("Error occured: ", err);
       body = JSON.parse(body);
@@ -80,7 +80,7 @@ router.get('/facebookpost', function(req, res) {
       res.end(data);
     });
   });
-  request.end();*/
+request.end();*/
 });
 
 router.get('/create', function (req, res) {
@@ -203,7 +203,7 @@ router.get('/get/all/beacons_old', function(req, res) {
 
           var vendorDetails = [];
           var pr =  _.each( data, function( vendorObj, index, array ){
-           
+
 
             Offer.find({
               _id: {
@@ -268,18 +268,30 @@ router.get('/get/all/beacons', function(req, res) {
         if(vendor.settings) {
           settings.sxEnabled = vendor.settings.sxEnabled;
         }
-        retObj.vendors.push({
-          _id: vendor._id,
-          beacons: vendor.beacons,
-          name: vendor.name,
-          settings: settings,
-          // offers: offers_qualified,
-          hasOffers: (offers_qualified.length > 0)
-        })
+        if(vendor.type=="TestVendor") {
+          if(req.user.type=="TestUser") {
+            retObj.vendors.push({
+              _id: vendor._id,
+              beacons: vendor.beacons,
+              name: vendor.name,
+              settings: settings,
+              hasOffers: (offers_qualified.length > 0)
+            });
+          }
+        }
+        else {
+          retObj.vendors.push({
+            _id: vendor._id,
+            beacons: vendor.beacons,
+            name: vendor.name,
+            settings: settings,
+            hasOffers: (offers_qualified.length > 0)
+          });
+        }
         resendFunc(retObj)
       })
-    })
-  })
+})
+})
 });
 router.get('/offers/myOfferPage', function (req, res) {
   var errobj = error.err_insuff_params(res, req, ["vendor_id"]);

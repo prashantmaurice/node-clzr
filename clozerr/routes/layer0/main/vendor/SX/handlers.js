@@ -46,16 +46,16 @@ var vendor_checkin_SX = function( params, user, vendor, offer ){
                 else {
                         //TODO : throw error here.. can't use that offer
                         //deferred.reject(err);
-                }
-            }, function(err) {
-                deferred.reject(err);
-            });
+                    }
+                }, function(err) {
+                    deferred.reject(err);
+                });
         }
     }, function(err) {
         deferred.reject(err);
     });
 
-    return deferred.promise;
+return deferred.promise;
 }
 
 var vendor_predicate_SX = function(user, vendor, offer) {
@@ -84,18 +84,35 @@ var vendor_validate_SX = function( vendor, user, checkin ){
 
     //increase stamps
 
-    var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
+    registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(userObj) {
+        debugger;
 
-    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.indexOf(ObjectId(checkin.offer_id)) != -1) {
-        checkin.state = CHECKIN_STATE_CONFIRMED;
-        checkin.save(function(err) {
-            deferred.reject(err);
-        });
-        deferred.resolve(checkin);
-    }
-    else {
-        deferred.resolve();
-    }
+        if(user.type == "Vendor" && checkin.vendor == user.vendor_id && JSON.parse(JSON.stringify(vendor.offers)).indexOf(checkin.offer.toString()) != -1) {
+            checkin.state = CHECKIN_STATE_CONFIRMED;
+            debugger;
+
+            checkin.save(function(err) {
+                deferred.reject(err);
+            });
+
+            var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
+
+            userObj.stamplist[vendor.fid] += stamps*1;
+            userObj.markModified("stamplist");
+
+            debugger;
+
+            userObj.save(function(err) {
+                deferred.reject(err);
+            });
+
+            deferred.resolve(checkin);
+        }
+
+        else {
+            deferred.resolve();
+        }
+    });
 
     return deferred.promise;
 }

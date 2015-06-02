@@ -21,6 +21,9 @@ var vendor_predicate = function(user, vendor, offer) {
 }
 
 var vendor_validate = function(params, vendor, user, checkin) {
+	if(params.validate_data) {
+		checkin.validate_data = params.validate_data;
+	}
 	return registry.getSharedObject("handler_validate_" + params.offer.type).get( vendor, user, checkin);
 }
 

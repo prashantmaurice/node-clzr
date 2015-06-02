@@ -118,6 +118,7 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
             deferred.resolve();
         }
     });
+    
     return deferred.promise;
 }
 
