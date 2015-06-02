@@ -26,7 +26,8 @@ var view_vendor_offers_allOffers=function(params,user){
 }
 
 var view_vendor_offers_checkin=function(params,user){
-	var deferred = Q.defer()
+	var deferred = Q.defer();
+
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor){
 		debugger;
 		registry.getSharedObject("data_offer").get(params,vendor).then(function(offer){
@@ -36,6 +37,7 @@ var view_vendor_offers_checkin=function(params,user){
 				if(valid){
 					debugger;
 					registry.getSharedObject("handler_checkin").get(params, user,vendor,offer).then(function(checkin){
+						debugger;
 						deferred.resolve(registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin));
 					});
 				}
@@ -45,8 +47,9 @@ var view_vendor_offers_checkin=function(params,user){
 				}
 			})
 		})
-	})
-	return deferred.promise
+	});
+
+	return deferred.promise;
 }
 
 var view_vendor_offers_validate=function(params,user){

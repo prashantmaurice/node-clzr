@@ -52,7 +52,7 @@ var vendor_checkin_S1 = function( params, user, vendor, offer ){
         deferred.reject(err);
     });
 
-return deferred.promise;
+    return deferred.promise;
 }
 
 var vendor_predicate_S1 = function(user, vendor, offer) {

@@ -277,7 +277,9 @@ function getVendorPageDisplay(user, vendor_id, callback) {
 */
 module.exports={
   assignFlagsToOffer:assignFlagsToOffer,
-  getOfferDisplay:getOfferDisplay};
+  getOfferDisplay:getOfferDisplay,
+  getCheckinOnCheckinDisplay:getCheckinOnCheckinDisplay,
+  getCheckinOnValidateDisplay:getCheckinOnValidateDisplay};
 
   var registry = global.registry;
 registry.register("qualify", module.exports)
