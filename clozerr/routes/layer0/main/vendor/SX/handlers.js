@@ -17,6 +17,8 @@ var vendor_checkin_SX = function( params, user, vendor, offer ){
 
     var checkinObj = checkinM.create();
 
+    var util = global.registry.getSharedObject("util");
+
     //TODO : Also if the checkin is not validated within 2 hrs, just cancel it i.e set its state to cancelled and save it
     debugger;
     util.policyCheckDuplicateCheckins(user, vendor, offer).then(function(checkin) {
@@ -61,6 +63,7 @@ var vendor_predicate_SX = function(user, vendor, offer) {
 
     if(!user.stamplist[vendor.fid]) {
         user.stamplist[vendor.fid] = 0;
+        user.markModified("stamplist");
         user.save();
     }
     
