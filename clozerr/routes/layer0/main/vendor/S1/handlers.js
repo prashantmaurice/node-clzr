@@ -85,22 +85,41 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
 
     //increase stamps
 
-    user.stamplist[vendor.fid]++;
+    //REMEMBER : user should be user object of vendor
+
+    /*user.stamplist[vendor.fid]++;
     user.markModified("stamplist");
-    user.save();
+    user.save();*/
 
-    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.indexOf(ObjectId(checkin.offer_id)) != -1) {
-        checkin.state = CHECKIN_STATE_CONFIRMED;
-        checkin.save(function(err) {
-            deferred.reject(err);
-        });
-        deferred.resolve(checkin);
-    }
+    debugger;
 
-    else {
-        deferred.resolve();
-    }
+    registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(userObj) {
+        debugger;
 
+        if(user.type == "Vendor" && checkin.vendor == user.vendor_id && JSON.parse(JSON.stringify(vendor.offers)).indexOf(checkin.offer.toString()) != -1) {
+            checkin.state = CHECKIN_STATE_CONFIRMED;
+            debugger;
+
+            checkin.save(function(err) {
+                deferred.reject(err);
+            });
+
+            userObj.stamplist[vendor.fid]++;
+            userObj.markModified("stamplist");
+
+            debugger;
+
+            userObj.save(function(err) {
+                deferred.reject(err);
+            });
+
+            deferred.resolve(checkin);
+        }
+
+        else {
+            deferred.resolve();
+        }
+    });
     return deferred.promise;
 }
 

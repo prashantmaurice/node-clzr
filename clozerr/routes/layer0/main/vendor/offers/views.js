@@ -55,12 +55,14 @@ var view_vendor_offers_checkin=function(params,user){
 var view_vendor_offers_validate=function(params,user){
 	var deferred = Q.defer()
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor){
-		registry.getSharedObject("data_checkin").get({_id:params.checkin_id}).then(function(checkin){
+		registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).exec().then(function(checkin){
+			debugger;
 			registry.getSharedObject("handler_validate").get(params,vendor,user,checkin).then(function(val_checkin){
+				debugger;
 				if(val_checkin)
-					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin))
+					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
 				else
-					deferred.resolve("{result:false,message:invalid checkin}")
+					deferred.resolve({result:false,message:"invalid checkin"});
 			})
 		})
 	})
