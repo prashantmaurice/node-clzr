@@ -21,7 +21,7 @@ var vendor_predicate = function(user, vendor, offer) {
 }
 
 var vendor_validate = function(params, vendor, user, checkin) {
-	return registry.getSharedObject("handler_validate_" + params.offer.type).get(params, vendor, user, checkin);
+	return registry.getSharedObject("handler_validate_" + params.offer.type).get( vendor, user, checkin);
 }
 
 global.registry.register("handler_checkin", {get:vendor_checkin});

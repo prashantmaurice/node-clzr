@@ -2,30 +2,33 @@
 var Q = require("q");
 var registry = global.registry;
 
-var load_checkin = function( params, user ){
+var load_checkin = function( params ){
     var deferred = Q.defer();
 
-    var Checkin = registry.get("models_Checkin");
-    var Vendor = registry.get("models_Vendor");
-    var User = registry.get("models_User");
+    var Checkin = registry.getSharedObject("models_Checkin");
+    var Vendor = registry.getSharedObject("models_Vendor");
+    var User = registry.getSharedObject("models_User");
 
     var checkin_obj = null;
+
+    debugger;
 
     Checkin.findOne({
         _id: params.checkin_id
     }).exec().then( function( checkin ){
+        debugger;
         checkin_obj = checkin.toJSON();
         return Vendor.findOne({
             _id: checkin_obj.vendor
-        });
+        }).exec();
 
     }, function(err){
         deferred.reject( err );        
     }).then(function( vendor ){
         checkin_obj.vendor = vendor;
         return User.findOne({
-            _id: checkin_obj.vendor_id
-        });
+            _id: checkin_obj.user
+        }).exec();
 
     }, function(err){
         deferred.reject(err);
@@ -49,7 +52,9 @@ var create_checkin = function( params ){
      * Create a new checkin and return the checkin object.
      * No need to use promises for this, no parallel IO necessary.
      */
-    var Checkin = registry.get("models_Checkin");
+     debugger;
+    var Checkin = registry.getSharedObject("models_Checkin");
+    debugger;
     return new Checkin();
 }
 
