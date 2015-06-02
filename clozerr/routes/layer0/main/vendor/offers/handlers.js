@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var vendor_checkin = function(params, user, vendor, offer) {
+	debugger;
 	return registry.getSharedObject("handler_checkin_" + offer.type).get(params, user, vendor, offer);
 }
 

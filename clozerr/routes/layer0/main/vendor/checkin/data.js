@@ -32,7 +32,7 @@ var load_checkin = function( params, user ){
     }).then(function( user ){
         checkin_obj.user = user;
 
-        deferred.resolve( obj );
+        deferred.resolve( checkin_obj );
 
     }, function(err){
         deferred.reject(err);

@@ -69,43 +69,55 @@ var predicatesS0 = {
      }
    });
   return deferred.promise;
-}
-}
-
-var handlers = {
-  "S1": function( user, vendor, offer ){
-
-    if( user.stamplist[vendor.fid] )
-      user.stamplist[vendor.fid] ++;
-    else
-      user.stamplist[vendor.fid] = 1;
-    user.markModified("stamplist");
-  },
-  "S0": function( user, vendor, offer) {
-    if( !user.stamplist[vendor.fid] )
-      user.stamplist[vendor.fid] = 0;
-  },
-  "SX": function( user, vendor, offer, validate_data ) {
-    if( user.stamplist[vendor.fid] ){
-      user.stamplist[vendor.fid] += parseInt(validate_data.stamps);
+},
+"happyHours": function(user,vendor,offer){
+        var days=offer.params.days; //array containing 0-6 , 0 => Sunday
+        var startHour=offer.params.startHour;//hours in 0-23
+        var endHour=offer.params.endHour;//inclusive of end hour
+        var date=new Date();
+        console.log(date.getDay(),date.getHours())
+        return Q(_.contains(days,date.getDay()) && date.getHours()<=endHour && date.getHours()>=startHour)
+      },
+      "welcomeReward": function(user,vendor,offer){
+        //TODO: are we initializing to zero or one?
+        return Q((!user.stamplist)||(!user.stamplist[vendor.fid])||(user.stamplist[vendor.fid]==0))
+      }
     }
-    else
-      user.stamplist[vendor.fid] = parseInt(validate_data.stamps);
-    user.markModified("stamplist");
-  }
-}
-module.exports.qualify = function( user, vendor, offer ){
-  if( !predicates[offer.type] ){
-    console.log("Type of offer is unsupported");
-    return false;
-  }
-  return predicates[offer.type]( user, vendor, offer );
-}
 
-module.exports.onCheckin = function( user, vendor, offer, validate_data ){
-  if( !handlers[offer.type] ){
-    console.log("Type of offer is unsupported");
-    return false;
-  }
-  return handlers[offer.type]( user, vendor, offer, validate_data );
-}
+    var handlers = {
+      "S1": function( user, vendor, offer ){
+
+        if( user.stamplist[vendor.fid] )
+          user.stamplist[vendor.fid] ++;
+        else
+          user.stamplist[vendor.fid] = 1;
+        user.markModified("stamplist");
+      },
+      "S0": function( user, vendor, offer) {
+        if( !user.stamplist[vendor.fid] )
+          user.stamplist[vendor.fid] = 0;
+      },
+      "SX": function( user, vendor, offer, validate_data ) {
+        if( user.stamplist[vendor.fid] ){
+          user.stamplist[vendor.fid] += parseInt(validate_data.stamps);
+        }
+        else
+          user.stamplist[vendor.fid] = parseInt(validate_data.stamps);
+        user.markModified("stamplist");
+      }
+    }
+    module.exports.qualify = function( user, vendor, offer ){
+      if( !predicates[offer.type] ){
+        console.log("Type of offer is unsupported");
+        return false;
+      }
+      return predicates[offer.type]( user, vendor, offer );
+    }
+
+    module.exports.onCheckin = function( user, vendor, offer, validate_data ){
+      if( !handlers[offer.type] ){
+        console.log("Type of offer is unsupported");
+        return false;
+      }
+      return handlers[offer.type]( user, vendor, offer, validate_data );
+    }

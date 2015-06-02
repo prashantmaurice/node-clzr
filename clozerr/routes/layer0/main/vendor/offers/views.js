@@ -35,13 +35,13 @@ var view_vendor_offers_checkin=function(params,user){
 				debugger;
 				if(valid){
 					debugger;
-					registry.getSharedObject("handler_checkin").get(user,vendor,offer).then(function(checkin){
-						deferred.resolve(registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin))
-					})
+					registry.getSharedObject("handler_checkin").get(params, user,vendor,offer).then(function(checkin){
+						deferred.resolve(registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin));
+					});
 				}
 				else {
 					debugger;
-					deferred.resolve("{result:false,message:invalid checkin}")
+					deferred.resolve({result:false,message:"invalid checkin"});
 				}
 			})
 		})
