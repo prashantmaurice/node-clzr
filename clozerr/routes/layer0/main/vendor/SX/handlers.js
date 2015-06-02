@@ -5,7 +5,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-var vendor_checkin_SX = function( user, vendor, offer ){
+var vendor_checkin_SX = function( params, user, vendor, offer ){
     var deferred = Q.defer();
 
     var checkinM = registry.getSharedObject("data_checkin");
@@ -49,7 +49,7 @@ var vendor_checkin_SX = function( user, vendor, offer ){
 var vendor_predicate_SX = function(user, vendor, offer) {
     var deferred = Q.defer();
 
-    if(user.stamplist[vendor.fid]) {
+    if(!user.stamplist[vendor.fid]) {
         user.stamplist[vendor.fid] = 0;
         user.save();
     }
@@ -74,9 +74,10 @@ var vendor_validate_SX = function( vendor, user, checkin ){
     var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
 
     user.stamplist[vendor.fid] += stamps*1;
+    user.markModified("stamplist");
     user.save();
 
-    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.contains(ObjectId(checkin.offer_id))) {
+    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.indexOf(ObjectId(checkin.offer_id)) != -1) {
         checkin.state = CHECKIN_STATE_CONFIRMED;
         checkin.save(function(err) {
             deferred.reject(err);

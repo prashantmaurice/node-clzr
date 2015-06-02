@@ -5,10 +5,11 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-var vendor_checkin_S1 = function( user, vendor, offer ){
+var vendor_checkin_S1 = function( params, user, vendor, offer ){
     var deferred = Q.defer();
 
     var checkinM = registry.getSharedObject("data_checkin");
+    debugger;
     var checkinObj = checkinM.create();
 
     //TODO : Also if the checkin is not validated within 2 hrs, just cancel it i.e set its state to cancelled and save it
@@ -52,9 +53,10 @@ var vendor_predicate_S1 = function(user, vendor, offer) {
     var deferred = Q.defer();
     debugger;
 
-    if(user.stamplist[vendor.fid]) {
+    if(!user.stamplist[vendor.fid]) {
         debugger;
         user.stamplist[vendor.fid] = 0;
+        user.markModified("stamplist");
         user.save();
     }
 
@@ -78,9 +80,10 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
     //increase stamps
 
     user.stamplist[vendor.fid]++;
+    user.markModified("stamplist");
     user.save();
 
-    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.contains(ObjectId(checkin.offer_id))) {
+    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.indexOf(ObjectId(checkin.offer_id)) != -1) {
         checkin.state = CHECKIN_STATE_CONFIRMED;
         checkin.save(function(err) {
             deferred.reject(err);
