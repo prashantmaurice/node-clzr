@@ -6,11 +6,13 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var vendor_checkin = function(params, user, vendor, offer) {
+	debugger;
 	return registry.getSharedObject("handler_checkin_" + offer.type).get(params, user, vendor, offer);
 }
 
 var vendor_predicate = function(user, vendor, offer) {
-	if(!_.find(vendor.offers,function(offerid){offerid.id=offer._id.id})) {
+	debugger;
+	if(_.find(vendor.offers,function(offerid){return offerid.id==offer._id.id})) {
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}
 	else {

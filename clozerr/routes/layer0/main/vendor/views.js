@@ -1,6 +1,7 @@
 var registry = global.registry;
 var Q = require("q");
 var _ = require('underscore')
+var fuzzy = require('fuzzy');
 
 function getVendorType(vendor) {
     console.log('in getVendorType');
@@ -96,8 +97,23 @@ var view_vendor_list_near = function(params,user){
 var view_vendor_get_categories=function(params,user){
     return Q(registry.getSharedObject("settings").categories)
 }
+var view_vendor_name_search=function(params,user){
+    var deferred = Q.defer();
+    registry.getSharedObject("data_vendors").get().then(function(vendors){
+        // console.log(vendors[0])
+        result = fuzzy.filter(params.text,vendors,
+            {extract:function(el){
+                return el.name;
+            }});
+        deferred.resolve(_.map(result,function(el){
+            return el.original;
+        }))
+    })
+    return deferred.promise
+}
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 global.registry.register("view_vendor_get_categories", {get:view_vendor_get_categories});
+global.registry.register("view_vendor_name_search", {get:view_vendor_name_search});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};
