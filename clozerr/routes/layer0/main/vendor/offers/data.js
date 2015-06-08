@@ -13,9 +13,9 @@ var data_vendor_offer=function(params,vendor){
 var data_offer=function(params){
 	var deferred=Q.defer();
 	if(!params.offer_id) deferred.reject();
-	return registry.getSharedObject("models_Offer").find({
+	return registry.getSharedObject("models_Offer").findOne({
 		_id:params.offer_id
-	}).exec()
+	}).exec();
 }
 
 registry.register("data_vendor_offer",{get:data_vendor_offer})

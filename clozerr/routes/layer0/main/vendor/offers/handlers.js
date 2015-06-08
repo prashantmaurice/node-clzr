@@ -1,6 +1,6 @@
 var registry = global.registry;
 var Q = require("q");
-var _ = require('underscore');
+
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
@@ -12,17 +12,19 @@ var vendor_checkin = function(params, user, vendor, offer) {
 
 var vendor_predicate = function(user, vendor, offer) {
 	debugger;
-	if(_.find(vendor.offers,function(offerid){return offerid.id==offer._id.id})) {
+	if(vendor.offers.indexOf(offer._id) != -1) {
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}
 	else {
-		console.log("offer vendor mismatch")
 		return Q(false);
 	}
 }
 
 var vendor_validate = function(params, vendor, user, checkin) {
-	return registry.getSharedObject("handler_validate_" + params.offer.type).get(params, vendor, user, checkin);
+	if(params.validate_data) {
+		checkin.validate_data = params.validate_data;
+	}
+	return registry.getSharedObject("handler_validate_" + params.offer.type).get( vendor, user, checkin);
 }
 
 global.registry.register("handler_checkin", {get:vendor_checkin});

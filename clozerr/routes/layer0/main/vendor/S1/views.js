@@ -1,40 +1,74 @@
 var registry = global.registry;
 var Q = require("q");
+var _ = require("underscore");
 
-var view_vendor_offers_offerPage_S1 = function( params, vendor, user ){
+var view_vendor_offers_offerPage_S1 = function( params){
 
  console.log('in view_vendor_offers_offerPage_S1');
  var vendorObjectData = registry.getSharedObject("data_vendor_S1");
  var deferred = Q.defer();
-
- vendor = JSON.parse(JSON.stringify(vendor));
-
  debugger;
- vendorObjectData.get(params, vendor).then(function(vendor) {
-    //console.log(vendor);
-    console.log(user);
+ var plist=[];
 
-    registry.getSharedObject("qualify").assignFlagsToOffer(user, vendor).then(function(offers) {
-        var plist = [];
-        var offersview = [];
+ plist.push(registry.getSharedObject("data_vendor").get(params).then(function(vendor){
+  vendorObj=vendor;
+}));
+ plist.push(registry.getSharedObject("live_session").get(params).then(function(user){
+  userObj=user;
+}));
+ Q.all(plist).then(function(){
+   vendor = JSON.parse(JSON.stringify(vendorObj));
+
+   debugger;
+   vendorObjectData.get(params, vendorObj).then(function(vendor) {
+    //console.log(vendor);
+    debugger;
+    //console.log(userObj);
+
+    registry.getSharedObject("qualify").assignFlagsToOffer(userObj, vendor).then(function(offers) {
+      plist = [];
+      var offersview = [];
+
+      debugger;
+
+        //removing the dummy visit offer from the offersview
+
+        var visitOffer = _.find(offers, function(offer) {
+          return (offer._id == vendor.visitOfferId);
+        });
+        var index = offers.indexOf(visitOffer);
+
+        if(index > -1) {
+          offers.splice(index, 1);
+        }
+
+        debugger;
+        
         for(var i=0;i<offers.length;i++) {
-            var pr = registry.getSharedObject("qualify").getOfferDisplay(user, vendor, offers[i])
-            .then(function(offer) {
-                debugger;
-                offersview.push(offer);
-                console.log(i);
-            });
-            plist.push(pr);
+          var pr = registry.getSharedObject("qualify").getOfferDisplay(userObj, vendor, offers[i])
+          .then(function(offer) {
+            debugger;
+            offersview.push(offer);
+            console.log(i);
+          });
+          plist.push(pr);
         }
         Q.all(plist).then(function() {
-            console.log('q.all');
-            console.log(offersview);
-            vendor.offers = offersview;
-            deferred.resolve(vendor);
+          console.log('q.all');
+          console.log(offersview);
+          vendor.offers = offersview;
+          deferred.resolve(vendor);
         });
-    });
+      });
+  }, function(err) {
+    debugger;
+    deferred.reject(err);
+  });
+}, function(err) {
+  debugger;
+  deferred.reject(err);
 });
- return deferred.promise;
+return deferred.promise;
 }
 
 registry.register('view_vendor_offers_offersPage_S1', {get:view_vendor_offers_offerPage_S1});
@@ -48,4 +82,4 @@ var view_vendor_homepage_S1 = function( params, vendor, user ){
      * Or we might store the stamplist pre-ordered by stamps here and only fetch that offer. 
      */
 
- }
+   }

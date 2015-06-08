@@ -5,8 +5,8 @@ module.exports = {
 		},
 		"google":{
 			"app_id":["496568600186-q67jdokmmuofba4updq7v8kl9j4niaoe.apps.googleusercontent.com",
-                      "496568600186-ku41clmavuaam8dru15iheg4lnn66inb.apps.googleusercontent.com",
-                      " 496568600186-25gp2rukpdi85euh02ud8i32ua3g5jvh.apps.googleusercontent.com"]
+			"496568600186-ku41clmavuaam8dru15iheg4lnn66inb.apps.googleusercontent.com",
+			" 496568600186-25gp2rukpdi85euh02ud8i32ua3g5jvh.apps.googleusercontent.com"]
 
 		},
 		"password":{
@@ -15,7 +15,6 @@ module.exports = {
 	},
 	"db":{
 		"mongo":{ "host":"db.clozerr.com", "port":"27107", "name":"fin4", "username":"mongoadmin", "password":"clozerradmin"}
-		// "mongo":{ "host":"localhost", "port":"9999", "name":"fin4", "username":"mongoadmin", "password":"clozerradmin"}
 	},
 	"s3":{
 		"access_key":"AKIAJHO66S6AWOPIT2GA",
@@ -44,8 +43,10 @@ module.exports = {
 	"homepage":{
 		url:[
 		"https://s3-ap-southeast-1.amazonaws.com/clozerrsite/img/mainbg.jpg",
-         "https://s3-ap-southeast-1.amazonaws.com/clozerrsite/img/phone.png"]
+		"https://s3-ap-southeast-1.amazonaws.com/clozerrsite/img/phone.png"]
 	},
 	"UUID":"23A01AF0-232A-4518-9C0E-323FB773F5EF",
-	"categories":["Food"]
+	"categories":[
+		{"name":"Food", "image":""}
+	]
 };

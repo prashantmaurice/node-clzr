@@ -8,6 +8,7 @@ var data_vendor_S1 = function( params, vendor ){
      * server that is required for processing the S1 object further.
      * */
     // For this example fill the object with the offers list.
+    debugger;
 
     vendor = JSON.parse(JSON.stringify(vendor));
 
@@ -16,17 +17,20 @@ var data_vendor_S1 = function( params, vendor ){
     
     Offer.find({
         _id:{
-            "$in": vendor.offers,
-            "type":"S1"
-            }
+            "$in": vendor.offers
+            },
+        type:"S1"
     }).exec().then( function( offers ){
         console.log(offers);
         debugger;
 
         vendor.offers = offers;
+        debugger;
         deferred.resolve( vendor );
+        debugger;
 
     }, function( err ){
+        debugger;
         deferred.reject( err );
     });
     return deferred.promise;

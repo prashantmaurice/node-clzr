@@ -1,4 +1,3 @@
-
 var models = require("../models");
 var Vendor = models.Vendor;
 var Offer = models.Offer;
@@ -66,21 +65,31 @@ var getCheckinOnValidateDisplay = function(checkin) {
 
 var getOfferDisplay = function (user, vendor, offer){
   var offerDisplay={};
+  var deferred = Q.defer();
   if(offer) {
+    debugger;
+    //console.log(user.stamplist[vendor.fid]);
+
     offerDisplay._id=offer._id;
     offerDisplay.type=offer.type;
     offerDisplay.caption=offer.caption;
     offerDisplay.description=offer.description;
     offerDisplay.stamps=offer.stamps*1;
     offerDisplay.params={};
+    if(offerDisplay.stamps*1 <= user.stamplist[vendor.fid]*1) {
+      offerDisplay.params.unlocked = true;
+    }
+    else {
+      offerDisplay.params.unlocked = false;
+    }
     if(offerDisplay.type=="S1") {
-      offerDisplay.params.stamps=offer.stamps
+      offerDisplay.params.stamps=offer.stamps*1;
     }
     if(offerDisplay.type=="SX") {
-      offerDisplay.params.stamps=offer.stamps
+      offerDisplay.params.stamps=offer.stamps*1;
       offerDisplay.stampStatus = {};
       offerDisplay.params.billAmt = vendor.settings.billAmt*1;
-      if(user.stamplist[vendor.fid] > offer.stamps) {
+      if(user.stamplist[vendor.fid]*1 > offer.stamps*1) {
         offerDisplay.stampStatus.current = (user.stamplist[vendor.fid]*1) % vendor.settings.SXLimit;
       }
       else {
@@ -91,9 +100,13 @@ var getOfferDisplay = function (user, vendor, offer){
     if(offerDisplay.type=="S0") {    
       offerDisplay.params=offer.params
     }
-    return offerDisplay;
+    deferred.resolve(offerDisplay);
   }
-  else return null;
+  else {
+    deferred.resolve(null);
+  };
+
+  return deferred.promise;
 }
 
 /*
@@ -272,7 +285,9 @@ function getVendorPageDisplay(user, vendor_id, callback) {
 */
 module.exports={
   assignFlagsToOffer:assignFlagsToOffer,
-  getOfferDisplay:getOfferDisplay};
+  getOfferDisplay:getOfferDisplay,
+  getCheckinOnCheckinDisplay:getCheckinOnCheckinDisplay,
+  getCheckinOnValidateDisplay:getCheckinOnValidateDisplay};
 
   var registry = global.registry;
 registry.register("qualify", module.exports)

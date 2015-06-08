@@ -46,6 +46,9 @@ var data_vendor = function( params){
     if( !_id ){
         return Q.fcall(function(){ throw new Error( "Vendor_id missing" ); });
     }
+
+    debugger;
+    
     Vendor.findOne({
         _id: new ObjectId(_id)
     }).exec()
@@ -61,7 +64,7 @@ var data_vendor_near = function( params){
     var deferred = Q.defer();
     Vendor.find({
         location: {
-            $near: [params.lat, params.lon]
+            $near: [params.latitude, params.longitude]
         },
         visible:true
     }).limit(params.limit ).skip(params.offset ).exec()
@@ -94,7 +97,7 @@ var http_vendor_offers = function( params){
         deferred.reject( err );
     }).then(function( offers ){
         vendor_obj.offers = offers;
-        deferred.resolv( vendor );
+        deferred.resolve( vendor );
     }, function( err ){
         deferred.reject( err );
     });
@@ -117,6 +120,13 @@ var data_vendors = function( params ){
     return Vendor.find( criteria ).exec();
 }
 
+var data_vendors_category = function( params ) {
+    var Vendor = registry.getSharedObject("models_Vendor");
+
+    return Vendor.find({category: params.category}).limit(params.limit).skip(params.offset).exec();
+}
+
 registry.register("data_vendors",{get:data_vendors});
 registry.register("data_vendor_near",{get:data_vendor_near});
 registry.register("data_vendor_withOffers",{get:data_vendor_withOffers});
+registry.register("data_vendors_category",{get:data_vendors_category});

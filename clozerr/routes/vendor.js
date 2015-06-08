@@ -18,6 +18,71 @@ var settings = require("./settings");
 var push = require("./util/push");
 var qualify = require('./util/qualify');
 
+var request = require('request');
+
+function postMessage(access_token, message, response) {
+    // Specify the URL and query string parameters needed for the request
+    var url = 'https://graph.facebook.com/me/feed';
+    var params = {
+      access_token: access_token,
+      message: message
+    };
+
+  // Send the request
+  request.post({url: url, qs: params}, function(err, resp, body) {
+
+      // Handle any errors that occur
+      if (err) return console.error("Error occured: ", err);
+      body = JSON.parse(body);
+      if (body.error) return console.error("Error returned from facebook: ", body.error);
+
+      // Generate output
+      var output = '<p>Message has been posted to your feed. Here is the id generated:</p>';
+      output += '<pre>' + JSON.stringify(body, null, '\t') + '</pre>';
+      
+      // Send output as the response
+      response.writeHeader(200, {'Content-Type': 'text/html'});
+      response.end(output);
+    });
+
+}
+
+router.get('/facebookpost', function(req, res) {
+  var access_token = req.query.facebook_access_token;
+  var user_id = req.query.user_id;
+  var message = req.query.message;
+  var place = req.query.page_id;
+
+  postMessage(access_token, message, res);
+  /*console.log(req.query);
+  debugger;
+
+  var https = require('https');
+
+  var options = {
+    host: 'graph.facebook.com',
+    port: 443,
+    path: '/'+"me"+'/feed?access_token='+access_token,
+    method: 'POST',
+    headers: { 'message': message, 'place': place }
+  };
+
+  var request = https.request(options, function(response) {
+    //console.log("statusCode: ", res.statusCode);
+    //console.log("headers: ", res.headers);
+    //console.log(res);
+
+    debugger;
+
+    response.on('data', function(data) {
+      debugger;
+      console.log(data);
+      res.end(data);
+    });
+  });
+request.end();*/
+});
+
 router.get('/create', function (req, res) {
   var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
   if (!errobj) {
@@ -139,11 +204,12 @@ router.get('/get/all/beacons_old', function(req, res) {
           var vendorDetails = [];
           var pr =  _.each( data, function( vendorObj, index, array ){
 
+
             Offer.find({
               _id: {
                 $in: vendorObj.offers
               }
-            }, function (err, offers) {
+            }, function (err, offers) { 
               if(err) {
                 console.log(err);
                 return;
@@ -171,9 +237,9 @@ router.get('/get/all/beacons_old', function(req, res) {
               }
             });
 
-          });
-          
-        });
+});
+
+});
 
 });
 
@@ -198,17 +264,34 @@ router.get('/get/all/beacons', function(req, res) {
         var offers_qualified = _.filter(offers, function(offer) {
           return OfferHandler.qualify(req.user,vendor,offer);
         });
-        retObj.vendors.push({
-          _id: vendor._id,
-          beacons: vendor.beacons || {},
-          name: vendor.name,
-          // offers: offers_qualified,
-          hasOffers: (offers_qualified.length > 0)
-        })
+        var settings = {};
+        if(vendor.settings) {
+          settings.sxEnabled = vendor.settings.sxEnabled;
+        }
+        if(vendor.type=="TestVendor") {
+          if(req.user.type=="TestUser") {
+            retObj.vendors.push({
+              _id: vendor._id,
+              beacons: vendor.beacons,
+              name: vendor.name,
+              settings: settings,
+              hasOffers: (offers_qualified.length > 0)
+            });
+          }
+        }
+        else {
+          retObj.vendors.push({
+            _id: vendor._id,
+            beacons: vendor.beacons,
+            name: vendor.name,
+            settings: settings,
+            hasOffers: (offers_qualified.length > 0)
+          });
+        }
         resendFunc(retObj)
       })
-    })
-  })
+})
+})
 });
 router.get('/offers/myOfferPage', function (req, res) {
   var errobj = error.err_insuff_params(res, req, ["vendor_id"]);
@@ -506,7 +589,7 @@ router.get('/myhomepage', function (req, res) {
         var plist = [];
         var vendorDisplays = [];
         for(var index=0;index<vendors.length;index++) {
-          
+
           var i = index;
           var pr = qualify.getUpcomingOffer(user, vendor_id, function (offer, vendor) {
             var deferred = Q.defer();
