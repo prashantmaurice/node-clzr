@@ -101,6 +101,48 @@ var view_vendor_offers_offersPage = function( params ){
     .then(function( res ){deferred.resolve( res )}, function( err ){ deferred.reject( err ) });
     console.log('returning from view_vendor_offers_offersPage');
     return deferred.promise;
+}
+
+var view_vendor_details_set = function( params, user ) {
+    var deferred = Q.defer();
+
+    var vendorObjectM = registry.getSharedObject("data_vendor");
+    var userObjectM = registry.getSharedObject("live_session");
+
+    userObjectM.get( params ).then(function(user) {
+        debugger;
+        if(user.type == "Vendor") {
+            if(user.vendor_id == params.vendor_id) {
+               vendorObjectM.get( params ).then(function(vendor) {
+                if(params.vendor) {
+                    for(key in params.vendor) {
+                        vendor[key] = params.vendor[key];
+                        vendor.markModified(key);
+                    }
+                    debugger;
+                    vendor.save();
+                    debugger;
+                    deferred.resolve(vendor);
+                }
+                else {
+                    deferred.reject();
+                }
+            }, function(err) {
+                deferred.reject(err);
+            });
+           }
+           else {
+            deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+        }
+    }
+    else {
+        deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+    }
+}, function(err) {
+    deferred.reject(err);
+});
+
+return deferred.promise;
 
 }
 
@@ -185,39 +227,39 @@ var view_vendor_lucky_checkin  = function(params,user){
             vendor.trials = 0;
         debugger;
         if(removeDuplicatesFailed(user,vendor._id))
-        {   debugger;
-            if(removeDuplicatesRewards(user,vendor._id))
-            {
-                if(vendor.trials%2==0)
-                    {   debugger;
-                        user.lucky_rewards.push({id:vendor._id,time:Date.now()});
-                        vendor.trials++;
-                        user.markModified("lucky_rewards");
-                        user.save();
-                        valid = true;
-                        deferred.resolve(valid);
+            {   debugger;
+                if(removeDuplicatesRewards(user,vendor._id))
+                {
+                    if(vendor.trials%2==0)
+                        {   debugger;
+                            user.lucky_rewards.push({id:vendor._id,time:Date.now()});
+                            vendor.trials++;
+                            user.markModified("lucky_rewards");
+                            user.save();
+                            valid = true;
+                            deferred.resolve(valid);
+                        }
+                        else
+                        {
+                            user.failed_instances.push({id:vendor._id,time:Date.now()});
+                            vendor.trials++;
+                            user.markModified("failed_instances");
+                            user.save();
+                            valid = false;
+                            deferred.resolve(valid);
+                        }
+                        vendor.save();
                     }
                     else
                     {
-                        user.failed_instances.push({id:vendor._id,time:Date.now()});
-                        vendor.trials++;
-                        user.markModified("failed_instances");
-                        user.save();
-                        valid = false;
-                        deferred.resolve(valid);
+                        deferred.resolve("you have tried already and won it");
                     }
-                vendor.save();
                 }
                 else
                 {
-                    deferred.resolve("you have tried already and won it");
+                    deferred.resolve("Try again after 24 hours");
                 }
-            }
-            else
-            {
-                deferred.resolve("Try again after 24 hours");
-            }
-        });
+            });
 return deferred.promise;
 }
 
@@ -232,6 +274,8 @@ global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage})
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 global.registry.register("view_vendor_categories_get", {get:view_vendor_categories_get});
 global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
+
+global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
 // Put other vendor types here.
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};
