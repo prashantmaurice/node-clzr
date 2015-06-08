@@ -13,7 +13,7 @@ var vendorSchema = new Schema({
 	offers_old : [ObjectId],
 	fid:String,
 	date_created:Date,
-    dateUpdated:Date,
+    	dateUpdated:Date,
 	address: String,
 	city: String,
 	phone: String,
@@ -27,7 +27,9 @@ var vendorSchema = new Schema({
 	visitOfferId : ObjectId,
 	category : String,
 	flags : [String],
-	trials:Number
+	trials:Number,
+	gallery: [String],
+	image_small: String
 });
 vendorSchema.index({ location: '2d' });
 

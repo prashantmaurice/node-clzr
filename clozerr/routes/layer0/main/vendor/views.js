@@ -37,6 +37,31 @@ function removeDuplicatesFailed(user,vendor_id){
     }
 }
 
+var view_vendor_details_set = function( params, user ){
+
+    var deferred = Q.defer();
+	
+
+    registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+        if( vendor._id != user.vendor ){
+		deferred.reject({ description:"Not Authorized" });
+	}
+	if( params.key == "_id" ){
+		deferred.reject({ description:"Not Authorized" });
+	}
+
+	vendor[ params.key ] = params.value;
+	
+	vendor.save();
+	deferred.resolve();
+
+    }, function(err) {
+        deferred.reject(err);
+    });
+
+    return deferred.promise;
+}
+
 var view_vendor_get_details = function( params ) {
     var deferred = Q.defer();
 
