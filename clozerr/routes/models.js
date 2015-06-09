@@ -27,7 +27,8 @@ var vendorSchema = new Schema({
 	visitOfferId : ObjectId,
 	category : String,
 	flags : [String],
-	trials:Number
+	trials:Number,
+	qrcodes:[String]
 });
 vendorSchema.index({ location: '2d' });
 

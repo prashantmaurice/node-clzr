@@ -181,7 +181,7 @@ var view_vendor_list_near = function(params,user){
         else
             deferred.resolve(_.map(vendors,registry.getSharedObject("util").getVendorNearDisplay));
     })
-    return deferred.promise
+    return deferred.promise;
 }
 
 var view_vendor_lucky_checkin  = function(params,user){

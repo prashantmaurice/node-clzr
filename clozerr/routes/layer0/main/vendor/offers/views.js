@@ -53,7 +53,8 @@ var view_vendor_offers_checkin=function(params,user){
 }
 
 var view_vendor_offers_validate=function(params,user){
-	var deferred = Q.defer()
+	var deferred = Q.defer();
+
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor){
 		registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).exec().then(function(checkin){
 			debugger;
@@ -63,12 +64,45 @@ var view_vendor_offers_validate=function(params,user){
 					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
 				else
 					deferred.resolve({result:false,message:"invalid checkin"});
-			})
-		})
-	})
+			}, function(err) {
+				deferred.reject(err);
+			});
+		}, function(err) {
+			deferred.reject(err);
+		});
+	}, function(err) {
+		deferred.reject(err);
+	});
+
 	return deferred.promise
+}
+
+var view_vendor_offers_qrcodevalidate = function(params, user) {
+	var deferred = Q.defer();
+
+	registry.getSharedObject("data_vendor").get( params ).then(function(vendor) {
+		registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).exec().then(function(checkin) {
+			registry.getSharedObject("handler_validate_qrcode").get(params, vendor, user, checkin).then(function(val_checkin) {
+				if(val_checkin) {
+					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
+				}
+				else {
+					deferred.resolve({result:false,message:"invalid checkin"});
+				}
+			}, function(err) {
+				deferred.reject(err);
+			})
+		}, function(err) {
+			deferred.reject(err);
+		});
+	}, function(err) {
+		deferred.reject(err);
+	});
+
+	return deferred.promise;
 }
 
 registry.register("view_vendor_offers_alloffers", {get:view_vendor_offers_allOffers});
 registry.register("view_vendor_offers_validate", {get:view_vendor_offers_validate});
 registry.register("view_vendor_offers_checkin", {get:view_vendor_offers_checkin});
+registry.register("view_vendor_offers_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
