@@ -1,6 +1,7 @@
 var registry = global.registry;
 var Q = require("q");
 var _ = require('underscore')
+var fuzzy = require('fuzzy');
 
 function getVendorType(vendor) {
     console.log('in getVendorType');
@@ -177,9 +178,9 @@ var view_vendor_list_near = function(params,user){
         if(params.category)
             deferred.resolve(_.map(
                 _.filter(vendors,function(vendor){return vendor.category==params.category})
-                ,registry.getSharedObject("util").getVendorNearDisplay));
+                ,registry.getSharedObject("display").vendorDisplay));
         else
-            deferred.resolve(_.map(vendors,registry.getSharedObject("util").getVendorNearDisplay));
+            deferred.resolve(_.map(vendors,registry.getSharedObject("display").vendorDisplay));
     })
     return deferred.promise;
 }
@@ -241,7 +242,23 @@ return deferred.promise;
 var view_vendor_categories_get = function(params,user) {
     return Q(registry.getSharedObject("settings").categories)
 }
-
+var view_vendor_search_name=function(params,user){
+    var deferred = Q.defer();
+    limit=params.limit || registry.getSharedObject("settings").api.default_limit;
+    offset=params.offset || 0;
+    registry.getSharedObject("data_vendors").get().then(function(vendors){
+        // console.log(vendors[0])
+        result = _.first(_.rest(fuzzy.filter(params.text,vendors,
+            {extract:function(el){
+                return el.name;
+            }}),offset),limit);
+        deferred.resolve(_.map(result,function(el){
+            return registry.getSharedObject("display").vendorDisplay(el.original);
+        }))
+    })
+    return deferred.promise
+}
+global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
@@ -251,6 +268,5 @@ global.registry.register("view_vendor_categories_get", {get:view_vendor_categori
 global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
 
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
-// Put other vendor types here.
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};
