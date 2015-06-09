@@ -69,7 +69,7 @@ var arrayOperations =  {
     arr1 = arr1.concat(arr2);
     return arr1;
   },
-  "delete" : function(arr1, arr2) {
+  "remove" : function(arr1, arr2) {
     for(var i=0; i<arr2.length; i++) {
       var idx = arr1.indexOf(element);
       if(idx != -1) {
