@@ -216,9 +216,13 @@ var view_vendor_list_near = function(params,user){
         if(params.category)
             deferred.resolve(_.map(
                 _.filter(vendors,function(vendor){return vendor.category==params.category})
-                ,registry.getSharedObject("display").vendorDisplay));
+                ,function(vendor){
+                    return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
+                }));
         else
-            deferred.resolve(_.map(vendors,registry.getSharedObject("display").vendorDisplay));
+            deferred.resolve(_.map(vendors,function(vendor){
+                    return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
+                }));
     })
     return deferred.promise;
 }
@@ -291,7 +295,8 @@ var view_vendor_search_name=function(params,user){
                 return el.name;
             }}),offset),limit);
         deferred.resolve(_.map(result,function(el){
-            return registry.getSharedObject("display").vendorDisplay(el.original);
+            // return el;
+            return registry.getSharedObject("util").vendorDistDisplay(el.original,params.latitude,params.longitude);
         }))
     })
     return deferred.promise
