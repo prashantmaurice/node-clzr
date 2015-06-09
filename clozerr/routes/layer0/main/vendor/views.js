@@ -178,9 +178,9 @@ var view_vendor_list_near = function(params,user){
         if(params.category)
             deferred.resolve(_.map(
                 _.filter(vendors,function(vendor){return vendor.category==params.category})
-                ,registry.getSharedObject("util").getVendorNearDisplay));
+                ,registry.getSharedObject("display").vendorDisplay));
         else
-            deferred.resolve(_.map(vendors,registry.getSharedObject("util").getVendorNearDisplay));
+            deferred.resolve(_.map(vendors,registry.getSharedObject("display").vendorDisplay));
     })
     return deferred.promise
 }
@@ -253,7 +253,7 @@ var view_vendor_search_name=function(params,user){
                 return el.name;
             }}),offset),limit);
         deferred.resolve(_.map(result,function(el){
-            return registry.getSharedObject("display").vendorSearchDisplay(el.original);
+            return registry.getSharedObject("display").vendorDisplay(el.original);
         }))
     })
     return deferred.promise

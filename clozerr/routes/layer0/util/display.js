@@ -1,13 +1,15 @@
 var registry = global.registry;
 
-function vendorSearchDisplay(vendor){
+function vendorDisplay(vendor){
 	return {
-		id:vendor.id,
+		_id:vendor.id,
 		name:vendor.name,
-		location:vendor.location
+		location:vendor.location,
+		image:vendor.image
 	}
 }
 
+
 registry.register("display",{
-	"vendorSearchDisplay":vendorSearchDisplay
+	"vendorDisplay":vendorDisplay
 })
