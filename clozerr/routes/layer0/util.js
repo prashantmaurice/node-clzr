@@ -128,8 +128,6 @@ function vendorDisplay(vendor){
   }
 }
 function vendorDistDisplay(vendor,latitude,longitude){
-  // console.log(latitude);
-  // console.log(latitude);
   return {
     _id:vendor.id,
     name:vendor.name,
@@ -143,8 +141,8 @@ module.exports = {
   policyCheckTimeDelayBetweenCheckins:policyCheckTimeDelayBetweenCheckins,
   policyCheckDuplicateCheckins:policyCheckDuplicateCheckins,
   vendorDisplay:vendorDisplay,
-  vendorDistDisplay:vendorDistDisplay
-  arrayOperations:arrayOperations
+  vendorDistDisplay:vendorDistDisplay,
+  arrayOperations:arrayOperations,
 }
 
 registry.register("util", module.exports);

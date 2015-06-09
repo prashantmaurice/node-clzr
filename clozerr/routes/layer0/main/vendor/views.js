@@ -216,9 +216,13 @@ var view_vendor_list_near = function(params,user){
         if(params.category)
             deferred.resolve(_.map(
                 _.filter(vendors,function(vendor){return vendor.category==params.category})
-                ,registry.getSharedObject("util").vendorDisplay));
+                ,function(vendor){
+                    return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
+                }));
         else
-            deferred.resolve(_.map(vendors,registry.getSharedObject("util").vendorDisplay));
+            deferred.resolve(_.map(vendors,function(vendor){
+                    return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
+                }));
     })
     return deferred.promise;
 }
