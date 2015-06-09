@@ -1,5 +1,6 @@
 var registry = global.registry;
 var Q = require("q");
+var _ = require("underscore");
 
 var CHECKIN_STATE_ACTIVE = 0;
 var CHECKIN_STATE_CONFIRMED = 1;
@@ -61,6 +62,22 @@ var getVendorNearDisplay=function(vendor){
     settings:vendor.settings||{}
   };
   return retVendor;
+}
+
+var arrayOperations =  {
+  "add" : function(arr1, arr2) {
+    arr1 = arr1.concat(arr2);
+    return arr1;
+  },
+  "remove" : function(arr1, arr2) {
+    for(var i=0; i<arr2.length; i++) {
+      var idx = arr1.indexOf(element);
+      if(idx != -1) {
+        arr1.splice(idx, 1);
+      }
+    }
+    return arr1;
+  }
 }
 
 var makeFacebookPost = function(user, access_token, message, place) {
@@ -127,6 +144,7 @@ module.exports = {
   policyCheckDuplicateCheckins:policyCheckDuplicateCheckins,
   vendorDisplay:vendorDisplay,
   vendorDistDisplay:vendorDistDisplay
+  arrayOperations:arrayOperations
 }
 
 registry.register("util", module.exports);

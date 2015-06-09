@@ -122,6 +122,44 @@ return deferred.promise;
 
 }
 
+var view_vendor_details_update = function( params, user) {
+    //params.modify contains the field to be modified
+    //params.operation is the operation to be performed -- add , remove
+    //params.values contains the array to be added or removed
+
+    var deferred = Q.defer();
+
+    var vendorObjectM = registry.getSharedObject("data_vendor");
+    var userObjectM = registry.getSharedObject("live_session");
+    var arrayOperations = registry.getSharedObject("arrayOperations");
+
+    userObjectM.get( params ).then(function(user) {
+        debugger;
+        if(user.type == "Vendor") {
+            if(user.vendor_id == params.vendor_id) {
+               vendorObjectM.get( params ).then(function(vendor) {
+                vendor[params.modify] = arrayOperations[params.operation](vendor[params.modify], params.values);
+                vendor.markModified(params.modify);
+                vendor.save();
+            }, function(err) {
+                deferred.reject(err);
+            });
+           }
+           else {
+            deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+        }
+    }
+    else {
+        deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+    }
+}, function(err) {
+    deferred.reject(err);
+});
+
+return deferred.promise;
+
+}
+
 var view_vendor_homepage = function( params, user ){
     var deferred = Q.defer();
     
@@ -182,7 +220,7 @@ var view_vendor_list_near = function(params,user){
         else
             deferred.resolve(_.map(vendors,registry.getSharedObject("util").vendorDisplay));
     })
-    return deferred.promise
+    return deferred.promise;
 }
 
 var view_vendor_lucky_checkin  = function(params,user){
@@ -267,7 +305,7 @@ global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage})
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 global.registry.register("view_vendor_categories_get", {get:view_vendor_categories_get});
 global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
-
+global.registry.register("view_vendor_details_update", {get:view_vendor_details_update});
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};
