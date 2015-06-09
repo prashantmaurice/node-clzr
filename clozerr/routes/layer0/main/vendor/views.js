@@ -296,6 +296,7 @@ var view_vendor_search_name=function(params,user){
     })
     return deferred.promise
 }
+
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
