@@ -163,6 +163,9 @@ function getRouteDistance(lat1,lng1,lat2,lng2){
   })
   return deferred.promise;
 }
+function getCheckinSuccessMessage(checkin){
+  return "Successfully checked in"
+}
 module.exports = {
   getVendorNearDisplay:getVendorNearDisplay,
   policyCheckTimeDelayBetweenCheckins:policyCheckTimeDelayBetweenCheckins,
@@ -170,7 +173,7 @@ module.exports = {
   vendorDisplay:vendorDisplay,
   vendorDistDisplay:vendorDistDisplay,
   arrayOperations:arrayOperations,
-  geoLocate:geoLocate
+  getCheckinSuccessMessage:getCheckinSuccessMessage
 }
 
 registry.register("util", module.exports);

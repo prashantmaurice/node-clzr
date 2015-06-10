@@ -60,8 +60,11 @@ var view_vendor_offers_validate=function(params,user){
 			debugger;
 			registry.getSharedObject("handler_validate").get(params,vendor,user,checkin).then(function(val_checkin){
 				debugger;
-				if(val_checkin)
+				if(val_checkin){
+					registry.getSharedObject("gcm").sendPushNotification(user.gcm_id,
+						registry.getSharedObject("util").getPostCheckinMessage(checkin))
 					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
+				}
 				else
 					deferred.resolve({result:false,message:"invalid checkin"});
 			}, function(err) {
@@ -84,6 +87,8 @@ var view_vendor_offers_qrcodevalidate = function(params, user) {
 		registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).exec().then(function(checkin) {
 			registry.getSharedObject("handler_validate_qrcode").get(params, vendor, user, checkin).then(function(val_checkin) {
 				if(val_checkin) {
+					registry.getSharedObject("gcm").sendPushNotification(user.gcm_id,
+						registry.getSharedObject("util").getCheckinSuccessMessage(checkin))
 					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
 				}
 				else {
