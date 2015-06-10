@@ -62,7 +62,7 @@ var view_vendor_offers_validate=function(params,user){
 				debugger;
 				if(val_checkin){
 					registry.getSharedObject("gcm").sendPushNotification(user.gcm_id,
-						registry.getSharedObject("util").getPostCheckinMessage(checkin))
+						registry.getSharedObject("util").getCheckinSuccessMessage(checkin))
 					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
 				}
 				else

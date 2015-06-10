@@ -30,7 +30,7 @@ var vendor_validate = function(params, vendor, user, checkin) {
 		return registry.getSharedObject("handler_validate_" + params.offer.type).get( vendor, user, checkin);
 	}
 	else {
-		return Q();
+		return Q(false);
 	}
 }
 
@@ -44,7 +44,7 @@ var vendor_validate_qrcode = function(params, vendor, user, checkin) {
 		return registry.getSharedObject("handler_validate_" + params.offer.type).get( vendor, user, checkin);
 	}
 	else {
-		return Q();
+		return Q(false);
 	}
 }
 
