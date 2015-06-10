@@ -15,12 +15,12 @@ var fuzzy = require('fuzzy');
 //var _ = require('underscore');
 
 
-function view_review_create( params, user ) {
+function view_vendor_review_create( params, user ) {
 
     var deferred = Q.defer();
 
     var checkinM = registry.getSharedObject("data_checkin");
-    var checkinQ = checkinM.get( { _id : params.checkin_id } );
+    var checkinQ = checkinM.get( params );
 
 
     var checkin_id = params.checkin_id;
@@ -32,19 +32,27 @@ function view_review_create( params, user ) {
     console.log( stars );
     console.log( remarks );
 
+    debugger;
+
     var point2 = checkinQ.then( function( checkin ){
         
         // Check is checkin belongs to user.
+        debugger;
         console.log( "Checkin: User: " + checkin.user );
         console.log( "User: " + user._id ); 
 
-        if( checkin.user != user._id ){
+        if( checkin.user._id.toString() != user._id.toString() ){
             deferred.reject( {description:"Checkin does not match user."} );
             return;
         }
 
-        var dateCreated = new Date();
+        debugger;
 
+        var dateCreated = new Date();
+        var Review = registry.getSharedObject("models_Review");
+
+        debugger;
+        
         var review = new Review({
             checkinid: checkin_id,
             date_created: dateCreated,
@@ -61,26 +69,26 @@ function view_review_create( params, user ) {
 
     });
     
-    return deferred;
+    return deferred.promise;
 }
 
-function view_review_get( params, user ){
+function view_vendor_review_get( params, user ){
     var deferred = Q.defer();
 
     var reviewM = registry.getSharedObject("data_review");
-    reviewM.get({ _id:params.id }).then( function( review ){
+    reviewM.get(params).then( function( review ){
+        debugger;
         if( !review ){
             deferred.reject( { description:"No proper review object." } );
             return;
         }
         
-        deferred.resolve( { data: review } );
+        deferred.resolve( { result:true,data: review } );
 
     });
 
-    deferred.resolve( { result: true, data:review } );
-    return deferred;
+    return deferred.promise;
 }
 
-global.registry.register("view_review_get", {get:view_review_get});
-global.registry.register("view_review_create", {get:view_review_create});
+global.registry.register("view_vendor_review_get", {get:view_vendor_review_get});
+global.registry.register("view_vendor_review_create", {get:view_vendor_review_create});

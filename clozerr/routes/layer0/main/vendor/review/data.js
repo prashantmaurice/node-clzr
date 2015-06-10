@@ -20,7 +20,7 @@ function data_review( params ){
 
     var Review = registry.getSharedObject("models_Review");
 
-    return Review.findOne( params )
+    return Review.findOne( {_id:params.review_id} ).exec();
 
     //deferred.resolve( { result: true, data:review } );
     //return deferred;
@@ -31,10 +31,11 @@ function data_reviews( params ){
 
     var Review = registry.getSharedObject("models_Review");
 
-    return Review.find( params )
+    return Review.find( params ).exec();
 
     //deferred.resolve( { result: true, data:review } );
     //return deferred;
 }
+
 global.registry.register("data_review", {get:data_review});
 global.registry.register("data_reviews", {get:data_reviews});
