@@ -231,7 +231,7 @@ global.registry.register("view_vendor_list_category", {get:view_vendor_list_cate
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 global.registry.register("view_vendor_categories_get", {get:view_vendor_categories_get});
-global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
+// global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
 global.registry.register("view_vendor_details_update", {get:view_vendor_details_update});
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
 

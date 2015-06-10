@@ -2,26 +2,27 @@ var registry = global.registry;
 var Q = require("q");
 var _ = require("underscore");
 
-var view_vendor_offers_allOffers=function(params,user){
-	var deferred = Q.defer()
-	registry.getSharedObject("data_vendor").get(params).then(function(vendor){
-		console.log(vendor)
-		registry.getSharedObject("data_vendor_offer").get(params,vendor).then(function(offers){
-			var plist=[]
-			_.each(offers,function(offer,index,array){
-				debugger;
-				//removing the dummy visit offer from all other offers..
-
-				if(offer._id.toString() != vendor.visitOfferId.toString()) {
-					plist.push(registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer));
-				}
-			});
-			Q.all(plist).then(function(offerList){
-				deferred.resolve(offerList);
-			});
-		});
+var view_vendor_offers_offersPage=function(params,user){
+	console.log("Vendor offersPage")
+	var deferred = Q.defer();
+	registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+		registry.getSharedObject("data_vendor_offer").get(params,vendor).then(function(vendor_offers){
+			deferred.resolve(vendor_offers)
+			// var predicate = registry.getSharedObject("handler_predicate");
+			// var plist=[]
+			// _.each(vendor_offers.offers,function(element,index,array){
+			// 	plist.push(predicate.get(user,vendor,element))
+			// })
+			// Q.all(plist).then(function(predlist){
+			// 	deferred.resolve(
+			// 		_.map(_.filter(vendor_offers.offers,
+			// 			function(val,idx){return predlist[idx]})
+			// 		,function(offer){
+			// 			return registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer)
+			// 		}))
+			// })
+		})
 	});
-	
 	return deferred.promise;
 }
 
@@ -107,7 +108,7 @@ var view_vendor_offers_qrcodevalidate = function(params, user) {
 	return deferred.promise;
 }
 
-registry.register("view_vendor_offers_alloffers", {get:view_vendor_offers_allOffers});
+registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
 registry.register("view_vendor_offers_validate", {get:view_vendor_offers_validate});
 registry.register("view_vendor_offers_checkin", {get:view_vendor_offers_checkin});
 registry.register("view_vendor_offers_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
