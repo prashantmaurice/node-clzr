@@ -11,9 +11,16 @@ var mongoose = require("mongoose");
 var modules = [];
 
 var requireAllFiles = function( normalizedPath , modules, prefix) {
-	fs.readdirSync(normalizedPath).forEach(function(child) {
-
+    console.log( "REQUIRING DIRECTORY: " + normalizedPath );
+    fs.readdirSync(normalizedPath).forEach(function(child) {
 		var normalizedPathChild = normalizedPath + "/" + child;
+        console.log("\t REQ CHILD: " + child);
+
+        if( (child + "").indexOf( ".js" ) == -1 ){
+            console.log("Ignoring: " + child);
+            return;
+        }
+
 		if(fs.lstatSync(normalizedPathChild).isDirectory()) {
 			var childCapitalised = child.charAt(0).toUpperCase() + child.slice(1);
 			/*modules = */
