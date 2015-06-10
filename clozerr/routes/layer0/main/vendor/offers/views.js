@@ -7,7 +7,27 @@ var view_vendor_offers_offersPage=function(params,user){
 	var deferred = Q.defer();
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
 		registry.getSharedObject("data_vendor_offer").get(params,vendor).then(function(vendor_offers){
-			deferred.resolve(vendor_offers)
+			var plist = [];
+			debugger;
+
+			registry.getSharedObject("models_Checkin").find({user:user._id, vendor:vendor._id}).exec().then(function(checkinsMade) {
+				debugger;
+				for(var i=0;i<vendor_offers.length;i++) {
+					debugger;
+					var checkin_old = _.filter(checkinsMade, function(ch) {
+						return (vendor_offers[i]._id.toString() == ch.offer.toString());
+					});
+					debugger;
+					var pr = registry.getSharedObject("qualify").getOfferDisplay(user, vendor, vendor_offers[i], checkin_old);
+					plist.push(pr);
+				}
+
+				Q.all(plist).then(function(offersList) {
+					debugger;
+					deferred.resolve(offersList);
+				});
+			});
+			//deferred.resolve(vendor_offers)
 			// var predicate = registry.getSharedObject("handler_predicate");
 			// var plist=[]
 			// _.each(vendor_offers.offers,function(element,index,array){
@@ -21,9 +41,9 @@ var view_vendor_offers_offersPage=function(params,user){
 			// 			return registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer)
 			// 		}))
 			// })
-		})
-	});
-	return deferred.promise;
+})
+});
+return deferred.promise;
 }
 
 var view_vendor_offers_checkin=function(params,user){
