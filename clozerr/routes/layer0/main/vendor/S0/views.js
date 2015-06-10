@@ -15,12 +15,17 @@ var view_vendor_offers_offers_S0=function(params,user){
 			})
 			debugger;
 			Q.all(plist).then(function(predlist){
-				deferred.resolve(
-					_.map(_.filter(vendor_offers.offers,
+				debugger;
+				var offersplist=[];
+				_.each(_.filter(vendor_offers.offers,
 						function(val,idx){return predlist[idx]})
 					,function(offer){
-						return registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer)
-					}))
+						// return offer;
+						offersplist.push(registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer))
+					})
+				Q.all(offersplist).then(function(offerlist){
+					deferred.resolve(offerlist);
+				})
 			})
 		})
 	});
