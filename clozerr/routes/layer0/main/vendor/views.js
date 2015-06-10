@@ -226,6 +226,17 @@ var view_vendor_list_near = function(params,user){
     })
     return deferred.promise;
 }
+var view_vendor_list_nearaddress = function(params,user){
+    var deferred = Q.defer();
+    var address=params.address || "Mylapore"
+    registry.getSharedObject("util").geoLocate(params.address).then(function(loc){
+        params.latitude=loc[0];
+        params.longitude=loc[1];
+        // deferred.resolve(params)
+        deferred.resolve(view_vendor_list_near(params,user));
+    })
+    return deferred.promise
+}
 
 var view_vendor_lucky_checkin  = function(params,user){
     var deferred = Q.defer();
@@ -311,5 +322,6 @@ global.registry.register("view_vendor_categories_get", {get:view_vendor_categori
 global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
 global.registry.register("view_vendor_details_update", {get:view_vendor_details_update});
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
+global.registry.register("view_vendor_list_nearaddress", {get:view_vendor_list_nearaddress});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};

@@ -1,6 +1,7 @@
 var registry = global.registry;
 var Q = require("q");
 var _ = require("underscore");
+var request = require('request');
 
 var CHECKIN_STATE_ACTIVE = 0;
 var CHECKIN_STATE_CONFIRMED = 1;
@@ -136,6 +137,32 @@ function vendorDistDisplay(vendor,latitude,longitude){
     image:vendor.image
   }
 }
+function geoLocate(address){
+  var deferred=Q.defer();
+  request.get({url:"https://maps.googleapis.com/maps/api/geocode/json?address="+address},
+    function(err,response,body){
+    if(err){
+      console.log("error : "+err)
+      return;
+    }
+    latlng=JSON.parse(body).results[0].geometry.location
+    deferred.resolve([latlng.lat,latlng.lng])
+  })
+  return deferred.promise;
+}
+function getRouteDistance(lat1,lng1,lat2,lng2){
+  var deferred=Q.defer();
+  request.get({url:"https://maps.googleapis.com/maps/api/directions/json?origin=loc:"+lat1+"N"+lng1+"E&destination="lat2+"N"+lng2+"E"},
+    function(err,response,body){
+    if(err){
+      console.log("error : "+err)
+      return;
+    }
+    dist_m=JSON.parse(body).routes[0].legs[0].distance.value;
+    deferred.resolve(dist_m)
+  })
+  return deferred.promise;
+}
 module.exports = {
   getVendorNearDisplay:getVendorNearDisplay,
   policyCheckTimeDelayBetweenCheckins:policyCheckTimeDelayBetweenCheckins,
@@ -143,6 +170,7 @@ module.exports = {
   vendorDisplay:vendorDisplay,
   vendorDistDisplay:vendorDistDisplay,
   arrayOperations:arrayOperations,
+  geoLocate:geoLocate
 }
 
 registry.register("util", module.exports);
