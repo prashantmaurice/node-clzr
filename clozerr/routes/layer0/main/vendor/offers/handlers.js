@@ -25,8 +25,9 @@ var vendor_validate = function(params, vendor, user, checkin) {
 		checkin.validate_data = params.validate_data;
 		checkin.markModified("validate_data");
 	}
-
+	debugger;
 	if(user.type == "Vendor" && checkin.vendor == user.vendor_id && JSON.parse(JSON.stringify(vendor.offers)).indexOf(checkin.offer.toString()) != -1) {
+		debugger;
 		return registry.getSharedObject("handler_validate_" + params.offer.type).get( vendor, user, checkin);
 	}
 	else {
@@ -35,17 +36,20 @@ var vendor_validate = function(params, vendor, user, checkin) {
 }
 
 var vendor_validate_qrcode = function(params, vendor, user, checkin) {
-	if(params.validate_data) {
-		checkin.validate_data = params.validate_data;
+	debugger;
+	if(params.qrcode) {
+		checkin.validate_data ={qrcode:params.qrcode};
 		checkin.validate_data.validatedBy = user._id;
 		checkin.markModified("validate_data");
-	}
 	if(vendor.qrcodes.indexOf(checkin.validate_data.qrcode) != -1) {
+		debugger;
 		return registry.getSharedObject("handler_validate_" + params.offer.type).get( vendor, user, checkin);
 	}
 	else {
 		return Q(false);
 	}
+	}
+	return Q(false);
 }
 
 global.registry.register("handler_checkin", {get:vendor_checkin});
