@@ -47,6 +47,11 @@ module.exports = {
 	},
 	"UUID":"23A01AF0-232A-4518-9C0E-323FB773F5EF",
 	"categories":[
-		{"name":"Food", "image":""}
+		{"name":"Food", "image":""},
+		{"name":"Pubs", "image":""},
+		{"name":"Apparel", "image":""},
+		{"name":"Spas & Salons", "image":""},
+		{"name":"Electronics", "image":""},
+		{"name":"Others", "image":""}
 	]
 };
