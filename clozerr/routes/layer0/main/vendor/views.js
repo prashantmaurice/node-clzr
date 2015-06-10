@@ -223,17 +223,6 @@ var view_vendor_list_near = function(params,user){
     })
     return deferred.promise;
 }
-var view_vendor_list_nearaddress = function(params,user){
-    var deferred = Q.defer();
-    var address=params.address || "Mylapore"
-    registry.getSharedObject("util").geoLocate(params.address).then(function(loc){
-        params.latitude=loc[0];
-        params.longitude=loc[1];
-        // deferred.resolve(params)
-        deferred.resolve(view_vendor_list_near(params,user));
-    })
-    return deferred.promise
-}
 
 var view_vendor_lucky_checkin  = function(params,user){
     var deferred = Q.defer();
