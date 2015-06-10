@@ -28,7 +28,9 @@ var vendorSchema = new Schema({
 	category : String,
 	flags : [String],
 	trials:Number,
-	qrcodes:[String]
+	qrcodes:[String],
+	gallery:[String],
+	image_small:String
 });
 vendorSchema.index({ location: '2d' });
 

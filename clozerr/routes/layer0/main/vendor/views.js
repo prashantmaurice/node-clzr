@@ -12,28 +12,7 @@ function getVendorType(vendor) {
         return "S1";
     }
 }
-function removeDuplicatesRewards(user,vendor_id){
-    var valid = true;
-    if(user.lucky_rewards.length==0)
-        return true;
-    for(var i=0;i<user.lucky_rewards.length;i++){
-        if(user.lucky_rewards[i].id.equals(vendor_id))
-            valid = false;
-        if(i==user.lucky_rewards.length-1)
-            return valid;
-    }
-}
-function removeDuplicatesFailed(user,vendor_id){
-    var valid = true;
-    if(user.failed_instances.length==0)
-        return true;
-    for(var i=0;i<user.failed_instances.length;i++){
-        if(user.failed_instances[i].id.equals(vendor_id))
-            valid = false;
-        if(i==user.failed_instances.length-1)
-            return valid;
-    }
-}
+
 
 var view_vendor_get_details = function( params ) {
     var deferred = Q.defer();
@@ -224,63 +203,10 @@ var view_vendor_list_near = function(params,user){
     return deferred.promise;
 }
 
-var view_vendor_lucky_checkin  = function(params,user){
-    var deferred = Q.defer();
-    var vendorObj = registry.getSharedObject("data_vendor");
-    var valid ;
-    debugger;
-    if(!user.lucky_rewards)
-    {
-        user.lucky_rewards = [];
-    }
-    if(!user.failed_instances)
-    {
-        user.failed_instances = [];
-    }
-    vendorObj.get(params).then(function(vendor){
-        if(!vendor.trials)
-            vendor.trials = 0;
-        debugger;
-        if(removeDuplicatesFailed(user,vendor._id))
-            {   debugger;
-                if(removeDuplicatesRewards(user,vendor._id))
-                {
-                    if(vendor.trials%2==0)
-                        {   debugger;
-                            user.lucky_rewards.push({id:vendor._id,time:Date.now()});
-                            vendor.trials++;
-                            user.markModified("lucky_rewards");
-                            user.save();
-                            valid = true;
-                            deferred.resolve(valid);
-                        }
-                        else
-                        {
-                            user.failed_instances.push({id:vendor._id,time:Date.now()});
-                            vendor.trials++;
-                            user.markModified("failed_instances");
-                            user.save();
-                            valid = false;
-                            deferred.resolve(valid);
-                        }
-                        vendor.save();
-                    }
-                    else
-                    {
-                        deferred.resolve(false);
-                    }
-                }
-                else
-                {
-                    deferred.resolve(false);
-                }
-            });
-return deferred.promise;
-}
-
 var view_vendor_categories_get = function(params,user) {
     return Q(registry.getSharedObject("settings").categories)
 }
+
 var view_vendor_search_name=function(params,user){
     var deferred = Q.defer();
     limit=params.limit || registry.getSharedObject("settings").api.default_limit;
@@ -301,7 +227,6 @@ var view_vendor_search_name=function(params,user){
 
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
-global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
