@@ -25,48 +25,6 @@ var ganalytics = require('./routes/util/google_analytics');
 
 // --------- DB ----------
 var db=mongoose.connection;
-//<<<<<<< HEAD
-db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
-
-//db.open('mongodb://mongoadmin:clozerradmin@localhost:6547/fin4')
-//>>>>>>> aa06b2f377038141bcf28cfa17be6896876e8150
-
-//=======
-
-<<<<<<< HEAD
-//db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
-//db.open('mongodb://mongoadmin:clozerradmin@localhost:4567/fin4')
-//>>>>>>> 0de029435e4e8f0bd070b1995d5666e6b6c231ad
-=======
-db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
-//db.open('mongodb://mongoadmin:clozerradmin@localhost:4567/fin4')
-s = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var mongoose=require('mongoose');
-var models = require("./routes/models");
-var Token = models.Token;
-var User = models.User;
-
-
-
-var auth = require('./routes/user');
-var common =require('./routes/common');
-var offer = require('./routes/offer');
-var vendor = require('./routes/vendor');
-var checkin = require('./routes/checkin');
-var content = require('./routes/content');
-var settings = require('./routes/settings');
-var rev = require('./routes/review');
-var error = require('./routes/error');
-var data = require('./routes/data');
-var ganalytics = require('./routes/util/google_analytics');
-
-// --------- DB ----------
-var db=mongoose.connection;
 
 db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
 //db.open('mongodb://mongoadmin:clozerradmin@localhost:4567/fin4')
