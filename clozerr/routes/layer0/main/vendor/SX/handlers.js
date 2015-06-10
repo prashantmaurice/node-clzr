@@ -86,32 +86,26 @@ var vendor_validate_SX = function( vendor, user, checkin ){
 
     registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(userObj) {
         debugger;
+          
+        checkin.state = CHECKIN_STATE_CONFIRMED;
+        debugger;
 
-        if(user.type == "Vendor" && checkin.vendor == user.vendor_id && JSON.parse(JSON.stringify(vendor.offers)).indexOf(checkin.offer.toString()) != -1) {
-            checkin.state = CHECKIN_STATE_CONFIRMED;
-            debugger;
+        checkin.save(function(err) {
+            deferred.reject(err);
+        });
 
-            checkin.save(function(err) {
-                deferred.reject(err);
-            });
+        var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
 
-            var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
+        userObj.stamplist[vendor.fid] += stamps*1;
+        userObj.markModified("stamplist");
 
-            userObj.stamplist[vendor.fid] += stamps*1;
-            userObj.markModified("stamplist");
+        debugger;
 
-            debugger;
+        userObj.save(function(err) {
+            deferred.reject(err);
+        });
 
-            userObj.save(function(err) {
-                deferred.reject(err);
-            });
-
-            deferred.resolve(checkin);
-        }
-
-        else {
-            deferred.resolve();
-        }
+        deferred.resolve(checkin);
     });
 
     return deferred.promise;

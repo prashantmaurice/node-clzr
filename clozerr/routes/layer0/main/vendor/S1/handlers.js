@@ -54,7 +54,7 @@ var vendor_checkin_S1 = function( params, user, vendor, offer ){
         deferred.reject(err);
     });
 
-    return deferred.promise;
+return deferred.promise;
 }
 
 var vendor_predicate_S1 = function(user, vendor, offer) {
@@ -94,29 +94,23 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
     registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(userObj) {
         debugger;
 
-        if(user.type == "Vendor" && checkin.vendor == user.vendor_id && JSON.parse(JSON.stringify(vendor.offers)).indexOf(checkin.offer.toString()) != -1) {
-            checkin.state = CHECKIN_STATE_CONFIRMED;
-            debugger;
+        checkin.state = CHECKIN_STATE_CONFIRMED;
+        debugger;
 
-            checkin.save(function(err) {
-                deferred.reject(err);
-            });
+        checkin.save(function(err) {
+            deferred.reject(err);
+        });
 
-            userObj.stamplist[vendor.fid]++;
-            userObj.markModified("stamplist");
+        userObj.stamplist[vendor.fid]++;
+        userObj.markModified("stamplist");
 
-            debugger;
+        debugger;
 
-            userObj.save(function(err) {
-                deferred.reject(err);
-            });
+        userObj.save(function(err) {
+            deferred.reject(err);
+        });
 
-            deferred.resolve(checkin);
-        }
-
-        else {
-            deferred.resolve();
-        }
+        deferred.resolve(checkin);
     });
     
     return deferred.promise;

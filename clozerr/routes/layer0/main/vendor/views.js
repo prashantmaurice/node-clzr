@@ -1,41 +1,18 @@
 var registry = global.registry;
 var Q = require("q");
 var _ = require('underscore')
+var fuzzy = require('fuzzy');
 
 function getVendorType(vendor) {
-    console.log('in getVendorType');
     debugger;
     if(vendor.settings.sxEnabled == true || vendor.settings.sxEnabled == "true") {
-        console.log("SX");
         return "SX";
     }
     else {
-        console.log("S1");  
         return "S1";
     }
 }
-function removeDuplicatesRewards(user,vendor_id){
-    var valid = true;
-    if(user.lucky_rewards.length==0)
-        return true;
-    for(var i=0;i<user.lucky_rewards.length;i++){
-        if(user.lucky_rewards[i].id.equals(vendor_id))
-            valid = false;
-        if(i==user.lucky_rewards.length-1)
-            return valid;
-    }
-}
-function removeDuplicatesFailed(user,vendor_id){
-    var valid = true;
-    if(user.failed_instances.length==0)
-        return true;
-    for(var i=0;i<user.failed_instances.length;i++){
-        if(user.failed_instances[i].id.equals(vendor_id))
-            valid = false;
-        if(i==user.failed_instances.length-1)
-            return valid;
-    }
-}
+
 
 var view_vendor_details_set = function( params, user ){
 
@@ -146,6 +123,44 @@ return deferred.promise;
 
 }
 
+var view_vendor_details_update = function( params, user) {
+    //params.modify contains the field to be modified
+    //params.operation is the operation to be performed -- add , remove
+    //params.values contains the array to be added or removed
+
+    var deferred = Q.defer();
+
+    var vendorObjectM = registry.getSharedObject("data_vendor");
+    var userObjectM = registry.getSharedObject("live_session");
+    var arrayOperations = registry.getSharedObject("arrayOperations");
+
+    userObjectM.get( params ).then(function(user) {
+        debugger;
+        if(user.type == "Vendor") {
+            if(user.vendor_id == params.vendor_id) {
+               vendorObjectM.get( params ).then(function(vendor) {
+                vendor[params.modify] = arrayOperations[params.operation](vendor[params.modify], params.values);
+                vendor.markModified(params.modify);
+                vendor.save();
+            }, function(err) {
+                deferred.reject(err);
+            });
+           }
+           else {
+            deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+        }
+    }
+    else {
+        deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+    }
+}, function(err) {
+    deferred.reject(err);
+});
+
+return deferred.promise;
+
+}
+
 var view_vendor_homepage = function( params, user ){
     var deferred = Q.defer();
     
@@ -202,80 +217,55 @@ var view_vendor_list_near = function(params,user){
         if(params.category)
             deferred.resolve(_.map(
                 _.filter(vendors,function(vendor){return vendor.category==params.category})
-                ,registry.getSharedObject("util").getVendorNearDisplay));
+                ,function(vendor){
+                    return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
+                }));
         else
-            deferred.resolve(_.map(vendors,registry.getSharedObject("util").getVendorNearDisplay));
+            deferred.resolve(_.map(vendors,function(vendor){
+                    return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
+                }));
     })
-    return deferred.promise
-}
-
-var view_vendor_lucky_checkin  = function(params,user){
-    var deferred = Q.defer();
-    var vendorObj = registry.getSharedObject("data_vendor");
-    var valid ;
-    debugger;
-    if(!user.lucky_rewards)
-    {
-        user.lucky_rewards = [];
-    }
-    if(!user.failed_instances)
-    {
-        user.failed_instances = [];
-    }
-    vendorObj.get(params).then(function(vendor){
-        if(!vendor.trials)
-            vendor.trials = 0;
-        debugger;
-        if(removeDuplicatesFailed(user,vendor._id))
-            {   debugger;
-                if(removeDuplicatesRewards(user,vendor._id))
-                {
-                    if(vendor.trials%2==0)
-                        {   debugger;
-                            user.lucky_rewards.push({id:vendor._id,time:Date.now()});
-                            vendor.trials++;
-                            user.markModified("lucky_rewards");
-                            user.save();
-                            valid = true;
-                            deferred.resolve(valid);
-                        }
-                        else
-                        {
-                            user.failed_instances.push({id:vendor._id,time:Date.now()});
-                            vendor.trials++;
-                            user.markModified("failed_instances");
-                            user.save();
-                            valid = false;
-                            deferred.resolve(valid);
-                        }
-                        vendor.save();
-                    }
-                    else
-                    {
-                        deferred.resolve("you have tried already and won it");
-                    }
-                }
-                else
-                {
-                    deferred.resolve("Try again after 24 hours");
-                }
-            });
-return deferred.promise;
+    return deferred.promise;
 }
 
 var view_vendor_categories_get = function(params,user) {
     return Q(registry.getSharedObject("settings").categories)
 }
 
+var view_vendor_search_name=function(params,user){
+    var deferred = Q.defer();
+    limit=params.limit || registry.getSharedObject("settings").api.default_limit;
+    offset=params.offset || 0;
+    registry.getSharedObject("data_vendors").get().then(function(vendors){
+        // console.log(vendors[0])
+        result = _.first(_.rest(fuzzy.filter(params.text,vendors,
+            {extract:function(el){
+                return el.name;
+            }}),offset),limit);
+        deferred.resolve(_.map(result,function(el){
+            // return el;
+            return registry.getSharedObject("util").vendorDistDisplay(el.original,params.latitude,params.longitude);
+        }))
+    })
+    return deferred.promise;
+}
+
+var view_vendor_gallery_upload = function(params, user) {
+    var deferred = Q.defer();
+
+    registry.getSharedObject()
+
+    return deferred.promise;
+}
+
+global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
-global.registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 global.registry.register("view_vendor_categories_get", {get:view_vendor_categories_get});
-global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
-
+// global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
+global.registry.register("view_vendor_details_update", {get:view_vendor_details_update});
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
-// Put other vendor types here.
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};

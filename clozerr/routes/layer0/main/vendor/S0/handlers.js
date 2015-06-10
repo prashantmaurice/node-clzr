@@ -84,16 +84,16 @@ var vendor_checkin_S0 = function( user, vendor, offer ){
                 else {
                         //TODO : throw error here.. can't use that offer
                         //deferred.reject(err);
-                }
-            }, function(err) {
-                deferred.reject(err);
-            });
+                    }
+                }, function(err) {
+                    deferred.reject(err);
+                });
         }
     }, function(err) {
         deferred.reject(err);
     });
 
-    return deferred.promise;
+return deferred.promise;
 }
 
 var vendor_predicate_S0 = function(user, vendor, offer) {
@@ -105,16 +105,11 @@ var vendor_validate_S0 = function( vendor, user, checkin ){
 
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
 
-    if(user.type == "Vendor" && checkin.vendor_id == vendor._id && vendor.offers.contains(ObjectId(checkin.offer_id))) {
-        checkin.state = CHECKIN_STATE_CONFIRMED;
-        checkin.save(function(err) {
-            deferred.reject(err);
-        });
-        deferred.resolve(checkin);
-    }
-    else {
-        deferred.resolve();
-    }
+    checkin.state = CHECKIN_STATE_CONFIRMED;
+    checkin.save(function(err) {
+        deferred.reject(err);
+    });
+    deferred.resolve(checkin);
 
     return deferred.promise;
 }

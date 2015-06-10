@@ -1,5 +1,7 @@
 var registry = global.registry;
 var Q = require("q");
+var _ = require("underscore");
+var request = require('request');
 
 var CHECKIN_STATE_ACTIVE = 0;
 var CHECKIN_STATE_CONFIRMED = 1;
@@ -63,6 +65,22 @@ var getVendorNearDisplay=function(vendor){
   return retVendor;
 }
 
+var arrayOperations =  {
+  "add" : function(arr1, arr2) {
+    arr1 = arr1.concat(arr2);
+    return arr1;
+  },
+  "remove" : function(arr1, arr2) {
+    for(var i=0; i<arr2.length; i++) {
+      var idx = arr1.indexOf(element);
+      if(idx != -1) {
+        arr1.splice(idx, 1);
+      }
+    }
+    return arr1;
+  }
+}
+
 var makeFacebookPost = function(user, access_token, message, place) {
   var https = require('https');
 
@@ -85,10 +103,81 @@ var makeFacebookPost = function(user, access_token, message, place) {
   req.end();
 }
 
+function distance(lat1, lon1, lat2, lon2, unit) {
+  var radlat1 = Math.PI * lat1/180
+  var radlat2 = Math.PI * lat2/180
+  var radlon1 = Math.PI * lon1/180
+  var radlon2 = Math.PI * lon2/180
+  var theta = lon1-lon2
+  var radtheta = Math.PI * theta/180
+  var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+  dist = Math.acos(dist)
+  dist = dist * 180/Math.PI
+  dist = dist * 60 * 1.1515
+  dist = dist * 1.609344
+  return dist
+}
+function getDistance(latitude,longitude,vendor){
+  return distance(latitude,longitude,vendor.location[0],vendor.location[1]);
+}
+function vendorDisplay(vendor){
+  return {
+    _id:vendor.id,
+    name:vendor.name,
+    location:vendor.location,
+    image:vendor.image,
+    image_small:vendor.image_small,
+    gallery:vendor.gallery,
+  }
+}
+function vendorDistDisplay(vendor,latitude,longitude){
+  return {
+    _id:vendor.id,
+    name:vendor.name,
+    location:vendor.location,
+    distance:getDistance(latitude,longitude,vendor),
+    image:vendor.image,
+    image_small:vendor.image_small,
+    gallery:vendor.gallery,
+  }
+}
+function geoLocate(address){
+  var deferred=Q.defer();
+  request.get({url:"https://maps.googleapis.com/maps/api/geocode/json?address="+address},
+    function(err,response,body){
+    if(err){
+      console.log("error : "+err)
+      return;
+    }
+    latlng=JSON.parse(body).results[0].geometry.location
+    deferred.resolve([latlng.lat,latlng.lng])
+  })
+  return deferred.promise;
+}
+function getRouteDistance(lat1,lng1,lat2,lng2){
+  var deferred=Q.defer();
+  request.get({url:"https://maps.googleapis.com/maps/api/directions/json?origin=loc:"+lat1+"N"+lng1+"E&destination="+lat2+"N"+lng2+"E"},
+    function(err,response,body){
+    if(err){
+      console.log("error : "+err)
+      return;
+    }
+    dist_m=JSON.parse(body).routes[0].legs[0].distance.value;
+    deferred.resolve(dist_m)
+  })
+  return deferred.promise;
+}
+function getCheckinSuccessMessage(checkin){
+  return "Successfully checked in"
+}
 module.exports = {
   getVendorNearDisplay:getVendorNearDisplay,
   policyCheckTimeDelayBetweenCheckins:policyCheckTimeDelayBetweenCheckins,
-  policyCheckDuplicateCheckins:policyCheckDuplicateCheckins
+  policyCheckDuplicateCheckins:policyCheckDuplicateCheckins,
+  vendorDisplay:vendorDisplay,
+  vendorDistDisplay:vendorDistDisplay,
+  arrayOperations:arrayOperations,
+  getCheckinSuccessMessage:getCheckinSuccessMessage
 }
 
 registry.register("util", module.exports);

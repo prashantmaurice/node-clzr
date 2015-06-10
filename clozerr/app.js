@@ -25,11 +25,17 @@ var ganalytics = require('./routes/util/google_analytics');
 
 // --------- DB ----------
 var db=mongoose.connection;
+//<<<<<<< HEAD
 db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
 
 //db.open('mongodb://mongoadmin:clozerradmin@localhost:6547/fin4')
 //>>>>>>> aa06b2f377038141bcf28cfa17be6896876e8150
 
+//=======
+
+//db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
+//db.open('mongodb://mongoadmin:clozerradmin@localhost:4567/fin4')
+//>>>>>>> 0de029435e4e8f0bd070b1995d5666e6b6c231ad
 // --------- DB ----------
 
 var v2 = require('./routes/layer0/router');
