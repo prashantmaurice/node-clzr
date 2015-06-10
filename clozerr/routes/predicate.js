@@ -15,6 +15,8 @@ var predicates = {
   },
 
   "S0": function( user, vendor, offer ){
+    if(!offer.params || !offer.params.type)
+      return false
     predicatesS0[offer.params.type](user, vendor, offer).then(function(retval) {
       debugger;
       return retval;

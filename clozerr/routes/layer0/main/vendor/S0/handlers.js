@@ -1,7 +1,6 @@
 var registry = global.registry;
 var Q = require("q");
 var _ = require("underscore")
-var util = registry.getSharedObject("util");
 
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
@@ -55,7 +54,7 @@ var vendor_checkin_S0_predicates = {
     }
 }
 
-var vendor_checkin_S0 = function( user, vendor, offer ){
+var vendor_checkin_S0 = function( params,user, vendor, offer ){
     var deferred = Q.defer();
 
     var checkinM = registry.getSharedObject("data_checkin");
@@ -63,22 +62,21 @@ var vendor_checkin_S0 = function( user, vendor, offer ){
 
     //TODO : Also if the checkin is not validated within 2 hrs, just cancel it i.e set its state to cancelled and save it
 
-    util.policyCheckDuplicateCheckins(user, vendor, offer).then(function(checkin) {
+    registry.getSharedObject("util").policyCheckDuplicateCheckins(user, vendor, offer).then(function(checkin) {
         if(checkin) {
             deferred.resolve(checkin);
         }
         else {
-            util.policyCheckTimeDelayBetweenCheckins(user, vendor, offer).then(function(retval, checkin) {
+            registry.getSharedObject("util").policyCheckTimeDelayBetweenCheckins(user, vendor, offer).then(function(retval) {
+                debugger;
                 if(retval) {
                     checkinObj.vendor = vendor._id;
                     checkinObj.user = user._id;
                     checkinObj.offer = offer._id;
                     checkinObj.state = CHECKIN_STATE_ACTIVE;
 
-                    checkinM.save( checkinObj ).then( function( checkin ){
-                        deferred.resolve( checkin );
-                    }, function( err ){
-                        deferred.reject( err );
+                    checkinObj.save(function(err) {
+                        deferred.reject(err);
                     });
                 }
                 else {
