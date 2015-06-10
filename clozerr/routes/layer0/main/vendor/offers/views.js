@@ -30,7 +30,7 @@ var view_vendor_offers_checkin=function(params,user){
 
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor){
 		debugger;
-		registry.getSharedObject("data_offer").get(params,vendor).then(function(offer){
+		registry.getSharedObject("data_offer").get(params).then(function(offer){
 			debugger;
 			registry.getSharedObject("handler_predicate").get(user,vendor,offer).then(function(valid){
 				debugger;

@@ -5,19 +5,26 @@ var _ = require("underscore");
 var view_vendor_offers_offers_S0=function(params,user){
 	var deferred = Q.defer();
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+		debugger;
 		registry.getSharedObject("data_vendor_S0").get(params,vendor).then(function(vendor_offers){
+			debugger;
 			var predicate = registry.getSharedObject("handler_predicate_S0");
 			var plist=[]
 			_.each(vendor_offers.offers,function(element,index,array){
 				plist.push(predicate.get(user,vendor,element))
 			})
 			Q.all(plist).then(function(predlist){
-				deferred.resolve(
-					_.map(_.filter(vendor_offers.offers,
+				debugger;
+				var offersplist=[];
+				_.each(_.filter(vendor_offers.offers,
 						function(val,idx){return predlist[idx]})
 					,function(offer){
-						return registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer)
-					}))
+						// return offer;
+						offersplist.push(registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer))
+					})
+				Q.all(offersplist).then(function(offerlist){
+					deferred.resolve(offerlist);
+				})
 			})
 		})
 	});
