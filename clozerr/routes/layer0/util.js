@@ -152,7 +152,7 @@ function geoLocate(address){
 }
 function getRouteDistance(lat1,lng1,lat2,lng2){
   var deferred=Q.defer();
-  request.get({url:"https://maps.googleapis.com/maps/api/directions/json?origin=loc:"+lat1+"N"+lng1+"E&destination="lat2+"N"+lng2+"E"},
+  request.get({url:"https://maps.googleapis.com/maps/api/directions/json?origin=loc:"+lat1+"N"+lng1+"E&destination="+lat2+"N"+lng2+"E"},
     function(err,response,body){
     if(err){
       console.log("error : "+err)
