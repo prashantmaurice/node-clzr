@@ -63,12 +63,12 @@ var getCheckinOnValidateDisplay = function(checkin) {
   return checkin;
 }
 
-var getOfferDisplay = function (user, vendor, offer){
+var getOfferDisplay = function (user, vendor, offer, checkinOld){
   var offerDisplay={};
   var deferred = Q.defer();
   if(offer) {
     debugger;
-    //console.log(user.stamplist[vendor.fid]);
+    console.log(user.stamplist[vendor.fid]);
 
     offerDisplay._id=offer._id;
     offerDisplay.type=offer.type;
@@ -76,6 +76,15 @@ var getOfferDisplay = function (user, vendor, offer){
     offerDisplay.description=offer.description;
     offerDisplay.stamps=offer.stamps*1;
     offerDisplay.params={};
+    debugger;
+
+    if(checkinOld) {
+      offerDisplay.params.used = true;
+    }
+    else {
+      offerDisplay.params.used = false;
+    }
+
     if(offerDisplay.stamps*1 <= user.stamplist[vendor.fid]*1) {
       offerDisplay.params.unlocked = true;
     }
