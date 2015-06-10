@@ -125,7 +125,9 @@ function vendorDisplay(vendor){
     _id:vendor.id,
     name:vendor.name,
     location:vendor.location,
-    image:vendor.image
+    image:vendor.image,
+    image_small:vendor.image_small,
+    gallery:vendor.gallery,
   }
 }
 function vendorDistDisplay(vendor,latitude,longitude){
