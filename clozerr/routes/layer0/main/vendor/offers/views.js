@@ -86,7 +86,9 @@ var view_vendor_offers_qrcodevalidate = function(params, user) {
 
 	registry.getSharedObject("data_vendor").get( params ).then(function(vendor) {
 		registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).exec().then(function(checkin) {
+			debugger;
 			registry.getSharedObject("handler_validate_qrcode").get(params, vendor, user, checkin).then(function(val_checkin) {
+				debugger;
 				if(val_checkin) {
 					registry.getSharedObject("gcm").sendPushNotification(user.gcm_id,
 						registry.getSharedObject("util").getCheckinSuccessMessage(checkin))

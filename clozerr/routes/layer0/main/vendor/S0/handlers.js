@@ -102,7 +102,7 @@ var vendor_validate_S0 = function( vendor, user, checkin ){
     var deferred = Q.defer();
 
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
-
+    debugger;
     checkin.state = CHECKIN_STATE_CONFIRMED;
     checkin.save(function(err) {
         deferred.reject(err);
