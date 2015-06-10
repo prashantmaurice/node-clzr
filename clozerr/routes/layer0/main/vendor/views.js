@@ -4,14 +4,11 @@ var _ = require('underscore')
 var fuzzy = require('fuzzy');
 
 function getVendorType(vendor) {
-    console.log('in getVendorType');
     debugger;
     if(vendor.settings.sxEnabled == true || vendor.settings.sxEnabled == "true") {
-        console.log("SX");
         return "SX";
     }
     else {
-        console.log("S1");  
         return "S1";
     }
 }
@@ -281,12 +278,12 @@ var view_vendor_lucky_checkin  = function(params,user){
                     }
                     else
                     {
-                        deferred.resolve("you have tried already and won it");
+                        deferred.resolve(false);
                     }
                 }
                 else
                 {
-                    deferred.resolve("Try again after 24 hours");
+                    deferred.resolve(false);
                 }
             });
 return deferred.promise;
@@ -323,6 +320,5 @@ global.registry.register("view_vendor_categories_get", {get:view_vendor_categori
 global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
 global.registry.register("view_vendor_details_update", {get:view_vendor_details_update});
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
-global.registry.register("view_vendor_list_nearaddress", {get:view_vendor_list_nearaddress});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};
