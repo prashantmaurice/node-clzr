@@ -48,10 +48,10 @@ module.exports = {
 	"UUID":"23A01AF0-232A-4518-9C0E-323FB773F5EF",
 	"categories":[
 		{"name":"Food", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/food.jpg"},
-		{"name":"Pubs", "image":""},
-		{"name":"Apparel", "image":""},
-		{"name":"Spas & Salons", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/salon.jpg"},
-		{"name":"Electronics", "image":""},
-		{"name":"Others", "image":""}
+		{"name":"Pubs", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/pubs.jpg"},
+		{"name":"Apparel", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/apparel.jpg"},
+		{"name":"Spas & Salons", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/spas+salons.jpg"},
+		{"name":"Electronics", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/electronics.jpg"},
+		{"name":"Others", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/others.jpg"}
 	]
 };
