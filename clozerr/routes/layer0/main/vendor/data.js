@@ -17,8 +17,8 @@ var data_vendor_withOffers = function( params ){
         var offerList = vendor.offers;
         return Offer.find({
             _id:{
-                    $in: offerList
-                }
+                $in: offerList
+            }
         }).exec();
         
     }, function( err ){
@@ -34,6 +34,49 @@ var data_vendor_withOffers = function( params ){
         deferred.reject( err );
 
     });
+
+    return deferred.promise;
+}
+
+var data_vendors_withLimitedTimeOffers = function(params) {
+    var vendors = params.vendors;
+    var Vendor = registry.getSharedObject("models_Vendor");
+    var Offer = registry.getSharedObject("models_Offer");
+
+    var ret_obj = {};
+    var plist = [];
+
+    var deferred = Q.defer();
+
+    Vendor.find({_id:
+        {
+            $in : vendors
+        }
+    }).exec().then(function(vendorObjects) {
+        for(var i=0;i<vendorObjects.length;i++) {
+        ret_obj[vendorObjects[i]._id] = [];
+            var pr = Offer.find({_id:
+                {
+                    $in : vendorObjects[i].offers
+                },
+                type:"S0",
+                "params.type":"limitedTime"
+            }).exec().then(function(offers) {
+                ret_obj[vendorObjects[i]._id] = {"vendor":vendorObjects[i],"offers":offers};
+            });
+
+            plist.push(pr);
+        }
+
+        Q.all(plist).then(function() {
+            deferred.resolve(ret_obj);
+        }, function(err) {
+            deferred.reject(err);
+        });
+
+    }, function(err) {
+        deferred.reject(err);
+    })
 
     return deferred.promise;
 }
@@ -90,7 +133,7 @@ var http_vendor_offers = function( params){
         return Offer.find({
             _id:{
                 "$in":vendor.offers
-                }
+            }
         });
 
     }, function( err ){
@@ -130,3 +173,4 @@ registry.register("data_vendors",{get:data_vendors});
 registry.register("data_vendor_near",{get:data_vendor_near});
 registry.register("data_vendor_withOffers",{get:data_vendor_withOffers});
 registry.register("data_vendors_category",{get:data_vendors_category});
+registry.register("data_vendors_withLimitedTimeOffers", {get:data_vendors_withLimitedTimeOffers});

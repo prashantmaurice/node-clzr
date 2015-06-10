@@ -74,10 +74,37 @@ var view_vendor_offers_validate_S0 = function(params, user) {
 	return deferred.promise;
 }
 
+var view_vendor_offers_limitedtimeoffers = function(params, user) {
+	var deferred = Q.defer();
+
+	var offerList = [];
+
+	params.vendors = user.favourites.vendors;
+
+	registry.getSharedObject("data_vendors_withLimitedTimeOffers").get(params).then(function(allOffers) {
+
+		for(key in allOffers) {
+			for(offer in allOffers[key].offers) {
+				var obj = {};
+
+				//TODO : modify this obj for required view
+
+				obj.vendor = allOffers[key].vendor;
+				obj.offer = offer;
+				offerList.push(obj);
+			}
+		}
+
+		deferred.resolve(offerList);
+
+	}, function(err) {
+		deferred.reject(err);
+	});
+
+	return deferred.promise;
+}
+
 registry.register("view_vendor_offers_checkin_S0", {get:view_vendor_offers_checkin_S0});
 registry.register("view_vendor_offers_validate_S0", {get:view_vendor_offers_validate_S0});
 registry.register("view_vendor_offers_offers_S0", {get:view_vendor_offers_offers_S0});
-
-
-
-
+registry.register("view_vendor_offers_limitedtimeoffers", {get:view_vendor_offers_limitedtimeoffers});
