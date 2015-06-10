@@ -222,7 +222,15 @@ var view_vendor_search_name=function(params,user){
             return registry.getSharedObject("util").vendorDistDisplay(el.original,params.latitude,params.longitude);
         }))
     })
-    return deferred.promise
+    return deferred.promise;
+}
+
+var view_vendor_gallery_upload = function(params, user) {
+    var deferred = Q.defer();
+
+    registry.getSharedObject()
+
+    return deferred.promise;
 }
 
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});

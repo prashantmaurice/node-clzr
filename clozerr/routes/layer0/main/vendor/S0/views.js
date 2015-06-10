@@ -13,6 +13,7 @@ var view_vendor_offers_offers_S0=function(params,user){
 			_.each(vendor_offers.offers,function(element,index,array){
 				plist.push(predicate.get(user,vendor,element))
 			})
+			debugger;
 			Q.all(plist).then(function(predlist){
 				debugger;
 				var offersplist=[];
