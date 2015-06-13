@@ -93,7 +93,7 @@ var view_vendor_offers_validate=function(params,user){
 			registry.getSharedObject("handler_validate").get(params,vendor,user,checkin).then(function(val_checkin){
 				debugger;
 				if(val_checkin){
-					registry.getSharedObject("gcm").sendPushNotification(user.gcm_id,
+					registry.getSharedObject("gcm").sendPushNotification(params.gcm_id||user.gcm_id||0,
 						registry.getSharedObject("util").getCheckinSuccessMessage(checkin))
 					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
 				}
@@ -121,7 +121,7 @@ var view_vendor_offers_qrcodevalidate = function(params, user) {
 			registry.getSharedObject("handler_validate_qrcode").get(params, vendor, user, checkin).then(function(val_checkin) {
 				debugger;
 				if(val_checkin) {
-					registry.getSharedObject("gcm").sendPushNotification(user.gcm_id,
+					registry.getSharedObject("gcm").sendPushNotification(params.gcm_id||user.gcm_id||0,
 						registry.getSharedObject("util").getCheckinSuccessMessage(checkin))
 					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
 				}
