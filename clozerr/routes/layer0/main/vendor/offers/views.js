@@ -59,9 +59,19 @@ var view_vendor_offers_checkin=function(params,user){
 					console.log("creating checkin")
 					debugger;
 					registry.getSharedObject("handler_checkin").get(params, user,vendor,offer).then(function(checkin){
+						console.log("got checkin")
 						debugger;
-						deferred.resolve(registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin));
-						global.io.emit('signal', JSON.stringify({vendor_id:vendor._id}) );
+						if(checkin){
+							debugger;
+							console.log("displaying")
+							deferred.resolve(registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin));
+							console.log("io emitting to signal , "+JSON.stringify({vendor_id:vendor._id}))
+							global.io.emit('signal', JSON.stringify({vendor_id:vendor._id}) );
+						} else {
+							debugger;
+							deferred.reject({code:204,description:"cant create checkin"})
+						}
+						
 					});
 				}
 				else {
@@ -84,8 +94,9 @@ var view_vendor_offers_validate=function(params,user){
 			registry.getSharedObject("handler_validate").get(params,vendor,user,checkin).then(function(val_checkin){
 				debugger;
 				if(val_checkin){
-					registry.getSharedObject("gcm").sendPushNotification(user.gcm_id,
-						registry.getSharedObject("util").getCheckinSuccessMessage(checkin))
+					console.log(" gcm pushin to "+(params.gcm_id||user.gcm_id||0))
+					registry.getSharedObject("gcm").sendPushNotification(params.gcm_id||user.gcm_id||0,
+						registry.getSharedObject("display").GCMCheckinDisplay(checkin,vendor))
 					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
 				}
 				else
@@ -112,7 +123,8 @@ var view_vendor_offers_qrcodevalidate = function(params, user) {
 			registry.getSharedObject("handler_validate_qrcode").get(params, vendor, user, checkin).then(function(val_checkin) {
 				debugger;
 				if(val_checkin) {
-					registry.getSharedObject("gcm").sendPushNotification(user.gcm_id,
+					console.log(" gcm pushin to "+(params.gcm_id||user.gcm_id||0))
+					registry.getSharedObject("gcm").sendPushNotification(params.gcm_id||user.gcm_id||0,
 						registry.getSharedObject("util").getCheckinSuccessMessage(checkin))
 					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
 				}
