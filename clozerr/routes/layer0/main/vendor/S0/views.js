@@ -128,7 +128,11 @@ function removeDuplicatesFailed(user,vendor_id){
         return true;
     for(var i=0;i<user.failed_instances.length;i++){
         if(user.failed_instances[i].id.equals(vendor_id))
-            valid = false;
+           { if(Date.now()-user.failed_instances[i].time>1000*24*60*60)
+             valid = true;
+             else
+             valid = false;
+     }
         if(i==user.failed_instances.length-1)
             return valid;
     }
