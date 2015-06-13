@@ -1,5 +1,6 @@
 var registry = global.registry;
 var Q = require("q");
+var hat = require("hat")
 
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
@@ -30,18 +31,18 @@ var vendor_checkin_SX = function( params, user, vendor, offer ){
             debugger;
             util.policyCheckTimeDelayBetweenCheckins(user, vendor, offer).then(function(retval) {
                 debugger;
+                var rack = hat.rack(10, 10);
                 if(retval) {
-                    debugger;
                     checkinObj.vendor = vendor._id;
                     checkinObj.user = user._id;
                     checkinObj.offer = offer._id;
                     checkinObj.state = CHECKIN_STATE_ACTIVE;
-
+                    checkinObj.date_created = new Date();
+                    checkinObj.pin=rack();
+                    checkinObj.gcm_id=params.gcm_id||0;
                     checkinObj.save(function(err) {
                         deferred.reject(err);
                     });
-
-                    deferred.resolve(checkinObj);
                 }
                 else {
                         //TODO : throw error here.. can't use that offer
