@@ -27,8 +27,9 @@ var vendor_validate = function(params, vendor, user, checkin) {
 	}
 	debugger;
 	if(user.type == "Vendor" && checkin.vendor == user.vendor_id && JSON.parse(JSON.stringify(vendor.offers)).indexOf(checkin.offer.toString()) != -1) {
-		debugger;
-		return registry.getSharedObject("handler_validate_" + params.offer.type).get( vendor, user, checkin);
+		registry.getSharedObject("data_offer").get({offer_id:checkin.offer}).then(function(offer){
+			return registry.getSharedObject("handler_validate_" + offer.type).get( vendor, user, checkin);
+		})
 	}
 	else {
 		return Q(false);
