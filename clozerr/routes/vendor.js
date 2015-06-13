@@ -83,6 +83,36 @@ router.get('/facebookpost', function(req, res) {
 request.end();*/
 });
 
+router.get('/make_visit_offers', function ( req, res) {
+  debugger;
+  Vendor.find({visitOfferId : { $exists : false } }).exec().then(function(vendors) {
+    debugger;
+    _.each(vendors, function( element, index, array) {
+      console.log(index);
+      vendor = vendors[index];
+      var offer = new Offer();
+      offer.caption = "default";
+      offer.description = "default";
+      debugger;
+      if(vendor.settings.sxEnabled == "true" || vendor.settings.sxEnabled == true) {
+        offer.type = "SX";
+      }
+      else {
+        offer.type = "S1";
+      }
+      offer.stamps = "0";
+      offer.date_created = new Date();
+      offer.dateUpdated = new Date();
+      offer.save();
+      debugger;
+      vendor.visitOfferId = offer._id;
+      vendor.markModified("visitOfferId");
+      vendor.save();
+    });
+  });
+  res.end("done");
+});
+
 router.get('/create', function (req, res) {
   var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
   if (!errobj) {
