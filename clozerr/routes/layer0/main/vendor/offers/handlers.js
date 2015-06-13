@@ -26,10 +26,12 @@ var vendor_validate = function(params, vendor, user, checkin) {
 		checkin.markModified("validate_data");
 	}
 	debugger;
+	var deferred=Q.defer();
 	if(user.type == "Vendor" && checkin.vendor == user.vendor_id && JSON.parse(JSON.stringify(vendor.offers)).indexOf(checkin.offer.toString()) != -1) {
 		registry.getSharedObject("data_offer").get({offer_id:checkin.offer}).then(function(offer){
-			return registry.getSharedObject("handler_validate_" + offer.type).get( vendor, user, checkin);
+			deferred.resolve(registry.getSharedObject("handler_validate_" + offer.type).get( vendor, user, checkin));
 		})
+		return deferred.promise
 	}
 	else {
 		return Q(false);
@@ -38,19 +40,24 @@ var vendor_validate = function(params, vendor, user, checkin) {
 
 var vendor_validate_qrcode = function(params, vendor, user, checkin) {
 	debugger;
+	var deferred=Q.defer();
 	if(params.qrcode) {
 		checkin.validate_data ={qrcode:params.qrcode};
 		checkin.validate_data.validatedBy = user._id;
 		checkin.markModified("validate_data");
 	if(vendor.qrcodes.indexOf(checkin.validate_data.qrcode) != -1) {
-		debugger;
-		return registry.getSharedObject("handler_validate_" + params.offer.type).get( vendor, user, checkin);
+		registry.getSharedObject("data_offer").get({offer_id:checkin.offer}).then(function(offer){
+			deferred.resolve(registry.getSharedObject("handler_validate_" + offer.type).get( vendor, user, checkin));
+		})
+		return deferred.promise
 	}
 	else {
 		return Q(false);
 	}
+	} else {
+		return Q(false);
 	}
-	return Q(false);
+	
 }
 
 global.registry.register("handler_checkin", {get:vendor_checkin});
