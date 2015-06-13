@@ -79,13 +79,15 @@ var vendor_checkin_S0 = function( params,user, vendor, offer ){
                     checkinObj.date_created = new Date();
                     checkinObj.pin=rack();
                     checkinObj.gcm_id=params.gcm_id||0;
+                    console.log("saving checkin");
                     checkinObj.save(function(err) {
                         deferred.reject(err);
                     });
+                    deferred.resolve(checkinObj)
                 }
                 else {
                         //TODO : throw error here.. can't use that offer
-                        //deferred.reject(err);
+                        deferred.reject({code:201});
                     }
                 }, function(err) {
                     deferred.reject(err);

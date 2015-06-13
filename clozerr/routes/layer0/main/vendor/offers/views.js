@@ -59,9 +59,11 @@ var view_vendor_offers_checkin=function(params,user){
 					console.log("creating checkin")
 					debugger;
 					registry.getSharedObject("handler_checkin").get(params, user,vendor,offer).then(function(checkin){
+						console.log("got checkin")
 						debugger;
 						if(checkin){
 							debugger;
+							console.log("displaying")
 							deferred.resolve(registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin));
 							global.io.emit('signal', JSON.stringify({vendor_id:vendor._id}) );
 						} else {
