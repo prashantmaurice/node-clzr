@@ -18,7 +18,7 @@ var policyCheckTimeDelayBetweenCheckins = function( user, vendor, offer ) {
     var checkin = checkins[0];
     debugger;
 
-    if( !checkin ){
+    if( !checkin || !checkin.date_created){
       deferred.resolve( true );
     }
 
