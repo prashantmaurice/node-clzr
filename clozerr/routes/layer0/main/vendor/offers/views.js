@@ -60,8 +60,15 @@ var view_vendor_offers_checkin=function(params,user){
 					debugger;
 					registry.getSharedObject("handler_checkin").get(params, user,vendor,offer).then(function(checkin){
 						debugger;
-						deferred.resolve(registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin));
-						global.io.emit('signal', JSON.stringify({vendor_id:vendor._id}) );
+						if(checkin){
+							debugger;
+							deferred.resolve(registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin));
+							global.io.emit('signal', JSON.stringify({vendor_id:vendor._id}) );
+						} else {
+							debugger;
+							deferred.reject({code:204,description:"cant create checkin"})
+						}
+						
 					});
 				}
 				else {

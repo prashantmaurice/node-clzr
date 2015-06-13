@@ -7,6 +7,7 @@ var ObjectId = Schema.ObjectId;
 
 var vendor_checkin = function(params, user, vendor, offer) {
 	debugger;
+	console.log("routing to "+"handler_checkin_" + offer.type)
 	return registry.getSharedObject("handler_checkin_" + offer.type).get(params, user, vendor, offer);
 }
 
