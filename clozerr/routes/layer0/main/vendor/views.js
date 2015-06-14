@@ -187,7 +187,7 @@ var view_vendor_list_near = function(params,user){
     params.limit=params.limit || registry.getSharedObject("settings").api.default_limit;
     params.offset=params.offset || 0;
     if(!params.latitude || !params.longitude)
-        deferred.reject("distance params missing");
+        deferred.reject({code:500,description:"distance params missing"});
     vendors.get(params).then(function(vendors){
         if(params.category)
             deferred.resolve(_.map(
@@ -225,6 +225,60 @@ var view_vendor_search_name=function(params,user){
     return deferred.promise;
 }
 
+var view_vendor_search_near=function(params,user){
+    /*
+    search params :
+        name - vendor.name (fuzzy)
+        tag - vendor.tags (containing tag)
+        category - vendor.category
+    */
+    var deferred = Q.defer();
+    limit=params.limit || registry.getSharedObject("settings").api.default_limit;
+    offset=params.offset || 0;
+    if(!params.latitude || !params.longitude)
+        deferred.reject({code:500,description:"distance params missing"});
+    registry.getSharedObject("data_vendor_near").get(params).then(function(vendors){
+        return vendors;
+    })
+    .then(function(vendors){
+        if(params.name)
+            return _.map(fuzzy.filter(params.name,vendors,
+            {extract:function(el){
+                return el.name;
+            }}),function(x){
+                return x.original;
+            })
+        else
+            return vendors;
+    })
+    .then(function(vendors){
+        if(params.tag){
+            return registry.getSharedObject("data_tag").get({id:params.tag}).then(function(tag){
+                return _.filter(vendors,function(vendor){
+                    return vendor.tags.indexOf(tag.name)!=-1
+                })
+            })
+        } else 
+            return vendors;
+    })
+    .then(function(vendors){
+        if(params.category){
+            return _.filter(vendors,function(vendor){
+                return vendor.category==params.category
+            })
+        } else 
+            return vendors;
+    })
+    .then(function(vendors){
+        deferred.resolve(_.first(_.rest(
+            _.map(vendors,function(vendor){
+                    // return vendor
+                    return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
+                })
+            ,offset),limit))
+    })
+    return deferred.promise
+}
 var view_vendor_gallery_upload = function(params, user) {
     var deferred = Q.defer();
 
@@ -242,5 +296,6 @@ global.registry.register("view_vendor_categories_get", {get:view_vendor_categori
 // global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
 global.registry.register("view_vendor_details_update", {get:view_vendor_details_update});
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
+global.registry.register("view_vendor_search_near", {get:view_vendor_search_near});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};
