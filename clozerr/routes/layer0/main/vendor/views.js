@@ -252,10 +252,11 @@ var view_vendor_search_near=function(params,user){
             return vendors;
     })
     .then(function(vendors){
+
         if(params.tag){
-            return registry.getSharedObject("data_tag").get({id:params.tag}).then(function(tag){
+            return registry.getSharedObject("data_tag").get({name:params.tag}).then(function(tag){
                 return _.filter(vendors,function(vendor){
-                    return vendor.tags.indexOf(tag.name)!=-1
+                    return vendor.tags.indexOf(tag.id)!=-1
                 })
             })
         } else 
@@ -286,7 +287,6 @@ var view_vendor_gallery_upload = function(params, user) {
 
     return deferred.promise;
 }
-
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
