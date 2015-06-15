@@ -30,7 +30,8 @@ var vendorSchema = new Schema({
 	trials:Number,
 	qrcodes:[String],
 	gallery:[String],
-	image_small:String
+	image_small:String,
+	tags:[Schema.Types.ObjectId]
 });
 vendorSchema.index({ location: '2d' });
 
@@ -104,5 +105,7 @@ Models.Data = mongoose.model('Data',new Schema({
     type:String,
     content: Schema.Types.Mixed
 }));
-
+Models.Tag = mongoose.model('Tag',new Schema({
+	name:String
+}))
 module.exports = Models;
