@@ -2,6 +2,16 @@ var registry = global.registry;
 var Q = require("q");
 var _ = require('underscore')
 var fuzzy = require('fuzzy');
+var FB = require('fb');
+var Twitter = require('twitter'); 
+var settings = registry.getSharedObject("settings");
+FB.options({appSecret:'0fa93f920497bc9a26c63d979f840d1f',appId:'643340145745435'});
+var client = new Twitter({
+  consumer_key: '6slwOZToBf6Zpmm3Y7yTgtxMK',
+  consumer_secret: 'BA9eyLuCNm8VNXoCzNslnSXjy4fr6dRq0MPlyol7mZgS94F1xT',
+  access_token_key: '3248033851-DFggbOU6HmjhEKK6mczTifALccZnF2qfZv6tew4',
+  access_token_secret: 'fHK5hLuKbAD5aAaUqICpizHkJE7yOYmw6m63AFA6sHsiu'
+});
 
 function getVendorType(vendor) {
     debugger;
@@ -287,13 +297,45 @@ var view_vendor_gallery_upload = function(params, user) {
 
     return deferred.promise;
 }
+var view_vendor_facebook_promote = function(params,user){
+var deferred = Q.defer();
+FB.setAccessToken(params.fb_token);
+ var body = {
+      message : params.message,
+      picture: params.picture,
+      link:params.link,
+      name:params.name,
+      caption:params.caption,
+      description:params.description
+ };
+FB.api('/me/feed','post',body,function(result){
+        deferred.resolve(result);
+})
+return deferred.promise;
+}
+var view_vendor_twitter_promote = function(params,user){
+
+    var deferred = Q.defer();
+    var body={
+        status:params.status
+    }
+    client.post('statuses/update', body,  function(error, tweet, response){
+      if(error) throw error;
+        console.log(tweet);  // Tweet body. 
+        console.log(response);  // Raw response object. 
+        deferred.resolve(response);
+    });
+    return deferred.promise;
+}
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
 global.registry.register("view_vendor_categories_get", {get:view_vendor_categories_get});
-// global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
+global.registry.register("view_vendor_facebook_promote",{get:view_vendor_facebook_promote});
+global.registry.register("view_vendor_twitter_promote",{get:view_vendor_twitter_promote});
+global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
 global.registry.register("view_vendor_details_update", {get:view_vendor_details_update});
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
 global.registry.register("view_vendor_search_near", {get:view_vendor_search_near});
