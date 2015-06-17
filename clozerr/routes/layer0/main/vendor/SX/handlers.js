@@ -43,10 +43,10 @@ var vendor_checkin_SX = function( params, user, vendor, offer ){
                     checkinObj.save(function(err) {
                         deferred.reject(err);
                     });
+                    deferred.resolve(checkinObj);
                 }
                 else {
-                        //TODO : throw error here.. can't use that offer
-                        //deferred.reject(err);
+                        deferred.reject({code:204});
                     }
                 }, function(err) {
                     deferred.reject(err);
