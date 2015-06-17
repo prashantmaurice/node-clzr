@@ -16,6 +16,7 @@ if(!user.favourites)
 if(params.vendor_id)
 {
 		user.favourites.vendor.push(params.vendor_id);
+		user.markModified("favourites");
 		user.save(function(err,user){
 			deferred.resolve(user);
 	   },
@@ -25,6 +26,7 @@ if(params.vendor_id)
 }
 else if(params.offer_id){
 		user.favourites.offer.push(params.offer_id);
+		user.markModified("favourites");
 		user.save(function(err,user){
 		deferred.resolve(user);
 		},
