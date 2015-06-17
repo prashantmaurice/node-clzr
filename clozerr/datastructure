@@ -38,7 +38,7 @@ offers : [Number]
 
 /offer/delete/?offer_id=(.)&vendor_id=(.)   //"delete the offer and push it to old offers of the particular vendor"
 
-/vendor/create/?latitude=(.)&longitude=(.)&image=(.)&fid=(.)&name=(.) //"all parameters are compulsory"
+/vendor/create/?latitude=(.)&longitude=(.)&image=(.)&fid=(.)&name=(.) //"all parameters are compulsory except image"
 
 /vendor/get/?vendor_id=(.)   //"get the vendor info"
 
@@ -59,3 +59,5 @@ offers : [Number]
 
 ////////*****PLEASE CHECK THE CODE FOR RESPONSES******//////////
 ////////*****THERE IS ONLY JSON PARSING TO BE DONE I GUESS*****/////// 
+
+
