@@ -47,8 +47,13 @@ else if(params.offer_id){
 	else
 		deferred.resolve(user);
 }
+else
+{ 
+ deferred.resolve(user.favourites);
+}
 	return deferred.promise;
 }
+
 global.registry.register("view_user_add_favourites",{get:view_user_add_favourites});
 
 module.exports={add_favourites:view_user_add_favourites};
