@@ -68,6 +68,7 @@ Models.User = mongoose.model('User',new Schema({
 	upgraded:Date,
 	gcm_id: String,
 	favourites:Schema.Types.Mixed,
+	pinned:Schema.Types.Mixed,
     stateList: Schema.Types.Mixed,
     lucky_rewards:Schema.Types.Mixed,
     failed_instances:Schema.Types.Mixed
