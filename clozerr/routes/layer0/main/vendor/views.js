@@ -251,13 +251,18 @@ var view_vendor_search_near=function(params,user){
             return vendors;
         })
         .then(function(vendors){
-            if(params.name)
-                return _.map(fuzzy.filter(params.name,vendors,
-                    {extract:function(el){
+            debugger;
+            if(params.name){
+                return _.map(registry.getSharedObject("search").fuzzy(params.name,{
+                    list:vendors,
+                    extract:function(el){
                         return el.name;
-                    }}),function(x){
-                    return x.original;
+                    }
+                }),function(el){
+                    return el.original;
                 })
+                return vendors
+            }
             else
                 return vendors;
         })
@@ -402,7 +407,7 @@ global.registry.register("view_vendor_twitter_promote",{get:view_vendor_twitter_
 global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
 global.registry.register("view_vendor_details_update", {get:view_vendor_details_update});
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
-global.registry.register("view_vendor_search_near", {get:view_vendor_search_near});
+global.registry.register("view_vendor_search_near", {get:view_vendor_search_near,post:view_vendor_search_near});
 
 global.registry.register("view_vendor_checkins_active", {get:view_vendor_checkins_active});
 global.registry.register("view_vendor_checkins_confirmed", {get:view_vendor_checkins_confirmed});
