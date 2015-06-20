@@ -86,12 +86,46 @@ var view_vendor_offers_limitedtimeoffers = function(params, user) {
 	var deferred = Q.defer();
 
 	var offerList = [];
+	debugger;
 
-	params.vendors = user.favourites.vendors;
+	registry.getSharedObject("data_vendors_withLimitedTimeOffers").get(params).then(function(arr_pre) {
+		debugger;
 
-	registry.getSharedObject("data_vendors_withLimitedTimeOffers").get(params).then(function(allOffers) {
+		var arr_vendors = _.filter(arr_pre, function(element) {
+			if(element.vendor) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		});
 
-		for(key in allOffers) {
+		var arr_offers = _.filter(arr_pre, function(element) {
+			if(element.offer) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		});
+
+		debugger;
+
+		var arr_ret = _.map(arr_offers, function(obj) {
+			var offer_disp = obj.offer;
+			offer_disp.vendor = {};
+			var vendor_raw = _.filter(arr_vendors, function(element) {
+				debugger;
+				return (element.vendor.offers.indexOf(offer_disp._id.toString()) != -1);
+			})[0].vendor;
+
+			offer_disp.vendor._id = vendor_raw._id;
+			offer_disp.vendor.name = vendor_raw.name;
+
+			return offer_disp;
+		});
+
+		/*for(key in allOffers) {
 			for(offer in allOffers[key].offers) {
 				var obj = {};
 
@@ -101,9 +135,9 @@ var view_vendor_offers_limitedtimeoffers = function(params, user) {
 				obj.offer = offer;
 				offerList.push(obj);
 			}
-		}
+		}*/
 
-		deferred.resolve(offerList);
+		deferred.resolve(arr_ret);
 
 	}, function(err) {
 		deferred.reject(err);
