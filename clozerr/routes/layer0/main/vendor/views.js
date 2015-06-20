@@ -26,7 +26,7 @@ function getVendorType(vendor) {
 }
 
 
-var view_vendor_get_details = function( params ) {
+var view_vendor_details_get = function( params ) {
     var deferred = Q.defer();
 
     registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
@@ -425,7 +425,7 @@ var view_vendor_details_create = function(params, user) {
 }
 
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
-global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
+global.registry.register("view_vendor_details_get", {get:view_vendor_details_get});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
 global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_list_near", {get:view_vendor_list_near});
