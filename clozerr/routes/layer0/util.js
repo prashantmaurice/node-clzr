@@ -19,13 +19,16 @@ var policyCheckTimeDelayBetweenCheckins = function( user, vendor, offer ) {
     debugger;
 
     if( !checkin || !checkin.date_created){
+      console.log(" policyCheckTimeDelayBetweenCheckins : true")
       deferred.resolve( true );
     }
 
     if( Math.abs( new Date().getTime() - checkin.date_created.getTime() ) < registry.getSharedObject("settings").checkin.delay_between_checkins ) {
+      console.log(" policyCheckTimeDelayBetweenCheckins : false")
       deferred.resolve( false );
     }
     else{
+      console.log(" policyCheckTimeDelayBetweenCheckins : true")
       deferred.resolve( true );
     }
   });
@@ -42,9 +45,11 @@ var policyCheckDuplicateCheckins = function( user, vendor, offer ) {
 
     debugger;
     if( checkin ) {
+      console.log(" policyCheckDuplicateCheckins : true")
       deferred.resolve( checkin );
     }
     else{
+      console.log(" policyCheckDuplicateCheckins : false")
       deferred.resolve( );
     }
 
@@ -139,6 +144,7 @@ function vendorDistDisplay(vendor,latitude,longitude){
     image:vendor.image,
     image_small:vendor.image_small,
     gallery:vendor.gallery,
+    address:vendor.address
   }
 }
 function geoLocate(address){

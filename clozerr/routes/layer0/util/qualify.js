@@ -74,7 +74,7 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
     offerDisplay.type=offer.type;
     offerDisplay.caption=offer.caption;
     offerDisplay.description=offer.description;
-    offerDisplay.stamps=offer.stamps*1;
+    // offerDisplay.stamps=offer.stamps*1;
     offerDisplay.params={};
     debugger;
 
