@@ -2,6 +2,10 @@ var Q = require("q");
 var registry = global.registry;
 var ObjectId = require('mongoose').Types.ObjectId;
 
+var CHECKIN_STATE_ACTIVE = 0;
+var CHECKIN_STATE_CONFIRMED = 1;
+var CHECKIN_STATE_CANCELLED = 2;
+
 var data_vendor_withOffers = function( params ){
     var _id = params.vendor_id;
     var Vendor = registry.getSharedObject("models_Vendor");
@@ -80,7 +84,6 @@ var data_vendors_withLimitedTimeOffers = function(params) {
 
     return deferred.promise;
 }
-
 var data_vendor = function( params){
     var _id = params.vendor_id;
     var Vendor = registry.getSharedObject("models_Vendor");
@@ -169,8 +172,27 @@ var data_vendors_category = function( params ) {
     return Vendor.find({category: params.category}).limit(params.limit).skip(params.offset).exec();
 }
 
+var data_vendor_checkins_active = function( params ) {
+    params.criteria = { vendor : ObjectId(params.vendor_id) , state : CHECKIN_STATE_ACTIVE };
+    return registry.getSharedObject("data_checkin_params").get(params);
+}
+
+var data_vendor_checkins_confirmed = function( params ) {
+    params.criteria = { vendor : ObjectId(params.vendor_id) , state : CHECKIN_STATE_CONFIRMED };
+    return registry.getSharedObject("data_checkin_params").get(params);
+}
+
+var data_vendor_checkins_cancelled = function( params ) {
+    params.criteria = { vendor : ObjectId(params.vendor_id) , state : CHECKIN_STATE_CANCELLED };
+    return registry.getSharedObject("data_checkin_params").get(params);
+}
+
 registry.register("data_vendors",{get:data_vendors});
 registry.register("data_vendor_near",{get:data_vendor_near});
 registry.register("data_vendor_withOffers",{get:data_vendor_withOffers});
 registry.register("data_vendors_category",{get:data_vendors_category});
 registry.register("data_vendors_withLimitedTimeOffers", {get:data_vendors_withLimitedTimeOffers});
+
+global.registry.register("data_vendor_checkins_active", {get:data_vendor_checkins_active});
+global.registry.register("data_vendor_checkins_confirmed", {get:data_vendor_checkins_confirmed});
+global.registry.register("data_vendor_checkins_cancelled", {get:data_vendor_checkins_cancelled});

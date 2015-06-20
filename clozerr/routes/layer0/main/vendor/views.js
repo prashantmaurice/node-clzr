@@ -75,7 +75,7 @@ var view_vendor_details_set = function( params, user ) {
         debugger;
         if(user.type == "Vendor") {
             if(user.vendor_id == params.vendor_id) {
-               vendorObjectM.get( params ).then(function(vendor) {
+             vendorObjectM.get( params ).then(function(vendor) {
                 if(params.vendor) {
                     for(key in params.vendor) {
                         vendor[key] = params.vendor[key];
@@ -92,8 +92,8 @@ var view_vendor_details_set = function( params, user ) {
             }, function(err) {
                 deferred.reject(err);
             });
-           }
-           else {
+         }
+         else {
             deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
@@ -123,15 +123,15 @@ var view_vendor_details_update = function( params, user) {
         debugger;
         if(user.type == "Vendor") {
             if(user.vendor_id == params.vendor_id) {
-               vendorObjectM.get( params ).then(function(vendor) {
+             vendorObjectM.get( params ).then(function(vendor) {
                 vendor[params.modify] = arrayOperations[params.operation](vendor[params.modify], params.values);
                 vendor.markModified(params.modify);
                 vendor.save();
             }, function(err) {
                 deferred.reject(err);
             });
-           }
-           else {
+         }
+         else {
             deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
@@ -142,7 +142,7 @@ var view_vendor_details_update = function( params, user) {
     deferred.reject(err);
 });
 
-return deferred.promise;
+    return deferred.promise;
 
 }
 
@@ -207,8 +207,8 @@ var view_vendor_list_near = function(params,user){
                 }));
         else
             deferred.resolve(_.map(vendors,function(vendor){
-                    return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
-                }));
+                return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
+            }));
     })
     return deferred.promise;
 }
@@ -241,79 +241,79 @@ var view_vendor_search_near=function(params,user){
         name - vendor.name (fuzzy)
         tag - vendor.tags (containing tag)
         category - vendor.category
-    */
-    var deferred = Q.defer();
-    limit=params.limit || registry.getSharedObject("settings").api.default_limit;
-    offset=params.offset || 0;
-    if(!params.latitude || !params.longitude)
-        deferred.reject({code:500,description:"distance params missing"});
-    registry.getSharedObject("data_vendor_near").get(params).then(function(vendors){
-        return vendors;
-    })
-    .then(function(vendors){
-        if(params.name)
-            return _.map(fuzzy.filter(params.name,vendors,
-            {extract:function(el){
-                return el.name;
-            }}),function(x){
-                return x.original;
-            })
-        else
+        */
+        var deferred = Q.defer();
+        limit=params.limit || registry.getSharedObject("settings").api.default_limit;
+        offset=params.offset || 0;
+        if(!params.latitude || !params.longitude)
+            deferred.reject({code:500,description:"distance params missing"});
+        registry.getSharedObject("data_vendor_near").get(params).then(function(vendors){
             return vendors;
-    })
-    .then(function(vendors){
-
-        if(params.tag){
-            return registry.getSharedObject("data_tag").get({name:params.tag}).then(function(tag){
-                return _.filter(vendors,function(vendor){
-                    return vendor.tags.indexOf(tag.id)!=-1
+        })
+        .then(function(vendors){
+            if(params.name)
+                return _.map(fuzzy.filter(params.name,vendors,
+                    {extract:function(el){
+                        return el.name;
+                    }}),function(x){
+                    return x.original;
                 })
-            })
-        } else 
+            else
+                return vendors;
+        })
+        .then(function(vendors){
+
+            if(params.tag){
+                return registry.getSharedObject("data_tag").get({name:params.tag}).then(function(tag){
+                    return _.filter(vendors,function(vendor){
+                        return vendor.tags.indexOf(tag.id)!=-1
+                    })
+                })
+            } else 
             return vendors;
-    })
-    .then(function(vendors){
-        if(params.category){
-            return _.filter(vendors,function(vendor){
-                return vendor.category==params.category
-            })
-        } else 
+        })
+        .then(function(vendors){
+            if(params.category){
+                return _.filter(vendors,function(vendor){
+                    return vendor.category==params.category
+                })
+            } else 
             return vendors;
-    })
-    .then(function(vendors){
-        deferred.resolve(_.first(_.rest(
-            _.map(vendors,function(vendor){
+        })
+        .then(function(vendors){
+            deferred.resolve(_.first(_.rest(
+                _.map(vendors,function(vendor){
                     // return vendor
                     return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
                 })
-            ,offset),limit))
-    })
-    return deferred.promise
-}
-var view_vendor_gallery_upload = function(params, user) {
-    var deferred = Q.defer();
+                ,offset),limit))
+        })
+        return deferred.promise
+    }
+    var view_vendor_gallery_upload = function(params, user) {
+        var deferred = Q.defer();
 
-    registry.getSharedObject()
+        registry.getSharedObject()
 
-    return deferred.promise;
-}
-var view_vendor_facebook_promote = function(params,user){
-var deferred = Q.defer();
-FB.setAccessToken(params.fb_token);
- var body = {
-      message : params.message,
-      picture: params.picture,
-      link:params.link,
-      name:params.name,
-      caption:params.caption,
-      description:params.description
- };
-FB.api('/me/feed','post',body,function(result){
+        return deferred.promise;
+    }
+    var view_vendor_facebook_promote = function(params,user){
+        var deferred = Q.defer();
+        FB.setAccessToken(params.fb_token);
+        var body = {
+          message : params.message,
+          picture: params.picture,
+          link:params.link,
+          name:params.name,
+          caption:params.caption,
+          description:params.description
+      };
+      FB.api('/me/feed','post',body,function(result){
         deferred.resolve(result);
-})
-return deferred.promise;
-}
-var view_vendor_twitter_promote = function(params,user){
+    })
+      return deferred.promise;
+  }
+  var view_vendor_twitter_promote = function(params,user){
 
     var deferred = Q.defer();
     var body={
@@ -327,6 +327,70 @@ var view_vendor_twitter_promote = function(params,user){
     });
     return deferred.promise;
 }
+
+var view_vendor_checkins_active = function(params, user) {
+    var deferred = Q.defer();
+    debugger;
+
+    if(user.type == "Vendor") {
+        if(user.vendor_id.toString() == params.vendor_id) {
+            registry.getSharedObject("data_vendor_checkins_active").get(params).then(function(checkins_filtered) {
+                deferred.resolve(checkins_filtered);
+            });
+        }
+        else {
+            deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
+        }
+    }
+    else {
+        deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
+    }
+
+    return deferred.promise;
+}
+
+var view_vendor_checkins_confirmed = function(params, user) {
+    var deferred = Q.defer();
+    debugger;
+
+    if(user.type == "Vendor") {
+        if(user.vendor_id.toString() == params.vendor_id) {
+            registry.getSharedObject("data_vendor_checkins_confirmed").get(params).then(function(checkins_filtered) {
+                deferred.resolve(checkins_filtered);
+            });
+        }
+        else {
+            deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
+        }
+    }
+    else {
+        deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
+    }
+
+    return deferred.promise;
+}
+
+var view_vendor_checkins_cancelled = function(params, user) {
+    var deferred = Q.defer();
+    debugger;
+
+    if(user.type == "Vendor") {
+        if(user.vendor_id.toString() == params.vendor_id) {
+            registry.getSharedObject("data_vendor_checkins_cancelled").get(params).then(function(checkins_filtered) {
+                deferred.resolve(checkins_filtered);
+            });
+        }
+        else {
+            deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
+        }
+    }
+    else {
+        deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
+    }
+
+    return deferred.promise;
+}
+
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
@@ -339,5 +403,9 @@ global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offer
 global.registry.register("view_vendor_details_update", {get:view_vendor_details_update});
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
 global.registry.register("view_vendor_search_near", {get:view_vendor_search_near});
+
+global.registry.register("view_vendor_checkins_active", {get:view_vendor_checkins_active});
+global.registry.register("view_vendor_checkins_confirmed", {get:view_vendor_checkins_confirmed});
+global.registry.register("view_vendor_checkins_cancelled", {get:view_vendor_checkins_cancelled});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};
