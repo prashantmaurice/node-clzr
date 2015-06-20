@@ -75,7 +75,7 @@ var view_vendor_details_set = function( params, user ) {
         debugger;
         if(user.type == "Vendor") {
             if(user.vendor_id == params.vendor_id) {
-             vendorObjectM.get( params ).then(function(vendor) {
+               vendorObjectM.get( params ).then(function(vendor) {
                 if(params.vendor) {
                     for(key in params.vendor) {
                         vendor[key] = params.vendor[key];
@@ -92,8 +92,8 @@ var view_vendor_details_set = function( params, user ) {
             }, function(err) {
                 deferred.reject(err);
             });
-         }
-         else {
+           }
+           else {
             deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
@@ -123,15 +123,15 @@ var view_vendor_details_update = function( params, user) {
         debugger;
         if(user.type == "Vendor") {
             if(user.vendor_id == params.vendor_id) {
-             vendorObjectM.get( params ).then(function(vendor) {
+               vendorObjectM.get( params ).then(function(vendor) {
                 vendor[params.modify] = arrayOperations[params.operation](vendor[params.modify], params.values);
                 vendor.markModified(params.modify);
                 vendor.save();
             }, function(err) {
                 deferred.reject(err);
             });
-         }
-         else {
+           }
+           else {
             deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
@@ -396,6 +396,26 @@ var view_vendor_checkins_cancelled = function(params, user) {
     return deferred.promise;
 }
 
+var view_vendor_details_create = function(params, user) {
+    var deferred = Q.defer();
+    var Vendor = registry.getSharedObject("models_Vendor");
+    var obj = registry.getSharedObject("util").filterObject(params, ["name", "location", "image", "description", "address", "phone"]);
+
+    if(!obj.result) {
+        deferred.resolve(obj.err);
+    }
+    else {
+        var vendor_new = new Vendor(obj.data);
+        debugger;
+        vendor_new.save();
+        deferred.resolve(vendor_new);
+    }
+
+    debugger;
+
+    return deferred.promise;
+}
+
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
@@ -412,5 +432,7 @@ global.registry.register("view_vendor_search_near", {get:view_vendor_search_near
 global.registry.register("view_vendor_checkins_active", {get:view_vendor_checkins_active});
 global.registry.register("view_vendor_checkins_confirmed", {get:view_vendor_checkins_confirmed});
 global.registry.register("view_vendor_checkins_cancelled", {get:view_vendor_checkins_cancelled});
+
+global.registry.register("view_vendor_details_create", {get:view_vendor_details_create});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};

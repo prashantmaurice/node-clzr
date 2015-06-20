@@ -43,22 +43,27 @@ var data_vendor_withOffers = function( params ){
 }
 
 var data_vendors_withLimitedTimeOffers = function(params) {
-    var vendors = params.vendors;
+
     var Vendor = registry.getSharedObject("models_Vendor");
     var Offer = registry.getSharedObject("models_Offer");
 
-    var ret_obj = {};
     var plist = [];
+
+    debugger;
+
+    params.limit=params.limit*1 || registry.getSharedObject("settings").api.default_limit*1;
+    params.offset=params.offset*1 || 0;
+
+    debugger;
 
     var deferred = Q.defer();
 
-    Vendor.find({_id:
-        {
-            $in : vendors
-        }
-    }).exec().then(function(vendorObjects) {
+    Vendor.find({}).exec().then(function(vendorObjects) {
+        var arr_ret = [];
+        debugger;
         for(var i=0;i<vendorObjects.length;i++) {
-        ret_obj[vendorObjects[i]._id] = [];
+            arr_ret.push({vendor:JSON.parse(JSON.stringify(vendorObjects[i]))});
+            console.log(i);
             var pr = Offer.find({_id:
                 {
                     $in : vendorObjects[i].offers
@@ -66,14 +71,18 @@ var data_vendors_withLimitedTimeOffers = function(params) {
                 type:"S0",
                 "params.type":"limitedTime"
             }).exec().then(function(offers) {
-                ret_obj[vendorObjects[i]._id] = {"vendor":vendorObjects[i],"offers":offers};
+                for(var j=0; j<offers.length; j++) {
+                    console.log(offers[j]);
+                    arr_ret.push({offer:JSON.parse(JSON.stringify(offers[j]))});
+                }
             });
 
             plist.push(pr);
         }
 
         Q.all(plist).then(function() {
-            deferred.resolve(ret_obj);
+            debugger;
+            deferred.resolve(arr_ret);
         }, function(err) {
             deferred.reject(err);
         });
@@ -82,7 +91,7 @@ var data_vendors_withLimitedTimeOffers = function(params) {
         deferred.reject(err);
     })
 
-    return deferred.promise;
+return deferred.promise;
 }
 var data_vendor = function( params){
     var _id = params.vendor_id;
