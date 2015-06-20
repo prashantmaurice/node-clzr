@@ -144,7 +144,41 @@ var view_vendor_offers_qrcodevalidate = function(params, user) {
 	return deferred.promise;
 }
 
+var view_vendor_offers_create = function(params, user) {
+	var deferred = Q.defer();
+
+	var Vendor = registry.getSharedObject("models_Vendor");
+	var Offer = registry.getSharedObject("models_Offer");
+
+	if(user.type == "Vendor") {
+		if(user.vendor_id.toString() == params.vendor_id) {
+			var obj = registry.getSharedObject("util").filterObject(params, ["caption", "description", "stamps", "type"]);
+			if(!obj.result) {
+				deferred.resolve({result:false, err:obj.err});
+			}
+			else {
+				var offer_new = new Offer(obj.data);
+				if(params.params) {
+					offer_new.params = params.params;
+				}
+				debugger;
+				offer_new.save();
+			}
+		}
+		else {
+			deferred.resolve({result:false, err:{code:909, message:"Permission denied."}});
+		}
+	}
+	else {
+		deferred.resolve({result:false, err:{code:909, message:"Permission denied."}});
+	}
+
+	return deferred.promise;
+}
+
 registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
 registry.register("view_vendor_offers_validate", {get:view_vendor_offers_validate});
 registry.register("view_vendor_offers_checkin", {get:view_vendor_offers_checkin});
 registry.register("view_vendor_offers_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
+
+global.registry.register("view_vendor_offers_create", {get:view_vendor_offers_create});
