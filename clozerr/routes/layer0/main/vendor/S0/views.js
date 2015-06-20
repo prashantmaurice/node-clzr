@@ -229,4 +229,4 @@ registry.register("view_vendor_lucky_checkin",{get:view_vendor_lucky_checkin});
 registry.register("view_vendor_offers_checkin_S0", {get:view_vendor_offers_checkin_S0});
 registry.register("view_vendor_offers_validate_S0", {get:view_vendor_offers_validate_S0});
 registry.register("view_vendor_offers_offers_S0", {get:view_vendor_offers_offers_S0});
-registry.register("view_vendor_offers_limitedtimeoffers", {get:view_vendor_offers_limitedtimeoffers});
+registry.register("view_vendor_offers_limited_time_offers", {get:view_vendor_offers_limitedtimeoffers});
