@@ -69,7 +69,7 @@ var vendor_predicate_S1 = function(user, vendor, offer) {
         user.save();
     }
 
-    if((user.stamplist[vendor.fid] >= offer.stamps) || (offer._id == vendor.visitOfferId)) {
+    if((user.stamplist[vendor.fid] >= offer.stamps*1) || (offer._id.toString() == vendor.visitOfferId.toString())) {
         debugger;
         deferred.resolve(true);
     }
