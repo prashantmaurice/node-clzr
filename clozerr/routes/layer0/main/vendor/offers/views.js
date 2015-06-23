@@ -144,7 +144,7 @@ var view_vendor_offers_qrcodevalidate = function(params, user) {
 	return deferred.promise;
 }
 
-registry.register("view_vendor_offers_offerspage", {get:view_vendor_offers_offersPage});
+registry.register("view_vendor_offers_offersPage", {get:view_vendor_offers_offersPage});
 registry.register("view_vendor_offers_validate", {get:view_vendor_offers_validate});
 registry.register("view_vendor_offers_checkin", {get:view_vendor_offers_checkin});
 registry.register("view_vendor_offers_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});

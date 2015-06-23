@@ -415,7 +415,42 @@ var view_vendor_details_create = function(params, user) {
 
     return deferred.promise;
 }
-
+var getBeaconPromise=function(params,user,vendor){
+    return registry.getSharedObject("view_vendor_offers_offersPage")
+    .get(params,user).then(function(offers){
+        return {
+            _id: vendor.id,
+            beacons: vendor.beacons,
+            name: vendor.name,
+            settings: vendor.settings,
+            hasOffers: (offers.length > 0)
+        }
+    })
+}
+var view_vendor_beacons_all = function(params, user) {
+    var deferred = Q.defer();
+    limit=params.limit || registry.getSharedObject("settings").api.default_limit;
+    offset=params.offset || 0;
+    vendorPList=[];
+    registry.getSharedObject("data_vendors").get().then(function(vendors){
+        _.each(vendors,function(vendor){
+            // debugger;
+            if(vendor.type && vendor.type=="TestVendor") {
+                if(user.type && user.type=="TestUser") {
+                    params.vendor_id=vendor.id
+                    vendorPList.push(getBeaconPromise(params,user,vendor))
+                }
+            } else {
+                params.vendor_id=vendor.id
+                vendorPList.push(getBeaconPromise(params,user,vendor))
+            }
+        })
+        Q.all(vendorPList).then(function(vendorList){
+            deferred.resolve(vendorList)
+        })
+    })
+    return deferred.promise;
+}
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
@@ -428,6 +463,7 @@ global.registry.register("view_vendor_offers_offerspage", {get:view_vendor_offer
 global.registry.register("view_vendor_details_update", {get:view_vendor_details_update});
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
 global.registry.register("view_vendor_search_near", {get:view_vendor_search_near,post:view_vendor_search_near});
+global.registry.register("view_vendor_beacons_all", {get:view_vendor_beacons_all});
 
 global.registry.register("view_vendor_checkins_active", {get:view_vendor_checkins_active});
 global.registry.register("view_vendor_checkins_confirmed", {get:view_vendor_checkins_confirmed});
