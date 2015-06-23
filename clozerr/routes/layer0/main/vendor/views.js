@@ -12,6 +12,8 @@ var client = new Twitter({
   access_token_key: '3248033851-DFggbOU6HmjhEKK6mczTifALccZnF2qfZv6tew4',
   access_token_secret: 'fHK5hLuKbAD5aAaUqICpizHkJE7yOYmw6m63AFA6sHsiu'
 });
+var hat = require("hat");
+var rack = hat.rack(10, 10);
 
 function getVendorType(vendor) {
     debugger;
@@ -406,6 +408,12 @@ var view_vendor_details_create = function(params, user) {
     }
     else {
         var vendor_new = new Vendor(obj.data);
+        vendor_new.date_created = new Date();
+        vendor_new.dateUpdated = vendor_new.date_created;
+        vendor_new.resource_name = params.name.toLowerCase();
+        vendor_new.visible = true;
+        vendor_new.test = false;
+        vendor_new.fid = rack();
         debugger;
         vendor_new.save();
         deferred.resolve(vendor_new);
