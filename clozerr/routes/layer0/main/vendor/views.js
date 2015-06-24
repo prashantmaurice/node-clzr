@@ -454,7 +454,10 @@ var view_vendor_beacons_all = function(params, user) {
             }
         })
         Q.all(vendorPList).then(function(vendorList){
-            deferred.resolve(vendorList)
+            deferred.resolve({
+                UUID:registry.getSharedObject("settings").UUID,
+                vendors:vendorList
+            })
         })
     })
     return deferred.promise;
