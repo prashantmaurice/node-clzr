@@ -113,7 +113,7 @@ router.get('/login/facebook', function(req, res) {
                                     var id = hat();
                                 //console.log(id);
                                 newid( id, user._id ).save();
-                                res.end( JSON.stringify( {result : true, token : id } ) );
+                                res.end( JSON.stringify( {result : true, token : id , user:user} ) );
                             });
 
                             }else{
@@ -122,7 +122,7 @@ router.get('/login/facebook', function(req, res) {
                                 console.log(id);
 
                                 newid( id, result._id ).save();
-                                res.end( JSON.stringify( {result : true, token : id } ) );
+                                res.end( JSON.stringify( {result : true, token : id , user:result} ) );
 
                             }
                         }
@@ -135,7 +135,7 @@ router.get('/login/facebook', function(req, res) {
                                 var id=hat();
                             //console.log(id);
                             newid(id,nu._id).save();
-                            res.end( JSON.stringify( {result : true, token : id } ) );
+                            res.end( JSON.stringify( {result : true, token : id , user:user} ) );
                         });
 
                         }
@@ -188,7 +188,7 @@ router.get('/login/google', function(req, res) {
                                     var id = hat();
                                 //console.log(id);
                                 newid( id, user._id ).save();
-                                res.end( JSON.stringify( {result : true, token : id } ) );
+                                res.end( JSON.stringify( {result : true, token : id , user:user} ) );
                             });
 
                             }else{
@@ -197,7 +197,7 @@ router.get('/login/google', function(req, res) {
                                 console.log(id);
 
                                 newid( id, result._id ).save();
-                                res.end( JSON.stringify( {result : true, token : id } ) );
+                                res.end( JSON.stringify( {result : true, token : id , user:result} ) );
 
                             }
                         }
@@ -210,7 +210,7 @@ router.get('/login/google', function(req, res) {
                                 var id=hat();
                             //console.log(id);
                             newid(id,nu._id).save();
-                            res.end( JSON.stringify( {result : true, token : id } ) );
+                            res.end( JSON.stringify( {result : true, token : id , user:user} ) );
                         });
 
                         }
