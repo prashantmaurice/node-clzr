@@ -40,13 +40,43 @@ function fuzzy(name,params){
 	list=params.list
 	extract=params.extract||function(x){return x};
 	return _.sortBy(_.map(list,function(obj){
-		return { score:edit_distance(name,extract(obj),function(x){return 0.3;},function(x){return 2;},function(x,y){return 2;},false),
+		return { result:skip_search(extract(obj),name,false),
 			original:obj}
-		}),'score')
+		}),function(obj){
+			return obj.result.score+((obj.result.match)?0:100)
+		})
 	// return _.map(list,extract)
 }
 module.exports={
 	edit_distance:edit_distance,
-	fuzzy:fuzzy
+	fuzzy:fuzzy,
+	skip_search:skip_search
+}
+function skip_search(name,query,debug){
+	name=name.toLowerCase()
+	query=query.toLowerCase()
+	var score=0;
+	var i=0,j=0;
+	var l1=name.length-1,l2=query.length-1;
+	while(i<=l1 && j<=l2){
+		if(name[i]==query[j]){
+			if(debug)
+			console.log('char match i='+i+' ,j='+j)
+			i++;j++;
+		} else {
+			if(debug)
+			console.log('char miss i='+i+' ,j='+j)
+			i++;score++;
+		}
+	}
+	if(debug)
+	console.log('done i='+i+' j='+j+' score='+score)
+	if(debug)
+	console.log('l1='+l1+' l2='+l2)
+	if(j==l2+1){
+		return {match:true,score:score};
+	} else {
+		return {match:false,score:(score+(l2+1-j))}
+	}
 }
 global.registry.register("search", module.exports);
