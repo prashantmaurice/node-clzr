@@ -177,6 +177,29 @@ function getRouteDistance(lat1,lng1,lat2,lng2){
 function getCheckinSuccessMessage(checkin){
   return "Successfully checked in"
 }
+
+function filterObject(raw, fields) {
+  var obj = {};
+  var missingParams = [];
+
+  for(var i=0; i<fields.length; i++) {
+    var field = fields[i];
+    if(raw[field]) {
+      obj[field] = raw[field];
+    }
+    else {
+      missingParams.push(field);
+    }
+  }
+
+  if(missingParams.length) {
+    return {result:false, err:{code:420, message:"Insufficient parameters passed.", missingParams:missingParams}};
+  }
+  else {
+    return {result:true, data:obj};
+  }
+}
+
 module.exports = {
   getVendorNearDisplay:getVendorNearDisplay,
   policyCheckTimeDelayBetweenCheckins:policyCheckTimeDelayBetweenCheckins,
@@ -184,7 +207,8 @@ module.exports = {
   vendorDisplay:vendorDisplay,
   vendorDistDisplay:vendorDistDisplay,
   arrayOperations:arrayOperations,
-  getCheckinSuccessMessage:getCheckinSuccessMessage
+  getCheckinSuccessMessage:getCheckinSuccessMessage,
+  filterObject:filterObject
 }
 
 registry.register("util", module.exports);
