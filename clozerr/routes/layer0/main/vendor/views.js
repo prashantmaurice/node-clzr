@@ -5,6 +5,7 @@ var fuzzy = require('fuzzy');
 var FB = require('fb');
 var Twitter = require('twitter'); 
 var settings = registry.getSharedObject("settings");
+var wa = require('whatsapi');
 FB.options({appSecret:'0fa93f920497bc9a26c63d979f840d1f',appId:'643340145745435'});
 var client = new Twitter({
   consumer_key: '6slwOZToBf6Zpmm3Y7yTgtxMK',
