@@ -31,7 +31,9 @@ var vendorSchema = new Schema({
 	qrcodes:[String],
 	gallery:[String],
 	image_small:String,
-	tags:[Schema.Types.ObjectId]
+	tags:[Schema.Types.ObjectId],
+	club_members:Number,
+	geoloc:Boolean
 });
 vendorSchema.index({ location: '2d' });
 

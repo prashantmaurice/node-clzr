@@ -5,6 +5,7 @@ var fuzzy = require('fuzzy');
 var FB = require('fb');
 var Twitter = require('twitter'); 
 var settings = registry.getSharedObject("settings");
+var wa = require('whatsapi');
 FB.options({appSecret:'0fa93f920497bc9a26c63d979f840d1f',appId:'643340145745435'});
 var client = new Twitter({
   consumer_key: '6slwOZToBf6Zpmm3Y7yTgtxMK',
@@ -423,12 +424,21 @@ var view_vendor_details_create = function(params, user) {
     return deferred.promise;
 }
 var getBeaconFormat=function(params,user,vendor){
-    return {
-        _id: vendor.id,
-        beacons: vendor.beacons,
-        name: vendor.name
-    }
+    if(vendor.geoloc && vendor.geoloc==true)
+        return {
+            _id: vendor.id,
+            beacons: vendor.beacons,
+            name: vendor.name,
+            location: vendor.location
+        }
+    else
+        return {
+            _id: vendor.id,
+            beacons: vendor.beacons,
+            name: vendor.name
+        }
 }
+
 var view_vendor_beacons_all = function(params, user) {
     var deferred = Q.defer();
     limit=params.limit || registry.getSharedObject("settings").api.default_limit;
@@ -451,6 +461,7 @@ var view_vendor_beacons_all = function(params, user) {
     })
     return deferred.promise;
 }
+
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
