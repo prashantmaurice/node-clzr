@@ -42,7 +42,7 @@ function view_vendor_review_create( params, user ) {
         console.log( "User: " + user._id ); 
 
         if( checkin.user._id.toString() != user._id.toString() ){
-            deferred.reject( {description:"Checkin does not match user."} );
+            deferred.resolve( {code:204,error:"Checkin does not match user."} );
             return;
         }
 
@@ -79,7 +79,7 @@ function view_vendor_review_get( params, user ){
     reviewM.get(params).then( function( review ){
         debugger;
         if( !review ){
-            deferred.reject( { description:"No proper review object." } );
+            deferred.resolve( {code:204,error:"No proper review object." } );
             return;
         }
         

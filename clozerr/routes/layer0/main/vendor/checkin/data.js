@@ -23,7 +23,7 @@ var load_checkin = function( params ){
         }).exec();
 
     }, function(err){
-        deferred.reject( err );        
+        deferred.resolve({code:500,error:err});    
     }).then(function( vendor ){
         checkin_obj.vendor = vendor;
         return User.findOne({
@@ -31,14 +31,14 @@ var load_checkin = function( params ){
         }).exec();
 
     }, function(err){
-        deferred.reject(err);
+        deferred.resolve({code:500,error:err});
     }).then(function( user ){
         checkin_obj.user = user;
 
         deferred.resolve( checkin_obj );
 
     }, function(err){
-        deferred.reject(err);
+        deferred.resolve({code:500,error:err});
     });
 
     return deferred.promise;
