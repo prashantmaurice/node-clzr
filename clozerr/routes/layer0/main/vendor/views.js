@@ -436,6 +436,7 @@ var getBeaconPromise=function(params,user,vendor){
         }
     })
 }
+
 var view_vendor_beacons_all = function(params, user) {
     var deferred = Q.defer();
     limit=params.limit || registry.getSharedObject("settings").api.default_limit;
@@ -446,7 +447,7 @@ var view_vendor_beacons_all = function(params, user) {
             // debugger;
             if(vendor.type && vendor.type=="TestVendor") {
                 if(user.type && user.type=="TestUser") {
-                    params.vendor_id=vendor.id
+                    params.vendor_id=vendor.id;
                     vendorPList.push(getBeaconPromise(params,user,vendor))
                 }
             } else {
@@ -459,6 +460,30 @@ var view_vendor_beacons_all = function(params, user) {
                 UUID:registry.getSharedObject("settings").UUID,
                 vendors:vendorList
             })
+        })
+    })
+    return deferred.promise;
+}
+var view_vendor_geoloc_all = function(params, user) {
+    var deferred = Q.defer();
+    var vendorPList = [];
+    debugger;
+    registry.getSharedObject("data_vendors").get().then(function(vendors){
+        _.each(vendors,function(vendor){
+            debugger;
+            if(vendor.type && vendor.type=="TestVendor"){
+                if(user.type && user.type=="TestUser"){
+                    if(vendor.geoloc && vendor.geoloc==true)
+                    vendorPList.push({vendor_id:vendor.id,location:vendor.location,name:vendor.name});
+            }
+        }
+        else
+        {   if(vendor.geoloc && vendor.geoloc==true)
+            vendorPList.push({vendor_id:vendor.id,location:vendor.location,name:vendor.name})
+        }
+        })
+        Q.all(vendorPList).then(function(vendorList){
+            deferred.resolve(vendorList)
         })
     })
     return deferred.promise;
@@ -482,5 +507,6 @@ global.registry.register("view_vendor_checkins_confirmed", {get:view_vendor_chec
 global.registry.register("view_vendor_checkins_cancelled", {get:view_vendor_checkins_cancelled});
 
 global.registry.register("view_vendor_details_create", {get:view_vendor_details_create});
+global.registry.register("view_vendor_geoloc_all",{get:view_vendor_geoloc_all});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};
