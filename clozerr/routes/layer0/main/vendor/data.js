@@ -26,17 +26,13 @@ var data_vendor_withOffers = function( params ){
         }).exec();
         
     }, function( err ){
-
-        deferred.reject( err );
-
+        deferred.resolve({code:500,error:err});
     }).then( function( offers ){
         vendor_obj.offers = offers;
         deferred.resolve( vendor_obj );
 
     }, function(err){
-
-        deferred.reject( err );
-
+        deferred.resolve({code:500,error:err});
     });
 
     return deferred.promise;
@@ -84,11 +80,11 @@ var data_vendors_withLimitedTimeOffers = function(params) {
             debugger;
             deferred.resolve(arr_ret);
         }, function(err) {
-            deferred.reject(err);
+           deferred.resolve({code:500,error:err});
         });
 
     }, function(err) {
-        deferred.reject(err);
+        deferred.resolve({code:500,error:err});
     })
 
 return deferred.promise;
@@ -110,7 +106,7 @@ var data_vendor = function( params){
     .then(function( vendor ){
         deferred.resolve( vendor ); 
     }, function( err ){
-        deferred.reject( err );
+        deferred.resolve({code:500,error:err});
     }); 
     return deferred.promise;
 }
@@ -126,7 +122,7 @@ var data_vendor_near = function( params){
     .then(function( vendor ){
         deferred.resolve( vendor ); 
     }, function( err ){
-        deferred.reject( err );
+       deferred.resolve({code:500,error:err});
     }); 
     return deferred.promise;
 }
@@ -149,12 +145,12 @@ var http_vendor_offers = function( params){
         });
 
     }, function( err ){
-        deferred.reject( err );
+        deferred.resolve({code:500,error:err});
     }).then(function( offers ){
         vendor_obj.offers = offers;
         deferred.resolve( vendor );
     }, function( err ){
-        deferred.reject( err );
+        deferred.resolve({code:500,error:err});
     });
 
     return deferred.promise;

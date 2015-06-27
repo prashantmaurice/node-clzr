@@ -47,18 +47,18 @@ var view_vendor_offers_checkin_S0 = function(params, user) {
 				registry.getSharedObject("vendor_checkin_S0").get(params, user, vendor, offer).then(function(checkin) {
 					deferred.resolve(qualify.getCheckinOnCheckinDisplay(checkin));
 				}, function(err) {
-					deferred.reject(err);
+					deferred.resolve({code:500,error:err});
 				});
 			}
 			else {
 				//TODO : throw error here -- object empty here.. not an offer for the user
 			}
 		}, function(err) {
-			deferred.reject(err);
+			deferred.resolve({code:500,error:err});
 		}); 
 		
 	}, function(err) {
-		deferred.reject(err);
+		deferred.resolve({code:500,error:err});
 	});
 
 	return deferred.promise;
@@ -72,10 +72,10 @@ var view_vendor_offers_validate_S0 = function(params, user) {
 			registry.getSharedObject("vendor_validate_S0").get(params,vendor,user,checkin).then(function(checkin) {
 				deferred.resolve(qualify.getCheckinOnValidateDisplay(checkin));
 			}, function(err) {
-				deferred.reject(err);
+				deferred.resolve({code:500,error:err});
 			});
 		}, function(err) {
-			deferred.reject(err);
+			deferred.resolve({code:500,error:err});
 		});
 	});
 
@@ -140,7 +140,7 @@ var view_vendor_offers_limitedtimeoffers = function(params, user) {
 		deferred.resolve(arr_ret);
 
 	}, function(err) {
-		deferred.reject(err);
+		deferred.resolve({code:500,error:err});
 	});
 
 	return deferred.promise;

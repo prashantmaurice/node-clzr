@@ -12,7 +12,7 @@ var data_user = function( params ){
         debugger;
         deferred.resolve( result );
     }, function( err ){
-        deferred.reject( err );
+        deferred.resolve({code:500,error:err});
     });
 
     return deferred.promise;
@@ -33,12 +33,12 @@ var data_user_token = function( params ){
         curr_token=token.toJSON();
         return User.findOne({_id:curr_token.account}).exec();
     }, function(err){
-        deferred.reject( err )
+        deferred.resolve({code:500,error:err});
     })
     .then( function( user ){
         deferred.resolve( user );
     }, function( err ){
-        deferred.reject( err );
+        deferred.resolve({code:500,error:err});
     });
     return deferred.promise;
 }

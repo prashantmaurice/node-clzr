@@ -9,7 +9,7 @@ var view_vendor_get_notifications = function( params){
     	debugger;
     	deferred.resolve(vendorQualified);
     },function(err){
-    	deferred.reject(err);
+    	deferred.resolve({code:500,error:err});
     })
     return deferred.promise;
 }

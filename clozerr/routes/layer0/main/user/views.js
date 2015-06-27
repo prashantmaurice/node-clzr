@@ -14,7 +14,7 @@ var view_user_add_favourites=function(params,user){
 			deferred.resolve(user);
 	   },
 		function(err){
-			deferred.reject(err);
+			deferred.resolve({code:500,error:err});
 		});
 	}
 	else
@@ -33,13 +33,13 @@ var view_user_remove_favourites=function(params,user){
 			user.favourites.splice(idx,idx);
 			user.markModified("favourites");
 			user.save(function(err){
-				deferred.reject(err)
+				deferred.resolve({code:500,error:err});
 			})
 		}
 		deferred.resolve(user);
 	}
 	else
-		deferred.reject({description:'No vendorid'});
+		deferred.resolve({code:204,error:'No vendorid'});
 
 	return deferred.promise;
 }
@@ -56,7 +56,7 @@ var view_user_add_pinned=function(params,user){
 		deferred.resolve(user);
 		},
 		function(err){
-			deferred.reject(err);
+			deferred.resolve({code:500,error:err});
 		})
 	}
 	else
@@ -75,13 +75,13 @@ var view_user_remove_pinned=function(params,user){
 			user.pinned.splice(idx,idx);
 			user.markModified("pinned");
 			user.save(function(err){
-				deferred.reject(err)
+				deferred.resolve({code:500,error:err});
 			})
 		}
 		deferred.resolve(user);
 	}
 	else
-		deferred.reject({description:'No offer_id'});
+		deferred.resolve({code:204,error:'No offerid'});
 
 	return deferred.promise;
 }
