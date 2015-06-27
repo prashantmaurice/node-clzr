@@ -95,6 +95,7 @@ return deferred.promise;
 }
 var data_vendor = function( params){
     var _id = params.vendor_id;
+    debugger;
     var Vendor = registry.getSharedObject("models_Vendor");
     var vendor_obj = null;
     var deferred = Q.defer();
@@ -105,7 +106,7 @@ var data_vendor = function( params){
     debugger;
     
     Vendor.findOne({
-        _id: new ObjectId(_id)
+        _id: _id
     }).exec()
     .then(function( vendor ){
         deferred.resolve( vendor ); 
