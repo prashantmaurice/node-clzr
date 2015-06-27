@@ -85,9 +85,21 @@ var view_user_remove_pinned=function(params,user){
 
 	return deferred.promise;
 }
+var view_user_favourites_list = function(params,user){
+	var deferred=  Q.defer();
+	deferred.resolve(user.favourites);
+	return deferred.promise;
+}
+var view_user_pinned_list = function(params,user){
+	var deferred=  Q.defer();
+	deferred.resolve(user.pinned);
+	return deferred.promise;
+}
+
 global.registry.register("view_user_add_favourites",{get:view_user_add_favourites});
 global.registry.register("view_user_add_pinned",{get:view_user_add_pinned});
 global.registry.register("view_user_remove_favourites",{get:view_user_remove_favourites});
 global.registry.register("view_user_remove_pinned",{get:view_user_remove_pinned});
-
+global.registry.register("view_user_favourites_list",{get:view_user_favourites_list});
+global.registry.register("view_user_pinned_list",{get:view_user_pinned_list});
 module.exports={add_favourites:view_user_add_favourites};
