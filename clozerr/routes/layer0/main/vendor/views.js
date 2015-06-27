@@ -5,6 +5,7 @@ var fuzzy = require('fuzzy');
 var FB = require('fb');
 var Twitter = require('twitter'); 
 var settings = registry.getSharedObject("settings");
+var wa = require('whatsapi');
 FB.options({appSecret:'0fa93f920497bc9a26c63d979f840d1f',appId:'643340145745435'});
 var client = new Twitter({
   consumer_key: '6slwOZToBf6Zpmm3Y7yTgtxMK',
@@ -57,7 +58,7 @@ var view_vendor_get_details = function( params ) {
     registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
         deferred.resolve(vendor);
     }, function(err) {
-        deferred.reject(err);
+        deferred.resolve({code:500,error:err});
     });
 
     return deferred.promise;
@@ -78,16 +79,16 @@ var view_vendor_offers_offersPage = function( params ){
         debugger;
         return userObjectM.get( params );
     }, function( err ){
-        deferred.reject( err );
+        deferred.resolve({code:500,error:err});
     }).then( function( user ){
         var typeSpecificM = registry.getSharedObject("view_vendor_offers_offersPage_" + getVendorType(vendor_obj));
         debugger;
         return typeSpecificM.get( params, vendor_obj, user );
     }, function( err ){
         console.log(err);
-        deferred.reject( err );
+        deferred.resolve({code:500,error:err});
     })
-    .then(function( res ){deferred.resolve( res )}, function( err ){ deferred.reject( err ) });
+    .then(function( res ){deferred.resolve( res )}, function( err ){ deferred.resolve({code:500,error:err}); });
     console.log('returning from view_vendor_offers_offersPage');
     return deferred.promise;
 }
@@ -114,21 +115,21 @@ var view_vendor_details_set = function( params, user ) {
                     deferred.resolve(vendor);
                 }
                 else {
-                    deferred.reject();
+                    deferred.resolve({code:500,error:'invalid params'});
                 }
             }, function(err) {
-                deferred.reject(err);
+                deferred.resolve({code:500,error:err});
             });
            }
            else {
-            deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+            deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
     else {
-        deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+        deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
     }
 }, function(err) {
-    deferred.reject(err);
+    deferred.resolve({code:500,error:err});
 });
 
 return deferred.promise;
@@ -155,18 +156,18 @@ var view_vendor_details_update = function( params, user) {
                 vendor.markModified(params.modify);
                 vendor.save();
             }, function(err) {
-                deferred.reject(err);
+                deferred.resolve({code:500,error:err});
             });
            }
            else {
-            deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+            deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
     else {
-        deferred.reject(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+        deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
     }
 }, function(err) {
-    deferred.reject(err);
+    deferred.resolve({code:500,error:err});
 });
 
     return deferred.promise;
@@ -186,17 +187,16 @@ var view_vendor_homepage = function( params, user ){
             var typeSpecificM = registry.getSharedObject("view_vendor_homepage_" + vendors[i].type);
             vendor_obj = vendor;
             var fI = i;
-            var pr = typeSpecificM.get( params, vendor, user ).then( function( vendor ){ vendorListF[fI] = vendor }, function( err ){ deferred.reject(err); } );
+            var pr = typeSpecificM.get( params, vendor, user ).then( function( vendor ){ vendorListF[fI] = vendor }, function( err ){ deferred.resolve({code:500,error:err}); } );
             prList.push( pr );
         }
         return Q.all(prList);
     }, function( err ){
-        debugger;
-        deferred.reject( err );
+        deferred.resolve({code:500,error:err});
     }).then( function( user ){
         deferred.resolve( vendorListF );
     }, function( err ){
-        deferred.reject( err );
+        deferred.resolve({code:500,error:err});
     }).done();
 
     return deferred.promise;
@@ -212,7 +212,7 @@ var view_vendor_list_category = function(params, user) {
     registry.getSharedObject("data_vendors_category").get(params).then(function(vendors) {
         deferred.resolve(vendors);
     }, function(err) {
-        deferred.reject(err);
+        deferred.resolve({code:500,error:err});
     });
 
     return deferred.promise;
@@ -224,7 +224,7 @@ var view_vendor_list_near = function(params,user){
     params.limit=params.limit || registry.getSharedObject("settings").api.default_limit;
     params.offset=params.offset || 0;
     if(!params.latitude || !params.longitude)
-        deferred.reject({code:500,description:"distance params missing"});
+        deferred.resolve({code:204,description:"distance params missing"});
     vendors.get(params).then(function(vendors){
         if(params.category)
             deferred.resolve(_.map(
@@ -273,7 +273,7 @@ var view_vendor_search_near=function(params,user){
         limit=params.limit || registry.getSharedObject("settings").api.default_limit;
         offset=params.offset || 0;
         if(!params.latitude || !params.longitude)
-            deferred.reject({code:500,description:"distance params missing"});
+            deferred.resolve({code:500,description:"distance params missing"});
         registry.getSharedObject("data_vendor_near").get(params).then(function(vendors){
             return vendors;
         })
@@ -448,45 +448,45 @@ var view_vendor_details_create = function(params, user) {
 
     return deferred.promise;
 }
-var getBeaconPromise=function(params,user,vendor){
-    return registry.getSharedObject("view_vendor_offers_offersPage")
-    .get(params,user).then(function(offers){
+var getBeaconFormat=function(params,user,vendor){
+    if(vendor.geoloc && vendor.geoloc==true)
         return {
             _id: vendor.id,
             beacons: vendor.beacons,
             name: vendor.name,
-            settings: vendor.settings,
-            hasOffers: (offers.length > 0)
+            location: vendor.location
         }
-    })
+    else
+        return {
+            _id: vendor.id,
+            beacons: vendor.beacons,
+            name: vendor.name
+        }
 }
+
 var view_vendor_beacons_all = function(params, user) {
     var deferred = Q.defer();
     limit=params.limit || registry.getSharedObject("settings").api.default_limit;
     offset=params.offset || 0;
-    vendorPList=[];
+    vendorList=[];
     registry.getSharedObject("data_vendors").get().then(function(vendors){
         _.each(vendors,function(vendor){
-            // debugger;
             if(vendor.type && vendor.type=="TestVendor") {
                 if(user.type && user.type=="TestUser") {
-                    params.vendor_id=vendor.id
-                    vendorPList.push(getBeaconPromise(params,user,vendor))
+                    vendorList.push(getBeaconFormat(params,user,vendor))
                 }
             } else {
-                params.vendor_id=vendor.id
-                vendorPList.push(getBeaconPromise(params,user,vendor))
+                vendorList.push(getBeaconFormat(params,user,vendor))
             }
         })
-        Q.all(vendorPList).then(function(vendorList){
-            deferred.resolve({
-                UUID:registry.getSharedObject("settings").UUID,
-                vendors:vendorList
-            })
+        deferred.resolve({
+            UUID:registry.getSharedObject("settings").UUID,
+            vendors:vendorList
         })
     })
     return deferred.promise;
 }
+
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});

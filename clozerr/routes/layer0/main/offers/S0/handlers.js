@@ -81,19 +81,19 @@ var vendor_checkin_S0 = function( params,user, vendor, offer ){
                     checkinObj.gcm_id=params.gcm_id||0;
                     console.log("saving checkin");
                     checkinObj.save(function(err) {
-                        deferred.reject(err);
+                        deferred.resolve({code:500,error:err});
                     });
                     deferred.resolve(checkinObj);
                 }
                 else {
-                        deferred.reject({code:204});
+                        deferred.resolve({code:204,error:'checkin time delay error'});
                     }
                 }, function(err) {
-                    deferred.reject(err);
+                    deferred.resolve({code:500,error:err});
                 });
         }
     }, function(err) {
-        deferred.reject(err);
+        deferred.resolve({code:500,error:err});
     });
 
 return deferred.promise;
@@ -110,7 +110,7 @@ var vendor_validate_S0 = function( vendor, user, checkin ){
     debugger;
     checkin.state = CHECKIN_STATE_CONFIRMED;
     checkin.save(function(err) {
-        deferred.reject(err);
+        deferred.resolve({code:500,error:err});
     });
     deferred.resolve(checkin);
 

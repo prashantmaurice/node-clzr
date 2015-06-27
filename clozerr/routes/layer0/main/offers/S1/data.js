@@ -31,7 +31,7 @@ var data_vendor_S1 = function( params, vendor ){
 
     }, function( err ){
         debugger;
-        deferred.reject( err );
+        deferred.resolve({code:500,error:err});
     });
     return deferred.promise;
 }

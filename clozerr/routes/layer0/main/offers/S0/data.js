@@ -21,7 +21,7 @@ var data_vendor_S0 = function( params, vendor ){
         deferred.resolve( vendor );
 
     }, function( err ){
-        deferred.reject( err );
+        deferred.resolve({code:500,error: err} );
     });
     return deferred.promise;
 }

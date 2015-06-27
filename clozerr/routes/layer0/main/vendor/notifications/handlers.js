@@ -7,14 +7,6 @@ var handler_get_notifications = function(params){
 	var deferred=Q.defer();
 	var userObjectM=registry.getSharedObject("live_session");
 	var vendorListM=registry.getSharedObject("data_nearbyvendors_list");
-	debugger;
-	/*userObjectM.get(params).then(function(user){
-		debugger;
-		deferred.resolve(user);
-	},function(err)
-	{deferred.reject(err);}
-	);*/
-	
 	vendorListM.get(params).then(function(vendorlist){
 		debugger;
 		var vendorQualified=[];
@@ -26,7 +18,7 @@ var handler_get_notifications = function(params){
 		}
 		deferred.resolve(vendorQualified);
 	},function(err){
-		deferred.reject(err);
+		deferred.resolve({code:500,error:err});
 	});
 	return deferred.promise;
 }

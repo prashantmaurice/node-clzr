@@ -41,19 +41,19 @@ var vendor_checkin_SX = function( params, user, vendor, offer ){
                     checkinObj.pin=rack();
                     checkinObj.gcm_id=params.gcm_id||0;
                     checkinObj.save(function(err) {
-                        deferred.reject(err);
+                        deferred.resolve({code:500,error:err});
                     });
                     deferred.resolve(checkinObj);
                 }
                 else {
-                        deferred.reject({code:204});
+                        deferred.resolve({code:204,error:'time delay error'});
                     }
                 }, function(err) {
-                    deferred.reject(err);
+                    deferred.resolve({code:500,error:err});
                 });
         }
     }, function(err) {
-        deferred.reject(err);
+        deferred.resolve({code:500,error:err});
     });
 
 return deferred.promise;
@@ -92,7 +92,7 @@ var vendor_validate_SX = function( vendor, user, checkin ){
         debugger;
 
         checkin.save(function(err) {
-            deferred.reject(err);
+            deferred.resolve({code:500,error:err});
         });
 
         var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
@@ -103,7 +103,7 @@ var vendor_validate_SX = function( vendor, user, checkin ){
         debugger;
 
         userObj.save(function(err) {
-            deferred.reject(err);
+            deferred.resolve({code:500,error:err});
         });
 
         deferred.resolve(checkin);
