@@ -73,7 +73,8 @@ Models.User = mongoose.model('User',new Schema({
 	pinned:Schema.Types.Mixed,
     stateList: Schema.Types.Mixed,
     lucky_rewards:Schema.Types.Mixed,
-    failed_instances:Schema.Types.Mixed
+    failed_instances:Schema.Types.Mixed,
+    rewards : [ObjectId],
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
