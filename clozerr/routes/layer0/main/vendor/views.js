@@ -427,6 +427,7 @@ var view_vendor_details_create = function(params, user) {
 var getBeaconPromise=function(params,user,vendor){
     return registry.getSharedObject("view_vendor_offers_offersPage")
     .get(params,user).then(function(offers){
+        if(vendor.geoloc && vendor.geoloc==true){
         return {
             _id: vendor.id,
             beacons: vendor.beacons,
@@ -434,6 +435,17 @@ var getBeaconPromise=function(params,user,vendor){
             settings: vendor.settings,
             hasOffers: (offers.length > 0),
             location:vendor.location
+        }
+    }
+        else
+        {
+          return {
+            _id: vendor.id,
+            beacons: vendor.beacons,
+            name: vendor.name,
+            settings: vendor.settings,
+            hasOffers: (offers.length > 0)
+        }
         }
     })
 }
