@@ -1,6 +1,7 @@
 var registry=global.registry;
 var Q=require('q');
 var _=require('underscore');
+var util =registry.getSharedObject('util');
 var view_user_add_favourites=function(params,user){
 	var deferred=Q.defer();
 	console.log('On favourites add url');
@@ -85,9 +86,23 @@ var view_user_remove_pinned=function(params,user){
 
 	return deferred.promise;
 }
+
 var view_user_favourites_list = function(params,user){
 	var deferred=  Q.defer();
-	deferred.resolve(user.favourites);
+	var vendor = registry.getSharedObject("data_vendor");
+	var vendorPlist = [];
+	_.each(user.favourites,function(vendorid){
+	       	vendorPlist.push(vendor.get({vendor_id:vendorid}).then(function(favvendor){
+         return {name:favvendor.name,
+         	image:favvendor.image,
+         	location:favvendor.location,
+          id:favvendor._id};
+    }))
+	})
+	Q.all(vendorPlist).then(function(vendorList){
+		debugger;
+		deferred.resolve(vendorList);
+	})
 	return deferred.promise;
 }
 var view_user_pinned_list = function(params,user){
@@ -95,11 +110,16 @@ var view_user_pinned_list = function(params,user){
 	deferred.resolve(user.pinned);
 	return deferred.promise;
 }
-
+var view_user_get_details = function(params,user){
+	var deferred = Q.defer();
+	deferred.resolve(user);
+	return deferred.promise;
+}
 global.registry.register("view_user_add_favourites",{get:view_user_add_favourites});
 global.registry.register("view_user_add_pinned",{get:view_user_add_pinned});
 global.registry.register("view_user_remove_favourites",{get:view_user_remove_favourites});
 global.registry.register("view_user_remove_pinned",{get:view_user_remove_pinned});
 global.registry.register("view_user_favourites_list",{get:view_user_favourites_list});
 global.registry.register("view_user_pinned_list",{get:view_user_pinned_list});
+global.registry.register("view_user_get_details",{get:view_user_get_details});
 module.exports={add_favourites:view_user_add_favourites};
