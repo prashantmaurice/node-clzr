@@ -164,6 +164,7 @@ var view_vendor_offers_create = function(params, user) {
 				}
 				debugger;
 				offer_new.save();
+				deferred.resolve(offer_new)
 			}
 		}
 		else {
