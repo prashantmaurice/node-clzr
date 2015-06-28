@@ -177,8 +177,17 @@ var view_vendor_offers_create = function(params, user) {
 
 	return deferred.promise;
 }
+var view_offer_get_details = function(params,user){
+	var deferred = Q.defer();
+	var offer = registry.getSharedObject("data_offer");
+	offer.get(params).then(function(offerObj){
+		deferred.resolve(offerObj);
+	})
+  return deferred.promise;
+}
 registry.register("view_vendor_offers_validate", {get:view_vendor_offers_validate});
 registry.register("view_vendor_offers_checkin", {get:view_vendor_offers_checkin});
 registry.register("view_vendor_offers_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
+registry.register("view_offer_get_details",{get:view_offer_get_details});
 
 global.registry.register("view_vendor_offers_create", {get:view_vendor_offers_create});
