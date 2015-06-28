@@ -461,7 +461,19 @@ var view_vendor_beacons_all = function(params, user) {
     })
     return deferred.promise;
 }
+var view_vendor_club_members = function(params,user){
+    var deferred = Q.defer();
+    registry.getSharedObject("data_vendor").get(params).then(function(vendor){
 
+    })
+}
+var view_vendor_offers_active = function(params,user){
+    var deferred = Q.defer();
+    registry.getSharedObject("data_vendor_withOffers").get(params).then(function(vendor){
+        deferred.resolve(vendor);
+    });
+    return deferred.promise;
+}
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
@@ -475,7 +487,7 @@ global.registry.register("view_vendor_details_update", {get:view_vendor_details_
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
 global.registry.register("view_vendor_search_near", {get:view_vendor_search_near,post:view_vendor_search_near});
 global.registry.register("view_vendor_beacons_all", {get:view_vendor_beacons_all});
-
+global.registry.register("view_vendor_offers_active",{get:view_vendor_offers_active});
 global.registry.register("view_vendor_checkins_active", {get:view_vendor_checkins_active});
 global.registry.register("view_vendor_checkins_confirmed", {get:view_vendor_checkins_confirmed});
 global.registry.register("view_vendor_checkins_cancelled", {get:view_vendor_checkins_cancelled});
