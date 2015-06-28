@@ -192,6 +192,9 @@ var data_vendor_checkins_cancelled = function( params ) {
     params.criteria = { vendor : ObjectId(params.vendor_id) , state : CHECKIN_STATE_CANCELLED };
     return registry.getSharedObject("data_checkin_params").get(params);
 }
+var data_club_members = function(vendor){
+    registry.getSharedObject("models_User").find({}).exec().then(function(users){});
+}
 
 registry.register("data_vendors",{get:data_vendors});
 registry.register("data_vendor_near",{get:data_vendor_near});
