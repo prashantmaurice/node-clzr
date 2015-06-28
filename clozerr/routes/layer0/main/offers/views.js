@@ -18,7 +18,7 @@ var view_vendor_offers_offersPage=function(params,user){
 						return (vendor_offers[i]._id.toString() == ch.offer.toString());
 					});
 					debugger;
-					var pr = registry.getSharedObject("qualify").getOfferDisplay(user, vendor, vendor_offers[i], checkin_old);
+					var pr = registry.getSharedObject("qualify").getOfferDisplay(user, vendor, vendor_offers[i], checkin_old.length);
 					plist.push(pr);
 				}
 
