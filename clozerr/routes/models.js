@@ -31,7 +31,9 @@ var vendorSchema = new Schema({
 	qrcodes:[String],
 	gallery:[String],
 	image_small:String,
-	tags:[Schema.Types.ObjectId]
+	tags:[Schema.Types.ObjectId],
+	club_members:Number,
+	geoloc:Boolean
 });
 vendorSchema.index({ location: '2d' });
 
@@ -71,7 +73,8 @@ Models.User = mongoose.model('User',new Schema({
 	pinned:Schema.Types.Mixed,
     stateList: Schema.Types.Mixed,
     lucky_rewards:Schema.Types.Mixed,
-    failed_instances:Schema.Types.Mixed
+    failed_instances:Schema.Types.Mixed,
+    rewards : [ObjectId],
 }));
 
 Models.Token = mongoose.model('Token',new Schema({

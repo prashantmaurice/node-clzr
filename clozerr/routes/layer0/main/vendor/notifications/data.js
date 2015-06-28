@@ -19,7 +19,7 @@ var data_nearbyvendors_list=function(params)
           debugger;
            deferred.resolve(vendors); 
         },function(err){
-        	deferred.reject(err);
+        	deferred.resolve({code:500,error:err});
         });
         return deferred.promise;
 }

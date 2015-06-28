@@ -27,7 +27,7 @@ var ganalytics = require('./routes/util/google_analytics');
 var db=mongoose.connection;
 
 db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
-// db.open('mongodb://mongoadmin:clozerradmin@localhost:4567/fin4')
+//db.open('mongodb://mongoadmin:clozerradmin@localhost:6547s/fin4')
 
 // --------- DB ----------
 

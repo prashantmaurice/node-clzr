@@ -62,11 +62,10 @@ var view_vendor_offers_offerPage_S1 = function( params){
       });
   }, function(err) {
     debugger;
-    deferred.reject(err);
+    deferred.resolve({code:500,error:err});
   });
 }, function(err) {
-  debugger;
-  deferred.reject(err);
+  deferred.resolve({code:500,error:err});
 });
 return deferred.promise;
 }

@@ -18,7 +18,7 @@ var view_vendor_offers_offersPage=function(params,user){
 						return (vendor_offers[i]._id.toString() == ch.offer.toString());
 					});
 					debugger;
-					var pr = registry.getSharedObject("qualify").getOfferDisplay(user, vendor, vendor_offers[i], checkin_old);
+					var pr = registry.getSharedObject("qualify").getOfferDisplay(user, vendor, vendor_offers[i], checkin_old.length);
 					plist.push(pr);
 				}
 
@@ -69,7 +69,7 @@ var view_vendor_offers_checkin=function(params,user){
 							global.io.emit('signal', JSON.stringify({vendor_id:vendor._id}) );
 						} else {
 							debugger;
-							deferred.reject({code:204,description:"cant create checkin"})
+							deferred.resolve({code:204,description:"cant create checkin"})
 						}
 						
 					});
@@ -102,13 +102,13 @@ var view_vendor_offers_validate=function(params,user){
 				else
 					deferred.resolve({result:false,message:"invalid checkin"});
 			}, function(err) {
-				deferred.reject(err);
+				deferred.resolve(err);
 			});
 		}, function(err) {
-			deferred.reject(err);
+			deferred.resolve(err);
 		});
 	}, function(err) {
-		deferred.reject(err);
+		deferred.resolve(err);
 	});
 
 	return deferred.promise
@@ -132,13 +132,13 @@ var view_vendor_offers_qrcodevalidate = function(params, user) {
 					deferred.resolve({result:false,message:"invalid checkin"});
 				}
 			}, function(err) {
-				deferred.reject(err);
+				deferred.resolve(err);
 			})
 		}, function(err) {
-			deferred.reject(err);
+			deferred.resolve(err);
 		});
 	}, function(err) {
-		deferred.reject(err);
+		deferred.resolve(err);
 	});
 
 	return deferred.promise;
@@ -164,6 +164,7 @@ var view_vendor_offers_create = function(params, user) {
 				}
 				debugger;
 				offer_new.save();
+				deferred.resolve(offer_new)
 			}
 		}
 		else {
