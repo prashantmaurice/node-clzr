@@ -8,7 +8,7 @@ var mongoose=require('mongoose');
 var models = require("./routes/models");
 var Token = models.Token;
 var User = models.User;
-
+var cors = require('cors');
 
 
 var auth = require('./routes/user');
@@ -27,7 +27,7 @@ var ganalytics = require('./routes/util/google_analytics');
 var db=mongoose.connection;
 
 db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
-//db.open('mongodb://mongoadmin:clozerradmin@localhost:6547s/fin4')
+// db.open('mongodb://mongoadmin:clozerradmin@localhost:9999/fin4')
 
 // --------- DB ----------
 
@@ -44,6 +44,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(cors())
 app.use('/', function( req, res, next ){
   res.setHeader("Content-Type", "application/JSON");
   if( req.query.access_token ){
