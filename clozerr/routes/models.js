@@ -33,7 +33,9 @@ var vendorSchema = new Schema({
 	image_small:String,
 	tags:[Schema.Types.ObjectId],
 	club_members:Number,
-	geoloc:Boolean
+	geoloc:Boolean,
+	last_post:Date,
+	last_tweet:Date
 });
 vendorSchema.index({ location: '2d' });
 
