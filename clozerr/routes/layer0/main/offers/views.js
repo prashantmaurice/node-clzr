@@ -194,7 +194,7 @@ var view_offer_details_set = function( params, user ) {
     userObjectM.get( params ).then(function(user) {
         debugger;
         if(user.type == "Vendor") {
-               vendorObjectM.get( params ).then(function(offer) {
+               offerObjectM.get( params ).then(function(offer) {
                 if(params.offer) {
                     for(key in params.offer) {
                         offer[key] = params.offer[key];
