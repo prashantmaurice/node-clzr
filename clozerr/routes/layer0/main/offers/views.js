@@ -194,16 +194,20 @@ var view_offer_details_set = function( params, user ) {
     userObjectM.get( params ).then(function(user) {
         debugger;
         if(user.type == "Vendor") {
+        	debugger;
                offerObjectM.get( params ).then(function(offer) {
+               	  debugger;
                 if(params.offer) {
+                	debugger;
                     for(key in params.offer) {
+                    	debugger;
                         offer[key] = params.offer[key];
                         offer.markModified(key);
                     }
                     debugger;
                     offer.save();
                     debugger;
-                    deferred.resolve(vendor);
+                    deferred.resolve(offer);
                 }
                 else {
                     deferred.resolve({code:500,error:'invalid params'});
