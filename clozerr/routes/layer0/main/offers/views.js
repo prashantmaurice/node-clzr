@@ -185,6 +185,44 @@ var view_offer_get_details = function(params,user){
 	})
   return deferred.promise;
 }
+var view_offer_details_set = function( params, user ) {
+    var deferred = Q.defer();
+
+    var offerObjectM = registry.getSharedObject("data_offer");
+    var userObjectM = registry.getSharedObject("live_session");
+
+    userObjectM.get( params ).then(function(user) {
+        debugger;
+        if(user.type == "Vendor") {
+               vendorObjectM.get( params ).then(function(offer) {
+                if(params.offer) {
+                    for(key in params.offer) {
+                        offer[key] = params.offer[key];
+                        offer.markModified(key);
+                    }
+                    debugger;
+                    offer.save();
+                    debugger;
+                    deferred.resolve(vendor);
+                }
+                else {
+                    deferred.resolve({code:500,error:'invalid params'});
+                }
+            }, function(err) {
+                deferred.resolve({code:500,error:err});
+            });
+
+    }
+    else {
+        deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+    }
+}, function(err) {
+    deferred.resolve({code:500,error:err});
+});
+
+return deferred.promise;
+
+}
 registry.register("view_vendor_offers_validate", {get:view_vendor_offers_validate});
 registry.register("view_vendor_offers_checkin", {get:view_vendor_offers_checkin});
 registry.register("view_vendor_offers_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
