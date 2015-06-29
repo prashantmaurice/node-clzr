@@ -326,10 +326,10 @@ var view_vendor_search_near=function(params,user){
           description:params.description
       };
       FB.api('/me/feed','post',body,function(result){
-        registry.getSharedObject("data_vendor").get(params).then(vendor){
+        registry.getSharedObject("data_vendor").get(params).then(function(vendor){
             vendor.last_post = Date.now();
             vendor.save();
-        }
+        });
         deferred.resolve(result);
     })
       return deferred.promise;
@@ -344,10 +344,10 @@ var view_vendor_search_near=function(params,user){
       if(error) throw error;
         console.log(tweet);  // Tweet body. 
         console.log(response);  // Raw response object. 
-     registry.getSharedObject("data_vendor").get(params).then(vendor){
+     registry.getSharedObject("data_vendor").get(params).then(function(vendor){
             vendor.last_tweet = Date.now();
             vendor.save();
-        }
+        });
         deferred.resolve(response);
     });
     return deferred.promise;
@@ -479,7 +479,7 @@ var view_vendor_beacons_all = function(params, user) {
     })
     return deferred.promise;
 }
-var view_vendor_club_members = function(params,user){
+/*var view_vendor_club_members = function(params,user){
     var deferred = Q.defer();
     registry.getSharedObject("data_vendor").get(params).then(function(vendor){
        registry.getSharedObject("data_club_members").get(vendor).then(function(users){
@@ -488,7 +488,7 @@ var view_vendor_club_members = function(params,user){
        });
     })
     return deferred.promise;
-}
+}*/
 var view_vendor_offers_active = function(params,user){
     var deferred = Q.defer();
     registry.getSharedObject("data_vendor_withOffers").get(params).then(function(vendor){
@@ -513,7 +513,7 @@ global.registry.register("view_vendor_offers_active",{get:view_vendor_offers_act
 global.registry.register("view_vendor_checkins_active", {get:view_vendor_checkins_active});
 global.registry.register("view_vendor_checkins_confirmed", {get:view_vendor_checkins_confirmed});
 global.registry.register("view_vendor_checkins_cancelled", {get:view_vendor_checkins_cancelled});
-global.registry.register("view_vendor_club_members",{get:view_vendor_club_members});
+//global.registry.register("view_vendor_club_members",{get:view_vendor_club_members});
 
 global.registry.register("view_vendor_details_create", {get:view_vendor_details_create});
 
