@@ -227,5 +227,6 @@ registry.register("view_vendor_offers_validate", {get:view_vendor_offers_validat
 registry.register("view_vendor_offers_checkin", {get:view_vendor_offers_checkin});
 registry.register("view_vendor_offers_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
 registry.register("view_offer_get_details",{get:view_offer_get_details});
+registry.register("view_offer_details_set",{get:view_offer_details_set});
 
 global.registry.register("view_vendor_offers_create", {get:view_vendor_offers_create});
