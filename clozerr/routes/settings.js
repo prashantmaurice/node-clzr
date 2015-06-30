@@ -81,5 +81,16 @@ module.exports = {
     	"endHour":18,
     	"days":[0,1,2,3]}
     },
-
+	"S0OfferTypes":{
+		"welcomeReward":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/welcome+reward.png",
+		"happyHours":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/happy+hour.png",
+		"limitedTime":"",
+		"limitedCustomers":"",
+		"luckyCheckins":""
+	},
+	"geofenceTypes":[
+		"ON_ENTER",
+		"ON_EXIT",
+		"PUSH"
+	]
 };

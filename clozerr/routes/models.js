@@ -39,6 +39,15 @@ var vendorSchema = new Schema({
 });
 vendorSchema.index({ location: '2d' });
 
+var geofenceSchema = new Schema({
+	location : {type:[Number], index:'2dsphere'},
+	radius : Number,
+	type : Number
+});
+geofenceSchema.index({ location : '2d' });
+
+Models.Geofence = mongoose.model('Geofence', geofenceSchema);
+
 Models.Content = mongoose.model('Content',new Schema({
 	key:String,
 	value:String
@@ -111,6 +120,14 @@ Models.Data = mongoose.model('Data',new Schema({
     type:String,
     content: Schema.Types.Mixed
 }));
+
+Models.Analytics = mongoose.model('Analytics',new Schema({
+    timeStamp:{type: Date , default: Date.now()},
+    user:ObjectId,
+    metric:String,
+    dimensions:Schema.Types.Mixed
+}));
+
 Models.Tag = mongoose.model('Tag',new Schema({
 	name:String
 }))
