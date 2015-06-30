@@ -10,4 +10,5 @@ registry.register("models_Checkin", models.CheckIn);
 registry.register("models_Token",models.Token);
 registry.register("models_Review", models.Review);
 registry.register("models_Tag", models.Tag);
+global.registry.register("models_Geofence", models.Geofence);
 // register other models here.

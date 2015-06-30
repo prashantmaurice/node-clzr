@@ -54,5 +54,17 @@ module.exports = {
 		{"name":"Spas & Salons", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/spas+salons.jpg"},
 		{"name":"Electronics", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/electronics.jpg"},
 		{"name":"Others", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/others.jpg"}
+	],
+	"S0OfferTypes":{
+		"welcomeReward":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/welcome+reward.png",
+		"happyHours":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/happy+hour.png",
+		"limitedTime":"",
+		"limitedCustomers":"",
+		"luckyCheckins":""
+	},
+	"geofenceTypes":[
+		"ON_ENTER",
+		"ON_EXIT",
+		"PUSH"
 	]
 };

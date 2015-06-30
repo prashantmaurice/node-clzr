@@ -39,6 +39,15 @@ var vendorSchema = new Schema({
 });
 vendorSchema.index({ location: '2d' });
 
+var geofenceSchema = new Schema({
+	location : {type:[Number], index:'2dsphere'},
+	radius : Number,
+	type : Number
+});
+geofenceSchema.index({ location : '2d' });
+
+Models.Geofence = mongoose.model('Geofence', geofenceSchema);
+
 Models.Content = mongoose.model('Content',new Schema({
 	key:String,
 	value:String
