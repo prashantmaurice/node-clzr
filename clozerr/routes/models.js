@@ -116,7 +116,7 @@ Models.Analytics = mongoose.model('Analytics',new Schema({
     timeStamp:{type: Date , default: Date.now()},
     user:ObjectId,
     metric:String,
-    dimensions:[String]
+    dimensions:Schema.Types.Mixed
 }));
 
 Models.Tag = mongoose.model('Tag',new Schema({
