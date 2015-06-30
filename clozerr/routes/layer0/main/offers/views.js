@@ -163,6 +163,7 @@ var view_vendor_offers_create = function(params, user) {
 					offer_new.params = params.params;
 				}
 				debugger;
+				Vendor.update({id:params.vendor_id},{$push:{offers:offer_new.id}})
 				offer_new.save();
 				deferred.resolve(offer_new)
 			}
