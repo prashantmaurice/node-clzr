@@ -54,5 +54,32 @@ module.exports = {
 		{"name":"Spas & Salons", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/spas+salons.jpg"},
 		{"name":"Electronics", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/electronics.jpg"},
 		{"name":"Others", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/others.jpg"}
-	]
+	],
+	"welcomeReward":{
+		"caption":"Welcome and claim your first loyalty reward",
+		"description":"Your first loyalty reward"
+	},
+	"limitedTime":{
+		"caption":"Hurry soon bag your limted time offer",
+		"description":"Default limited time offer",
+		"params":{		
+		"offerStart":new Date(),
+		"offerEnd":new Date()
+	    }
+
+	},
+    "limitedCustomers":{
+    	"caption":"Try your luck and bag a exciting offer",
+    	"description":"Default limited customer offer",
+    	"params":{"maxCustomers":10}
+    },
+    "happyHours":{
+    	"caption" : "Try our happy hour rewards",
+    	"description":"Default happy hour rewards",
+    	"params":{
+    	"startHour":15,
+    	"endHour":18,
+    	"days":[0,1,2,3]}
+    },
+
 };
