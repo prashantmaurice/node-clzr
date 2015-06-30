@@ -178,8 +178,60 @@ var view_vendor_offers_create = function(params, user) {
 
 	return deferred.promise;
 }
+var view_offer_get_details = function(params,user){
+	var deferred = Q.defer();
+	var offer = registry.getSharedObject("data_offer");
+	offer.get(params).then(function(offerObj){
+		deferred.resolve(offerObj);
+	})
+  return deferred.promise;
+}
+var view_offer_details_set = function( params, user ) {
+    var deferred = Q.defer();
+
+    var offerObjectM = registry.getSharedObject("data_offer");
+    var userObjectM = registry.getSharedObject("live_session");
+
+    userObjectM.get( params ).then(function(user) {
+        debugger;
+        if(user.type == "Vendor") {
+        	debugger;
+               offerObjectM.get( params ).then(function(offer) {
+               	  debugger;
+                if(params.offer) {
+                	debugger;
+                    for(key in params.offer) {
+                    	debugger;
+                        offer[key] = params.offer[key];
+                        offer.markModified(key);
+                    }
+                    debugger;
+                    offer.save();
+                    debugger;
+                    deferred.resolve(offer);
+                }
+                else {
+                    deferred.resolve({code:500,error:'invalid params'});
+                }
+            }, function(err) {
+                deferred.resolve({code:500,error:err});
+            });
+
+    }
+    else {
+        deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+    }
+}, function(err) {
+    deferred.resolve({code:500,error:err});
+});
+
+return deferred.promise;
+
+}
 registry.register("view_vendor_offers_validate", {get:view_vendor_offers_validate});
 registry.register("view_vendor_offers_checkin", {get:view_vendor_offers_checkin});
 registry.register("view_vendor_offers_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
+registry.register("view_offer_get_details",{get:view_offer_get_details});
+registry.register("view_offer_details_set",{get:view_offer_details_set});
 
 global.registry.register("view_vendor_offers_create", {get:view_vendor_offers_create});
