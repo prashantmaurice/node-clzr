@@ -106,8 +106,9 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
       }
       offerDisplay.stampStatus.total = vendor.settings.SXLimit*1;
     }
-    if(offerDisplay.type=="S0") {    
-      offerDisplay.params=offer.params
+    if(offerDisplay.type=="S0") {
+      offerDisplay.image = global.registry.getSharedObject("settings").S0OfferTypes[offer.params.type];
+      offerDisplay.params=offer.params;
     }
     deferred.resolve(offerDisplay);
   }

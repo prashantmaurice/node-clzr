@@ -93,10 +93,7 @@ var view_user_favourites_list = function(params,user){
 	var vendorPlist = [];
 	_.each(user.favourites,function(vendorid){
 	       	vendorPlist.push(vendor.get({vendor_id:vendorid}).then(function(favvendor){
-         return {name:favvendor.name,
-         	image:favvendor.image,
-         	location:favvendor.location,
-          id:favvendor._id};
+         return favvendor;
     }))
 	})
 	Q.all(vendorPlist).then(function(vendorList){
