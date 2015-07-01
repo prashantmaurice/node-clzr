@@ -36,7 +36,7 @@ var view_analytics_all_byDay = function(params,user){
 	var scope = {};
 	scope.filterObject = global.registry.getSharedObject('util').filterObject;
 	scope.filterDimension = function(dim_this, dim_filter) {
-		if(dim_filter) {
+		if(dim_filter.length != 0) {
 			return filterObject(dim_this, dim_filter).data;
 		}
 		else {
