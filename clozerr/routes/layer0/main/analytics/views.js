@@ -31,7 +31,7 @@ function makeArray(obj) {
 	}
 }
 
-var view_analytics_all_byDay = function(params,user){
+var view_analytics_all_by_day = function(params,user){
 
 	var scope = {};
 	scope.filterObject = global.registry.getSharedObject('util').filterObject;
@@ -78,4 +78,4 @@ var view_analytics_all_byDay = function(params,user){
 }
 
 registry.register("view_analytics_hit",{get:view_analytics_hit,post:view_analytics_hit})
-registry.register("view_analytics_all_byDay",{get:view_analytics_all_byDay})
+registry.register("view_analytics_all_by_day",{get:view_analytics_all_by_day})
