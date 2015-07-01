@@ -43,7 +43,8 @@ vendorSchema.index({ location: '2d' });
 var geofenceSchema = new Schema({
 	location : {type:[Number], index:'2dsphere'},
 	radius : Number,
-	type : Number
+	type : Number,
+	params : Schema.Types.Mixed
 });
 geofenceSchema.index({ location : '2d' });
 
