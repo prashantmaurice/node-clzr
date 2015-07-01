@@ -4,12 +4,21 @@ var view_geofence_details_create = function(params, user) {
 	var deferred = Q.defer();
 
 	var Geofence = global.registry.getSharedObject('models_Geofence');
+	var geofenceTypes = global.registry.getSharedObject("settings").geofenceTypes;
 
-	var geofence = new Geofence();
-	geofence.location = [];
-	geofence.location[0] = params.latitude;
-	geofence.location[1] = params.longitude;
-	geofence.type = global.registry.getSharedObject("settings").geofenceTypes.indexOf(params.type.toUpperCase());
+	var geofence = new Geofence({ location : [params.latitude, params.longitude] });
+
+	debugger;
+	if(params.type.constructor != Array) {
+		params.type = [params.type];
+	}
+	debugger;
+	var type_flg = geofenceTypes[params.type[0].toUpperCase()];
+	for(var i=1; i<params.type.length; i++) {
+		type_flg = type_flg | geofenceTypes[params.type[i].toUpperCase()];
+	}
+	debugger;
+	geofence.type = type_flg;
 	geofence.radius = params.radius;
 
 	geofence.save(function(err) {

@@ -88,9 +88,11 @@ module.exports = {
 		"limitedCustomers":"",
 		"luckyCheckins":""
 	},
-	"geofenceTypes":[
-		"ON_ENTER",
-		"ON_EXIT",
-		"PUSH"
-	]
+	"geofenceTypes":{
+		"RANGE" : 1,
+		"RELOAD" : 2,
+		"PING" : 4,
+		"PUSH" : 8,
+		"ONEXIT" : 16
+	}
 };

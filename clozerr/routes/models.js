@@ -35,7 +35,8 @@ var vendorSchema = new Schema({
 	club_members:Number,
 	geoloc:Boolean,
 	last_post:Date,
-	last_tweet:Date
+	last_tweet:Date,
+	geofences:[ObjectId]
 });
 vendorSchema.index({ location: '2d' });
 
