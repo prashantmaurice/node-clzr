@@ -10,18 +10,34 @@ var view_analytics_hit=function(params,user){
 	analytics_obj.dimensions=params.dimensions;
 	return Q(analytics_obj.save())
 }
-var compute_analytics=function(map,reduce,query){
+var compute_analytics=function(map,reduce,query,scope){
 	return Q(registry.getSharedObject('models_Analytics').mapReduce({
 		query:query,
 		map:map,
-		reduce:reduce
+		reduce:reduce,
+		scope:scope
 	}))
 }
+
+function makeArray(obj) {
+	if(obj.constructor != Array) {
+		return [ obj ];
+	}
+	else {
+		return obj;
+	}
+}
+
 var view_analytics_all_byDay = function(params,user){
+
+	var scope = {};
+	scope.filterObject = global.registry.getSharedObject('util').filterObject;
+	scope.dimensions = makeArray(params.dimensions);
+
 	map_byDay=function(){
 	    emit({
 	        metric:this.metric,
-	        dimensions:this.dimensions,
+	        dimensions:filterObject(this.dimensions, dimensions).data,
 	        time:new Date(this.timeStamp.getFullYear(),
 	            this.timeStamp.getMonth(),
 	            this.timeStamp.getDate(),
@@ -31,7 +47,8 @@ var view_analytics_all_byDay = function(params,user){
 	reduce=function(key,values){
 	    return Array.sum(values)
 	}
-	return compute_analytics(map_byDay,reduce,{})
+	return compute_analytics(map_byDay,reduce,{},scope);
 }
+
 registry.register("view_analytics_hit",{get:view_analytics_hit,post:view_analytics_hit})
 registry.register("view_analytics_all_byDay",{get:view_analytics_all_byDay})
