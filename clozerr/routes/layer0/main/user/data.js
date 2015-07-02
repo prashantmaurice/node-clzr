@@ -1,7 +1,7 @@
 var registry = global.registry;
 var Q = require("q");
 
-var data_user = function( params ){
+var util_session = function( params ){
     // Get all relevant fields for the User object.
     var deferred = Q.defer();
     var User = registry.getSharedObject("models_User");
@@ -20,7 +20,11 @@ var data_user = function( params ){
     return deferred.promise;
 }
 
-registry.register('util_session', {get:data_user});
+registry.register('util_session', {get:util_session});
+
+var data_user = function(params){
+    return registry.getSharedObject("models_User").find(params).exec();
+}
 registry.register('data_user', {get:data_user});
 
 var data_user_token = function( params ){
