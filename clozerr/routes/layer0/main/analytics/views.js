@@ -28,7 +28,7 @@ var view_analytics_all_byDay = function(params,user){
 	            0,0,0,0)
 	    },1)
 	}
-	reduce=function(key,values){
+	reduce_sum=function(key,values){
 	    return Array.sum(values)
 	}
 	return compute_analytics(map_byDay,reduce,{})
