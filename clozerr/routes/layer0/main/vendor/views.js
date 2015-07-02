@@ -15,6 +15,7 @@ var client = new Twitter({
 });
 var hat = require("hat");
 var rack = hat.rack(10, 10);
+var ObjectId = require('mongoose').Schema.ObjectId;
 
 function getVendorType(vendor) {
     debugger;
@@ -78,7 +79,7 @@ var view_vendor_details_set = function( params, user ) {
         debugger;
         if(user.type == "Vendor") {
             if(user.vendor_id == params.vendor_id) {
-               vendorObjectM.get( params ).then(function(vendor) {
+             vendorObjectM.get( params ).then(function(vendor) {
                 if(params.vendor) {
                     for(key in params.vendor) {
                         vendor[key] = params.vendor[key];
@@ -95,8 +96,8 @@ var view_vendor_details_set = function( params, user ) {
             }, function(err) {
                 deferred.resolve({code:500,error:err});
             });
-           }
-           else {
+         }
+         else {
             deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
@@ -126,15 +127,15 @@ var view_vendor_details_update = function( params, user) {
         debugger;
         if(user.type == "Vendor") {
             if(user.vendor_id == params.vendor_id) {
-               vendorObjectM.get( params ).then(function(vendor) {
+             vendorObjectM.get( params ).then(function(vendor) {
                 vendor[params.modify] = arrayOperations[params.operation](vendor[params.modify], params.values);
                 vendor.markModified(params.modify);
                 vendor.save();
             }, function(err) {
                 deferred.resolve({code:500,error:err});
             });
-           }
-           else {
+         }
+         else {
             deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
@@ -288,12 +289,11 @@ var view_vendor_search_near=function(params,user){
             return vendors;
         })
         .then(function(vendors){
-            deferred.resolve(_.first(_.rest(
+            deferred.resolve(
                 _.map(vendors,function(vendor){
                     // return vendor
                     return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
-                })
-                ,offset),limit))
+                }))
         })
         return deferred.promise
     }
@@ -344,7 +344,7 @@ var view_vendor_search_near=function(params,user){
       if(error) throw error;
         console.log(tweet);  // Tweet body. 
         console.log(response);  // Raw response object. 
-     registry.getSharedObject("data_vendor").get(params).then(function(vendor){
+        registry.getSharedObject("data_vendor").get(params).then(function(vendor){
             vendor.last_tweet = Date.now();
             vendor.save();
         });
@@ -449,36 +449,36 @@ var getBeaconFormat=function(params,user,vendor){
             name: vendor.name,
             location: vendor.location
         }
-    else
-        return {
-            _id: vendor.id,
-            beacons: vendor.beacons,
-            name: vendor.name
-        }
-}
-
-var view_vendor_beacons_all = function(params, user) {
-    var deferred = Q.defer();
-    limit=params.limit || registry.getSharedObject("settings").api.default_limit;
-    offset=params.offset || 0;
-    vendorList=[];
-    registry.getSharedObject("data_vendors").get().then(function(vendors){
-        _.each(vendors,function(vendor){
-            if(vendor.type && vendor.type=="TestVendor") {
-                if(user.type && user.type=="TestUser") {
-                    vendorList.push(getBeaconFormat(params,user,vendor))
-                }
-            } else {
-                vendorList.push(getBeaconFormat(params,user,vendor))
+        else
+            return {
+                _id: vendor.id,
+                beacons: vendor.beacons,
+                name: vendor.name
             }
-        })
-        deferred.resolve({
-            UUID:registry.getSharedObject("settings").UUID,
-            vendors:vendorList
-        })
-    })
-    return deferred.promise;
-}
+        }
+
+        var view_vendor_beacons_all = function(params, user) {
+            var deferred = Q.defer();
+            limit=params.limit || registry.getSharedObject("settings").api.default_limit;
+            offset=params.offset || 0;
+            vendorList=[];
+            registry.getSharedObject("data_vendors").get().then(function(vendors){
+                _.each(vendors,function(vendor){
+                    if(vendor.type && vendor.type=="TestVendor") {
+                        if(user.type && user.type=="TestUser") {
+                            vendorList.push(getBeaconFormat(params,user,vendor))
+                        }
+                    } else {
+                        vendorList.push(getBeaconFormat(params,user,vendor))
+                    }
+                })
+                deferred.resolve({
+                    UUID:registry.getSharedObject("settings").UUID,
+                    vendors:vendorList
+                })
+            })
+            return deferred.promise;
+        }
 /*var view_vendor_club_members = function(params,user){
     var deferred = Q.defer();
     registry.getSharedObject("data_vendor").get(params).then(function(vendor){
@@ -496,6 +496,45 @@ var view_vendor_offers_active = function(params,user){
     });
     return deferred.promise;
 }
+
+var view_vendor_geofences_add = function(params, user) {
+    var deferred = Q.defer();
+
+    var ObjectId = require('mongoose').Schema.ObjectId;
+    var Vendor = global.registry.getSharedObject("models_Vendor");
+
+    if(user.type == "Vendor") {
+        if(user.vendor_id == params.vendor_id) {
+            global.registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+                debugger;
+                Vendor.update({
+                    _id : params.vendor_id
+                }, {
+                    $addToSet : {
+                        geofences : params.geofence_id
+                    }
+                }).exec().then(function(num) {
+                    debugger;
+                    vendor = JSON.parse(JSON.stringify(vendor));
+                    vendor.geofences.push(params.geofence_id);
+                    deferred.resolve(vendor);
+                }, function(err) {
+                    deferred.reject(err);
+                });
+            });
+        }
+        else {
+            deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+        }
+    }
+    else { 
+        deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+    }
+
+    return deferred.promise;
+}
+
+global.registry.register("view_vendor_geofences_add", { get : view_vendor_geofences_add });
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
 global.registry.register("view_vendor_get_details", {get:view_vendor_get_details});
 global.registry.register("view_vendor_list_category", {get:view_vendor_list_category});
