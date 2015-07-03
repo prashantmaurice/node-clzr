@@ -25,6 +25,7 @@ router.get("/:object/:handler/:view", function( req, res ){
 
     var httpObjView = registry.getSharedObject( "view_" + dataClass + "_" + handler + "_" + view );
     if( !httpObjView ){
+        res.status(404)
         res.send( JSON.stringify(registry.getSharedObject("view_error").makeError( makeRegLookupError( "http_" + dataClass + "_" + handler + "_" + view ) )) );
         res.end();
     }
@@ -33,6 +34,15 @@ router.get("/:object/:handler/:view", function( req, res ){
         try{
             httpObjView.get( req.query ,req.user).then( function( output ){
                 debugger;
+                if(output.code)
+                    res.status(output.code)
+                if(output.err){
+                    console.log("error : "+output.err)
+                    if(output.err.code)
+                        res.status(output.err.code)
+                    else
+                        res.status(404)
+                }
                 res.send( JSON.stringify( output ) );
             }, function( err ){
                 throw err;
@@ -67,6 +77,15 @@ router.get("/:object/:view", function( req, res ){
     else {
         try{
             httpObjView.get( req.query ,req.user).then( function( output ){
+                if(output.code)
+                    res.status(output.code)
+                if(output.err){
+                    console.log("error : "+output.err)
+                    if(output.err.code)
+                        res.status(output.err.code)
+                    else
+                        res.status(404)
+                }
                 debugger;
                 res.send( JSON.stringify( output ) );
             }, function( err ){
@@ -102,6 +121,15 @@ router.post("/:object/:handler/:view", function( req, res ){
     else {
         try{
             httpObjView.post( req.body ,req.user).then( function( output ){
+                if(output.code)
+                    res.status(output.code)
+                if(output.err){
+                    console.log("error : "+output.err)
+                    if(output.err.code)
+                        res.status(output.err.code)
+                    else
+                        res.status(404)
+                }
                 debugger;
                 res.send( JSON.stringify( output ) );
             }, function( err ){
@@ -137,6 +165,15 @@ router.post("/:object/:view", function( req, res ){
     else {
         try{
             httpObjView.post( req.body ,req.user).then( function( output ){
+                if(output.code)
+                    res.status(output.code)
+                if(output.err){
+                    console.log("error : "+output.err)
+                    if(output.err.code)
+                        res.status(output.err.code)
+                    else
+                        res.status(404)
+                }
                 debugger;
                 res.send( JSON.stringify( output ) );
             }, function( err ){

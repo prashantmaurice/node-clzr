@@ -80,13 +80,12 @@ var view_vendor_details_set = function( params, user ) {
              vendorObjectM.get( params ).then(function(vendor) {
                 if(params.vendor) {
                     for(key in params.vendor) {
+                        console.log('setting vendor property '+key+' to '+params.vendor[key])
                         vendor[key] = params.vendor[key];
                         vendor.markModified(key);
                     }
                     debugger;
-                    vendor.save();
-                    debugger;
-                    deferred.resolve(vendor);
+                    deferred.resolve(vendor.save());
                 }
                 else {
                     deferred.resolve({code:500,error:'invalid params'});
@@ -119,16 +118,18 @@ var view_vendor_details_update = function( params, user) {
 
     var vendorObjectM = registry.getSharedObject("data_vendor");
     var userObjectM = registry.getSharedObject("live_session");
-    var arrayOperations = registry.getSharedObject("arrayOperations");
+    var arrayOperations = registry.getSharedObject("util").arrayOperations;
 
     userObjectM.get( params ).then(function(user) {
         debugger;
         if(user.type == "Vendor") {
             if(user.vendor_id == params.vendor_id) {
              vendorObjectM.get( params ).then(function(vendor) {
+                console.log('changing ' + params.modify + ' to '+params.operation+' '+JSON.stringify(params.values))
+                console.log('current value '+ JSON.stringify(vendor[params.modify]))
                 vendor[params.modify] = arrayOperations[params.operation](vendor[params.modify], params.values);
                 vendor.markModified(params.modify);
-                vendor.save();
+                deferred.resolve(Q(vendor.save()));
             }, function(err) {
                 deferred.resolve({code:500,error:err});
             });

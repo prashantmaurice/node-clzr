@@ -72,7 +72,11 @@ var getVendorNearDisplay=function(vendor){
 
 var arrayOperations =  {
   "add" : function(arr1, arr2) {
+    if(!arr1)
+      arr1=[]
+    console.log('adding '+JSON.stringify(arr1)+' and '+JSON.stringify(arr2))
     arr1 = arr1.concat(arr2);
+    console.log('result '+JSON.stringify(arr1))
     return arr1;
   },
   "remove" : function(arr1, arr2) {

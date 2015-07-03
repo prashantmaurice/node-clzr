@@ -20,6 +20,7 @@ error.ERR_DESCRIPTION = {
 };
 
 error.err = function( res, code, desc ){
+	res.status(code)
 	res.end(JSON.stringify(
 		{ result:false, err:{ code:code, description: ( desc || error.ERR_DESCRIPTION[code] || "No description" ) } }
 		));
