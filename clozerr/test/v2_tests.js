@@ -1,18 +1,20 @@
 var should = require('should');
-var app = require('../../../app');
+var app = require('../app');
 var request = require('supertest');
 var _ = require('underscore');
 
 var server=request(app)
-var settings = require('../../settings') 
+var settings = require('../routes/settings') 
 
 var test_vendor_id = "55293297b6cd430f332841c4"
-
+var test_access_token = "4dd2cee48ddecfd9ae6e6a120d410c97s"
 describe('Vendor', function() {
 	var base_url='/v2/vendor'
 	it('vendor details',function(done){
 		server.get(base_url+'/details/get')
 			.expect(200)
+			.query({access_token : test_access_token,
+				vendor_id:test_vendor_id})
 			.end(function(err,res){
 				if(err) return done(err);
 				should.exist(res.body._id)

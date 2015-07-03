@@ -89,6 +89,7 @@ var vendor_validate_SX = function( vendor, user, checkin ){
         debugger;
           
         checkin.state = CHECKIN_STATE_CONFIRMED;
+        registry.getSharedObject("analytics_checkin").get({},checkin,user)
         debugger;
 
         checkin.save(function(err) {
