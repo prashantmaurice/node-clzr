@@ -19,7 +19,11 @@ var requireAllFiles = function( normalizedPath , modules, prefix) {
         if( (child + "").indexOf( ".js" ) == -1 ){
             console.log("Ignoring: " + child);
             return;
+        } else if(child=='tests.js' || child == 'test.js'){
+        	console.log("Ignoring tests : " + child);
+            return;
         }
+
 
 		if(fs.lstatSync(normalizedPathChild).isDirectory()) {
 			var childCapitalised = child.charAt(0).toUpperCase() + child.slice(1);
