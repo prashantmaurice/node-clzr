@@ -492,7 +492,7 @@ var view_vendor_geofences_add = function(params, user) {
 global.registry.register("view_vendor_geofences_add", { get : view_vendor_geofences_add });
 
 global.registry.register("view_category_list", {get:view_category_list});
-global.registry.register("view_vendor_get_homepage", {get:view_vendor_homepage});
+global.registry.register("view_vendor_homepage", {get:view_vendor_homepage});
 
 global.registry.register("view_vendor_facebook_promote",{get:view_vendor_facebook_promote});
 global.registry.register("view_vendor_twitter_promote",{get:view_vendor_twitter_promote});

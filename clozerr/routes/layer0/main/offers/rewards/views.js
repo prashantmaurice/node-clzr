@@ -49,7 +49,7 @@ var view_offers_reward_transfer=function(params,user){
 			deferred.resolve({code:400,error:'user doesn\'t have this offer'})
 		} else {
 			console.log('removing reward '+user.rewards[idx]+' from user '+ user._id)
-			user.rewards.splice(idx)
+			user.rewards.splice(idx,1)
 			user.markModified('rewards')
 			user.save()
 			registry.getSharedObject('data_user').get({_id:params.user_receiver}).then(function(users){

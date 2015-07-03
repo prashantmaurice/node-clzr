@@ -80,12 +80,16 @@ var arrayOperations =  {
     return arr1;
   },
   "remove" : function(arr1, arr2) {
+    if(!(arr2 instanceof Array))
+      arr2=[arr2]
+    console.log('removing '+JSON.stringify(arr2)+' from '+JSON.stringify(arr1))
     for(var i=0; i<arr2.length; i++) {
-      var idx = arr1.indexOf(element);
+      var idx = arr1.indexOf(arr2[i]);
       if(idx != -1) {
-        arr1.splice(idx, 1);
+        arr1.splice(idx,1);
       }
     }
+    console.log('result '+JSON.stringify(arr1))
     return arr1;
   }
 }
