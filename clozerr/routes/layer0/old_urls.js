@@ -1,0 +1,3 @@
+/*
+Mapping for old urls to ease transition to new ones
+*/
