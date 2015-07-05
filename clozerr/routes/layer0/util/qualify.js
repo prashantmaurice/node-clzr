@@ -88,7 +88,7 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
       user.stamplist={}
     if(!user.stamplist[vendor.fid])
       user.stamplist[vendor.fid]=0
-    if(offerDisplay.stamps*1 <= user.stamplist[vendor.fid]*1) {
+    if((offerDisplay.type=="S1" ||offerDisplay.type=="SX") && offerDisplay.stamps*1 <= user.stamplist[vendor.fid]*1) {
       offerDisplay.params.unlocked = true;
     }
     else {
