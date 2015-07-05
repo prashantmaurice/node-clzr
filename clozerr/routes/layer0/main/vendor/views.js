@@ -557,6 +557,15 @@ var view_vendor_geofences_add = function(params, user) {
 
     return deferred.promise;
 }
+var view_vendor_offers_rewardspage=function(params,user){
+    var deferred = Q.defer();
+    Q.all([registry.getSharedObject("view_vendor_offers_offers_S0").get(params,user)
+        ,registry.getSharedObject("view_offers_rewards_user").get(params,user)])
+    .then(function(rewards_s0){
+        deferred.resolve(rewards_s0[0].concat(rewards_s0[1]))
+    }).done()
+    return deferred.promise;
+}
 
 global.registry.register("view_vendor_geofences_add", { get : view_vendor_geofences_add });
 global.registry.register("view_vendor_search_name", {get:view_vendor_search_name});
@@ -579,5 +588,6 @@ global.registry.register("view_vendor_checkins_cancelled", {get:view_vendor_chec
 //global.registry.register("view_vendor_club_members",{get:view_vendor_club_members});
 
 global.registry.register("view_vendor_details_create", {get:view_vendor_details_create});
+global.registry.register("view_vendor_offers_rewardspage", {get:view_vendor_offers_rewardspage});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offers_offersPage};
