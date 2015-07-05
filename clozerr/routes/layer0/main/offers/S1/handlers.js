@@ -110,7 +110,7 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
         userObj.save(function(err) {
             deferred.resolve({code:500,error:err});
         });
-
+        registry.getSharedObject("analytics_checkin").get({},checkin,user)
         deferred.resolve(checkin);
     });
     

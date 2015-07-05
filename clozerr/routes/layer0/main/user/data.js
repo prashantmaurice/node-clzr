@@ -23,7 +23,7 @@ var util_session = function( params ){
 registry.register('util_session', {get:util_session});
 
 var data_user = function(params){
-    return registry.getSharedObject("models_User").find(params).exec();
+    return Q(registry.getSharedObject("models_User").find(params).exec());
 }
 registry.register('data_user', {get:data_user});
 

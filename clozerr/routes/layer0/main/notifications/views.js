@@ -1,7 +1,7 @@
 var Q = require("q");
 var registry = global.registry;
 
-var view_vendor_get_notifications = function( params){
+var view_notifications_vendor_get = function( params){
     var deferred=Q.defer();
 	var vendor_activated_list=registry.getSharedObject("handler_get_notifications");
     
@@ -13,4 +13,4 @@ var view_vendor_get_notifications = function( params){
     })
     return deferred.promise;
 }
-registry.register("view_vendor_get_notifications",{get:view_vendor_get_notifications});
+registry.register("view_notifications_vendor_get",{get:view_notifications_vendor_get});

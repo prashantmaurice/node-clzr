@@ -30,14 +30,8 @@ function makeArray(obj) {
 		return obj;
 	}
 }
-function removeTimeZone(date_str){
-	d=new Date(date_str)
-	console.log(d)
-	return new Date(d.getTime()+60*1000*d.getTimezoneOffset())
-}
 
-var view_analytics_all_by_day = function(params,user){
-
+var view_analytics_byDay = function(params,user){
 	var scope = {};
 	scope.filterObject = global.registry.getSharedObject('util').filterObject;
 	scope.filterDimension = function(dim_this, dim_filter) {
@@ -63,7 +57,7 @@ var view_analytics_all_by_day = function(params,user){
 	}
 	scope.dimensions = makeArray(params.dimensions);
 	scope.metric = makeArray(params.metric);
-	map_byDay=function(){
+	var map_byDay=function(){
 		if(filterMetric(this.metric, metric)) {
 			emit({
 				metric:this.metric,
@@ -75,7 +69,7 @@ var view_analytics_all_by_day = function(params,user){
 			},1)
 		}
 	}
-	reduce=function(key,values){
+	var reduce=function(key,values){
 		return Array.sum(values)
 	}
 	if(params.start && params.end)
@@ -153,5 +147,5 @@ var view_analytics_vendor_get = function(params, user) {
 }
 
 registry.register("view_analytics_hit",{get:view_analytics_hit,post:view_analytics_hit})
-registry.register("view_analytics_all_by_day",{get:view_analytics_all_by_day})
 global.registry.register('view_analytics_vendor_get', { get : view_analytics_vendor_get });
+registry.register("view_analytics_byDay",{get:view_analytics_byDay})
