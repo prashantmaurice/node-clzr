@@ -68,7 +68,7 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
   var deferred = Q.defer();
   if(offer) {
     debugger;
-    console.log(user.stamplist[vendor.fid]);
+    // console.log(user.stamplist[vendor.fid]);
 
     offerDisplay._id=offer._id;
     offerDisplay.type=offer.type;
@@ -84,7 +84,10 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
     else {
       offerDisplay.params.used = false;
     }
-
+    if(!user.stamplist)
+      user.stamplist={}
+    if(!user.stamplist[vendor.fid])
+      user.stamplist[vendor.fid]=0
     if(offerDisplay.stamps*1 <= user.stamplist[vendor.fid]*1) {
       offerDisplay.params.unlocked = true;
     }
@@ -107,6 +110,7 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
       offerDisplay.stampStatus.total = vendor.settings.SXLimit*1;
     }
     if(offerDisplay.type=="S0") {
+      if(!offer.params || !offer.params.type) return Q(null)
       offerDisplay.image = global.registry.getSharedObject("settings").S0OfferTypes[offer.params.type];
       offerDisplay.params=offer.params;
     }

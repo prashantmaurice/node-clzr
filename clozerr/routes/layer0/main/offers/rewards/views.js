@@ -20,5 +20,10 @@ var view_offers_reward_give=function(params,user){
 	})
 	return deferred.promise
 }
+var view_offers_rewards_user=function(params,user){
+	return Q(registry.getSharedObject('data_user')
+		.get({_id:{$in:user.rewards}}))
+}
 registry.register("view_offers_reward_create", {get:view_offers_reward_create});
 registry.register("view_offers_reward_give", {get:view_offers_reward_give});
+registry.register("view_offers_rewards_user", {get:view_offers_rewards_user});

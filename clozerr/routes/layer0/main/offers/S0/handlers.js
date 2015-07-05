@@ -100,6 +100,10 @@ return deferred.promise;
 }
 
 var vendor_predicate_S0 = function(user, vendor, offer) {
+    if(!offer.params ||!offer.params.type){
+        console.log('no params or params.type for offer'+JSON.stringify(offer))
+        return Q(false)
+    }
     return vendor_checkin_S0_predicates[offer.params.type](user, vendor, offer);
 }
 
