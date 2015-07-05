@@ -32,7 +32,6 @@ function makeArray(obj) {
 }
 
 var view_analytics_byDay = function(params,user){
-
 	var scope = {};
 	scope.filterObject = global.registry.getSharedObject('util').filterObject;
 	scope.filterDimension = function(dim_this, dim_filter) {
