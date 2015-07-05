@@ -224,6 +224,7 @@ describe('URLs currently used by android app test',function(){
 			// 	Checkin.findByIdAndRemove(res.body._id).exec()
 			// 	done();
 			// })
+			done();
 		})
 	})
 })
