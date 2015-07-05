@@ -109,7 +109,14 @@ var view_user_pinned_list = function(params,user){
 }
 var view_user_get_details = function(params,user){
 	var deferred = Q.defer();
-	deferred.resolve(user);
+	if(user.type == "Vendor") {
+		global.registry.getSharedObject("models_Vendor").find( { _id : user.vendor_id } ).exec().then(function(vendor) {
+			deferred.resolve({ user: user, vendor: vendor });
+		});
+	}
+	else {
+		deferred.resolve(user);
+	}
 	return deferred.promise;
 }
 global.registry.register("view_user_add_favourites",{get:view_user_add_favourites});
