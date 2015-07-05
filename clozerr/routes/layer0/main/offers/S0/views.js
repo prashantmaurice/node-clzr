@@ -26,9 +26,9 @@ var view_vendor_offers_offers_S0=function(params,user){
 				Q.all(offersplist).then(function(offerlist){
 					deferred.resolve(offerlist);
 				})
-			})
-		})
-	});
+			}).done()
+		}).done()
+	}).done();
 	return deferred.promise;
 }
 var view_vendor_offers_checkin_S0 = function(params, user) {

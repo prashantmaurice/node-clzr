@@ -109,7 +109,17 @@ var view_user_pinned_list = function(params,user){
 }
 var view_user_details_get = function(params,user){
 	var deferred = Q.defer();
-	deferred.resolve(user);
+	if(!user.rewards)
+		user.rewards=[]
+	user.save();
+	registry.getSharedObject('data_rewards')
+	.get({_id:{$in:user.rewards}}).then(function(rewards){
+		// console.log(rewards)
+		var nuser=user.toObject()
+		nuser.rewards=rewards;
+		// console.log(nuser)
+		deferred.resolve(nuser)
+	})
 	return deferred.promise;
 }
 
