@@ -199,8 +199,7 @@ var view_vendor_search_near=function(params,user){
         .then(function(vendors){
             debugger;
             if(params.name){
-                return _.map(registry.getSharedObject("search").fuzzy(params.name,{
-                    list:vendors,
+                return _.map(registry.getSharedObject("search").fuzzy(params.name,vendors,{
                     extract:function(el){
                         return el.name;
                     }

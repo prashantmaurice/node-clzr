@@ -128,7 +128,7 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   dist = dist * 180/Math.PI
   dist = dist * 60 * 1.1515
   dist = dist * 1.609344
-  return dist
+  return Math.round((dist*1000))/1000.0
 }
 function getDistance(latitude,longitude,vendor){
   return distance(latitude,longitude,vendor.location[0],vendor.location[1]);

@@ -14,7 +14,6 @@ var vendor_checkin = function(params, user, vendor, offer) {
 var vendor_predicate = function(user, vendor, offer) {
 	debugger;
 	var valid=false
-	if(offer.type=='')
 	if(vendor.offers.indexOf(offer._id) != -1) {
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}
