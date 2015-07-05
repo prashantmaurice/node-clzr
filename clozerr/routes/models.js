@@ -24,6 +24,7 @@ var vendorSchema = new Schema({
 	beacons: Schema.Types.Mixed,
 	test : Boolean,
 	settings : Schema.Types.Mixed,
+	campaigns : Schema.Types.Mixed,
 	visitOfferId : ObjectId,
 	category : String,
 	flags : [String],

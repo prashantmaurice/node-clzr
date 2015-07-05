@@ -30,6 +30,11 @@ function makeArray(obj) {
 		return obj;
 	}
 }
+function removeTimeZone(date_str){
+	d=new Date(date_str)
+	console.log(d)
+	return new Date(d.getTime()+60*1000*d.getTimezoneOffset())
+}
 
 var view_analytics_all_by_day = function(params,user){
 
@@ -58,7 +63,6 @@ var view_analytics_all_by_day = function(params,user){
 	}
 	scope.dimensions = makeArray(params.dimensions);
 	scope.metric = makeArray(params.metric);
-
 	map_byDay=function(){
 		if(filterMetric(this.metric, metric)) {
 			emit({
@@ -74,7 +78,15 @@ var view_analytics_all_by_day = function(params,user){
 	reduce=function(key,values){
 		return Array.sum(values)
 	}
-	return compute_analytics(map_byDay,reduce,{},scope);
+	if(params.start && params.end)
+		query={timeStamp:{
+		    $gte:(new Date(params.start)).toISOString(),
+		    $lte:(new Date(params.end)).toISOString(),
+		    }}
+	else
+		query={}
+	console.log(query)
+	return compute_analytics(map_byDay,reduce,query,scope);
 }
 
 registry.register("view_analytics_hit",{get:view_analytics_hit,post:view_analytics_hit})
