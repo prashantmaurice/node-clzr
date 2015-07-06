@@ -40,65 +40,83 @@ var view_vendor_details_get = function( params ) {
     return deferred.promise;
 }
 
-// var view_vendor_offersPage = function( params ){
-//     console.log("OfferPage Main View");
-//     var deferred = Q.defer();
+var view_vendor_offersPage = function( params ){
+    console.log("OfferPage Main View");
+    var deferred = Q.defer();
 
-//     var vendorObjectM = registry.getSharedObject("data_vendor");
-//     var userObjectM = registry.getSharedObject("live_session");
+    var vendorObjectM = registry.getSharedObject("data_vendor");
+    var userObjectM = registry.getSharedObject("live_session");
 
-//     var vendor_obj = null;
-//     vendorObjectM.get( params ).then(function( vendor ){
-//         vendor_obj = vendor.toJSON();
-//         debugger;
-//         return userObjectM.get( params );
-//     }, function( err ){
-//         deferred.resolve({code:500,error:err});
-//     }).then( function( user ){
-//         var typeSpecificM = registry.getSharedObject("view_vendor_offers_offersPage_" + getVendorType(vendor_obj));
-//         debugger;
-//         return typeSpecificM.get( params, vendor_obj, user );
-//     }, function( err ){
-//         console.log(err);
-//         deferred.resolve({code:500,error:err});
-//     })
-//     .then(function( res ){deferred.resolve( res )}, function( err ){ deferred.resolve({code:500,error:err}); });
-//     console.log('returning from view_vendor_offers_offersPage');
-//     return deferred.promise;
-// }
-var view_vendor_offersPage = function(params,user){
+    var vendor_obj = null;
+    vendorObjectM.get( params ).then(function( vendor ){
+        vendor_obj = vendor.toJSON();
+        debugger;
+        return userObjectM.get( params );
+    }, function( err ){
+        deferred.resolve({code:500,error:err});
+    }).then( function( user ){
+        var typeSpecificM = registry.getSharedObject("view_vendor_offers_offersPage_" + getVendorType(vendor_obj));
+        debugger;
+        return typeSpecificM.get( params, vendor_obj, user );
+    }, function( err ){
+        console.log(err);
+        deferred.resolve({code:500,error:err});
+    })
+    .then(function( res ){deferred.resolve( res )}, function( err ){ deferred.resolve({code:500,error:err}); });
+    console.log('returning from view_vendor_offers_offersPage');
+    return deferred.promise;
+}
+var view_vendor_allOffers = function(params,user){
     var deferred = Q.defer();
     registry.getSharedObject("data_vendor_withOffers").get(params).then(function(vendor){
         var plist=[]
+        vendor.offers_filled=_.filter(vendor.offers_filled,function(offer){
+            return (offer.type=="S1")||(offer.type=="SX")
+        })
         _.each(vendor.offers_filled,function(offer){
-            if(offer.type!='S1' && offer.type!='SX')//what offers do we need?
-                plist.push(Q(false))
-            else
-                plist.push(registry.getSharedObject("handler_predicate").get(user,vendor,offer))
+            plist.push(registry.getSharedObject("handler_predicate").get(user,vendor,offer))
         })
         Q.all(plist).then(function(validlist){
-            console.log(validlist)
-            var valid_offers=[]
-            _.each(_.zip(vendor.offers_filled,validlist),function(offerpair){
-                if(offerpair[1])
-                    valid_offers.push(offerpair[0])
+            debugger;
+            vendor.offers_filled=_.map(_.zip(vendor.offers_filled,validlist),function(offerpair){
+                if(!offerpair[0].params)
+                    offerpair[0].params={}
+                offerpair[0].params.unlocked=offerpair[1]
+                return offerpair[0]
             })
-            vendor.offers_filled=valid_offers;
             return vendor;
         }).then(function(vendor){
             var offersplist=[]
             _.each(vendor.offers_filled,function(offer){
-                offersplist.push(registry.getSharedObject("qualify")
-                    .getOfferDisplay(user,vendor,offer))
+                offersplist.push(Q(registry.getSharedObject("data_checkins").get({
+                    user:user._id,
+                    offer:offer._id,
+                    state:1//CHECKIN_CONFIRMED
+                })).then(function(checkins){
+                    return offer.params.used=(checkins.length>0)
+                }));
             })
-            Q.all(offersplist).then(function(offers){
-                vendor.offers=offers;
-                //change to offers_filled
+            Q.all(offersplist).then(function(usedlist){
+                debugger;
+                vendor.offers_filled=_.map(_.zip(vendor.offers_filled,usedlist),function(offerpair){
+                    offerpair[0].params.used=offerpair[1]
+                    return offerpair[0]
+                })
+                return vendor;
+            }).then(function(vendor){
+                debugger;
+                vendor.offers_filled=_.map(vendor.offers_filled,function(offer){
+                    if(offer.stamps)
+                        offer.params.stamps=offer.stamps
+                    return registry.getSharedObject('display').offerDisplay(offer)
+                })
+                vendor.offers=vendor.offers_filled
+                vendor.offers_filled=null
                 deferred.resolve(vendor)
                 return vendor;
-            })
-        })
-    })
+            }).done()
+        }).done()
+    }).done()
     return deferred.promise;
 }
 var view_vendor_details_set = function( params, user ) {
@@ -546,7 +564,7 @@ global.registry.register("view_vendor_homepage", {get:view_vendor_homepage});
 global.registry.register("view_vendor_facebook_promote",{get:view_vendor_facebook_promote});
 global.registry.register("view_vendor_twitter_promote",{get:view_vendor_twitter_promote});
 global.registry.register("view_vendor_offersPage", {get:view_vendor_offersPage});
-global.registry.register("view_vendor_offerspage", {get:view_vendor_offersPage});
+global.registry.register("view_vendor_offerspage", {get:view_vendor_allOffers});
 global.registry.register("view_vendor_search_near", {get:view_vendor_search_near,post:view_vendor_search_near});
 global.registry.register("view_vendor_beacons_all", {get:view_vendor_beacons_all});
 
@@ -563,6 +581,6 @@ global.registry.register("view_vendor_details_set", {get:view_vendor_details_set
 
 global.registry.register("view_vendor_users_visited", {get:view_vendor_users_visited});
 global.registry.register("view_vendor_offers_rewardspage", {get:view_vendor_offers_rewardspage});
-global.registry.register("view_vendor_allOffers", {get:view_vendor_offersPage});
+global.registry.register("view_vendor_allOffers", {get:view_vendor_allOffers});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offersPage};
