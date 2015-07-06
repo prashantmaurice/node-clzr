@@ -18,7 +18,10 @@ function newUser( backend, id ) {
         social_id:id,
         stamplist:{ STANDARD:0 },
         type:"User",
-        date_created: new Date()
+        date_created: new Date(),
+        favourites:[],
+        pinned:[],
+        rewards:[]
     });
     nuser.markModified("stamplist");
     return nuser;
@@ -33,7 +36,10 @@ function newVendorUser( backend, id ) {
         vendor_id:nVendor._id,
         stamplist:{ STANDARD:0 },
         type:"Vendor",
-        date_created: new Date()
+        date_created: new Date(),
+        favourites:[],
+        pinned:[],
+        rewards:[]
     });
     nuser.markModified("stamplist");
     return nuser;

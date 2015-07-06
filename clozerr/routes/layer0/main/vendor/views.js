@@ -67,6 +67,7 @@ var view_vendor_offersPage = function( params ){
     return deferred.promise;
 }
 var view_vendor_allOffers = function(params,user){
+    //add SX params
     var deferred = Q.defer();
     registry.getSharedObject("data_vendor_withOffers").get(params).then(function(vendor){
         var plist=[]
