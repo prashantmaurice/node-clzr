@@ -15,7 +15,7 @@ var test_lon = 80.1
 
 var models=require('../routes/models')
 //usage >mocha test/imp_tests.js
-//tbc = to be changed
+//add assertion for user
 /*
 Skeleton test
 describe('(url to be tested)',function(){
@@ -35,20 +35,24 @@ describe('(url to be tested)',function(){
 /*
 list of urls
 	/content
-	/v2/vendor/beacons/all
-	/v2/vendor/categories/get
-	/v2/vendor/search/near
-	/v2/vendor/offers/checkin
-	/v2/analytics/hit
-	/auth/update/gcm
-	/auth/login/facebook
-	/auth/login/google
-	/v2/user/favourites/list --discontinue
-	/v2/user/add/pinned
-	/v2/vendor/get/details
-	/v2/vendor/offers/offerspage
-	/v2/user/add/favourites
-	/v2/user/remove/favourites
+	/v2/vendor/beacons/all -(old)
+	/v2/vendor/categories/get -(old)
+	/v2/vendor/search/near -(tags)
+	/v2/vendor/offers/checkin -offertypes,(old)
+	/v2/analytics/hit -
+	/auth/update/gcm -todo
+	/auth/login/facebook -todo
+	/auth/login/google -todo
+	/v2/user/favourites/list -discontinue
+	/v2/user/add/pinned -(old)
+	/v2/vendor/get/details -(old)
+	/v2/vendor/offers/offerspage -(old)
+	/v2/user/add/favourites -(old)
+	/v2/user/remove/favourites -(old)
+
+also tested
+	/v2/vendor/offers/rewardspage
+	/v2/user/details/get
 */
 should.Assertion.add('Vendor',
 	function(){
@@ -91,6 +95,27 @@ should.Assertion.add('Analytics',
 		analytics.should.have.property('metric')
 		analytics.should.have.property('dimensions')
 		analytics.should.have.property('timeStamp')
+	},
+	true)
+should.Assertion.add('OfferDisplay',
+	function(){
+		this.params={operator:'to be a valid offer from offerspage/rewardspage'};
+		var offer=this.obj
+		should.exist(offer)
+		offer.should.have.property('caption')
+		offer.should.have.property('type')
+		settings.offertypes.indexOf(offer.type).should.not.be.equal('-1')
+		if(offer.type=="S0"){
+			offer.should.have.property('params')
+			offer.params.should.have.property('type')
+			settings.S0OfferTypes[offer.params.type].should.exist
+		} else if(offer.type=="S1"){
+			offer.should.have.property('params')
+			offer.params.should.have.property('used')
+			offer.params.should.have.property('stamps')
+			offer.params.should.have.property('unlocked')
+		}
+		//SX,reward tests
 	},
 	true)
 describe('URLs currently used by android app test',function(){
@@ -310,7 +335,6 @@ describe('URLs currently used by android app test',function(){
 			.expect(200)
 			.end(function(err,res){
 				if(err) return done(err);
-				//add assertion for user
 				res.body.should.have.property('pinned')
 				res.body.pinned.should.be.instanceof(Array)
 				res.body.pinned.indexOf(test_offer_id).should.not.equal(-1)
@@ -328,7 +352,6 @@ describe('URLs currently used by android app test',function(){
 			.expect(200)
 			.end(function(err,res){
 				if(err) return done(err);
-				//add assertion for user
 				res.body.should.have.property('pinned')
 				res.body.pinned.should.be.instanceof(Array)
 				res.body.pinned.indexOf(test_offer_id).should.be.equal(-1)
@@ -349,7 +372,6 @@ describe('URLs currently used by android app test',function(){
 			.expect(200)
 			.end(function(err,res){
 				if(err) return done(err);
-				//add assertion for user
 				res.body.should.have.property('favourites')
 				res.body.favourites.should.be.instanceof(Array)
 				res.body.favourites.indexOf(test_vendor_id).should.not.equal(-1)
@@ -367,10 +389,99 @@ describe('URLs currently used by android app test',function(){
 			.expect(200)
 			.end(function(err,res){
 				if(err) return done(err);
-				//add assertion for user
 				res.body.should.have.property('favourites')
 				res.body.favourites.should.be.instanceof(Array)
 				res.body.favourites.indexOf(test_vendor_id).should.be.equal(-1)
+				done();
+			})
+		})
+	})
+	describe('/v2/vendor/get/details',function(){
+		it('all vendor details',function(done){
+			var params={
+				access_token:test_access_token,
+				vendor_id:test_vendor_id
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/vendor/get/details')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.be.a.Vendor;
+				res.body._id.should.equal(test_vendor_id)
+				done();
+			})
+		})
+	})
+	describe('/v2/vendor/offers/offerspage',function(){
+		it('vendor offerspage',function(done){
+			var params={
+				access_token:test_access_token,
+				vendor_id:test_vendor_id
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/vendor/offers/offerspage')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.be.a.Vendor;
+				res.body._id.should.equal(test_vendor_id)
+				res.body.should.have.property('offers')
+				res.body.offers.should.be.instanceof(Array)
+				_.each(res.body.offers,function(offer){
+					offer.should.be.an.OfferDisplay;
+					["S1","SX"].indexOf(offer.type).should.not.equal(-1);
+				})
+				done();
+			})
+		})
+	})
+	describe('/v2/vendor/offers/rewardspage',function(){
+		it('vendor rewardspage',function(done){
+			var params={
+				access_token:test_access_token,
+				vendor_id:test_vendor_id
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/vendor/offers/rewardspage')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.be.a.Vendor;
+				res.body._id.should.equal(test_vendor_id)
+				res.body.should.have.property('rewards')
+				res.body.rewards.should.be.instanceof(Array)
+				_.each(res.body.rewards,function(offer){
+					offer.should.be.an.OfferDisplay;
+					["S0","reward"].indexOf(offer.type).should.not.equal(-1);
+				})
+				done();
+			})
+		})
+	})
+	describe('/v2/user/details/get',function(){
+		it('user all details',function(done){
+			var params={
+				access_token:test_access_token
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/user/details/get')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.have.property('_id',test_user_id)
+				res.body.should.have.property('pinned')
+				res.body.should.have.property('favourites')
+				res.body.should.have.property('rewards')
+				res.body.rewards.should.be.instanceof(Array);
+				_.each(res.body.rewards,function(offer){
+					offer.should.be.an.OfferDisplay;
+					offer.type.should.be.equal('reward')
+				})
 				done();
 			})
 		})

@@ -94,5 +94,6 @@ module.exports = {
 		"PING" : 4,
 		"PUSH" : 8,
 		"ONEXIT" : 16
-	}
+	},
+	"offertypes":["S0","S1","SX","reward"]
 };
