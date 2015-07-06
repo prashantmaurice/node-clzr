@@ -1,6 +1,6 @@
 var registry = global.registry;
 var Q = require("q");
-
+var _ = require("underscore")
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
@@ -10,11 +10,17 @@ var vendor_checkin = function(params, user, vendor, offer) {
 	console.log("routing to "+"handler_checkin_" + offer.type)
 	return registry.getSharedObject("handler_checkin_" + offer.type).get(params, user, vendor, offer);
 }
-
+var contains_id=function(arr,id){
+	debugger;
+	return _.some(arr,function(obj){
+		return obj.equals(id)
+	})
+}
 var vendor_predicate = function(user, vendor, offer) {
 	debugger;
 	var valid=false
-	if(vendor.offers.indexOf(offer._id) != -1) {
+	if(contains_id(vendor.offers,offer._id)) {
+		debugger;
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}
 	else {

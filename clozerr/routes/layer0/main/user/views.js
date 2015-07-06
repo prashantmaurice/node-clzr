@@ -31,7 +31,7 @@ var view_user_favourites_remove=function(params,user){
 	if(params.vendor_id) {
 		idx=_.indexOf(user.favourites,params.vendor_id)
 		if(idx!=-1){
-			user.favourites.splice(idx,idx);
+			user.favourites.splice(idx,1);
 			user.markModified("favourites");
 			user.save(function(err){
 				deferred.resolve({code:500,error:err});
@@ -73,7 +73,7 @@ var view_user_pinned_remove=function(params,user){
 	if(params.offer_id) {
 		idx=_.indexOf(user.pinned,params.offer_id)
 		if(idx!=-1){
-			user.pinned.splice(idx,idx);
+			user.pinned.splice(idx,1);
 			user.markModified("pinned");
 			user.save(function(err,user){
 				deferred.resolve(user);

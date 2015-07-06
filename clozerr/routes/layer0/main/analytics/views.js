@@ -8,6 +8,7 @@ var view_analytics_hit=function(params,user){
 	analytics_obj.user=user.id;
 	analytics_obj.metric=params.metric;
 	analytics_obj.dimensions=params.dimensions;
+	analytics_obj.test=params.test||false;
 	return Q(analytics_obj.save())
 }
 var compute_analytics=function(map,reduce,query,scope){
