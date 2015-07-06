@@ -526,7 +526,14 @@ var view_vendor_offers_rewardspage=function(params,user){
     Q.all([registry.getSharedObject("view_vendor_offers_offers_S0").get(params,user)
         ,registry.getSharedObject("view_offers_rewards_user").get(params,user)])
     .then(function(rewards_s0){
-        deferred.resolve(rewards_s0[0].concat(rewards_s0[1]))
+        return rewards_s0[0].concat(rewards_s0[1])
+    })
+    .then(function(rewards){
+        registry.getSharedObject("data_vendor").get(params).then(function(vendor){
+            var _vendor=vendor.toObject()
+            _vendor.rewards=rewards;
+            deferred.resolve(_vendor)
+        })
     }).done()
     return deferred.promise;
 }
