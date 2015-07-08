@@ -30,13 +30,62 @@ function makeArray(obj) {
 		return obj;
 	}
 }
-function removeTimeZone(date_str){
-	d=new Date(date_str)
-	console.log(d)
-	return new Date(d.getTime()+60*1000*d.getTimezoneOffset())
+
+var view_analytics_byDay = function(params,user){
+	var scope = {};
+	scope.filterObject = global.registry.getSharedObject('util').filterObject;
+	scope.filterDimension = function(dim_this, dim_filter) {
+		if(dim_filter.length != 0) {
+			return filterObject(dim_this, dim_filter).data;
+		}
+		else {
+			return dim_this;
+		}
+	}
+	scope.filterMetric = function(metric_this, metric_filter) {
+		if(metric_filter.length != 0) {
+			if(metric_filter.indexOf(metric_this) != -1) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return true;
+		}
+	}
+	scope.dimensions = makeArray(params.dimensions);
+	scope.metric = makeArray(params.metric);
+	var map_byDay=function(){
+		if(filterMetric(this.metric, metric)) {
+			emit({
+				metric:this.metric,
+				dimensions:filterDimension(this.dimensions, dimensions),
+				time:new Date(this.timeStamp.getFullYear(),
+					this.timeStamp.getMonth(),
+					this.timeStamp.getDate(),
+					0,0,0,0)
+			},1)
+		}
+	}
+	var reduce=function(key,values){
+		return Array.sum(values)
+	}
+	if(params.start && params.end)
+		query={timeStamp:{
+			$gte:(new Date(params.start)).toISOString(),
+			$lte:(new Date(params.end)).toISOString(),
+		}
+	}
+	else
+		query={}
+	console.log(query)
+	return compute_analytics(map_byDay,reduce,query,scope);
 }
 
-var view_analytics_all_by_day = function(params,user){
+var view_analytics_vendor_get = function(params, user) {
+	var deferred = Q.defer();
 
 	var scope = {};
 	scope.filterObject = global.registry.getSharedObject('util').filterObject;
@@ -63,31 +112,40 @@ var view_analytics_all_by_day = function(params,user){
 	}
 	scope.dimensions = makeArray(params.dimensions);
 	scope.metric = makeArray(params.metric);
-	map_byDay=function(){
-		if(filterMetric(this.metric, metric)) {
-			emit({
-				metric:this.metric,
-				dimensions:filterDimension(this.dimensions, dimensions),
-				time:new Date(this.timeStamp.getFullYear(),
-					this.timeStamp.getMonth(),
-					this.timeStamp.getDate(),
-					0,0,0,0)
-			},1)
+
+	debugger;
+
+	if(user.type == "Vendor") {
+		scope.vendor_id = user.vendor_id.toString();
+		map_byVendor = function() {
+			if(filterMetric(this.metric, metric)) {
+				if(this.dimensions) {
+					if(this.dimensions.vendor_id) {
+						debugger;
+						if(this.dimensions.vendor_id == vendor_id) {
+							emit({
+								metric:this.metric,
+								dimensions:filterDimension(this.dimensions, dimensions),
+								time:this.time
+							}, 1);
+						}
+					}
+				}
+			}
 		}
+		reduce = function(key, values) {
+			return Array.sum(values);
+		}
+
+		return compute_analytics(map_byVendor, reduce, {}, scope);
 	}
-	reduce=function(key,values){
-		return Array.sum(values)
+	else {
+		deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
 	}
-	if(params.start && params.end)
-		query={timeStamp:{
-		    $gte:(new Date(params.start)).toISOString(),
-		    $lte:(new Date(params.end)).toISOString(),
-		    }}
-	else
-		query={}
-	console.log(query)
-	return compute_analytics(map_byDay,reduce,query,scope);
+
+	return deferred.promise;
 }
 
 registry.register("view_analytics_hit",{get:view_analytics_hit,post:view_analytics_hit})
-registry.register("view_analytics_all_by_day",{get:view_analytics_all_by_day})
+global.registry.register('view_analytics_vendor_get', { get : view_analytics_vendor_get });
+registry.register("view_analytics_byDay",{get:view_analytics_byDay})

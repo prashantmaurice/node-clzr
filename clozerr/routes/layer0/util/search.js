@@ -49,7 +49,7 @@ function fuzzy(name,params){
 }
 module.exports={
 	edit_distance:edit_distance,
-	fuzzy:fuzzy,
+	fuzzy:require('fuzzy').filter,
 	skip_search:skip_search
 }
 function skip_search(name,query,debug){

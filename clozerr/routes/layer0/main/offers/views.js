@@ -27,26 +27,12 @@ var view_vendor_offers_offersPage=function(params,user){
 					deferred.resolve(offersList);
 				});
 			});
-			//deferred.resolve(vendor_offers)
-			// var predicate = registry.getSharedObject("handler_predicate");
-			// var plist=[]
-			// _.each(vendor_offers.offers,function(element,index,array){
-			// 	plist.push(predicate.get(user,vendor,element))
-			// })
-			// Q.all(plist).then(function(predlist){
-			// 	deferred.resolve(
-			// 		_.map(_.filter(vendor_offers.offers,
-			// 			function(val,idx){return predlist[idx]})
-			// 		,function(offer){
-			// 			return registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer)
-			// 		}))
-			// })
-})
-});
-return deferred.promise;
+		})
+	});
+	return deferred.promise;
 }
 
-var view_vendor_offers_checkin=function(params,user){
+var view_offers_checkin_create=function(params,user){
 	var deferred = Q.defer();
 
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor){
@@ -177,7 +163,7 @@ var view_vendor_offers_create = function(params, user) {
 
 	return deferred.promise;
 }
-var view_offer_get_details = function(params,user){
+var view_offer_details_get = function(params,user){
 	var deferred = Q.defer();
 	var offer = registry.getSharedObject("data_offer");
 	offer.get(params).then(function(offerObj){
@@ -227,10 +213,11 @@ var view_offer_details_set = function( params, user ) {
 return deferred.promise;
 
 }
-registry.register("view_vendor_offers_validate", {get:view_vendor_offers_validate});
-registry.register("view_vendor_offers_checkin", {get:view_vendor_offers_checkin});
-registry.register("view_vendor_offers_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
-registry.register("view_offer_get_details",{get:view_offer_get_details});
+registry.register("view_offers_checkin_validate", {get:view_vendor_offers_validate});
+registry.register("view_offers_checkin_create", {get:view_offers_checkin_create});
+registry.register("view_offers_checkin_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
+registry.register("view_offer_details_get",{get:view_offer_details_get});
 registry.register("view_offer_details_set",{get:view_offer_details_set});
-
 global.registry.register("view_vendor_offers_create", {get:view_vendor_offers_create});
+
+

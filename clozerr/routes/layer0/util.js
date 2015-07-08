@@ -72,16 +72,24 @@ var getVendorNearDisplay=function(vendor){
 
 var arrayOperations =  {
   "add" : function(arr1, arr2) {
+    if(!arr1)
+      arr1=[]
+    console.log('adding '+JSON.stringify(arr1)+' and '+JSON.stringify(arr2))
     arr1 = arr1.concat(arr2);
+    console.log('result '+JSON.stringify(arr1))
     return arr1;
   },
   "remove" : function(arr1, arr2) {
+    if(!(arr2 instanceof Array))
+      arr2=[arr2]
+    console.log('removing '+JSON.stringify(arr2)+' from '+JSON.stringify(arr1))
     for(var i=0; i<arr2.length; i++) {
-      var idx = arr1.indexOf(element);
+      var idx = arr1.indexOf(arr2[i]);
       if(idx != -1) {
-        arr1.splice(idx, 1);
+        arr1.splice(idx,1);
       }
     }
+    console.log('result '+JSON.stringify(arr1))
     return arr1;
   }
 }
@@ -120,7 +128,7 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   dist = dist * 180/Math.PI
   dist = dist * 60 * 1.1515
   dist = dist * 1.609344
-  return dist
+  return Math.round((dist*1000))/1000.0
 }
 function getDistance(latitude,longitude,vendor){
   return distance(latitude,longitude,vendor.location[0],vendor.location[1]);

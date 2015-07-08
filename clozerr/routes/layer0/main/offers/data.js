@@ -18,5 +18,17 @@ var data_offer=function(params){
 	}).exec();
 }
 
+var request=require('request')
+var analytics_checkin=function(params,checkin,user){
+	return registry.getSharedObject('view_analytics_hit').get({
+		time:Date.now(),
+		metric:'checkin',
+		dimensions:{
+			'vendor':checkin.vendor,
+			'offer':checkin.offer
+		}
+	},user)
+}
+
 registry.register("data_vendor_offer",{get:data_vendor_offer})
 registry.register("data_offer",{get:data_offer})
