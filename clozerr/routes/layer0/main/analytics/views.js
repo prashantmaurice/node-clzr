@@ -169,5 +169,5 @@ var view_analytics_vendor_get = function(params, user) {
 }
 
 registry.register("view_analytics_hit",{get:view_analytics_hit,post:view_analytics_hit})
-global.registry.register('view_analytics_vendor_get', { get : view_analytics_vendor_get });
+registry.register('view_analytics_vendor_get', { get : view_analytics_vendor_get });
 registry.register("view_analytics_byDay",{get:view_analytics_byDay})
