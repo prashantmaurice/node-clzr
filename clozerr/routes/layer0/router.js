@@ -13,14 +13,14 @@
 
 router.get("/:object/:handler/:view", function( req, res ){
     var registry = global.registry;
-    var logger = registry.getSharedObject("logger");
+    // var logger = registry.getSharedObject("logger");
     
     var dataClass = req.params.object;
     var handler = req.params.handler;
     var view = req.params.view;
 
     if( !registry ){
-        logger.err();   
+        // logger.err();   
     }
 
     var httpObjView = registry.getSharedObject( "view_" + dataClass + "_" + handler + "_" + view );
@@ -58,14 +58,14 @@ router.get("/:object/:handler/:view", function( req, res ){
 });
 router.get("/:object/:view", function( req, res ){
     var registry = global.registry;
-    var logger = registry.getSharedObject("logger");
+    // var logger = registry.getSharedObject("logger");
     
     var dataClass = req.params.object;
     var handler = req.params.handler;
     var view = req.params.view;
 
     if( !registry ){
-        logger.err();   
+        // logger.err();   
     }
 
     var httpObjView = registry.getSharedObject( "view_" + dataClass + "_" + view );
@@ -102,14 +102,14 @@ router.get("/:object/:view", function( req, res ){
 });
 router.post("/:object/:handler/:view", function( req, res ){
     var registry = global.registry;
-    var logger = registry.getSharedObject("logger");
+    // var logger = registry.getSharedObject("logger");
     
     var dataClass = req.params.object;
     var handler = req.params.handler;
     var view = req.params.view;
 
     if( !registry ){
-        logger.err();   
+        // logger.err();   
     }
 
     var httpObjView = registry.getSharedObject( "view_" + dataClass + "_" + handler + "_" + view );
@@ -146,14 +146,14 @@ router.post("/:object/:handler/:view", function( req, res ){
 });
 router.post("/:object/:view", function( req, res ){
     var registry = global.registry;
-    var logger = registry.getSharedObject("logger");
+    // var logger = registry.getSharedObject("logger");
     
     var dataClass = req.params.object;
     var handler = req.params.handler;
     var view = req.params.view;
 
     if( !registry ){
-        logger.err();   
+        // logger.err();   
     }
 
     var httpObjView = registry.getSharedObject( "view_" + dataClass + "_" + view );

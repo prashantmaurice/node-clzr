@@ -113,7 +113,6 @@ var vendor_validate_S0 = function( vendor, user, checkin ){
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
     debugger;
     checkin.state = CHECKIN_STATE_CONFIRMED;
-    registry.getSharedObject("analytics_checkin").get({},checkin,user)
     checkin.save(function(err) {
         deferred.resolve({code:500,error:err});
     });

@@ -25,8 +25,19 @@ function rewardListDisplay(reward){
 		image:reward.image||""
 	}
 }
+var offerDisplay = function (offer){
+	return {
+		_id:offer._id,
+		type:offer.type,
+		caption:offer.caption,
+		description:offer.description,
+		params:offer.params,
+		image:offer.image||""
+	}
+}
 registry.register("display",{
 	"vendorDisplay":vendorDisplay,
 	"GCMCheckinDisplay":GCMCheckinDisplay,
-	"rewardListDisplay":rewardListDisplay
+	"rewardListDisplay":rewardListDisplay,
+	"offerDisplay":offerDisplay
 })

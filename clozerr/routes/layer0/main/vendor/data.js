@@ -28,7 +28,7 @@ var data_vendor_withOffers = function( params ){
     }, function( err ){
         deferred.resolve({code:500,error:err});
     }).then( function( offers ){
-        vendor_obj.offers = offers;
+        vendor_obj.offers_filled = offers;
         deferred.resolve( vendor_obj );
 
     }, function(err){

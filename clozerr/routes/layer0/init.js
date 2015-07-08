@@ -16,13 +16,7 @@ var requireAllFiles = function( normalizedPath , modules, prefix) {
 		var normalizedPathChild = normalizedPath + "/" + child;
         console.log("\t REQ CHILD: " + child);
 
-        if( (child + "").indexOf( ".js" ) == -1 ){
-            console.log("Ignoring: " + child);
-            return;
-        } else if(child=='tests.js' || child == 'test.js'){
-        	console.log("Ignoring tests : " + child);
-            return;
-        }
+        
 
 
 		if(fs.lstatSync(normalizedPathChild).isDirectory()) {
@@ -35,8 +29,16 @@ var requireAllFiles = function( normalizedPath , modules, prefix) {
 			var_name = prefix.charAt(0).toLowerCase() + prefix.slice(1) + var_name.charAt(0).toUpperCase() + var_name.slice(1);
 
 			modules[var_name] = */
-			require(normalizedPathChild);
-			console.log("LOADED Module : " + normalizedPathChild);
+			if( (child + "").indexOf( ".js" ) == -1 ){
+	            console.log("Ignoring: " + child);
+	            // return;
+	        } else if(child=='tests.js' || child == 'test.js'){
+	        	console.log("Ignoring tests : " + child);
+	            // return;
+        	} else {
+        		require(normalizedPathChild);
+				console.log("LOADED Module : " + normalizedPathChild);
+        	}
 		}
 	});
 }

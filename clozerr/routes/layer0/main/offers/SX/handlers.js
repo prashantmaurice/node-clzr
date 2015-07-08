@@ -95,7 +95,12 @@ var vendor_validate_SX = function( vendor, user, checkin ){
         checkin.save(function(err) {
             deferred.resolve({code:500,error:err});
         });
-
+        if(!vendor.settings.billAmt){
+            console.log('no billAmt for vendor '+ vendor._id)
+            vendor.settings.billAmt=300
+            vendor.markModified('settings')
+            vendor.save();
+        }
         var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
 
         userObj.stamplist[vendor.fid] += stamps*1;

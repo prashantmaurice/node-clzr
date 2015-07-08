@@ -8,6 +8,7 @@ var view_analytics_hit=function(params,user){
 	analytics_obj.user=user.id;
 	analytics_obj.metric=params.metric;
 	analytics_obj.dimensions=params.dimensions;
+	analytics_obj.test=params.test||false;
 	return Q(analytics_obj.save())
 }
 var compute_analytics=function(map,reduce,query,scope){
@@ -74,8 +75,8 @@ var view_analytics_byDay = function(params,user){
 	}
 	if(params.start && params.end)
 		query={timeStamp:{
-			$gte:(new Date(params.start)).toISOString(),
-			$lte:(new Date(params.end)).toISOString(),
+			$gte:(new Date(params.start*1)).toISOString(),
+			$lte:(new Date(params.end*1)).toISOString(),
 		}
 	}
 	else
@@ -110,8 +111,16 @@ var view_analytics_vendor_get = function(params, user) {
 			return true;
 		}
 	}
+
 	scope.dimensions = makeArray(params.dimensions);
 	scope.metric = makeArray(params.metric);
+
+	if(params.time_interval) {
+		scope.time_interval = params.time_interval*1;
+	}
+	else {
+		scope.time_interval = 1;
+	}
 
 	debugger;
 
@@ -126,7 +135,7 @@ var view_analytics_vendor_get = function(params, user) {
 							emit({
 								metric:this.metric,
 								dimensions:filterDimension(this.dimensions, dimensions),
-								time:this.time
+								time:(this.timeStamp.getTime())/time_interval
 							}, 1);
 						}
 					}
@@ -137,7 +146,20 @@ var view_analytics_vendor_get = function(params, user) {
 			return Array.sum(values);
 		}
 
-		return compute_analytics(map_byVendor, reduce, {}, scope);
+		var query = {};
+
+		debugger;
+
+		if(params.time_start && params.time_end) {
+			query = {timeStamp:{
+				$gte:(new Date(params.time_start*1)).toISOString(),
+				$lte:(new Date(params.time_end*1)).toISOString()
+			}}
+		}
+
+		console.log(query);
+
+		return compute_analytics(map_byVendor, reduce, query, scope);
 	}
 	else {
 		deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));

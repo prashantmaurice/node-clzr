@@ -80,9 +80,11 @@ var view_vendor_offers_validate=function(params,user){
 			registry.getSharedObject("handler_validate").get(params,vendor,user,checkin).then(function(val_checkin){
 				debugger;
 				if(val_checkin){
-					console.log(" gcm pushin to "+(params.gcm_id||user.gcm_id||0))
-					registry.getSharedObject("gcm").sendPushNotification(params.gcm_id||user.gcm_id||0,
-						registry.getSharedObject("display").GCMCheckinDisplay(checkin,vendor))
+					registry.getSharedObject('data_user').get({_id:checkin.user}).then(function(user){
+						console.log(" gcm pushing to "+(params.gcm_id||user.gcm_id||0))
+						registry.getSharedObject("gcm").sendPushNotification(params.gcm_id||user.gcm_id||0,
+							registry.getSharedObject("display").GCMCheckinDisplay(checkin,vendor))
+					})
 					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
 				}
 				else
