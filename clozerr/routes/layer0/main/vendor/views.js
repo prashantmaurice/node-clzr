@@ -542,18 +542,30 @@ var view_vendor_geofences_add = function(params, user) {
 }
 var view_vendor_offers_rewardspage=function(params,user){
     var deferred = Q.defer();
-    Q.all([registry.getSharedObject("view_vendor_offers_offers_S0").get(params,user)
-        ,registry.getSharedObject("view_offers_rewards_user").get(params,user)])
-    .then(function(rewards_s0){
-        return rewards_s0[0].concat(rewards_s0[1])
-    })
-    .then(function(rewards){
-        registry.getSharedObject("data_vendor").get(params).then(function(vendor){
-            var _vendor=vendor.toObject()
-            _vendor.rewards=rewards;
-            deferred.resolve(_vendor)
+    if(params.vendor_id){
+        var user_rewards_p=Q.all([registry.getSharedObject("view_vendor_offers_offers_S0").get(params,user)
+            ,registry.getSharedObject("view_offers_rewards_user").get(params,user)])
+        .then(function(rewards_s0){
+            return rewards_s0[0].concat(rewards_s0[1])
         })
-    }).done()
+        user_rewards_p.then(function(rewards){
+            registry.getSharedObject("data_vendor").get(params).then(function(vendor){
+                var _vendor=vendor.toObject()
+                _vendor.rewards=_.filter(rewards,
+                    function(reward){
+                        if(reward.type=='reward'){
+                            console.log(reward.vendor_id)
+                            console.log(vendor._id)
+                            return reward.vendor_id.toString()==vendor._id;
+                        }
+                        return true
+                    });
+                deferred.resolve(_vendor)
+            })
+        }).done()
+    } else {
+        return registry.getSharedObject("view_offers_rewards_user").get(params,user)
+    }
     return deferred.promise;
 }
 var is_vendor_request=function(vendor_id,user){
