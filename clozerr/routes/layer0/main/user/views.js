@@ -125,19 +125,7 @@ var view_user_details_get = function(params,user){
 	})
 	return deferred.promise;
 }
-var view_user_visited_vendor = function(params,user){
-	var deferred = Q.defer();
-	registry.getSharedObject("data_vendor").get({vendor_id:params.vendor_id}).then(function(vendor){
-		var field="stamplist."+vendor.fid
-		query_param={}
-		query_param[field]={$exists:true}
-		query_param[field]={$gt:0}
-		registry.getSharedObject("data_user").get(query_param).then(function(users){
-			deferred.resolve(users);
-		})
-	});
-	return deferred.promise;
-}
+
 
 global.registry.register("view_user_favourites_add",{get:view_user_favourites_add});
 global.registry.register("view_user_pinned_add",{get:view_user_pinned_add});
@@ -146,5 +134,4 @@ global.registry.register("view_user_pinned_remove",{get:view_user_pinned_remove}
 global.registry.register("view_user_favourites_list",{get:view_user_favourites_list});
 global.registry.register("view_user_pinned_list",{get:view_user_pinned_list});
 global.registry.register("view_user_details_get",{get:view_user_details_get});
-global.registry.register("view_user_visited_vendor",{get:view_user_visited_vendor});
 module.exports={add_favourites:view_user_favourites_add};
