@@ -131,6 +131,7 @@ var view_user_visited_vendor = function(params,user){
 		var field="stamplist."+vendor.fid
 		query_param={}
 		query_param[field]={$exists:true}
+		query_param[field]={$gt:0}
 		registry.getSharedObject("data_user").get(query_param).then(function(users){
 			deferred.resolve(users);
 		})
