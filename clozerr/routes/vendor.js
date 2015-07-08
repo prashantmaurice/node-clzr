@@ -122,8 +122,10 @@ router.get('/create', function (req, res) {
       }
       var user=req.user;
 
+    //if( req.user.type != "Admin" ){
     // TODO approve vendor
     /*if( user.type != "Admin" ){
+>>>>>>> origin
       error.err( res, "200" );
       return;
     }*/
@@ -380,8 +382,9 @@ router.get('/get', function (req, res) {
 })
 
 router.get('/addoffer', function (req, res) {
-  var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id","access_token"]);
-  if (!errobj) {
+
+    var errobj = error.err_insuff_params(res, req, ["vendor_id", "offer_id","access_token"]);
+    if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
         return;
       }
