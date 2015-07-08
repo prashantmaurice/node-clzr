@@ -119,7 +119,7 @@ var view_analytics_vendor_get = function(params, user) {
 		scope.time_interval = params.time_interval*1;
 	}
 	else {
-		scope.time_interval = 1;
+		scope.time_interval = 24*60*60*1000;//1 day
 	}
 
 	debugger;
@@ -135,7 +135,7 @@ var view_analytics_vendor_get = function(params, user) {
 							emit({
 								metric:this.metric,
 								dimensions:filterDimension(this.dimensions, dimensions),
-								time:(this.timeStamp.getTime())/time_interval
+								time:parseInt((this.timeStamp.getTime())/time_interval)
 							}, 1);
 						}
 					}

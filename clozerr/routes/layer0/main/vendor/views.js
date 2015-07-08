@@ -556,8 +556,15 @@ var view_vendor_offers_rewardspage=function(params,user){
     }).done()
     return deferred.promise;
 }
+var is_vendor_request=function(vendor_id,user){
+    return (user.type=='Vendor') && (user.vendor_id==vendor_id)
+}
 var view_vendor_club_get = function(params,user){
     var deferred = Q.defer();
+    if(!params.vendor_id)
+        return Q(registry.getSharedObject("view_error").makeError({ error:{message:"Missing params: vendor_id"}, code:500 }));
+    if(!is_vendor_request(params.vendor_id,user))
+        return Q(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
     registry.getSharedObject("data_vendor").get({vendor_id:params.vendor_id}).then(function(vendor){
         var field="stamplist."+vendor.fid
         query_param={}
@@ -566,7 +573,7 @@ var view_vendor_club_get = function(params,user){
         registry.getSharedObject("data_user").get(query_param).then(function(users){
             deferred.resolve(users);
         })
-    });
+    }).done();
     return deferred.promise;
 }
 

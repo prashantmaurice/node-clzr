@@ -37,7 +37,8 @@ var vendorSchema = new Schema({
 	geoloc:Boolean,
 	last_post:Date,
 	last_tweet:Date,
-	geofences:[ObjectId]
+	geofences:[ObjectId],
+	logo: String
 });
 vendorSchema.index({ location: '2d' });
 
