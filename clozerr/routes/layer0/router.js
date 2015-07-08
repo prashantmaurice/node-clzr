@@ -37,7 +37,8 @@ router.get("/:object/:handler/:view", function( req, res ){
                 if(output.code)
                     res.status(output.code)
                 if(output.err){
-                    console.log("error : "+output.err)
+		    console.log("error: ");
+                    console.log(output.err)
                     if(output.err.code)
                         res.status(output.err.code)
                     else
@@ -56,6 +57,7 @@ router.get("/:object/:handler/:view", function( req, res ){
 
     }
 });
+
 router.get("/:object/:view", function( req, res ){
     var registry = global.registry;
     // var logger = registry.getSharedObject("logger");
