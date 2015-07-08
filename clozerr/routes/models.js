@@ -38,7 +38,10 @@ var vendorSchema = new Schema({
 	last_post:Date,
 	last_tweet:Date,
 	geofences:[ObjectId],
-	logo: String
+	logo: String,
+	fb:String,
+	twitter:String,
+	gplus:String
 });
 vendorSchema.index({ location: '2d' });
 
