@@ -420,7 +420,7 @@ router.get('/addoffer', function (req, res) {
 });
 
 router.get('/upload-policy', function( req, res ){
-  var errobj = error.err_insuff_params( res, req, ["vendor_id","access_token"] );
+  var errobj = error.err_insuff_params( res, req, ["access_token"] );
   if( !errobj ) {
     return;
   }
@@ -435,6 +435,9 @@ router.get('/upload-policy', function( req, res ){
         return;
       }
       debugger;
+      if( req.user.type == "Vendor" )
+	req.query.vendor_id = req.user.vendor_id;
+	
       Vendor.findOne({
         _id : req.query.vendor_id
       }, function( err, vendor ){
@@ -442,18 +445,23 @@ router.get('/upload-policy', function( req, res ){
         if( !vendor ){
           error.err( res, "200" );
         }
+
+	var filepath = settings.s3.base_path + "/" + vendor.resource_name;
+	if( req.query.ext )
+		filepath += "_" + req.query.ext;
+
         var p = policy({
           secret: settings.s3.secret_key,
           length: 50000000,
           bucket: settings.s3.bucket,
-          name: settings.s3.base_path + "/" + vendor.resource_name,
+          name: filepath,
           expires: new Date(Date.now() + 600000),
           acl: 'public-read'
         });
 
         var obj = p;
         obj.access_key=settings.s3.access_key;
-        obj.key=settings.s3.base_path + "/" + vendor.resource_name;
+        obj.key=filepath;
         
         res.end( JSON.stringify(obj) );
       });
