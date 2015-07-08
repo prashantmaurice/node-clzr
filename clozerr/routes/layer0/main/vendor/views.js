@@ -561,11 +561,11 @@ var is_vendor_request=function(vendor_id,user){
 }
 var view_vendor_club_get = function(params,user){
     var deferred = Q.defer();
-    if(!params.vendor_id)
-        return Q(registry.getSharedObject("view_error").makeError({ error:{message:"Missing params: vendor_id"}, code:500 }));
-    if(!is_vendor_request(params.vendor_id,user))
+    // if(!params.vendor_id)
+    //     return Q(registry.getSharedObject("view_error").makeError({ error:{message:"Missing params: vendor_id"}, code:500 }));
+    if(!user.type=='Vendor')
         return Q(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
-    registry.getSharedObject("data_vendor").get({vendor_id:params.vendor_id}).then(function(vendor){
+    registry.getSharedObject("data_vendor").get({vendor_id:user.vendor_id}).then(function(vendor){
         var field="stamplist."+vendor.fid
         query_param={}
         query_param[field]={$exists:true}
