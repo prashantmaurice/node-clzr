@@ -4,6 +4,9 @@ var _=require('underscore')
 
 var view_offers_reward_create=function(params,user){
 	params.type='reward'
+	if(!params.vendor_id)
+		return Q({code:500,error:'reward needs vendor_id'})
+	params.vendor_id=params.vendor_id
 	offer = registry.getSharedObject('view_vendor_offers_create').get(params,user)
 	return offer
 }

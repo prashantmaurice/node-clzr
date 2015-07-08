@@ -38,7 +38,10 @@ var vendorSchema = new Schema({
 	last_post:Date,
 	last_tweet:Date,
 	geofences:[ObjectId],
-	logo: String
+	logo: String,
+	fb:String,
+	twitter:String,
+	gplus:String
 });
 vendorSchema.index({ location: '2d' });
 
@@ -110,7 +113,8 @@ Models.Offer = mongoose.model('Offer',new Schema({
 	caption:String,
 	description:String,
 	dateUpdated:Date,
-	params: Schema.Types.Mixed
+	params: Schema.Types.Mixed,
+	vendor_id:ObjectId
 }));
 
 Models.Review = mongoose.model('Review',new Schema({

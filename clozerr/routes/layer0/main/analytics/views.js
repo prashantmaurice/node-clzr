@@ -92,7 +92,7 @@ var view_analytics_vendor_get = function(params, user) {
 	scope.filterObject = global.registry.getSharedObject('util').filterObject;
 	scope.filterDimension = function(dim_this, dim_filter) {
 		if(dim_filter.length != 0) {
-			return filterObject(dim_this, dim_filter).data;
+			return filterObject(dim_this, dim_filter,false).data;
 		}
 		else {
 			return dim_this;
