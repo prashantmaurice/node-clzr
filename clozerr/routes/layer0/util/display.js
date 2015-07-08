@@ -16,14 +16,16 @@ function GCMCheckinDisplay(checkin,vendor){
 	}
 }
 function rewardListDisplay(reward){
-	return {
-		_id:reward._id,
-		type:reward.type||"reward",
-		caption:reward.caption,
-		description:reward.description,
-		params:reward.params||{type:'sample'},
-		image:reward.image||""
-	}
+	// return {
+	// 	_id:reward._id,
+	// 	type:reward.type||"reward",
+	// 	caption:reward.caption,
+	// 	description:reward.description,
+	// 	params:reward.params||{type:'sample'},
+	// 	image:reward.image||"",
+	// 	vendor_id:reward.vendor_id
+	// }
+	return reward
 }
 var offerDisplay = function (offer){
 	return {
