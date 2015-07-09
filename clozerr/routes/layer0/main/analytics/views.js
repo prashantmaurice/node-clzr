@@ -12,12 +12,25 @@ var view_analytics_hit=function(params,user){
 	return Q(analytics_obj.save())
 }
 var compute_analytics=function(map,reduce,query,scope){
-	return Q(registry.getSharedObject('models_Analytics').mapReduce({
+	debugger;
+	var deferred = Q.defer();
+	registry.getSharedObject('models_Analytics').mapReduce({
 		query:query,
 		map:map,
 		reduce:reduce,
-		scope:scope
-	}))
+		scope:scope,
+		verbose:true
+	}, function (err, data, stats) {
+		debugger; 
+    		//console.log('map reduce took %d ms', stats.processtime)
+    		if(err) console.log(err);
+    		else console.log(data);
+		deferred.resolve( data );
+	});
+
+//	process.nextTick( function(){ deferred.resolve({"hello":"world"}) } );
+
+	return deferred.promise;
 }
 
 function makeArray(obj) {
@@ -57,7 +70,7 @@ var view_analytics_byDay = function(params,user){
 		}
 	}
 	scope.dimensions = makeArray(params.dimensions);
-	scope.metric = makeArray(params.metric);
+	//scope.metric = params.metric;
 	var map_byDay=function(){
 		if(filterMetric(this.metric, metric)) {
 			emit({
@@ -81,6 +94,8 @@ var view_analytics_byDay = function(params,user){
 	}
 	else
 		query={}
+	
+	query.metric = params.metric;
 	console.log(query)
 	return compute_analytics(map_byDay,reduce,query,scope);
 }
@@ -89,7 +104,7 @@ var view_analytics_vendor_get = function(params, user) {
 	var deferred = Q.defer();
 
 	var scope = {};
-	scope.filterObject = global.registry.getSharedObject('util').filterObject;
+	/*scope.filterObject = global.registry.getSharedObject('util').filterObject;
 	scope.filterDimension = function(dim_this, dim_filter) {
 		if(dim_filter.length != 0) {
 			return filterObject(dim_this, dim_filter,false).data;
@@ -110,7 +125,7 @@ var view_analytics_vendor_get = function(params, user) {
 		else {
 			return true;
 		}
-	}
+	}*/
 
 	scope.dimensions = makeArray(params.dimensions);
 	scope.metric = makeArray(params.metric);
@@ -126,23 +141,25 @@ var view_analytics_vendor_get = function(params, user) {
 
 	if(user.type == "Vendor") {
 		scope.vendor_id = user.vendor_id.toString();
-		map_byVendor = function() {
-			if(filterMetric(this.metric, metric)) {
-				if(this.dimensions) {
-					if(this.dimensions.vendor_id) {
-						debugger;
-						if(this.dimensions.vendor_id == vendor_id) {
-							emit({
-								metric:this.metric,
-								dimensions:filterDimension(this.dimensions, dimensions),
-								time:parseInt((this.timeStamp.getTime())/time_interval)
-							}, 1);
-						}
-					}
-				}
+		
+		
+		var map_byVendor = function() {
+
+			var obj = {};
+
+			
+			var dims = {};
+			for( var i = 0; i < dimensions.length; i++ ){
+				var dim = dimensions[i];
+				dims[dim] = this.dimensions[dim];
 			}
+			obj.dimensions = dims;
+			obj.metric = this.metric;	
+			obj.time = parseInt((this.timeStamp.getTime())/time_interval);
+			//if( this.dimensions && this.dimensions.vendor_id && this.dimensions.vendor_id == vendor_id )
+			emit( obj, 1 );
 		}
-		reduce = function(key, values) {
+		var reduce = function(key, values) {
 			return Array.sum(values);
 		}
 
@@ -157,15 +174,17 @@ var view_analytics_vendor_get = function(params, user) {
 			}}
 		}
 
+		query.metric = params.metric;
 		console.log(query);
 
 		return compute_analytics(map_byVendor, reduce, query, scope);
 	}
 	else {
-		deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+		process.nextTick(function(){
+			deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+		});
+		return deferred.promise;
 	}
-
-	return deferred.promise;
 }
 
 registry.register("view_analytics_hit",{get:view_analytics_hit,post:view_analytics_hit})

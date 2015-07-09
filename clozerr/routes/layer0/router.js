@@ -46,10 +46,17 @@ router.get("/:object/:handler/:view", function( req, res ){
                 }
                 res.send( JSON.stringify( output ) );
             }, function( err ){
+		debugger;
                 throw err;
+            	/*console.log("caught error : ");
+		console.log( err );
+            	var error = registry.getSharedObject("view_error").makeError({ error:err, code:500 });
+            	res.send( error );
+            	res.end();*/
             }).done();
         } catch( err ){
             console.log("caught error : "+err);
+	    console.log( err );
             var error = registry.getSharedObject("view_error").makeError({ error:err, code:500 });
             res.send( error );
             res.end();
