@@ -186,6 +186,40 @@ var view_analytics_vendor_get = function(params, user) {
 		return deferred.promise;
 	}
 }
+var view_analytics_vendor = function(params, user) {
+    var scope = {
+        metrics: [params.metric],
+        dimensions: params.dimensions,
+        getDimensions: function(thisD, reqD) {
+            d = {}
+            for (var dim in reqD) {
+                var key = reqD[dim]
+                if (thisD[key])
+                    d[key] = thisD[key]
+            }
+            return d
+        },
+        vendor_id:user.vendor_id
+    }
+    var map_byVendor = function() {
+        if ((this.dimensions.vendor_id)&&
+        	(metrics.indexOf(this.metric) != -1)&&
+        	(this.dimensions.vendor_id==vendor_id)) {
+            emit({
+                metric: this.metric,
+                dimensions: getDimensions(this.dimensions, dimensions),
+                time: new Date(this.timeStamp.getFullYear(),
+                    this.timeStamp.getMonth(),
+                    this.timeStamp.getDate(),
+                    0, 0, 0, 0)
+            }, 1)
+        }
+    }
+    var reduce = function(key, values) {
+        return Array.sum(values)
+    }
+    return compute_analytics()
+}
 
 registry.register("view_analytics_hit",{get:view_analytics_hit,post:view_analytics_hit})
 registry.register('view_analytics_vendor_get', { get : view_analytics_vendor_get });
