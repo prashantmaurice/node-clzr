@@ -111,7 +111,7 @@ var data_vendor = function( params){
     }); 
     return deferred.promise;
 }
-var data_vendor_near = function( params){
+var data_vendor_near = function( params ){
     var Vendor = registry.getSharedObject("models_Vendor");
     var deferred = Q.defer();
     Vendor.find({

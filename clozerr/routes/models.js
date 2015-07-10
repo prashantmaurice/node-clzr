@@ -13,7 +13,7 @@ var vendorSchema = new Schema({
 	offers_old : [ObjectId],
 	fid:String,
 	date_created:Date,
-    dateUpdated:Date,
+    	dateUpdated:Date,
 	address: String,
 	city: String,
 	phone: String,
@@ -59,7 +59,7 @@ Models.Content = mongoose.model('Content',new Schema({
 	key:String,
 	value:String
 }));
-		
+
 Models.Vendor = mongoose.model('Vendor', vendorSchema );
 
 Models.CheckIn = mongoose.model('CheckIn',new Schema({
@@ -121,7 +121,8 @@ Models.Review = mongoose.model('Review',new Schema({
 	checkinid:ObjectId,
 	stars:[Number],
 	date_created:Date,
-	remarks: String
+	remarks: String,
+	vendor_id: ObjectId
 }));
 
 Models.Data = mongoose.model('Data',new Schema({
