@@ -111,12 +111,12 @@ var view_user_pinned_list = function(params,user){
 	var offer = registry.getSharedObject("data_offer");
 	var offerPlist = [];
 	_.each(user.pinned,function(offerid){
-		vendorPlist.push(offer.get({offer_id:offerid}).then(function(pindoffer){
+		offerPlist.push(offer.get({offer_id:offerid}).then(function(pindoffer){
 			return pindoffer;
 		}))
 	})
-	Q.all(offerPlist).then(function(vendorList){
-		deferred.resolve(offerPlist);
+	Q.all(offerPlist).then(function(offerList){
+		deferred.resolve(offerList);
 	})
 	return deferred.promise;
 }
