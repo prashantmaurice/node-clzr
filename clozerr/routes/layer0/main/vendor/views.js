@@ -3,7 +3,7 @@ var Q = require("q");
 var _ = require('underscore')
 var fuzzy = require('fuzzy');
 var FB = require('fb');
-var Twitter = require('twitter'); 
+var Twitter = require('twitter');
 var settings = registry.getSharedObject("settings");
 var wa = require('whatsapi');
 FB.options({appSecret:'0fa93f920497bc9a26c63d979f840d1f',appId:'643340145745435'});
@@ -204,9 +204,9 @@ var view_vendor_details_update = function( params, user) {
 
 var view_vendor_homepage = function( params, user ){
     var deferred = Q.defer();
-    
+
     var vendorObjectsM = registry.getSharedObject("data_vendors");// Data object to get multiple vendors based on certain parameters.
-    
+
     var vendorListF = [];
     vendorObjectsM.get( params ).then(function( vendors ){
         var prList = [];
@@ -272,7 +272,7 @@ var view_vendor_search_near=function(params,user){
                         return vendor.tags.indexOf(tag.id)!=-1
                     })
                 })
-            } else 
+            } else
             return vendors;
         })
         .then(function(vendors){
@@ -280,7 +280,7 @@ var view_vendor_search_near=function(params,user){
                 return _.filter(vendors,function(vendor){
                     return vendor.category==params.category
                 })
-            } else 
+            } else
             return vendors;
         })
         .then(function(vendors){
@@ -337,8 +337,8 @@ var view_vendor_search_near=function(params,user){
     }
     client.post('statuses/update', body,  function(error, tweet, response){
       if(error) throw error;
-        console.log(tweet);  // Tweet body. 
-        console.log(response);  // Raw response object. 
+        console.log(tweet);  // Tweet body.
+        console.log(response);  // Raw response object.
         registry.getSharedObject("data_vendor").get(params).then(function(vendor){
             vendor.last_tweet = Date.now();
             vendor.save();
@@ -534,11 +534,26 @@ var view_vendor_geofences_add = function(params, user) {
             deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
-    else { 
+    else {
         deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
     }
 
     return deferred.promise;
+}
+var view_vendor_offers_unlocked=function(params,user){
+  var deferred = Q.defer();
+  if(params.vendor_id){
+    Q.all([registry.getSharedObject("view_vendor_offerspage").get(params,user)
+    ,registry.getSharedObject("view_vendor_offers_rewardspage").get(params,user)]).then(function(off_rew){
+      var offers=_.filter(off_rew[0].offers,function(offer){
+        return offer.params.unlocked && !offer.params.used;
+      })
+      var rewards=off_rew[1].rewards;
+      off_rew[0].offers=offers.concat(rewards)
+      deferred.resolve(off_rew[0])
+    })
+  }
+  return deferred.promise
 }
 var view_vendor_offers_rewardspage=function(params,user){
     var deferred = Q.defer();
@@ -616,5 +631,6 @@ global.registry.register("view_vendor_users_visited", {get:view_vendor_users_vis
 global.registry.register("view_vendor_offers_rewardspage", {get:view_vendor_offers_rewardspage});
 global.registry.register("view_vendor_allOffers", {get:view_vendor_allOffers});
 global.registry.register("view_vendor_club_get", {get:view_vendor_club_get});
+global.registry.register("view_vendor_offers_unlocked", {get:view_vendor_offers_unlocked});
 
 module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offersPage};
