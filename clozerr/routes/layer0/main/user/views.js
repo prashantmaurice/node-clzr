@@ -107,7 +107,17 @@ var view_user_favourites_list = function(params,user){
 }
 var view_user_pinned_list = function(params,user){
 	var deferred=  Q.defer();
-	deferred.resolve(user.pinned);
+	//deferred.resolve(user.pinned);
+	var offer = registry.getSharedObject("data_offer");
+	var offerPlist = [];
+	_.each(user.pinned,function(offerid){
+		offerPlist.push(offer.get({offer_id:offerid}).then(function(pindoffer){
+			return pindoffer;
+		}))
+	})
+	Q.all(offerPlist).then(function(offerList){
+		deferred.resolve(offerList);
+	})
 	return deferred.promise;
 }
 var view_user_details_get = function(params,user){
