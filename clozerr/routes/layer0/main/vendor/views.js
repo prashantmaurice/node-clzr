@@ -569,6 +569,8 @@ var view_vendor_offers_rewardspage=function(params,user){
                 _vendor.rewards=_.filter(rewards,
                     function(reward){
                         if(reward.type=='reward'){
+                            if(!reward.vendor_id)
+                                return false
                             console.log(reward.vendor_id)
                             console.log(vendor._id)
                             return reward.vendor_id.toString()==vendor._id;
