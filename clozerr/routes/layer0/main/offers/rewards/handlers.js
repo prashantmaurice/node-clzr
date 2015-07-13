@@ -61,9 +61,9 @@ return deferred.promise;
 var handler_predicate_rewards = function(user, vendor, offer) {
     //TODO : type specific handlers
     var deferred = Q.defer();
-    console.log(offer.vendor_id)
+    console.log(offer.vendor._id)
     console.log(offer.vendor._id.toString()==vendor._id.toString())
-    return Q(offer.vendor_id && offer.vendor_id.toString()==vendor._id.toString())
+    return Q(offer.vendor._id && offer.vendor._id.toString()==vendor._id.toString())
     var Checkin=registry.getSharedObject("data_checkins");
     Checkin.get({
         "user":user.id,
