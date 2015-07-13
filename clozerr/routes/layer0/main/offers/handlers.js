@@ -16,7 +16,7 @@ var contains_id=function(arr,id){
 }
 var vendor_predicate = function(user, vendor, offer) {
 	var valid=false
-	if(contains_id(vendor.offers,offer._id)) {
+	if(contains_id(vendor.offers,offer._id) || vendor.visitOfferId.equals(offer._id)) {
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}
 	else {
@@ -61,7 +61,7 @@ var vendor_validate_qrcode = function(params, vendor, user, checkin) {
 	} else {
 		return Q(false);
 	}
-	
+
 }
 
 global.registry.register("handler_checkin", {get:vendor_checkin});

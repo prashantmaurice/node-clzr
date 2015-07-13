@@ -57,12 +57,51 @@ var view_offers_checkin_create=function(params,user){
 							debugger;
 							deferred.resolve({code:204,description:"cant create checkin"})
 						}
-						
+
 					});
 				}
 				else {
 					debugger;
 					deferred.resolve({result:false,message:"invalid checkin"});
+				}
+			})
+		})
+	});
+
+	return deferred.promise;
+}
+var view_offers_dummy_checkin_create=function(params,user){
+	var deferred = Q.defer();
+
+	registry.getSharedObject("data_vendor").get(params).then(function(vendor){
+		debugger;
+		console.log(vendor.visitOfferId)
+		registry.getSharedObject("data_offer").get({offer_id:vendor.visitOfferId}).then(function(offer){
+			debugger;
+			registry.getSharedObject("handler_predicate").get(user,vendor,offer).then(function(valid){
+				debugger;
+				if(valid){
+					console.log("creating checkin")
+					debugger;
+					registry.getSharedObject("handler_checkin").get(params, user,vendor,offer).then(function(checkin){
+						console.log("got checkin")
+						debugger;
+						if(checkin){
+							debugger;
+							console.log("displaying")
+							deferred.resolve(registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin));
+							console.log("io emitting to signal , "+JSON.stringify({vendor_id:vendor._id,dummy:true}))
+							global.io.emit('signal', JSON.stringify({vendor_id:vendor._id,dummy:true}) );
+						} else {
+							debugger;
+							deferred.resolve({code:204,description:"cant create checkin"})
+						}
+
+					});
+				}
+				else {
+					debugger;
+					deferred.resolve({code:204,message:"invalid checkin"});
 				}
 			})
 		})
@@ -217,9 +256,8 @@ return deferred.promise;
 }
 registry.register("view_offers_checkin_validate", {get:view_vendor_offers_validate});
 registry.register("view_offers_checkin_create", {get:view_offers_checkin_create});
+registry.register("view_vendor_checkin", {get:view_offers_dummy_checkin_create});
 registry.register("view_offers_checkin_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
 registry.register("view_offer_details_get",{get:view_offer_details_get});
 registry.register("view_offer_details_set",{get:view_offer_details_set});
 global.registry.register("view_vendor_offers_create", {get:view_vendor_offers_create});
-
-
