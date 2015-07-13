@@ -6,24 +6,42 @@ var db=mongoose.connection;
 var User = models.User;
 var settings = require('./routes/settings');
 var _ = require("underscore");
- db.open('mongodb://mongoadmin:clozerradmin@localhost:6547/fin4');
- var rewards = ["welcomeReward","limitedCustomers","limitedTime","happyHours"];
+ db.open('mongodb://mongoadmin:clozerradmin@localhost:9999/fin4');
+ var rewards = ["welcomeReward"];
  _.each(rewards,function(reward){
-  var offer = new Offer({
-    	type: "S0",
-    	dateCreated: Date.now(),
-    	caption: settings[reward].caption,
-    	description: settings[reward].description,
-        params: settings[reward].params
-	});
-	 offer.save(function (err,offer) {
-	    	if (err) console.log(err);
-	    	else
-	    	{   //console.log(offer);
-	    		Vendor.update({},{$push:{offers:offer._id}},{multi:true},function(err,vendor){
-	    		  console.log(vendor);	
-	    		})
-	    	}
-	    });	
-	 });
+     params={
+           type: "S0",
+           dateCreated: Date.now(),
+           caption: settings[reward].caption,
+           description: settings[reward].description,
+         params: settings[reward].params
+       }
+     Vendor.find({},function(err,vendors){
+         if(err){
+              console.log(err);
+              return;
+         }
+        console.log('got vendors'+vendors.length);
+        _.each(vendors,function(vendor){
+            var offer = new Offer(params);
+            offer.save(function(err,offer){
+                if(err){
+                     console.log(err);
+                     return;
+                }
 
+                var id=offer._id;
+                vendor.offers.push(offer._id);
+                vendor.markModified('offers')
+                vendor.save(function(err,vendor){
+                    if(err){
+                         console.log(err);
+                         return;
+                    }
+                    console.log(vendor.id)
+                });
+            });
+
+        })
+     })
+ });

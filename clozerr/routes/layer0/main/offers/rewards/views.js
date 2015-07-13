@@ -4,11 +4,18 @@ var _=require('underscore')
 
 var view_offers_reward_create=function(params,user){
 	params.type='reward'
+	var deferred=Q.defer();
 	if(!params.vendor_id)
 		return Q({code:500,error:'reward needs vendor_id'})
-	params.vendor_id=params.vendor_id
-	offer = registry.getSharedObject('view_vendor_offers_create').get(params,user)
-	return offer
+	registry.getSharedObject('data_vendor').get({vendor_id:params.vendor_id}).then(function(vendor){
+		params.vendor={
+			_id:vendor.id,
+			name:vendor.name
+		}
+		offer = registry.getSharedObject('view_vendor_offers_create').get(params,user)
+		deferred.resolve(offer)
+	})
+	return deferred.promise;
 }
 var give_reward=function(user,offer_id){
 	//TODO can user have multiple rewards?
@@ -32,7 +39,7 @@ var view_offers_reward_give=function(params,user){
 	else if(params.vendor_id != user.vendor_id){
 		deferred.resolve({code:400,error:'unauthorized request'})
 	}
-	else{ 
+	else{
 		registry.getSharedObject('data_user').get({_id:params.user_id}).then(function(users){
 			var user_receiver=users[0]
 			give_reward(user_receiver,params.reward_id).then(function(user){

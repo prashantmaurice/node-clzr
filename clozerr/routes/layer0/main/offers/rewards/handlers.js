@@ -61,18 +61,28 @@ return deferred.promise;
 var handler_predicate_rewards = function(user, vendor, offer) {
     //TODO : type specific handlers
     var deferred = Q.defer();
-        var Checkinr=registry.getSharedObject("data_checkins");
-        Checkin.get({
-            "user":user.id,
-            "offer":offer.id,
-            "state":{$in:[CHECKIN_STATE_ACTIVE,CHECKIN_STATE_CONFIRMED]}
-        }).then(function(checkins){
-            if(!checkins || checkins.length==1)
-                deferred.resolve(true)
-            else
-                deferred.resolve(false)
-        })
-        return deferred.promise;
+    console.log(offer.vendor_id)
+    console.log(offer.vendor._id.toString()==vendor._id.toString())
+    return Q(offer.vendor_id && offer.vendor_id.toString()==vendor._id.toString())
+    var Checkin=registry.getSharedObject("data_checkins");
+    Checkin.get({
+        "user":user.id,
+        "offer":offer.id,
+        "state":{$in:[CHECKIN_STATE_ACTIVE,CHECKIN_STATE_CONFIRMED]}
+    }).then(function(checkins){
+        debugger
+        console.log(checkins)
+        if(!checkins || checkins.length<1){
+            console.log(true)
+            deferred.resolve(true)
+        }
+        else{
+            console.log(false)
+            deferred.resolve(false)
+        }
+        return checkins
+    }).done()
+    return deferred.promise;
 }
 
 var handler_validate_rewards = function( vendor, user, checkin ){
@@ -80,6 +90,17 @@ var handler_validate_rewards = function( vendor, user, checkin ){
 
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
     debugger;
+    if(!user.stamplist)
+        user.stamplist=[]
+    if(!user.stamplist[vendor.fid])
+        user.stamplist[vendor.fid]=1
+    else {
+        user.stamplist[vendor.fid]+=1
+    }
+    user.markModified('stamplist')
+    user.rewards.splice(user.rewards.indexOf(checkin.offer),1)
+    user.markModified('rewards')
+    user.save();
     checkin.state = CHECKIN_STATE_CONFIRMED;
     checkin.save(function(err) {
         deferred.resolve({code:500,error:err});
@@ -89,6 +110,6 @@ var handler_validate_rewards = function( vendor, user, checkin ){
     return deferred.promise;
 }
 
-global.registry.register("handler_checkin_rewards", {get:handler_checkin_rewards});
-global.registry.register("handler_validate_rewards", {get:handler_validate_rewards});
-global.registry.register("handler_predicate_rewards", {get:handler_predicate_rewards});
+global.registry.register("handler_checkin_reward", {get:handler_checkin_rewards});
+global.registry.register("handler_validate_reward", {get:handler_validate_rewards});
+global.registry.register("handler_predicate_reward", {get:handler_predicate_rewards});

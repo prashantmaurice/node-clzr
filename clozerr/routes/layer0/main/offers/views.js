@@ -185,7 +185,10 @@ var view_vendor_offers_create = function(params, user) {
 				deferred.resolve({result:false, err:obj.err});
 			}
 			else {
+
 				var offer_new = new Offer(obj.data);
+				if (params.vendor)
+					offer_new.vendor=params.vendor
 				if(params.params) {
 					offer_new.params = params.params;
 				}
