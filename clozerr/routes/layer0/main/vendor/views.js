@@ -111,8 +111,12 @@ var view_vendor_allOffers = function(params,user){
                         offer.params.stamps=offer.stamps
                     return registry.getSharedObject('display').offerDisplay(offer)
                 })
+                if(!user.stamplist)
+                    user.stamplist=[]
+                if(user.stamplist[vendor.fid])
+                    user.stamplist[vendor.fid]=0
                 vendor.offers=vendor.offers_filled
-                vendor.offers_filled=null
+                vendor.stamps=user.stamplist[vendor.fid]
                 deferred.resolve(vendor)
                 return vendor;
             }).done()

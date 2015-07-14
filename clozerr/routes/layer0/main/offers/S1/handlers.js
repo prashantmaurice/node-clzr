@@ -101,7 +101,10 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
         checkin.save(function(err) {
             deferred.resolve({code:500,error:err});
         });
-
+        if(!userObj.stamplist)
+            userObj.stamplist={}
+        if(!userObj.stamplist[vendor.fid])
+            userObj.stamplist[vendor.fid]=0
         userObj.stamplist[vendor.fid]++;
         userObj.markModified("stamplist");
 
