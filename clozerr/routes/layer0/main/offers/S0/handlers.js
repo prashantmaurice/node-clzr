@@ -113,15 +113,17 @@ var vendor_validate_S0 = function( vendor, user, checkin ){
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
     debugger;
     checkin.state = CHECKIN_STATE_CONFIRMED;
-    if(!user.stamplist)
-        user.stamplist=[]
-    if(!user.stamplist[vendor.fid])
-        user.stamplist[vendor.fid]=1
-    else {
-        user.stamplist[vendor.fid]+=1
-    }
-    user.markModified('stamplist')
-    user.save();
+    registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(user) {
+        if(!user.stamplist)
+            user.stamplist=[]
+        if(!user.stamplist[vendor.fid])
+            user.stamplist[vendor.fid]=1
+        else {
+            user.stamplist[vendor.fid]+=1
+        }
+        user.markModified('stamplist')
+        user.save();
+    })
     checkin.save(function(err) {
         deferred.resolve({code:500,error:err});
     });

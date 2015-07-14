@@ -261,6 +261,8 @@ registry.register("view_offers_checkin_validate", {get:view_vendor_offers_valida
 registry.register("view_offers_checkin_create", {get:view_offers_checkin_create});
 registry.register("view_vendor_checkin", {get:view_offers_dummy_checkin_create});
 registry.register("view_offers_checkin_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
+registry.register("view_vendor_offers_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
+
 registry.register("view_offer_details_get",{get:view_offer_details_get});
 registry.register("view_offer_details_set",{get:view_offer_details_set});
 global.registry.register("view_vendor_offers_create", {get:view_vendor_offers_create});

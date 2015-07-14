@@ -113,7 +113,7 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
         registry.getSharedObject("analytics_checkin").get({},checkin,user)
         deferred.resolve(checkin);
     });
-    
+
     return deferred.promise;
 }
 
