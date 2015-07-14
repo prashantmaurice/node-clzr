@@ -67,8 +67,8 @@ var vendor_predicate_SX = function(user, vendor, offer) {
         user.markModified("stamplist");
         user.save();
     }
-    
-    if(user.stamplist[vendor.fid] >= offer.stamps || (offer._id == vendor.visitOfferId)) {
+
+    if(user.stamplist[vendor.fid] +1 >= offer.stamps || (offer._id.toString() == vendor.visitOfferId.toString())) {
         deferred.resolve(true);
     }
     else {
@@ -87,7 +87,7 @@ var vendor_validate_SX = function( vendor, user, checkin ){
 
     registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(userObj) {
         debugger;
-          
+
         checkin.state = CHECKIN_STATE_CONFIRMED;
         registry.getSharedObject("analytics_checkin").get({},checkin,user)
         debugger;

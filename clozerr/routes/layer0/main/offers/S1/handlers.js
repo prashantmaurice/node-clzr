@@ -64,12 +64,12 @@ var vendor_predicate_S1 = function(user, vendor, offer) {
 
     if(!user.stamplist[vendor.fid]) {
         debugger;
-        user.stamplist[vendor.fid] = 0;
+        user.stamplist[vendor.fid] = 1;
         user.markModified("stamplist");
         user.save();
     }
 
-    if((user.stamplist[vendor.fid] >= offer.stamps*1) || (offer._id.toString() == vendor.visitOfferId.toString())) {
+    if((user.stamplist[vendor.fid]+1 >= offer.stamps*1) || (offer._id.toString() == vendor.visitOfferId.toString())) {
         debugger;
         deferred.resolve(true);
     }
