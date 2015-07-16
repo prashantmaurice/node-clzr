@@ -173,7 +173,8 @@ router.get('/create', function (req, res) {
       result: true,
       data: vendor
     });
-    vendor.save();
+    console.log( vendor );
+    vendor.save(function( res, err ){ console.log(err); console.log("NOERR"); console.log( res ); }, function( err ){ console.log("ERROR:"); console.log( err ); });
   });
 
 
