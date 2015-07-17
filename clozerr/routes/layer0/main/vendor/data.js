@@ -111,10 +111,26 @@ var data_vendor = function( params){
     }); 
     return deferred.promise;
 }
-var data_vendor_near = function( params ){
+var data_vendor_near = function( params ,user){
     var Vendor = registry.getSharedObject("models_Vendor");
     var deferred = Q.defer();
+    if(user.type=="TestUser")
+    {
     Vendor.find({
+        location: {
+            $near: [params.latitude, params.longitude]
+        },
+        $or:[{visible:true},{test:true}]
+    }).limit(params.limit ).skip(params.offset ).exec()
+    .then(function( vendor ){
+        deferred.resolve( vendor ); 
+    }, function( err ){
+       deferred.resolve({code:500,error:err});
+    }); 
+}
+else
+{
+   Vendor.find({
         location: {
             $near: [params.latitude, params.longitude]
         },
@@ -124,9 +140,12 @@ var data_vendor_near = function( params ){
         deferred.resolve( vendor ); 
     }, function( err ){
        deferred.resolve({code:500,error:err});
-    }); 
+    });  
+}
+
     return deferred.promise;
 }
+
 
 global.registry.register("data_vendor", {get:data_vendor} );
 
