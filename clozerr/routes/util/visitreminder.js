@@ -11,10 +11,10 @@ var _ = require('underscore');
 db.open('mongodb://'+settings.db.mongo.username+":"+settings.db.mongo.password+"@"+settings.db.mongo.host+'/'+settings.db.mongo.name);
 debugger;
 console.log('mongodb opened');
-Vendor.find({"settings":{$exists:true},"settings.visitreminder" : {$exists:true},"settings.visitreminder.activated" : {$exists : true}, "settings.visitreminder.activated" : "true"}, function(err, allVendors) {
+Vendor.find({"settings":{$exists:true},"settings.visitReminder" : {$exists:true},"settings.visitReminder.activated" : {$exists : true}, "settings.visitReminder.activated" : true}, function(err, allVendors) {
 	var visitDays = _.max(allVendors, function(dvendor) {
-		return dvendor.settings.visitreminder.days;
-	}).settings.visitreminder.days;
+		return dvendor.settings.visitReminder.days;
+	}).settings.visitReminder.days;
 
 	var allVendorIds = [];
 	console.log(allVendors);
@@ -83,13 +83,13 @@ Vendor.find({"settings":{$exists:true},"settings.visitreminder" : {$exists:true}
 	//console.log("cVendor");
 	//console.log(cVendor);
 
-	if(currentDate.getTime() - latestCheckin_V_U.date_created.getTime() > cVendor.settings.visitreminder.days) {
+	if(currentDate.getTime() - latestCheckin_V_U.date_created.getTime() > cVendor.settings.visitReminder.days*1) {
 
 		User.findOne({_id:latestCheckin_V_U.user}, function(err, fUser) {
 		//sending a push notification
 		console.log("pushed to ");
 		//console.log(fUser);
-		push.sendPushNotification(fUser.gcm_id, { type: "STANDARD", title: "Visit reminder", message: cVendor.settings.visitreminder.visitMessage });
+		push.sendPushNotification(fUser.gcm_id, { type: "STANDARD", title: "Visit reminder", message: cVendor.settings.visitReminder.message, messagePrefix: cVendor.settings.visitReminder.messagePrefix });
 
 	});
 	}
