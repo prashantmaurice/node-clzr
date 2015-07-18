@@ -41,7 +41,7 @@ var vendorSchema = new Schema({
 	logo: String,
 	fb:String,
 	twitter:String,
-	gplus:String
+	gplus:String,
 });
 vendorSchema.index({ location: '2d' });
 

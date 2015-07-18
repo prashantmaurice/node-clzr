@@ -188,7 +188,7 @@ var data_vendors = function( params ){
     var criteria = {};
     // use params to fill in criteria.
 
-    return Vendor.find( criteria ).exec();
+    return Vendor.find( params ).exec();
 }
 
 var data_vendors_category = function( params ) {

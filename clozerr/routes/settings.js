@@ -46,7 +46,8 @@ module.exports = {
 		"https://s3-ap-southeast-1.amazonaws.com/clozerrsite/img/phone.png"]
 	},
 	//"UUID":"23A01AF0-232A-4518-9C0E-323FB773F5EF",
-	"UUID":"EBEFD083-70A2-47C8-9837-E7B5634DF524",
+	//"UUID":"EBEFD083-70A2-47C8-9837-E7B5634DF524",
+	"UUID":"F94DBB23-2266-7822-3782-57BEAC0952AC",
 	"categories":[
 		{"name":"Food", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/food.jpg"},
 		{"name":"Pubs", "image":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/pubs.jpg"},
