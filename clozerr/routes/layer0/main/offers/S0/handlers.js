@@ -15,7 +15,7 @@ var vendor_checkin_S0_predicates = {
     "limitedTime": function(user, vendor, offer) {
         var currentDate = new Date();
         var deferred = Q.defer();
-        if(currentDate > offer.params.offerStart && currentDate < offer.params.offerEnd) {
+        if(currentDate > offer.params.startDateTime && currentDate < offer.params.endDateTime) {
             deferred.resolve(true);
         }
         else {
@@ -23,7 +23,7 @@ var vendor_checkin_S0_predicates = {
         }
         return deferred.promise;
     },
-    "limitedCustomers": function( user, vendor, offer) {
+    "limitedCustomer": function( user, vendor, offer) {
         var deferred = Q.defer();
         var CheckinByVendor=registry.getSharedObject("data_checkins");
         CheckinByVendor.get({
@@ -41,7 +41,7 @@ var vendor_checkin_S0_predicates = {
         })
         return deferred.promise;
     },
-    "happyHours": function(user,vendor,offer){
+    "happyHour": function(user,vendor,offer){
         var days=offer.params.days; //array containing 0-6 , 0 => Sunday
         var startHour=offer.params.startHour;//hours in 0-23
         var endHour=offer.params.endHour;//inclusive of end hour
@@ -49,7 +49,7 @@ var vendor_checkin_S0_predicates = {
         console.log(date.getDay(),date.getHours())
         return Q(_.contains(days,date.getDay()) && date.getHours()<=endHour && date.getHours()>=startHour)
     },
-    "welcomeReward": function(user,vendor,offer){
+    "welcome": function(user,vendor,offer){
         //TODO: are we initializing to zero or one?
         return Q((!user.stamplist)||(!user.stamplist[vendor.fid])||(user.stamplist[vendor.fid]==0))
     }
