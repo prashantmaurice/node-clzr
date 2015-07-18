@@ -361,4 +361,5 @@ function date_month(date){
       }
       flag++;
     }
+    $rootScope.loadAnalytics = $scope.loadAnalytics;
   };
