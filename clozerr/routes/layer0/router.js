@@ -37,7 +37,7 @@ router.get("/:object/:handler/:view", function( req, res ){
                 if(!output){
                     res.status(500)
                     res.end('')
-			return;
+                    return;
                 } 
                 if(output.code)
                     res.status(output.code)
