@@ -17,7 +17,8 @@ var view_geofence_list_near = function(params, user) {
 	var Geofence = global.registry.getSharedObject('models_Geofence');
 	var mec_util = require('../../util/min_enclosing_circle');
 	var geofenceTypes = global.registry.getSharedObject("settings").geofenceTypes;
-
+	
+	
 	global.registry.getSharedObject('data_geofences_near').get(params).then(function(geofences) {
 		debugger;
 		var points = _.map(geofences, function(geofence) {
@@ -37,7 +38,7 @@ var view_geofence_list_near = function(params, user) {
 
 	}, function(err) {
 		deferred.reject(err);
-	});
+	})
 
 	return deferred.promise;
 }

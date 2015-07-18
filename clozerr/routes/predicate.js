@@ -72,7 +72,7 @@ var predicatesS0 = {
    });
   return deferred.promise;
 },
-"happyHours": function(user,vendor,offer){
+"happyHour": function(user,vendor,offer){
         var days=offer.params.days; //array containing 0-6 , 0 => Sunday
         var startHour=offer.params.startHour;//hours in 0-23
         var endHour=offer.params.endHour;//inclusive of end hour

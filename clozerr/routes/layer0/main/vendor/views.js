@@ -113,10 +113,11 @@ var view_vendor_allOffers = function(params,user){
                 })
                 if(!user.stamplist)
                     user.stamplist=[]
-                if(user.stamplist[vendor.fid])
+                if(!user.stamplist[vendor.fid])
                     user.stamplist[vendor.fid]=0
                 vendor.offers=vendor.offers_filled
-                vendor.stamps=user.stamplist[vendor.fid]
+                console.log( user.stamplist );
+		vendor.stamps=user.stamplist[vendor.fid]
                 deferred.resolve(vendor)
                 return vendor;
             }).done()
@@ -246,6 +247,7 @@ var view_vendor_search_near=function(params,user){
         category - vendor.category
         */
         var deferred = Q.defer();
+	var util = registry.getSharedObject("util");
         limit=params.limit || registry.getSharedObject("settings").api.default_limit;
         offset=params.offset || 0;
         if(!params.latitude || !params.longitude)
@@ -291,7 +293,7 @@ var view_vendor_search_near=function(params,user){
             deferred.resolve(
                 _.map(vendors,function(vendor){
                     // return vendor
-                    return registry.getSharedObject("util").vendorDistDisplay(vendor,params.latitude,params.longitude);
+                    return util.vendorDistDisplay(vendor,params.latitude,params.longitude);
                 }))
         })
         return deferred.promise
@@ -461,7 +463,7 @@ var view_vendor_beacons_all = function(params, user) {
     limit=params.limit || registry.getSharedObject("settings").api.default_limit;
     offset=params.offset || 0;
     vendorList=[];
-    registry.getSharedObject("data_vendors").get().then(function(vendors){
+    registry.getSharedObject("data_vendors").get( { "beacons": { $exists: true } } ).then(function(vendors){
         _.each(vendors,function(vendor){
             if(vendor.type && vendor.type=="TestVendor") {
                 if(user.type && user.type=="TestUser") {

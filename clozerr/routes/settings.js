@@ -30,7 +30,7 @@ module.exports = {
 		"default_limit" : 30
 	},
 	"gcm":{
-		"apiKey":"AIzaSyD7a0oUk6GMFLpuFU_wUsuhjBH4jKKOFKQ"
+		"apiKey":"AIzaSyCPsMTjcTEEomWicjsru4_S7MkC73H5zcg"
 	},
 	"birthday":{
 		"birthdayWishMessage": "wishes you a Happy Birthday"

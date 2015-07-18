@@ -49,7 +49,7 @@ var vendor_checkin_S0_predicates = {
         console.log(date.getDay(),date.getHours())
         return Q(_.contains(days,date.getDay()) && date.getHours()<=endHour && date.getHours()>=startHour)
     },
-    "welcome": function(user,vendor,offer){
+    "welcomeReward": function(user,vendor,offer){
         //TODO: are we initializing to zero or one?
         return Q((!user.stamplist)||(!user.stamplist[vendor.fid])||(user.stamplist[vendor.fid]==0))
     }
@@ -86,7 +86,7 @@ var vendor_checkin_S0 = function( params,user, vendor, offer ){
                     deferred.resolve(checkinObj);
                 }
                 else {
-                        deferred.resolve({code:204,error:'checkin time delay error'});
+                        deferred.resolve({code:200,error:'checkin time delay error'});
                     }
                 }, function(err) {
                     deferred.resolve({code:500,error:err});
@@ -119,7 +119,7 @@ var vendor_validate_S0 = function( vendor, user, checkin ){
         if(!user.stamplist[vendor.fid])
             user.stamplist[vendor.fid]=1
         else {
-            user.stamplist[vendor.fid]+=1
+            user.stamplist[vendor.fid]+=checkin.validate_data.stamps;
         }
         user.markModified('stamplist')
         user.save();

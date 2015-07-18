@@ -50,6 +50,7 @@ var view_offers_checkin_create=function(params,user){
 						if(checkin){
 							debugger;
 							console.log("displaying")
+							console.log( checkin );
 							deferred.resolve(registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin));
 							console.log("io emitting to signal , "+JSON.stringify({vendor_id:vendor._id}))
 							global.io.emit('signal', JSON.stringify({vendor_id:vendor._id}) );

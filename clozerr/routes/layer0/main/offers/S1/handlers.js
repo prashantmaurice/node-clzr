@@ -45,7 +45,7 @@ var vendor_checkin_S1 = function( params, user, vendor, offer ){
                     deferred.resolve(checkinObj);
                 }
                 else {
-                        deferred.resolve({code:204,error:'checkin time delay error'});
+                        deferred.resolve({code:200,error:'checkin time delay error'});
                     }
                 }, function(err) {
                     deferred.resolve({code:500,error:err});
@@ -105,7 +105,7 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
             userObj.stamplist={}
         if(!userObj.stamplist[vendor.fid])
             userObj.stamplist[vendor.fid]=0
-        userObj.stamplist[vendor.fid]++;
+        userObj.stamplist[vendor.fid] + checkin.validate_data.stamps;
         userObj.markModified("stamplist");
 
         debugger;

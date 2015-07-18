@@ -16,6 +16,7 @@ var contains_id=function(arr,id){
 }
 var vendor_predicate = function(user, vendor, offer) {
 	var valid=false
+
 	if(offer.type=='reward'){
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}

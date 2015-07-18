@@ -177,7 +177,7 @@ router.get('/login/google', function(req, res) {
         response.on('data', function(dat) {
             debugger;
             d=JSON.parse(dat.toString());
-            //console.log(d);
+            console.log(d);
             if( d.issued_to && _.find(settings.auth.google.app_id,function(app_id){return(d.issued_to == app_id)} ))
             {
 
@@ -209,7 +209,7 @@ router.get('/login/google', function(req, res) {
                         }
                         else
                         {
-                            var nu = (type=='user')? newUser( "google", d.data.user_id ):newVendorUser( "google", d.data.user_id );
+                            var nu = (type=='user')? newUser( "google", d.user_id ):newVendorUser( "google", d.data.user_id );
                             loadGoogleDetails(nu,req.query.token, function( user ){
                                 nu.save();
                                 debugger;

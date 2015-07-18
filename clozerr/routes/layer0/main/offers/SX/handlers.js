@@ -46,7 +46,7 @@ var vendor_checkin_SX = function( params, user, vendor, offer ){
                     deferred.resolve(checkinObj);
                 }
                 else {
-                        deferred.resolve({code:204,error:'time delay error'});
+                        deferred.resolve({code:200,error:'time delay error'});
                     }
                 }, function(err) {
                     deferred.resolve({code:500,error:err});
