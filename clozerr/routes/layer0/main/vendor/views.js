@@ -113,7 +113,7 @@ var view_vendor_allOffers = function(params,user){
                 })
                 if(!user.stamplist)
                     user.stamplist=[]
-                if(user.stamplist[vendor.fid])
+                if(!user.stamplist[vendor.fid])
                     user.stamplist[vendor.fid]=0
                 vendor.offers=vendor.offers_filled
                 vendor.stamps=user.stamplist[vendor.fid]
