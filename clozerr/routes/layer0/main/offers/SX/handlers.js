@@ -101,7 +101,7 @@ var vendor_validate_SX = function( vendor, user, checkin ){
             vendor.markModified('settings')
             vendor.save();
         }
-        var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
+        var stamps = checkin.validate_data.stamps*1;
         if(!userObj.stamplist)
             userObj.stamplist={}
         if(!userObj.stamplist[vendor.fid])

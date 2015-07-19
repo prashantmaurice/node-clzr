@@ -34,6 +34,11 @@ router.get("/:object/:handler/:view", function( req, res ){
         try{
             httpObjView.get( req.query ,req.user).then( function( output ){
                 debugger;
+                if(!output){
+                    res.status(500)
+                    res.end('')
+                    return;
+                } 
                 if(output.code)
                     res.status(output.code)
                 if(output.err){

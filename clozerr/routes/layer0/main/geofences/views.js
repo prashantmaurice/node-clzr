@@ -3,35 +3,9 @@ var _ = require('underscore');
 
 var view_geofence_details_create = function(params, user) {
 	var deferred = Q.defer();
-
-	var Geofence = global.registry.getSharedObject('models_Geofence');
-	var geofenceTypes = global.registry.getSharedObject("settings").geofenceTypes;
-
-	var geofence_params = {};
-	if(params.params) {
-		geofence_params = params.params;
-	}
-
-	var geofence = new Geofence({ location : [params.latitude, params.longitude] , params : geofence_params });
-
-	if(params.type.constructor != Array) {
-		params.type = [params.type];
-	}
-
-	var type_flg = geofenceTypes[params.type[0].toUpperCase()];
-	for(var i=1; i<params.type.length; i++) {
-		type_flg = type_flg | geofenceTypes[params.type[i].toUpperCase()];
-	}
-
-	geofence.type = type_flg;
-	geofence.radius = params.radius;
-
-	geofence.save(function(err) {
-		deferred.reject(err);
-	});
-
-	deferred.resolve(geofence);
-
+	registry.getSharedObject('data_geofences').create(params).then(function(geofence){
+		deferred.resolve(geofence);	
+	})	
 	return deferred.promise;
 }
 

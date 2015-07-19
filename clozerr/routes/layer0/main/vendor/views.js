@@ -250,7 +250,7 @@ var view_vendor_search_near=function(params,user){
         offset=params.offset || 0;
         if(!params.latitude || !params.longitude)
             deferred.resolve({code:500,description:"distance params missing"});
-        registry.getSharedObject("data_vendor_near").get(params).then(function(vendors){
+        registry.getSharedObject("data_vendor_near").get(params,user).then(function(vendors){
             return vendors;
         })
         .then(function(vendors){
@@ -427,7 +427,7 @@ var view_vendor_details_create = function(params, user) {
         var vendor_new = new Vendor(obj.data);
         vendor_new.date_created = new Date();
         vendor_new.dateUpdated = vendor_new.date_created;
-        vendor_new.resource_name = params.name.toLowerCase();
+        vendor_new.resource_name = vendor_new._id;
         vendor_new.visible = true;
         vendor_new.test = false;
         vendor_new.fid = rack();

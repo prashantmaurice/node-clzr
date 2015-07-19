@@ -1,4 +1,4 @@
-var vendorSignup = function($scope, $rootScope, $http) {
+var vendorSignup = function($scope, $rootScope, $http, $window) {
 	$scope.visStep1 = true;
 	$scope.visStep2 = false;
 	$scope.visStep3 = false;
@@ -93,7 +93,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 		var image = "http://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/" + name.toLowerCase();
 		$http.get( CLOZERR_VENDORS_URL + "/create" + "?latitude=" + $scope.vlatitude +"&longitude=" + $scope.vlongitude + "&image=" + image +"&fid=" + $scope.fid+"&name=" + $scope.vpublicname + "&phone=" + $scope.vphoneno + "&" + str).
 		success(function(data, status, headers, config) {
-            $rootScope.vendor=data;
+			$rootScope.vendor=data;
 			$scope.vendor_id = data.data._id;
 			console.log(data);
 			console.log("Created : Vendor Object");
@@ -107,6 +107,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 					console.log(data);
 					access_token = data.access_token;
 					localStorage.token = data.access_token;
+					var count = 0;
 
 					for(var u=0;u<$rootScope.offers.length;u++) {
 
@@ -119,6 +120,12 @@ var vendorSignup = function($scope, $rootScope, $http) {
 					$http.get( CLOZERR_API +  "vendor/addoffer" + "?offer_id=" + offerdata.data._id + "&access_token=" + access_token + "&vendor_id=" + $scope.vendor_id).
 					success(function(data, status, headers, config) {
 
+						count ++;
+						console.log("COUNT : " + count);
+						if(count == $rootScope.offers.length) {
+							console.log('here');
+							$window.location.href = $window.location.origin + "/";
+						}
 						console.log("Linked : Offer no : " + u+1 + " with vendor object");
 
 					}).error(function(data, status, headers, config) {
@@ -143,7 +150,7 @@ var vendorSignup = function($scope, $rootScope, $http) {
 				});
 
 
-		console.log($rootScope.offers);
-		console.log($rootScope.reviewQuestions);
-	}
+console.log($rootScope.offers);
+console.log($rootScope.reviewQuestions);
+}
 }
