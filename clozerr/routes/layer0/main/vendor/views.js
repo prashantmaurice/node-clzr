@@ -113,7 +113,7 @@ var view_vendor_allOffers = function(params,user){
                 })
                 if(!user.stamplist)
                     user.stamplist=[]
-                if(!user.stamplist[vendor.fid])
+                if(user.stamplist[vendor.fid])
                     user.stamplist[vendor.fid]=0
                 vendor.offers=vendor.offers_filled
                 vendor.stamps=user.stamplist[vendor.fid]
@@ -144,8 +144,8 @@ var view_vendor_details_set = function( params, user ) {
 
     userObjectM.get( params ).then(function(user) {
         debugger;
-        if(user.type == "Vendor" || true) {
-            if(user.vendor_id == params.vendor_id || true  ) {
+        if(user.type == "Vendor") {
+            if(user.vendor_id == params.vendor_id) {
                vendorObjectM.get( params ).then(function(vendor) {
                 if(params.vendor) {
                     for(key in params.vendor) {
