@@ -8,7 +8,7 @@ var ctype_s1 = function( $rootScope, $scope, $http ){
 
     $scope.visibility = true;
     $scope.checkin = $rootScope.checkin;
-    $rootScope.validate( $scope.checkin, {} );
+    $rootScope.validate( $scope.checkin, $scope.checkin.validate_data );
 
   });
 

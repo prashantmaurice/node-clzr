@@ -8,10 +8,10 @@ var ctype_sx = function( $rootScope, $scope, $http ){
 
     $scope.visibility = true;
     console.log($rootScope.billAmt);
-    $scope.validate_data = {};
-    $scope.validate_data.billAmt=$rootScope.checkin.validate_data.billAmt;
+    //$scope.validate_data = {};
+    //$scope.validate_data.billAmt=$rootScope.checkin.validate_data.billAmt;
     $scope.checkin = $rootScope.checkin;
-    $rootScope.validate( $scope.checkin, $scope.checkin.validate_data );
+    $rootScope.validate( $scope.checkin, $rootScope.checkin.validate_data );
 
   });
 

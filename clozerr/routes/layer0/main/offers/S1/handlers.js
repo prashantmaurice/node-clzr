@@ -64,7 +64,7 @@ var vendor_predicate_S1 = function(user, vendor, offer) {
 
     if(!user.stamplist[vendor.fid]) {
         debugger;
-        user.stamplist[vendor.fid] = 1;
+        user.stamplist[vendor.fid] = 0;
         user.markModified("stamplist");
         user.save();
     }
@@ -90,32 +90,32 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
 
     //REMEMBER : user should be user object of vendor
 
-    debugger;
+    console.log(user.stamplist);
 
-    registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(userObj) {
-        debugger;
-
-        checkin.state = CHECKIN_STATE_CONFIRMED;
-        debugger;
-
-        checkin.save(function(err) {
-            deferred.resolve({code:500,error:err});
+    checkin.state = CHECKIN_STATE_CONFIRMED;
+    console.log(checkin);
+	// :O
+        checkin.save( function( res ){ console.log( res ) }, function(err) {
+            //deferred.resolve({code:500,error:err});
+            console.log( err );
         });
-        if(!userObj.stamplist)
-            userObj.stamplist={}
-        if(!userObj.stamplist[vendor.fid])
-            userObj.stamplist[vendor.fid]=0
-        userObj.stamplist[vendor.fid] + checkin.validate_data.stamps;
-        userObj.markModified("stamplist");
+        if(!user.stamplist)
+            user.stamplist={}
 
-        debugger;
+        if(!user.stamplist[vendor.fid])
+            user.stamplist[vendor.fid]=0
+	console.log("validate_data");
+	console.log(checkin.validate_data.stamps);
+        user.stamplist[vendor.fid] = parseInt(user.stamplist[vendor.fid]) + parseInt( checkin.validate_data.stamps );
+        user.markModified("stamplist");
 
-        userObj.save(function(err) {
-            deferred.resolve({code:500,error:err});
+
+        user.save( function( res ){ console.log( res ) }, function(err) {
+            //deferred.resolve({code:500,error:err});
+            console.log( err );
         });
-        registry.getSharedObject("analytics_checkin").get({},checkin,user)
+        //registry.getSharedObject("analytics_checkin").get({},checkin,user);
         deferred.resolve(checkin);
-    });
 
     return deferred.promise;
 }

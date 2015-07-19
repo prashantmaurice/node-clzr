@@ -31,14 +31,26 @@ var vendor_predicate = function(user, vendor, offer) {
 var vendor_validate = function(params, vendor, user, checkin) {
 	if(params.validate_data) {
 		checkin.validate_data = params.validate_data;
+		console.log(params.validate_data);
 		checkin.markModified("validate_data");
 	}
 	debugger;
-	var deferred=Q.defer();
+	console.log("In vendor_validate");
+	var deferred = Q.defer();
+	console.log(checkin);
+	console.log(user);
+	console.log(user.type);
+	console.log(user.vendor_id);
+	console.log(checkin.vendor);
+	if( checkin.state != 0 )
+		return Q(false);
+
 	if(user.type == "Vendor" && checkin.vendor == user.vendor_id) {
-		registry.getSharedObject("data_offer").get({offer_id:checkin.offer}).then(function(offer){
-			deferred.resolve(registry.getSharedObject("handler_validate_" + offer.type).get( vendor, user, checkin));
-		})
+		Q.all([registry.getSharedObject("models_Offer").findOne({_id:checkin.offer}),registry.getSharedObject("models_User").findOne({_id:checkin.user})]).then(function(resList){
+			console.log(resList);
+			debugger;
+			registry.getSharedObject("handler_validate_" + resList[0].type).get( vendor, resList[1], checkin, resList[0], user ).then(function(res){ deferred.resolve( res ); });
+		});
 		return deferred.promise
 	}
 	else {

@@ -117,15 +117,20 @@ var vendor_validate_S0 = function( vendor, user, checkin ){
         if(!user.stamplist)
             user.stamplist=[]
         if(!user.stamplist[vendor.fid])
-            user.stamplist[vendor.fid]=1
+            user.stamplist[vendor.fid]=checkin.validate_data.stamps;
         else {
             user.stamplist[vendor.fid]+=checkin.validate_data.stamps;
         }
         user.markModified('stamplist')
-        user.save();
+        user.save( function( res ){ console.log( res ) }, function(err) {
+            //deferred.resolve({code:500,error:err});
+            console.log( err );
+    	});
+
     })
-    checkin.save(function(err) {
-        deferred.resolve({code:500,error:err});
+    checkin.save( function( res ){ console.log( res ) }, function(err) {
+            //deferred.resolve({code:500,error:err});
+            console.log( err );
     });
     deferred.resolve(checkin);
 

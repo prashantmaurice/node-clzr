@@ -113,16 +113,20 @@ var view_offers_dummy_checkin_create=function(params,user){
 
 var view_vendor_offers_validate=function(params,user){
 	var deferred = Q.defer();
-
-	registry.getSharedObject("data_vendor").get(params).then(function(vendor){
-		registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).exec().then(function(checkin){
+	var vendor_account = user;
+	registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).exec().then(function(checkin){
+		if( !checkin ){
+			deferred.reject( { result: false, message:"No such checkin"} );
+			return;
+		}
+		registry.getSharedObject("data_vendor").get({vendor_id:checkin.vendor}).then(function(vendor){
 			debugger;
 			registry.getSharedObject("handler_validate").get(params,vendor,user,checkin).then(function(val_checkin){
 				debugger;
 				if(val_checkin){
 					registry.getSharedObject('data_user').get({_id:checkin.user}).then(function(user){
-						console.log(" gcm pushing to "+(params.gcm_id||user.gcm_id||0))
-						registry.getSharedObject("gcm").sendPushNotification(params.gcm_id||user.gcm_id||0,
+						console.log(" gcm pushing to "+(checkin.gcm_id||user.gcm_id||0))
+						registry.getSharedObject("gcm").sendPushNotification(checkin.gcm_id||user.gcm_id||0,
 							registry.getSharedObject("display").GCMCheckinDisplay(checkin,vendor))
 					})
 					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
@@ -130,13 +134,13 @@ var view_vendor_offers_validate=function(params,user){
 				else
 					deferred.resolve({result:false,message:"invalid checkin"});
 			}, function(err) {
-				deferred.resolve(err);
+				deferred.reject(err);
 			});
 		}, function(err) {
-			deferred.resolve(err);
+			deferred.reject(err);
 		});
 	}, function(err) {
-		deferred.resolve(err);
+		deferred.reject(err);
 	});
 
 	return deferred.promise

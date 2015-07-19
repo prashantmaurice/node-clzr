@@ -45,7 +45,7 @@ var current_checkins = function( $rootScope, $scope, $http ){
     });
   }
   $rootScope.validating = false;
-  var CLOZERR_VALIDATE_URL = CLOZERR_API + "checkin/validate";
+  var CLOZERR_VALIDATE_URL = CLOZERR_API + "v2/offers/checkin/validate";
   $rootScope.validate = function( checkin, validate_data ){
     console.log("Validating: ");
     //console.log($scope.billAmount);
@@ -57,8 +57,8 @@ var current_checkins = function( $rootScope, $scope, $http ){
     //$scope.invokeTypeRequirement( checkin );
     $rootScope.validating = true;
     var access_token = localStorage.token;
-    var str = decodeURIComponent(jQuery.param(validate_data));
-    $http.get( CLOZERR_VALIDATE_URL + "?access_token=" + access_token + "&checkin_id=" + checkin._id + "&validate_data=" + str ).
+    var str = encodeURIComponent(validate_data);
+    $http.get( CLOZERR_VALIDATE_URL + "?access_token=" + access_token + "&checkin_id=" + checkin._id + "&validate_data[stamps]=" + validate_data.stamps ).
     success(function(data, status, headers, config) {
       $rootScope.validating = false;
       $rootScope.pageChange( "current-checkins" );

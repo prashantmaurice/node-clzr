@@ -16,6 +16,7 @@ var Registry = function(){
     }
 
     this.getSharedObject = function( key ){
+	console.log(key);
         if( !key ) {
             console.log("Unregistered Key : " + key);
             return null;
