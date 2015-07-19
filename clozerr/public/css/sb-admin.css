@@ -8,7 +8,7 @@
 
 body {
     margin-top: 100px;
-    background-color: #d79a47;
+    background-color: #f3f8fb;
 }
 
 @media(min-width:768px) {
@@ -57,7 +57,7 @@ body {
     padding-top: 15px;
     padding-bottom: 15px;
     line-height: 20px;
-    color: #FFF;
+    color: #666;
 }
 
 .top-nav>li>a:hover,
@@ -287,13 +287,13 @@ ul.alert-dropdown {
     box-sizing: border-box;
 }
 .button:hover {
-    background: #d79a47;
-    border-color: #d79a47;
+    background: #f3f8fb;
+    border-color: #f3f8fb;
 }
 
 .button:active {
-    background: #d79a47;
-    border-color: #d79a47;
+    background: #f3f8fb;
+    border-color: #f3f8fb;
 }
 
 a.button {

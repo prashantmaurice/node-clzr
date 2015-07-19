@@ -119,7 +119,7 @@ var vendor_validate_S0 = function( vendor, user, checkin ){
         if(!user.stamplist[vendor.fid])
             user.stamplist[vendor.fid]=checkin.validate_data.stamps;
         else {
-            user.stamplist[vendor.fid]+=checkin.validate_data.stamps;
+            user.stamplist[vendor.fid]+= parseInt(user.stamplist[vendor.fid]) + parseInt(checkin.validate_data.stamps);
         }
         user.markModified('stamplist')
         user.save( function( res ){ console.log( res ) }, function(err) {

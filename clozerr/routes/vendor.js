@@ -448,7 +448,8 @@ router.get('/upload-policy', function( req, res ){
 
         if( !vendor ){
           error.err( res, "200" );
-        }
+          return;
+	}
 
 	var filepath = settings.s3.base_path + "/" + vendor.resource_name;
 	if( req.query.ext )
