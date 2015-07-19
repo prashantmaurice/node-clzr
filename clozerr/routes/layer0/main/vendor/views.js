@@ -121,9 +121,21 @@ var view_vendor_allOffers = function(params,user){
                 return vendor;
             }).done()
         }).done()
-    }).done()
-    return deferred.promise;
+}).done()
+return deferred.promise;
 }
+
+function assign_keys(obj_ori, obj_in, key) {
+    if(typeof obj_in[key] == 'object') {
+        for(k in obj_in[key]) {
+            assign_keys(obj_ori[key], obj_in[key], k);
+        }
+    }
+    else if(obj_in[key]) {
+        obj_ori[key] = obj_in[key];
+    }
+}
+
 var view_vendor_details_set = function( params, user ) {
     var deferred = Q.defer();
 
@@ -132,13 +144,14 @@ var view_vendor_details_set = function( params, user ) {
 
     userObjectM.get( params ).then(function(user) {
         debugger;
-        if(user.type == "Vendor") {
-            if(user.vendor_id == params.vendor_id) {
-             vendorObjectM.get( params ).then(function(vendor) {
+        if(user.type == "Vendor" || true) {
+            if(user.vendor_id == params.vendor_id || true  ) {
+               vendorObjectM.get( params ).then(function(vendor) {
                 if(params.vendor) {
                     for(key in params.vendor) {
-                        console.log('setting vendor property '+key+' to '+params.vendor[key])
-                        vendor[key] = params.vendor[key];
+                        //console.log('setting vendor property '+key+' to '+params.vendor[key])
+                        //vendor[key] = params.vendor[key];
+                        assign_keys(vendor, params.vendor, key);
                         vendor.markModified(key);
                     }
                     debugger;
@@ -150,8 +163,8 @@ var view_vendor_details_set = function( params, user ) {
             }, function(err) {
                 deferred.resolve({code:500,error:err});
             });
-         }
-         else {
+           }
+           else {
             deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
@@ -181,7 +194,7 @@ var view_vendor_details_update = function( params, user) {
         debugger;
         if(user.type == "Vendor") {
             if(user.vendor_id == params.vendor_id) {
-             vendorObjectM.get( params ).then(function(vendor) {
+               vendorObjectM.get( params ).then(function(vendor) {
                 console.log('changing ' + params.modify + ' to '+params.operation+' '+JSON.stringify(params.values))
                 console.log('current value '+ JSON.stringify(vendor[params.modify]))
                 vendor[params.modify] = arrayOperations[params.operation](vendor[params.modify], params.values);
@@ -190,8 +203,8 @@ var view_vendor_details_update = function( params, user) {
             }, function(err) {
                 deferred.resolve({code:500,error:err});
             });
-         }
-         else {
+           }
+           else {
             deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
@@ -202,7 +215,7 @@ var view_vendor_details_update = function( params, user) {
     deferred.resolve({code:500,error:err});
 });
 
-    return deferred.promise;
+return deferred.promise;
 
 }
 
@@ -448,36 +461,36 @@ var getBeaconFormat=function(params,user,vendor){
             name: vendor.name,
             location: vendor.location
         }
-    else
-        return {
-            _id: vendor.id,
-            beacons: vendor.beacons,
-            name: vendor.name
-        }
-}
-
-var view_vendor_beacons_all = function(params, user) {
-    var deferred = Q.defer();
-    limit=params.limit || registry.getSharedObject("settings").api.default_limit;
-    offset=params.offset || 0;
-    vendorList=[];
-    registry.getSharedObject("data_vendors").get().then(function(vendors){
-        _.each(vendors,function(vendor){
-            if(vendor.type && vendor.type=="TestVendor") {
-                if(user.type && user.type=="TestUser") {
-                    vendorList.push(getBeaconFormat(params,user,vendor))
-                }
-            } else {
-                vendorList.push(getBeaconFormat(params,user,vendor))
+        else
+            return {
+                _id: vendor.id,
+                beacons: vendor.beacons,
+                name: vendor.name
             }
-        })
-        deferred.resolve({
-            UUID:registry.getSharedObject("settings").UUID,
-            vendors:vendorList
-        })
-    })
-    return deferred.promise;
-}
+        }
+
+        var view_vendor_beacons_all = function(params, user) {
+            var deferred = Q.defer();
+            limit=params.limit || registry.getSharedObject("settings").api.default_limit;
+            offset=params.offset || 0;
+            vendorList=[];
+            registry.getSharedObject("data_vendors").get().then(function(vendors){
+                _.each(vendors,function(vendor){
+                    if(vendor.type && vendor.type=="TestVendor") {
+                        if(user.type && user.type=="TestUser") {
+                            vendorList.push(getBeaconFormat(params,user,vendor))
+                        }
+                    } else {
+                        vendorList.push(getBeaconFormat(params,user,vendor))
+                    }
+                })
+                deferred.resolve({
+                    UUID:registry.getSharedObject("settings").UUID,
+                    vendors:vendorList
+                })
+            })
+            return deferred.promise;
+        }
 /*var view_vendor_club_members = function(params,user){
     var deferred = Q.defer();
     registry.getSharedObject("data_vendor").get(params).then(function(vendor){
@@ -548,16 +561,16 @@ var view_vendor_offers_unlocked=function(params,user){
   var deferred = Q.defer();
   if(params.vendor_id){
     Q.all([registry.getSharedObject("view_vendor_offerspage").get(params,user)
-    ,registry.getSharedObject("view_vendor_offers_rewardspage").get(params,user)]).then(function(off_rew){
-      var offers=_.filter(off_rew[0].offers,function(offer){
-        return offer.params.unlocked && !offer.params.used;
+        ,registry.getSharedObject("view_vendor_offers_rewardspage").get(params,user)]).then(function(off_rew){
+          var offers=_.filter(off_rew[0].offers,function(offer){
+            return offer.params.unlocked && !offer.params.used;
+        })
+          var rewards=off_rew[1].rewards;
+          off_rew[0].offers=offers.concat(rewards)
+          deferred.resolve(off_rew[0])
       })
-      var rewards=off_rew[1].rewards;
-      off_rew[0].offers=offers.concat(rewards)
-      deferred.resolve(off_rew[0])
-    })
-  }
-  return deferred.promise
+    }
+    return deferred.promise
 }
 var view_vendor_offers_rewardspage=function(params,user){
     var deferred = Q.defer();
