@@ -153,7 +153,8 @@ function vendorDistDisplay(vendor,latitude,longitude){
     image_small:vendor.image_small,
     gallery:vendor.gallery,
     address:vendor.address,
-    club_members:vendor.club_members
+    club_members:vendor.club_members,
+    resource_name:vendor.resource_name
   }
 }
 function geoLocate(address){

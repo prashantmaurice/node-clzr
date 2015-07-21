@@ -55,7 +55,7 @@ app.use('/', function( req, res, next ){
       error.err(res,"619");
       return;
     }
-    debugger;
+//    debugger;
     User.findOne({ _id: data.account }, function( err, data ){
       if( err ){
         error.err(res,"102");

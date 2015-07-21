@@ -66,6 +66,9 @@ var getCheckinOnValidateDisplay = function(checkin) {
 var getOfferDisplay = function (user, vendor, offer, checkinOld){
   var offerDisplay={};
   var deferred = Q.defer();
+  
+  console.log("Offer display:");
+  console.log(offer);
   if(offer) {
     debugger;
     // console.log(user.stamplist[vendor.fid]);
@@ -84,19 +87,27 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
     else {
       offerDisplay.params.used = false;
     }
+
     if(!user.stamplist)
       user.stamplist={}
+
     if(!user.stamplist[vendor.fid])
       user.stamplist[vendor.fid]=0
+
     if((offerDisplay.type=="S1" ||offerDisplay.type=="SX") && offerDisplay.stamps*1 <= user.stamplist[vendor.fid]*1) {
       offerDisplay.params.unlocked = true;
     }
     else {
       offerDisplay.params.unlocked = false;
     }
+
     if(offerDisplay.type=="S1") {
       offerDisplay.params.stamps=offer.stamps*1;
+      console.log( offerDisplay );
+      if( !offerDisplay.image || offerDisplay.image == "" )
+      	offerDisplay.image = registry.getSharedObject("settings").S1ImageBase + offerDisplay.params.stamps + ".png";
     }
+
     if(offerDisplay.type=="SX") {
       offerDisplay.params.stamps=offer.stamps*1;
       offerDisplay.stampStatus = {};
@@ -109,11 +120,13 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
       }
       offerDisplay.stampStatus.total = vendor.settings.SXLimit*1;
     }
+
     if(offerDisplay.type=="S0") {
       if(!offer.params || !offer.params.type) return Q(null)
       offerDisplay.image = global.registry.getSharedObject("settings").S0OfferTypes[offer.params.type];
       offerDisplay.params=offer.params;
     }
+
     deferred.resolve(offerDisplay);
   }
   else {

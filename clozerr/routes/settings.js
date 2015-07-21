@@ -88,7 +88,9 @@ module.exports = {
     },
 	"S0OfferTypes":{
 		"welcomeReward":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/welcome+reward.png",
+		"welcome":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/welcome+reward.png",
 		"happyHours":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/happy+hour.png",
+		"happyHour":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/happy+hour.png",
 		"limitedTime":"",
 		"limitedCustomers":"",
 		"luckyCheckins":""
@@ -100,5 +102,7 @@ module.exports = {
 		"PUSH" : 8,
 		"ONEXIT" : 16
 	},
-	"offertypes":["S0","S1","SX","reward"]
+	"offertypes":["S0","S1","SX","reward"],
+	"S1ImageBase":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/offers/",
+	"defaultOffer":"55adea98c626a0bfb3a08c6d"
 };

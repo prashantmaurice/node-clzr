@@ -18,7 +18,7 @@ router.get("/:object/:handler/:view", function( req, res ){
     var dataClass = req.params.object;
     var handler = req.params.handler;
     var view = req.params.view;
-    console.log("HIT: " + dataClass + " " + handler + " " + view );
+//    console.log("HIT: " + dataClass + " " + handler + " " + view );
     if( !registry ){
         // logger.err();   
     }
@@ -33,7 +33,7 @@ router.get("/:object/:handler/:view", function( req, res ){
     else {
         try{
             httpObjView.get( req.query ,req.user).then( function( output ){
-                debugger;
+                //debugger;
                 if(!output){
                     res.status(500)
                     res.end('')

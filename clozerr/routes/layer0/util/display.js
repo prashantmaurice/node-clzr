@@ -34,7 +34,8 @@ var offerDisplay = function (offer){
 		caption:offer.caption,
 		description:offer.description,
 		params:offer.params,
-		image:offer.image||""
+		image:offer.image||"",
+		stamps:offer.params.stamps
 	}
 }
 registry.register("display",{

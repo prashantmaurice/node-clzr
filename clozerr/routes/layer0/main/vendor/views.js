@@ -32,7 +32,8 @@ var view_vendor_details_get = function( params ) {
     var deferred = Q.defer();
 
     registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
-        deferred.resolve(vendor);
+        vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
+	deferred.resolve(vendor);
     }, function(err) {
         deferred.resolve({code:500,error:err});
     });
@@ -118,7 +119,8 @@ var view_vendor_allOffers = function(params,user){
                 vendor.offers=vendor.offers_filled
                 console.log( user.stamplist );
 		vendor.stamps=user.stamplist[vendor.fid]
-                deferred.resolve(vendor)
+                vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
+		deferred.resolve(vendor);
                 return vendor;
             }).done()
         }).done()
@@ -551,12 +553,22 @@ var view_vendor_offers_unlocked=function(params,user){
   if(params.vendor_id){
     Q.all([registry.getSharedObject("view_vendor_offerspage").get(params,user)
     ,registry.getSharedObject("view_vendor_offers_rewardspage").get(params,user)]).then(function(off_rew){
+      //console.log(off_rew);
       var offers=_.filter(off_rew[0].offers,function(offer){
         return offer.params.unlocked && !offer.params.used;
       })
       var rewards=off_rew[1].rewards;
       off_rew[0].offers=offers.concat(rewards)
-      deferred.resolve(off_rew[0])
+      var display = registry.getSharedObject("qualify");
+     	console.log("UNLOCKED:");
+	//console.log( off_rew[0].offers ); 
+	var prList = _.map(off_rew[0].offers, function( offer ){
+		return display.getOfferDisplay( user, off_rew[0], offer, false );
+	}); 
+	Q.all( prList ).then( function( offers ){ 
+		off_rew[0].offers = offers;
+      		deferred.resolve(off_rew[0]);
+	 } );
     })
   }
   return deferred.promise
@@ -567,7 +579,8 @@ var view_vendor_offers_rewardspage=function(params,user){
         var user_rewards_p=Q.all([registry.getSharedObject("view_vendor_offers_offers_S0").get(params,user)
             ,registry.getSharedObject("view_offers_rewards_user").get(params,user)])
         .then(function(rewards_s0){
-            return rewards_s0[0].concat(rewards_s0[1])
+            console.log( rewards_s0 );
+		return rewards_s0[0].concat(rewards_s0[1])
         })
         user_rewards_p.then(function(rewards){
             registry.getSharedObject("data_vendor").get(params).then(function(vendor){

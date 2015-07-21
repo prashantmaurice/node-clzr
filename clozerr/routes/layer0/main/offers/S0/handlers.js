@@ -46,14 +46,20 @@ var vendor_checkin_S0_predicates = {
         var startHour=offer.params.startHour;//hours in 0-23
         var endHour=offer.params.endHour;//inclusive of end hour
         var date=new Date();
-        console.log(date.getDay(),date.getHours())
-        return Q(_.contains(days,date.getDay()) && date.getHours()<=endHour && date.getHours()>=startHour)
+        //console.log(date.getDay(),date.getHours())
+        //console.log( offer );
+	return Q(_.contains(days,date.getDay()) && date.getHours()<=endHour && date.getHours()>=startHour)
     },
     "welcomeReward": function(user,vendor,offer){
         //TODO: are we initializing to zero or one?
         return Q((!user.stamplist)||(!user.stamplist[vendor.fid])||(user.stamplist[vendor.fid]==0))
-    }
+    },
+    "noOffer": function(){ return Q(true); }
 }
+
+vendor_checkin_S0_predicates["welcome"] = vendor_checkin_S0_predicates["welcomeReward"];
+vendor_checkin_S0_predicates["happyHours"] = vendor_checkin_S0_predicates["happyHour"];
+vendor_checkin_S0_predicates["limitedCustomers"] = vendor_checkin_S0_predicates["limitedCustomer"];
 
 var vendor_checkin_S0 = function( params,user, vendor, offer ){
     var deferred = Q.defer();

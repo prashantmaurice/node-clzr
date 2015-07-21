@@ -46,7 +46,7 @@ var predicatesS0 = {
     return Q(false);
   }
 },
-"limitedCustomers": function( user, vendor, offer) {
+"limitedCustomer": function( user, vendor, offer) {
   var Checkin = require("./models").CheckIn;
   var deferred = Q.defer();
   Checkin.find({
@@ -86,6 +86,9 @@ var predicatesS0 = {
       }
     }
 
+predicatesS0["welcome"] = predicatesS0["welcomeReward"];
+predicatesS0["happyHours"] = predicatesS0["happyHour"];
+predicatesS0["limitedCustomers"] = predicatesS0["limitedCustomer"];
     var handlers = {
       "S1": function( user, vendor, offer ){
 
