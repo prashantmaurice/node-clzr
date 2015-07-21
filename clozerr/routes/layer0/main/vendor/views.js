@@ -124,9 +124,21 @@ var view_vendor_allOffers = function(params,user){
                 return vendor;
             }).done()
         }).done()
-    }).done()
-    return deferred.promise;
+}).done()
+return deferred.promise;
 }
+
+function assign_keys(obj_ori, obj_in, key) {
+    if(typeof obj_in[key] == 'object') {
+        for(k in obj_in[key]) {
+            assign_keys(obj_ori[key], obj_in[key], k);
+        }
+    }
+    else if(obj_in[key]) {
+        obj_ori[key] = obj_in[key];
+    }
+}
+
 var view_vendor_details_set = function( params, user ) {
     var deferred = Q.defer();
 
@@ -137,11 +149,12 @@ var view_vendor_details_set = function( params, user ) {
         debugger;
         if(user.type == "Vendor") {
             if(user.vendor_id == params.vendor_id) {
-             vendorObjectM.get( params ).then(function(vendor) {
+               vendorObjectM.get( params ).then(function(vendor) {
                 if(params.vendor) {
                     for(key in params.vendor) {
-                        console.log('setting vendor property '+key+' to '+params.vendor[key])
-                        vendor[key] = params.vendor[key];
+                        //console.log('setting vendor property '+key+' to '+params.vendor[key])
+                        //vendor[key] = params.vendor[key];
+                        assign_keys(vendor, params.vendor, key);
                         vendor.markModified(key);
                     }
                     debugger;
@@ -153,8 +166,8 @@ var view_vendor_details_set = function( params, user ) {
             }, function(err) {
                 deferred.resolve({code:500,error:err});
             });
-         }
-         else {
+           }
+           else {
             deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
@@ -184,7 +197,7 @@ var view_vendor_details_update = function( params, user) {
         debugger;
         if(user.type == "Vendor") {
             if(user.vendor_id == params.vendor_id) {
-             vendorObjectM.get( params ).then(function(vendor) {
+               vendorObjectM.get( params ).then(function(vendor) {
                 console.log('changing ' + params.modify + ' to '+params.operation+' '+JSON.stringify(params.values))
                 console.log('current value '+ JSON.stringify(vendor[params.modify]))
                 vendor[params.modify] = arrayOperations[params.operation](vendor[params.modify], params.values);
@@ -193,8 +206,8 @@ var view_vendor_details_update = function( params, user) {
             }, function(err) {
                 deferred.resolve({code:500,error:err});
             });
-         }
-         else {
+           }
+           else {
             deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
         }
     }
@@ -205,7 +218,7 @@ var view_vendor_details_update = function( params, user) {
     deferred.resolve({code:500,error:err});
 });
 
-    return deferred.promise;
+return deferred.promise;
 
 }
 
@@ -452,13 +465,13 @@ var getBeaconFormat=function(params,user,vendor){
             name: vendor.name,
             location: vendor.location
         }
-    else
-        return {
-            _id: vendor.id,
-            beacons: vendor.beacons,
-            name: vendor.name
+        else
+            return {
+                _id: vendor.id,
+                beacons: vendor.beacons,
+                name: vendor.name
+            }
         }
-}
 
 var view_vendor_beacons_all = function(params, user) {
     var deferred = Q.defer();

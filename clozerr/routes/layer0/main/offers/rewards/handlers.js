@@ -64,24 +64,24 @@ var handler_predicate_rewards = function(user, vendor, offer) {
     console.log(offer.vendor._id)
     console.log(offer.vendor._id.toString()==vendor._id.toString())
     return Q(offer.vendor._id && offer.vendor._id.toString()==vendor._id.toString())
-    var Checkin=registry.getSharedObject("data_checkins");
-    Checkin.get({
-        "user":user.id,
-        "offer":offer.id,
-        "state":{$in:[CHECKIN_STATE_ACTIVE,CHECKIN_STATE_CONFIRMED]}
-    }).then(function(checkins){
-        debugger
-        console.log(checkins)
-        if(!checkins || checkins.length<1){
-            console.log(true)
-            deferred.resolve(true)
-        }
-        else{
-            console.log(false)
-            deferred.resolve(false)
-        }
-        return checkins
-    }).done()
+    // var Checkin=registry.getSharedObject("data_checkins");
+    // Checkin.get({
+    //     "user":user.id,
+    //     "offer":offer.id,
+    //     "state":{$in:[CHECKIN_STATE_ACTIVE,CHECKIN_STATE_CONFIRMED]}
+    // }).then(function(checkins){
+    //     debugger
+    //     console.log(checkins)
+    //     if(!checkins || checkins.length<1){
+    //         console.log(true)
+    //         deferred.resolve(true)
+    //     }
+    //     else{
+    //         console.log(false)
+    //         deferred.resolve(false)
+    //     }
+    //     return checkins
+    // }).done()
     return deferred.promise;
 }
 
