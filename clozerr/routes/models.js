@@ -73,6 +73,13 @@ Models.CheckIn = mongoose.model('CheckIn',new Schema({
 	validate_data:Schema.Types.Mixed
 } ));
 
+Models.Notification = mongoose.model('Notification',new Schema({
+    type:String,
+	data:Schema.Types.Mixed,
+	timestamp:Date,
+    active:Boolean
+} ));
+
 Models.User = mongoose.model('User',new Schema({
 	social_id:String,
 	type:String,
@@ -93,6 +100,7 @@ Models.User = mongoose.model('User',new Schema({
     lucky_rewards:Schema.Types.Mixed,
     failed_instances:Schema.Types.Mixed,
     rewards : [ObjectId],
+    notifications: Schema.Types.Mixed
 }));
 
 Models.Token = mongoose.model('Token',new Schema({

@@ -94,7 +94,7 @@ var handler_validate_rewards = function( vendor, user, checkin ){
         if(!user.stamplist)
             user.stamplist=[]
         if(!user.stamplist[vendor.fid])
-            user.stamplist[vendor.fid]=1
+            user.stamplist[vendor.fid]=0
         else {
             user.stamplist[vendor.fid]+=1
         }

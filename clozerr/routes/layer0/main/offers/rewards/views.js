@@ -85,6 +85,7 @@ var view_offers_rewards_user=function(params,user){
 	})
 	return deferred.promise
 }
+
 registry.register("view_offers_reward_create", {get:view_offers_reward_create});
 registry.register("view_offers_reward_give", {get:view_offers_reward_give});
 registry.register("view_offers_reward_transfer", {get:view_offers_reward_transfer});
