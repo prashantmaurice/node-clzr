@@ -67,8 +67,8 @@ var vendor_predicate_SX = function(user, vendor, offer) {
         user.markModified("stamplist");
         user.save();
     }
-    
-    if(user.stamplist[vendor.fid] >= offer.stamps || (offer._id == vendor.visitOfferId)) {
+
+    if(user.stamplist[vendor.fid] +1 >= offer.stamps || (offer._id.toString() == vendor.visitOfferId.toString())) {
         deferred.resolve(true);
     }
     else {
@@ -87,7 +87,7 @@ var vendor_validate_SX = function( vendor, user, checkin ){
 
     registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(userObj) {
         debugger;
-          
+
         checkin.state = CHECKIN_STATE_CONFIRMED;
         registry.getSharedObject("analytics_checkin").get({},checkin,user)
         debugger;
@@ -95,9 +95,17 @@ var vendor_validate_SX = function( vendor, user, checkin ){
         checkin.save(function(err) {
             deferred.resolve({code:500,error:err});
         });
-
-        var stamps = (checkin.validate_data.billAmt*1)/(vendor.settings.billAmt*1);
-
+        if(!vendor.settings.billAmt){
+            console.log('no billAmt for vendor '+ vendor._id)
+            vendor.settings.billAmt=300
+            vendor.markModified('settings')
+            vendor.save();
+        }
+        var stamps = checkin.validate_data.stamps*1;
+        if(!userObj.stamplist)
+            userObj.stamplist={}
+        if(!userObj.stamplist[vendor.fid])
+            userObj.stamplist[vendor.fid]=0
         userObj.stamplist[vendor.fid] += stamps*1;
         userObj.markModified("stamplist");
 

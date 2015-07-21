@@ -8,13 +8,14 @@ var settings = require('../routes/settings')
 
 var test_vendor_id = "55293297b6cd430f332841c4"
 var test_access_token = "4dd2cee48ddecfd9ae6e6a120d410c97"
+var test_user_id = "54b0468f50031f7324569260"
 var test_vendor_access_token = "7f8437926c5c901489a1f88031f1ea14"
 var test_lat = 13.1
 var test_lon = 80.1
 
 var models=require('../routes/models')
 //usage >mocha test/imp_tests.js
-//tbc = to be changed
+//add assertion for user
 /*
 Skeleton test
 describe('(url to be tested)',function(){
@@ -30,6 +31,28 @@ describe('(url to be tested)',function(){
 		})
 	})
 })
+*/
+/*
+list of urls
+	/content
+	/v2/vendor/beacons/all -(old)
+	/v2/vendor/categories/get -(old)
+	/v2/vendor/search/near -(tags)
+	/v2/vendor/offers/checkin -offertypes,(old)
+	/v2/analytics/hit -
+	/auth/update/gcm -todo
+	/auth/login/facebook -todo
+	/auth/login/google -todo
+	/v2/user/favourites/list -discontinue
+	/v2/user/add/pinned -(old)
+	/v2/vendor/get/details -(old)
+	/v2/vendor/offers/offerspage -(old)
+	/v2/user/add/favourites -(old)
+	/v2/user/remove/favourites -(old)
+
+also tested
+	/v2/vendor/offers/rewardspage
+	/v2/user/details/get
 */
 should.Assertion.add('Vendor',
 	function(){
@@ -60,6 +83,39 @@ should.Assertion.add('Checkin',
 		checkin.should.have.property('offer')
 		checkin.should.have.property('user')
 		checkin.should.have.property('vendor')
+	},
+	true)
+should.Assertion.add('Analytics',
+	function(){
+		this.params={operator:'to be a valid analytics object'};
+		var analytics=this.obj
+		should.exist(analytics)
+		analytics.should.have.property('_id')
+		analytics.should.have.property('user')
+		analytics.should.have.property('metric')
+		analytics.should.have.property('dimensions')
+		analytics.should.have.property('timeStamp')
+	},
+	true)
+should.Assertion.add('OfferDisplay',
+	function(){
+		this.params={operator:'to be a valid offer from offerspage/rewardspage'};
+		var offer=this.obj
+		should.exist(offer)
+		offer.should.have.property('caption')
+		offer.should.have.property('type')
+		settings.offertypes.indexOf(offer.type).should.not.be.equal('-1')
+		if(offer.type=="S0"){
+			offer.should.have.property('params')
+			offer.params.should.have.property('type')
+			settings.S0OfferTypes[offer.params.type].should.exist
+		} else if(offer.type=="S1"){
+			offer.should.have.property('params')
+			offer.params.should.have.property('used')
+			offer.params.should.have.property('stamps')
+			offer.params.should.have.property('unlocked')
+		}
+		//SX,reward tests
 	},
 	true)
 describe('URLs currently used by android app test',function(){
@@ -205,26 +261,229 @@ describe('URLs currently used by android app test',function(){
 		})
 	})
 	describe('/v2/vendor/offers/checkin',function(){
-		var Checkin=models.Checkin;
-		it('S0 limitedCustomers checkin (WIP)',function(done){
-			// var test_offer_id="55293299b6cd430f332841c7"
-			// var params={
-			// 	access_token:test_access_token,
-			// 	vendor_id:test_vendor_id,
-			// 	offer_id:test_offer_id
-			// }
-			// console.log('params : '+JSON.stringify(params))
-			// server.get('/v2/vendor/offers/checkin')
-			// .query(params)
-			// .expect(200)
-			// .end(function(err,res){
-			// 	if(err) return done(err);
-			// 	res.body.should.be.a.Checkin;
-			// 	console.log(res.body)
-			// 	Checkin.findByIdAndRemove(res.body._id).exec()
-			// 	done();
-			// })
-			done();
+		// add S1 and SX tests
+		var Checkin=models.CheckIn;
+		it('S0 limitedCustomers checkin',function(done){
+			var test_offer_id="55293299b6cd430f332841c7"
+			var params={
+				access_token:test_access_token,
+				vendor_id:test_vendor_id,
+				offer_id:test_offer_id
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/vendor/offers/checkin')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.be.a.Checkin;
+				res.body.vendor.should.equal(test_vendor_id)
+				res.body.offer.should.equal(test_offer_id)
+				res.body.user.should.equal(test_user_id)
+				Checkin.findByIdAndRemove(res.body._id,function(err,res){
+					console.log('checkin found : ' +JSON.stringify(res))
+					done();
+				})
+			})
+		})
+	})
+	describe('/v2/analytics/hit',function(){
+		var Analytics=models.Analytics;
+		var test_metric='login_sample';
+		var test_dimen={
+			method:'facebook',
+			existing:'true',
+			device:'Android 5'
+		}
+		it('analytics hit - response doesn\'t matter',function(done){
+			var params={
+				access_token:test_access_token,
+				metric:test_metric,
+				dimensions:test_dimen,
+				time:Date.now(),
+				test:true
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/analytics/hit')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				var id = res.body._id;
+				Analytics.findById(id,function(err,obj){
+					obj.should.be.an.Analytics;
+					obj.metric.should.be.equal(test_metric)
+					obj.dimensions.should.have.property('method','facebook')
+					obj.dimensions.should.have.property('existing','true')
+					obj.dimensions.should.have.property('device','Android 5')
+					obj.remove()
+					done();
+				})
+			})
+		})
+	})
+	describe('/v2/user/add/pinned and /v2/user/remove/pinned',function(){
+		var test_offer_id="55293299b6cd430f332841c7"
+		it('add offer to user pinned',function(done){
+			var params={
+				access_token:test_access_token,
+				offer_id:test_offer_id
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/user/add/pinned')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.have.property('pinned')
+				res.body.pinned.should.be.instanceof(Array)
+				res.body.pinned.indexOf(test_offer_id).should.not.equal(-1)
+				done();
+			})
+		})
+		it('remove offer from user pinned',function(done){
+			var params={
+				access_token:test_access_token,
+				offer_id:test_offer_id
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/user/remove/pinned')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.have.property('pinned')
+				res.body.pinned.should.be.instanceof(Array)
+				res.body.pinned.indexOf(test_offer_id).should.be.equal(-1)
+				done();
+			})
+		})
+	})
+	describe('/v2/user/add/favourites and /v2/user/remove/favourites',function(){
+		var test_vendor_id="55293297b6cd430f332841c4"
+		it('add vendor to user favourites',function(done){
+			var params={
+				access_token:test_access_token,
+				vendor_id:test_vendor_id
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/user/add/favourites')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.have.property('favourites')
+				res.body.favourites.should.be.instanceof(Array)
+				res.body.favourites.indexOf(test_vendor_id).should.not.equal(-1)
+				done();
+			})
+		})
+		it('remove vendor from user favourites',function(done){
+			var params={
+				access_token:test_access_token,
+				vendor_id:test_vendor_id
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/user/remove/favourites')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.have.property('favourites')
+				res.body.favourites.should.be.instanceof(Array)
+				res.body.favourites.indexOf(test_vendor_id).should.be.equal(-1)
+				done();
+			})
+		})
+	})
+	describe('/v2/vendor/get/details',function(){
+		it('all vendor details',function(done){
+			var params={
+				access_token:test_access_token,
+				vendor_id:test_vendor_id
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/vendor/get/details')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.be.a.Vendor;
+				res.body._id.should.equal(test_vendor_id)
+				done();
+			})
+		})
+	})
+	describe('/v2/vendor/offers/offerspage',function(){
+		it('vendor offerspage',function(done){
+			var params={
+				access_token:test_access_token,
+				vendor_id:test_vendor_id
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/vendor/offers/offerspage')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.be.a.Vendor;
+				res.body._id.should.equal(test_vendor_id)
+				res.body.should.have.property('offers')
+				res.body.offers.should.be.instanceof(Array)
+				_.each(res.body.offers,function(offer){
+					offer.should.be.an.OfferDisplay;
+					["S1","SX"].indexOf(offer.type).should.not.equal(-1);
+				})
+				done();
+			})
+		})
+	})
+	describe('/v2/vendor/offers/rewardspage',function(){
+		it('vendor rewardspage',function(done){
+			var params={
+				access_token:test_access_token,
+				vendor_id:test_vendor_id
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/vendor/offers/rewardspage')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.be.a.Vendor;
+				res.body._id.should.equal(test_vendor_id)
+				res.body.should.have.property('rewards')
+				res.body.rewards.should.be.instanceof(Array)
+				_.each(res.body.rewards,function(offer){
+					offer.should.be.an.OfferDisplay;
+					["S0","reward"].indexOf(offer.type).should.not.equal(-1);
+				})
+				done();
+			})
+		})
+	})
+	describe('/v2/user/details/get',function(){
+		it('user all details',function(done){
+			var params={
+				access_token:test_access_token
+			}
+			console.log('params : '+JSON.stringify(params))
+			server.get('/v2/user/details/get')
+			.query(params)
+			.expect(200)
+			.end(function(err,res){
+				if(err) return done(err);
+				res.body.should.have.property('_id',test_user_id)
+				res.body.should.have.property('pinned')
+				res.body.should.have.property('favourites')
+				res.body.should.have.property('rewards')
+				res.body.rewards.should.be.instanceof(Array);
+				_.each(res.body.rewards,function(offer){
+					offer.should.be.an.OfferDisplay;
+					offer.type.should.be.equal('reward')
+				})
+				done();
+			})
 		})
 	})
 })

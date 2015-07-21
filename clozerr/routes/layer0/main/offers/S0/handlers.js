@@ -15,7 +15,7 @@ var vendor_checkin_S0_predicates = {
     "limitedTime": function(user, vendor, offer) {
         var currentDate = new Date();
         var deferred = Q.defer();
-        if(currentDate > offer.params.offerStart && currentDate < offer.params.offerEnd) {
+        if(currentDate > offer.params.startDateTime && currentDate < offer.params.endDateTime) {
             deferred.resolve(true);
         }
         else {
@@ -23,7 +23,7 @@ var vendor_checkin_S0_predicates = {
         }
         return deferred.promise;
     },
-    "limitedCustomers": function( user, vendor, offer) {
+    "limitedCustomer": function( user, vendor, offer) {
         var deferred = Q.defer();
         var CheckinByVendor=registry.getSharedObject("data_checkins");
         CheckinByVendor.get({
@@ -41,7 +41,7 @@ var vendor_checkin_S0_predicates = {
         })
         return deferred.promise;
     },
-    "happyHours": function(user,vendor,offer){
+    "happyHour": function(user,vendor,offer){
         var days=offer.params.days; //array containing 0-6 , 0 => Sunday
         var startHour=offer.params.startHour;//hours in 0-23
         var endHour=offer.params.endHour;//inclusive of end hour
@@ -49,7 +49,7 @@ var vendor_checkin_S0_predicates = {
         console.log(date.getDay(),date.getHours())
         return Q(_.contains(days,date.getDay()) && date.getHours()<=endHour && date.getHours()>=startHour)
     },
-    "welcomeReward": function(user,vendor,offer){
+    "welcome": function(user,vendor,offer){
         //TODO: are we initializing to zero or one?
         return Q((!user.stamplist)||(!user.stamplist[vendor.fid])||(user.stamplist[vendor.fid]==0))
     }
@@ -100,9 +100,15 @@ return deferred.promise;
 }
 
 var vendor_predicate_S0 = function(user, vendor, offer) {
+    var s0_types=['limitedTime','limitedCustomer','happyHour','welcome']
+
     if(!offer.params ||!offer.params.type){
         console.log('no params or params.type for offer'+JSON.stringify(offer))
         return Q(false)
+    }
+    if(s0_types.indexOf(offer.params.type)==-1){
+      console.log('wrong params.type for offer'+JSON>stringify(offer))
+      return Q(false);
     }
     return vendor_checkin_S0_predicates[offer.params.type](user, vendor, offer);
 }
@@ -113,7 +119,17 @@ var vendor_validate_S0 = function( vendor, user, checkin ){
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
     debugger;
     checkin.state = CHECKIN_STATE_CONFIRMED;
-    registry.getSharedObject("analytics_checkin").get({},checkin,user)
+    registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(user) {
+        if(!user.stamplist)
+            user.stamplist=[]
+        if(!user.stamplist[vendor.fid])
+            user.stamplist[vendor.fid]=1
+        else {
+            user.stamplist[vendor.fid]+=1
+        }
+        user.markModified('stamplist')
+        user.save();
+    })
     checkin.save(function(err) {
         deferred.resolve({code:500,error:err});
     });

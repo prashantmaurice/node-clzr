@@ -57,12 +57,16 @@ module.exports = {
 	],
 	"welcomeReward":{
 		"caption":"Welcome and claim your first loyalty reward",
-		"description":"Your first loyalty reward"
+		"description":"Your first loyalty reward",
+		"type":"S0",
+		"params":{
+			"type":"welcomeReward"
+		}
 	},
 	"limitedTime":{
 		"caption":"Hurry soon bag your limted time offer",
 		"description":"Default limited time offer",
-		"params":{		
+		"params":{
 		"offerStart":new Date(),
 		"offerEnd":new Date()
 	    }
@@ -94,5 +98,6 @@ module.exports = {
 		"PING" : 4,
 		"PUSH" : 8,
 		"ONEXIT" : 16
-	}
+	},
+	"offertypes":["S0","S1","SX","reward"]
 };

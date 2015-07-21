@@ -8,15 +8,29 @@ var view_analytics_hit=function(params,user){
 	analytics_obj.user=user.id;
 	analytics_obj.metric=params.metric;
 	analytics_obj.dimensions=params.dimensions;
+	analytics_obj.test=params.test||false;
 	return Q(analytics_obj.save())
 }
 var compute_analytics=function(map,reduce,query,scope){
-	return Q(registry.getSharedObject('models_Analytics').mapReduce({
+	debugger;
+	var deferred = Q.defer();
+	registry.getSharedObject('models_Analytics').mapReduce({
 		query:query,
 		map:map,
 		reduce:reduce,
-		scope:scope
-	}))
+		scope:scope,
+		verbose:true
+	}, function (err, data, stats) {
+		debugger; 
+    		//console.log('map reduce took %d ms', stats.processtime)
+    		if(err) console.log(err);
+    		else console.log(data);
+		deferred.resolve( data );
+	});
+
+//	process.nextTick( function(){ deferred.resolve({"hello":"world"}) } );
+
+	return deferred.promise;
 }
 
 function makeArray(obj) {
@@ -56,7 +70,7 @@ var view_analytics_byDay = function(params,user){
 		}
 	}
 	scope.dimensions = makeArray(params.dimensions);
-	scope.metric = makeArray(params.metric);
+	//scope.metric = params.metric;
 	var map_byDay=function(){
 		if(filterMetric(this.metric, metric)) {
 			emit({
@@ -80,6 +94,8 @@ var view_analytics_byDay = function(params,user){
 	}
 	else
 		query={}
+	
+	query.metric = params.metric;
 	console.log(query)
 	return compute_analytics(map_byDay,reduce,query,scope);
 }
@@ -88,10 +104,10 @@ var view_analytics_vendor_get = function(params, user) {
 	var deferred = Q.defer();
 
 	var scope = {};
-	scope.filterObject = global.registry.getSharedObject('util').filterObject;
+	/*scope.filterObject = global.registry.getSharedObject('util').filterObject;
 	scope.filterDimension = function(dim_this, dim_filter) {
 		if(dim_filter.length != 0) {
-			return filterObject(dim_this, dim_filter).data;
+			return filterObject(dim_this, dim_filter,false).data;
 		}
 		else {
 			return dim_this;
@@ -109,7 +125,7 @@ var view_analytics_vendor_get = function(params, user) {
 		else {
 			return true;
 		}
-	}
+	}*/
 
 	scope.dimensions = makeArray(params.dimensions);
 	scope.metric = makeArray(params.metric);
@@ -118,30 +134,32 @@ var view_analytics_vendor_get = function(params, user) {
 		scope.time_interval = params.time_interval*1;
 	}
 	else {
-		scope.time_interval = 1;
+		scope.time_interval = 24*60*60*1000;//1 day
 	}
 
 	debugger;
 
 	if(user.type == "Vendor") {
 		scope.vendor_id = user.vendor_id.toString();
-		map_byVendor = function() {
-			if(filterMetric(this.metric, metric)) {
-				if(this.dimensions) {
-					if(this.dimensions.vendor_id) {
-						debugger;
-						if(this.dimensions.vendor_id == vendor_id) {
-							emit({
-								metric:this.metric,
-								dimensions:filterDimension(this.dimensions, dimensions),
-								time:(this.timeStamp.getTime())/time_interval
-							}, 1);
-						}
-					}
-				}
+		
+		
+		var map_byVendor = function() {
+
+			var obj = {};
+
+			
+			var dims = {};
+			for( var i = 0; i < dimensions.length; i++ ){
+				var dim = dimensions[i];
+				dims[dim] = this.dimensions[dim];
 			}
+			obj.dimensions = dims;
+			obj.metric = this.metric;	
+			obj.time = parseInt((this.timeStamp.getTime())/time_interval);
+			//if( this.dimensions && this.dimensions.vendor_id && this.dimensions.vendor_id == vendor_id )
+			emit( obj, 1 );
 		}
-		reduce = function(key, values) {
+		var reduce = function(key, values) {
 			return Array.sum(values);
 		}
 
@@ -156,17 +174,53 @@ var view_analytics_vendor_get = function(params, user) {
 			}}
 		}
 
+		query.metric = params.metric;
 		console.log(query);
 
 		return compute_analytics(map_byVendor, reduce, query, scope);
 	}
 	else {
-		deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+		process.nextTick(function(){
+			deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+		});
+		return deferred.promise;
 	}
-
-	return deferred.promise;
+}
+var view_analytics_vendor = function(params, user) {
+    var scope = {
+        metrics: [params.metric],
+        dimensions: params.dimensions,
+        getDimensions: function(thisD, reqD) {
+            d = {}
+            for (var dim in reqD) {
+                var key = reqD[dim]
+                if (thisD[key])
+                    d[key] = thisD[key]
+            }
+            return d
+        },
+        vendor_id:user.vendor_id
+    }
+    var map_byVendor = function() {
+        if ((this.dimensions.vendor_id)&&
+        	(metrics.indexOf(this.metric) != -1)&&
+        	(this.dimensions.vendor_id==vendor_id)) {
+            emit({
+                metric: this.metric,
+                dimensions: getDimensions(this.dimensions, dimensions),
+                time: new Date(this.timeStamp.getFullYear(),
+                    this.timeStamp.getMonth(),
+                    this.timeStamp.getDate(),
+                    0, 0, 0, 0)
+            }, 1)
+        }
+    }
+    var reduce = function(key, values) {
+        return Array.sum(values)
+    }
+    return compute_analytics()
 }
 
 registry.register("view_analytics_hit",{get:view_analytics_hit,post:view_analytics_hit})
-global.registry.register('view_analytics_vendor_get', { get : view_analytics_vendor_get });
+registry.register('view_analytics_vendor_get', { get : view_analytics_vendor_get });
 registry.register("view_analytics_byDay",{get:view_analytics_byDay})

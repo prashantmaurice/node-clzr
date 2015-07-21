@@ -13,7 +13,7 @@ var vendorSchema = new Schema({
 	offers_old : [ObjectId],
 	fid:String,
 	date_created:Date,
-    dateUpdated:Date,
+    	dateUpdated:Date,
 	address: String,
 	city: String,
 	phone: String,
@@ -37,7 +37,11 @@ var vendorSchema = new Schema({
 	geoloc:Boolean,
 	last_post:Date,
 	last_tweet:Date,
-	geofences:[ObjectId]
+	geofences:[ObjectId],
+	logo: String,
+	fb:String,
+	twitter:String,
+	gplus:String
 });
 vendorSchema.index({ location: '2d' });
 
@@ -55,7 +59,7 @@ Models.Content = mongoose.model('Content',new Schema({
 	key:String,
 	value:String
 }));
-		
+
 Models.Vendor = mongoose.model('Vendor', vendorSchema );
 
 Models.CheckIn = mongoose.model('CheckIn',new Schema({
@@ -109,14 +113,16 @@ Models.Offer = mongoose.model('Offer',new Schema({
 	caption:String,
 	description:String,
 	dateUpdated:Date,
-	params: Schema.Types.Mixed
+	params: Schema.Types.Mixed,
+	vendor: Schema.Types.Mixed
 }));
 
 Models.Review = mongoose.model('Review',new Schema({
 	checkinid:ObjectId,
 	stars:[Number],
 	date_created:Date,
-	remarks: String
+	remarks: String,
+	vendor_id: ObjectId
 }));
 
 Models.Data = mongoose.model('Data',new Schema({
@@ -128,7 +134,8 @@ Models.Analytics = mongoose.model('Analytics',new Schema({
     timeStamp:{type: Date , default: Date.now()},
     user:ObjectId,
     metric:String,
-    dimensions:Schema.Types.Mixed
+    dimensions:Schema.Types.Mixed,
+    test:Boolean
 }));
 
 Models.Tag = mongoose.model('Tag',new Schema({

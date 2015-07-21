@@ -186,10 +186,10 @@ function getCheckinSuccessMessage(checkin){
   return "Successfully checked in"
 }
 
-function filterObject(raw, fields) {
+function filterObject(raw, fields,strict) {
   var obj = {};
   var missingParams = [];
-
+  if(!strict) strict=true
   for(var i=0; i<fields.length; i++) {
     var field = fields[i];
     if(raw[field]) {
@@ -200,7 +200,7 @@ function filterObject(raw, fields) {
     }
   }
 
-  if(missingParams.length) {
+  if(missingParams.length&&strict) {
     return {result:false, err:{code:420, message:"Insufficient parameters passed.", missingParams:missingParams}};
   }
   else {

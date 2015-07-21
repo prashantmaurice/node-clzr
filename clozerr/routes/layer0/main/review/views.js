@@ -35,11 +35,11 @@ function view_vendor_review_create( params, user ) {
     debugger;
 
     var point2 = checkinQ.then( function( checkin ){
-        
+
         // Check is checkin belongs to user.
         debugger;
         console.log( "Checkin: User: " + checkin.user );
-        console.log( "User: " + user._id ); 
+        console.log( "User: " + user._id );
 
         if( checkin.user._id.toString() != user._id.toString() ){
             deferred.resolve( {code:204,error:"Checkin does not match user."} );
@@ -52,12 +52,13 @@ function view_vendor_review_create( params, user ) {
         var Review = registry.getSharedObject("models_Review");
 
         debugger;
-        
+
         var review = new Review({
             checkinid: checkin_id,
             date_created: dateCreated,
             stars: stars,
-            remarks: remarks
+            remarks: remarks,
+            vendor_id: checkin.vendor
         });
 
         deferred.resolve( { result:true, data:review } );
@@ -68,7 +69,7 @@ function view_vendor_review_create( params, user ) {
         // Do some post checkin stuff here.
 
     });
-    
+
     return deferred.promise;
 }
 
@@ -82,7 +83,7 @@ function view_vendor_review_get( params, user ){
             deferred.resolve( {code:204,error:"No proper review object." } );
             return;
         }
-        
+
         deferred.resolve( { result:true,data: review } );
 
     });
@@ -90,5 +91,9 @@ function view_vendor_review_get( params, user ){
     return deferred.promise;
 }
 
+var view_vendor_review_all = function (params,user) {
+  return Q(registry.getSharedObject('data_reviews').get({vendor_id:params.vendor_id}))
+}
 global.registry.register("view_vendor_review_get", {get:view_vendor_review_get});
 global.registry.register("view_vendor_review_create", {get:view_vendor_review_create});
+global.registry.register("view_vendor_review_all", {get:view_vendor_review_all});

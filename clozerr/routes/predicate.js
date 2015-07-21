@@ -39,11 +39,11 @@ var predicatesS0 = {
 
    if(currentDate > offer.params.offerStart && currentDate < offer.params.offerEnd) {
     debugger;
-    return true;
+    return Q(true);
   }
   else {
     debugger;
-    return false;
+    return Q(false);
   }
 },
 "limitedCustomers": function( user, vendor, offer) {

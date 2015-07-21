@@ -1,20 +1,25 @@
 var registry = global.registry;
 var Q = require("q");
-
+var _ = require("underscore")
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var vendor_checkin = function(params, user, vendor, offer) {
-	debugger;
 	console.log("routing to "+"handler_checkin_" + offer.type)
 	return registry.getSharedObject("handler_checkin_" + offer.type).get(params, user, vendor, offer);
 }
-
+var contains_id=function(arr,id){
+	return _.some(arr,function(obj){
+		return obj.equals(id)
+	})
+}
 var vendor_predicate = function(user, vendor, offer) {
-	debugger;
 	var valid=false
-	if(vendor.offers.indexOf(offer._id) != -1) {
+	if(offer.type=='reward'){
+		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
+	}
+	if(contains_id(vendor.offers,offer._id) || vendor.visitOfferId.equals(offer._id)) {
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}
 	else {
@@ -59,7 +64,7 @@ var vendor_validate_qrcode = function(params, vendor, user, checkin) {
 	} else {
 		return Q(false);
 	}
-	
+
 }
 
 global.registry.register("handler_checkin", {get:vendor_checkin});

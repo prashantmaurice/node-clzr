@@ -64,12 +64,12 @@ var vendor_predicate_S1 = function(user, vendor, offer) {
 
     if(!user.stamplist[vendor.fid]) {
         debugger;
-        user.stamplist[vendor.fid] = 0;
+        user.stamplist[vendor.fid] = 1;
         user.markModified("stamplist");
         user.save();
     }
 
-    if((user.stamplist[vendor.fid] >= offer.stamps*1) || (offer._id.toString() == vendor.visitOfferId.toString())) {
+    if((user.stamplist[vendor.fid]+1 >= offer.stamps*1) || (offer._id.toString() == vendor.visitOfferId.toString())) {
         debugger;
         deferred.resolve(true);
     }
@@ -101,7 +101,10 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
         checkin.save(function(err) {
             deferred.resolve({code:500,error:err});
         });
-
+        if(!userObj.stamplist)
+            userObj.stamplist={}
+        if(!userObj.stamplist[vendor.fid])
+            userObj.stamplist[vendor.fid]=0
         userObj.stamplist[vendor.fid]++;
         userObj.markModified("stamplist");
 
@@ -113,7 +116,7 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
         registry.getSharedObject("analytics_checkin").get({},checkin,user)
         deferred.resolve(checkin);
     });
-    
+
     return deferred.promise;
 }
 

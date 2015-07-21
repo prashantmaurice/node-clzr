@@ -31,7 +31,7 @@ var view_user_favourites_remove=function(params,user){
 	if(params.vendor_id) {
 		idx=_.indexOf(user.favourites,params.vendor_id)
 		if(idx!=-1){
-			user.favourites.splice(idx,idx);
+			user.favourites.splice(idx,1);
 			user.markModified("favourites");
 			user.save(function(err){
 				deferred.resolve({code:500,error:err});
@@ -73,7 +73,7 @@ var view_user_pinned_remove=function(params,user){
 	if(params.offer_id) {
 		idx=_.indexOf(user.pinned,params.offer_id)
 		if(idx!=-1){
-			user.pinned.splice(idx,idx);
+			user.pinned.splice(idx,1);
 			user.markModified("pinned");
 			user.save(function(err,user){
 				deferred.resolve(user);
@@ -107,7 +107,17 @@ var view_user_favourites_list = function(params,user){
 }
 var view_user_pinned_list = function(params,user){
 	var deferred=  Q.defer();
-	deferred.resolve(user.pinned);
+	//deferred.resolve(user.pinned);
+	var offer = registry.getSharedObject("data_offer");
+	var offerPlist = [];
+	_.each(user.pinned,function(offerid){
+		offerPlist.push(offer.get({offer_id:offerid}).then(function(pindoffer){
+			return pindoffer;
+		}))
+	})
+	Q.all(offerPlist).then(function(offerList){
+		deferred.resolve(offerList);
+	})
 	return deferred.promise;
 }
 var view_user_details_get = function(params,user){
@@ -125,18 +135,7 @@ var view_user_details_get = function(params,user){
 	})
 	return deferred.promise;
 }
-var view_user_visited_vendor = function(params,user){
-	var deferred = Q.defer();
-	registry.getSharedObject("data_vendor").get({vendor_id:params.vendor_id}).then(function(vendor){
-		var field="stamplist."+vendor.fid
-		query_param={}
-		query_param[field]={$exists:true}
-		registry.getSharedObject("data_user").get(query_param).then(function(users){
-			deferred.resolve(users);
-		})
-	});
-	return deferred.promise;
-}
+
 
 global.registry.register("view_user_favourites_add",{get:view_user_favourites_add});
 global.registry.register("view_user_pinned_add",{get:view_user_pinned_add});
@@ -145,5 +144,4 @@ global.registry.register("view_user_pinned_remove",{get:view_user_pinned_remove}
 global.registry.register("view_user_favourites_list",{get:view_user_favourites_list});
 global.registry.register("view_user_pinned_list",{get:view_user_pinned_list});
 global.registry.register("view_user_details_get",{get:view_user_details_get});
-global.registry.register("view_user_visited_vendor",{get:view_user_visited_vendor});
 module.exports={add_favourites:view_user_favourites_add};
