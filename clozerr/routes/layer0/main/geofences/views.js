@@ -11,6 +11,7 @@ var view_geofence_details_create = function(params, user) {
 
 global.registry.register('view_geofence_details_create', { get : view_geofence_details_create } );
 
+
 var view_geofence_list_near = function(params, user) {
 	var deferred = Q.defer();
 	
@@ -27,6 +28,7 @@ var view_geofence_list_near = function(params, user) {
 		var points = _.map(geofences, function(geofence) {
 			return { x : geofence.location[0], y : geofence.location[1] };
 		});
+
 		var obj = mec_util.minEnclosingCircle(points);
 		console.log( obj );
 		var geofence = new Geofence({ location : [obj.x, obj.y], radius : obj.r });

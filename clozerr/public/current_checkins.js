@@ -3,6 +3,9 @@
 var current_checkins = function( $rootScope, $scope, $http ){
   $scope.checkins = [];
   $scope.visibility = false;
+// Fix default 1.
+  //$scope.validate_data = {};
+  //$scope.validate_data.stamps = 1;
 
   $scope.getTimeInFormat = function(dateStr) {
     //10/21/2013 3:29 PM
@@ -38,6 +41,7 @@ var current_checkins = function( $rootScope, $scope, $http ){
       $scope.showData = true;
 
       $scope.checkins = data.data;
+    	$scope.checkins.forEach( function( checkin ){ checkin.validate_data = {}; checkin.validate_data.stamps = 1; });
     }).error(function(data, status, headers, config) {
       /*
       TODO: Throw error here.

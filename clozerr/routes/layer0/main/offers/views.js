@@ -36,11 +36,11 @@ var view_offers_checkin_create=function(params,user){
 	var deferred = Q.defer();
 
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor){
-		debugger;
+		console.log("CC: Got vendor");
 		registry.getSharedObject("data_offer").get(params).then(function(offer){
-			debugger;
+			console.log("CC: Got Offer");
 			registry.getSharedObject("handler_predicate").get(user,vendor,offer).then(function(valid){
-				debugger;
+				console.log("CC: Valid");
 				if(valid){
 					console.log("creating checkin")
 					debugger;
@@ -185,7 +185,7 @@ var view_vendor_offers_create = function(params, user) {
 
 	if(user.type == "Vendor") {
 		if(user.vendor_id.toString() == params.vendor_id) {
-			var obj = registry.getSharedObject("util").filterObject(params, ["caption", "description", "stamps", "type"]);
+			var obj = registry.getSharedObject("util").filterObject(params, ["caption", "description", "type"]);
 			if(!obj.result) {
 				deferred.resolve({result:false, err:obj.err});
 			}

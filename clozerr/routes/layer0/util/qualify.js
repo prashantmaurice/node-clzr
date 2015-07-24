@@ -77,8 +77,10 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
     offerDisplay.type=offer.type;
     offerDisplay.caption=offer.caption;
     offerDisplay.description=offer.description;
-    // offerDisplay.stamps=offer.stamps*1;
+    //offerDisplay.stamps=offer.stamps*1;
+    offerDisplay.image = offer.image;
     offerDisplay.params={};
+	console.log( offerDisplay );
     debugger;
 
     if(checkinOld) {
@@ -123,7 +125,13 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
 
     if(offerDisplay.type=="S0") {
       if(!offer.params || !offer.params.type) return Q(null)
-      offerDisplay.image = global.registry.getSharedObject("settings").S0OfferTypes[offer.params.type];
+      //offerDisplay.image = offer.image;
+      console.log( offer );
+      console.log( offerDisplay );
+      console.log( offer["image"] );
+	console.log("Offer display " + offerDisplay.image);
+      if( !offerDisplay.image || ( offerDisplay.image == "" ) )
+      	offerDisplay.image = global.registry.getSharedObject("settings").S0OfferTypes[offer.params.type];
       offerDisplay.params=offer.params;
     }
 

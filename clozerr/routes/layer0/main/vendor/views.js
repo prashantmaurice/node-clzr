@@ -41,6 +41,7 @@ var view_vendor_details_get = function( params ) {
     return deferred.promise;
 }
 
+// DEPRECATED.. Doesn't look good anyway.
 var view_vendor_offersPage = function( params ){
     console.log("OfferPage Main View");
     var deferred = Q.defer();
@@ -67,6 +68,8 @@ var view_vendor_offersPage = function( params ){
     console.log('returning from view_vendor_offers_offersPage');
     return deferred.promise;
 }
+
+// TODO: Change handler_predicate to something nicer.
 var view_vendor_allOffers = function(params,user){
     //add SX params
     var deferred = Q.defer();
@@ -116,11 +119,13 @@ var view_vendor_allOffers = function(params,user){
                     user.stamplist=[]
                 if(!user.stamplist[vendor.fid])
                     user.stamplist[vendor.fid]=0
+
                 vendor.offers=vendor.offers_filled
                 console.log( user.stamplist );
 		vendor.stamps=user.stamplist[vendor.fid]
                 vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
 		deferred.resolve(vendor);
+
                 return vendor;
             }).done()
         }).done()
@@ -152,10 +157,11 @@ var view_vendor_details_set = function( params, user ) {
                vendorObjectM.get( params ).then(function(vendor) {
                 if(params.vendor) {
                     for(key in params.vendor) {
-                        //console.log('setting vendor property '+key+' to '+params.vendor[key])
-                        //vendor[key] = params.vendor[key];
-                        assign_keys(vendor, params.vendor, key);
-                        vendor.markModified(key);
+                        console.log('setting vendor property '+key+' to '+params.vendor[key])
+                        vendor[key] = params.vendor[key];
+                        
+			//assign_keys(vendor, params.vendor, key);
+                        //vendor.markModified(key);
                     }
                     debugger;
                     deferred.resolve(vendor.save());
@@ -609,6 +615,8 @@ var view_vendor_offers_rewardspage=function(params,user){
                         }
                         return true
                     });
+		
+                _vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
                 deferred.resolve(_vendor)
             })
         }).done()

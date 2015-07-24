@@ -54,17 +54,29 @@ var view_notifications_list_all = function( params, user ){
 
 }
 
+var view_notifications_list_since = function( params, user ){
+	if( user.notifications && user.notifications.last_seen )
+		params.since = user.notifications.last_seen
+	return view_notifications_list_all( params, user ).then( function( notifs ){
+		return view_notifications_read_all( params, user ).then( function( status ){
+			if( status )
+				return Q(notifs);	
+			else
+				return({code:564, description:"Error setting last seen"});
+		});
+	});
+}
 var view_notifications_read_all = function( params, user ){
 
     if( !user.notifications ){
         user.notifications = {};
     }
 
-    if( !user.notification.list ){
+    if( !user.notifications.list ){
         user.notifications.list = [];
     }
     
-    user.notifications.last_read = new Date();
+    user.notifications.last_seen = new Date();
     user.markModified("notifications");
     user.save( function( res ){ console.log( res ); }, function( err ){ console.log( err ); } );
 

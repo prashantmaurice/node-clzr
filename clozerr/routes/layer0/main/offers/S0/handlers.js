@@ -42,6 +42,7 @@ var vendor_checkin_S0_predicates = {
         return deferred.promise;
     },
     "happyHour": function(user,vendor,offer){
+	console.log("happyHour reward predicate");
         var days=offer.params.days; //array containing 0-6 , 0 => Sunday
         var startHour=offer.params.startHour;//hours in 0-23
         var endHour=offer.params.endHour;//inclusive of end hour
@@ -68,13 +69,16 @@ var vendor_checkin_S0 = function( params,user, vendor, offer ){
     var checkinObj = checkinM.create();
 
     //TODO : Also if the checkin is not validated within 2 hrs, just cancel it i.e set its state to cancelled and save it
+    //TODO : Check for predicates.
 
     registry.getSharedObject("util").policyCheckDuplicateCheckins(user, vendor, offer).then(function(checkin) {
-        if(checkin) {
+        console.log("Duplicate cehck finished");
+	if(checkin) {
             deferred.resolve(checkin);
         }
         else {
             registry.getSharedObject("util").policyCheckTimeDelayBetweenCheckins(user, vendor, offer).then(function(retval) {
+		console.log("Check time delay between checkins");
                 debugger;
                 var rack = hat.rack(10, 10);
                 if(retval) {
@@ -106,20 +110,21 @@ return deferred.promise;
 }
 
 var vendor_predicate_S0 = function(user, vendor, offer) {
-    var s0_types=['limitedTime','limitedCustomer','happyHour','welcome']
+    debugger;
+    var s0_types = _.keys( vendor_checkin_S0_predicates );
 
     if(!offer.params ||!offer.params.type){
         console.log('no params or params.type for offer'+JSON.stringify(offer))
         return Q(false)
     }
     if(s0_types.indexOf(offer.params.type)==-1){
-      console.log('wrong params.type for offer'+JSON>stringify(offer))
+      console.log('wrong params.type for offer'+JSON.stringify(offer));
       return Q(false);
     }
     return vendor_checkin_S0_predicates[offer.params.type](user, vendor, offer);
 }
 
-var vendor_validate_S0 = function( vendor, user, checkin ){
+var vendor_validate_S0 = function( vendor, user, checkin, offer ){
     var deferred = Q.defer();
 
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
@@ -129,17 +134,37 @@ var vendor_validate_S0 = function( vendor, user, checkin ){
         if(!user.stamplist)
             user.stamplist=[]
         if(!user.stamplist[vendor.fid])
-            user.stamplist[vendor.fid]=checkin.validate_data.stamps;
+            user.stamplist[vendor.fid]= parseInt( checkin.validate_data.stamps );
         else {
             user.stamplist[vendor.fid]+= parseInt(user.stamplist[vendor.fid]) + parseInt(checkin.validate_data.stamps);
         }
         user.markModified('stamplist')
-        user.save( function( res ){ console.log( res ) }, function(err) {
+
+	console.log("checking for rewards..");
+	console.log( offer );
+	// Handle the case of offers being exclusive.
+        if( offer.vendor && user.rewards ){
+		console.log("removing reward");
+		
+		var idx = user.rewards.indexOf( checkin.offer );
+		console.log(idx)
+	
+		if( idx != -1 )
+			user.rewards.splice( idx, 1 );
+
+		console.log("user now has: ");
+		console.log( user.rewards );
+		user.markModified("rewards");
+	}
+	console.log("Checkin validated");
+	user.save( function( res ){ console.log( res ) }, function(err) {
             //deferred.resolve({code:500,error:err});
             console.log( err );
     	});
 
-    })
+    });
+
+    
     checkin.save( function( res ){ console.log( res ) }, function(err) {
             //deferred.resolve({code:500,error:err});
             console.log( err );

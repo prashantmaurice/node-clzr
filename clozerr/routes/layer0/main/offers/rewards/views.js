@@ -3,7 +3,7 @@ var Q=require('q')
 var _=require('underscore')
 
 var view_offers_reward_create=function(params,user){
-	params.type='reward'
+	params.type='S0'
 	var deferred=Q.defer();
 	if(!params.vendor_id)
 		return Q({code:500,error:'reward needs vendor_id'})
@@ -12,8 +12,12 @@ var view_offers_reward_create=function(params,user){
 			_id:vendor.id,
 			name:vendor.name
 		}
-		offer = registry.getSharedObject('view_vendor_offers_create').get(params,user)
-		deferred.resolve(offer)
+		offer = registry.getSharedObject('view_vendor_offers_create').get(params,user).then( function( offer ){
+			if( params.image )
+				offer.image = params.image;
+			return offer.save();
+		} );
+		deferred.resolve(offer);
 	})
 	return deferred.promise;
 }

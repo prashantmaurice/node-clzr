@@ -20,7 +20,10 @@ var vendor_predicate = function(user, vendor, offer) {
 	if(offer.type=='reward'){
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}
-	if(contains_id(vendor.offers,offer._id) || vendor.visitOfferId.equals(offer._id)) {
+
+	//console.log( offer.vendor._id == vendor._id );
+	
+	if( ( offer.vendor && offer.vendor._id == vendor._id ) || contains_id( vendor.offers, offer._id ) || vendor.visitOfferId.equals( offer._id )) {
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}
 	else {

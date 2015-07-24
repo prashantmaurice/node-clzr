@@ -122,7 +122,8 @@ Models.Offer = mongoose.model('Offer',new Schema({
 	description:String,
 	dateUpdated:Date,
 	params: Schema.Types.Mixed,
-	vendor: Schema.Types.Mixed
+	vendor: Schema.Types.Mixed,
+	image: String
 }));
 
 Models.Review = mongoose.model('Review',new Schema({

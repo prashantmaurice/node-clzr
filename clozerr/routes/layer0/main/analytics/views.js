@@ -104,28 +104,6 @@ var view_analytics_vendor_get = function(params, user) {
 	var deferred = Q.defer();
 
 	var scope = {};
-	/*scope.filterObject = global.registry.getSharedObject('util').filterObject;
-	scope.filterDimension = function(dim_this, dim_filter) {
-		if(dim_filter.length != 0) {
-			return filterObject(dim_this, dim_filter,false).data;
-		}
-		else {
-			return dim_this;
-		}
-	}
-	scope.filterMetric = function(metric_this, metric_filter) {
-		if(metric_filter.length != 0) {
-			if(metric_filter.indexOf(metric_this) != -1) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		else {
-			return true;
-		}
-	}*/
 
 	scope.dimensions = makeArray(params.dimensions);
 	scope.metric = makeArray(params.metric);
