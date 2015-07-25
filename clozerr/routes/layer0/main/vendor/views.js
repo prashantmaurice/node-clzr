@@ -42,7 +42,7 @@ var view_vendor_details_get = function( params ) {
 }
 
 // DEPRECATED.. Doesn't look good anyway.
-var view_vendor_offersPage = function( params ){
+/*var view_vendor_offersPage = function( params ){
     console.log("OfferPage Main View");
     var deferred = Q.defer();
 
@@ -67,70 +67,77 @@ var view_vendor_offersPage = function( params ){
     .then(function( res ){deferred.resolve( res )}, function( err ){ deferred.resolve({code:500,error:err}); });
     console.log('returning from view_vendor_offers_offersPage');
     return deferred.promise;
-}
+}*/
 
 // TODO: Change handler_predicate to something nicer.
 var view_vendor_allOffers = function(params,user){
     //add SX params
     var deferred = Q.defer();
-    registry.getSharedObject("data_vendor_withOffers").get(params).then(function(vendor){
+    var context = { params: params, user:user };
+
+	return registry.getSharedObject("data_vendor_withOffers").get(params).then(function(vendor){
         var plist=[]
         vendor.offers_filled=_.filter(vendor.offers_filled,function(offer){
             return (offer.type=="S1")||(offer.type=="SX")
         })
-        _.each(vendor.offers_filled,function(offer){
-            plist.push(registry.getSharedObject("handler_predicate").get(user,vendor,offer))
-        })
-        Q.all(plist).then(function(validlist){
-            debugger;
-            vendor.offers_filled=_.map(_.zip(vendor.offers_filled,validlist),function(offerpair){
+		context.vendor = vendor;
+        return Q.all(_.map(vendor.offers_filled,function(offer){
+            return registry.getSharedObject("handler_predicate").get(user,vendor,offer);
+        }))
+    }).then( function( validlist ){
+            
+	    context.vendor.offers_filled=_.map(_.zip(vendor.offers_filled,validlist),function(offerpair){
                 if(!offerpair[0].params)
                     offerpair[0].params={}
                 offerpair[0].params.unlocked=offerpair[1]
                 return offerpair[0]
-            })
-            return vendor;
-        }).then(function(vendor){
-            var offersplist=[]
-            _.each(vendor.offers_filled,function(offer){
-                offersplist.push(Q(registry.getSharedObject("data_checkins").get({
-                    user:user._id,
-                    offer:offer._id,
-                    state:1//CHECKIN_CONFIRMED
-                })).then(function(checkins){
-                    return offer.params.used=(checkins.length>0)
-                }));
-            })
-            Q.all(offersplist).then(function(usedlist){
-                debugger;
-                vendor.offers_filled=_.map(_.zip(vendor.offers_filled,usedlist),function(offerpair){
-                    offerpair[0].params.used=offerpair[1]
-                    return offerpair[0]
-                })
-                return vendor;
-            }).then(function(vendor){
-                debugger;
-                vendor.offers_filled=_.map(vendor.offers_filled,function(offer){
-                    if(offer.stamps)
-                        offer.params.stamps=offer.stamps
-                    return registry.getSharedObject('display').offerDisplay(offer)
-                })
-                if(!user.stamplist)
-                    user.stamplist=[]
-                if(!user.stamplist[vendor.fid])
-                    user.stamplist[vendor.fid]=0
+        })
+        return vendor;
+    }).then(function(vendor){
+        var offersplist=[]
 
-                vendor.offers=vendor.offers_filled
-                console.log( user.stamplist );
+		// Check if an offer has been used or not.	
+        _.each(context.vendor.offers_filled,function(offer){
+            offersplist.push(Q(registry.getSharedObject("data_checkins").get({
+                user:user._id,
+                offer:offer._id,
+                state:1//CHECKIN_CONFIRMED
+            })).then(function(checkins){
+				return offer.params.used=(checkins.length>0)
+			}));
+        })
+        return Q.all(offersplist)
+	}).then(function(usedlist){
+
+		// Remove the used offers.
+        context.vendor.offers_filled=_.map(_.zip(context.vendor.offers_filled,usedlist),function(offerpair){
+            offerpair[0].params.used=offerpair[1]
+            return offerpair[0]
+        })
+        return context.vendor;
+
+    }).then(function(vendor){
+        debugger;
+		// Run the display function of every offer to morph it into the right type.
+		var vendor = context.vendor;
+        vendor.offers_filled=_.map(vendor.offers_filled,function(offer){
+            if(offer.stamps)
+                offer.params.stamps=offer.stamps
+            return registry.getSharedObject('display').offerDisplay(offer)
+        })
+		if(!user.stamplist)
+            user.stamplist=[]
+        if(!user.stamplist[vendor.fid])
+            user.stamplist[vendor.fid]=0
+
+        vendor.offers=vendor.offers_filled;
+        console.log( user.stamplist );
+
 		vendor.stamps=user.stamplist[vendor.fid]
-                vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
-		deferred.resolve(vendor);
+        vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
 
-                return vendor;
-            }).done()
-        }).done()
-}).done()
-return deferred.promise;
+        return vendor;
+	})
 }
 
 function assign_keys(obj_ori, obj_in, key) {

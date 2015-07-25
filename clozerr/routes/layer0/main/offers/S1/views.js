@@ -2,72 +2,44 @@ var registry = global.registry;
 var Q = require("q");
 var _ = require("underscore");
 
-var view_vendor_offers_offerPage_S1 = function( params){
+var view_vendor_offers_offerPage_S1 = function( params, user ){
 
- console.log('in view_vendor_offers_offerPage_S1');
- var vendorObjectData = registry.getSharedObject("data_vendor_S1");
- var deferred = Q.defer();
- debugger;
- var plist=[];
+ 	console.log('in view_vendor_offers_offerPage_S1');
+ 	
+	var vendorObjectData = registry.getSharedObject("data_vendor_S1");
+ 	var deferred = Q.defer();
+	debugger;
+ 	var plist=[];
+ 	var context = { params:params, user:user };
+ 	
+	return registry.getSharedObject("data_vendor").get(params).then(function( vendorObj ){
+   		
+		context.vendor = JSON.parse(JSON.stringify(vendorObj));
+   		return vendorObjectData.get(params, vendorObj)
 
- plist.push(registry.getSharedObject("data_vendor").get(params).then(function(vendor){
-  vendorObj=vendor;
-}));
- plist.push(registry.getSharedObject("live_session").get(params).then(function(user){
-  userObj=user;
-}));
- Q.all(plist).then(function(){
-   vendor = JSON.parse(JSON.stringify(vendorObj));
+	}).then(function(vendor) {
+    
+		return registry.getSharedObject("qualify").assignFlagsToOffer(userObj, vendor)
 
-   debugger;
-   vendorObjectData.get(params, vendorObj).then(function(vendor) {
-    //console.log(vendor);
-    debugger;
-    //console.log(userObj);
+	}).then(function(offers) {
+      	
+		plist = [];
+      		var offersview = [];
 
-    registry.getSharedObject("qualify").assignFlagsToOffer(userObj, vendor).then(function(offers) {
-      plist = [];
-      var offersview = [];
-
-      debugger;
-
-        //removing the dummy visit offer from the offersview
-
-        var visitOffer = _.find(offers, function(offer) {
-          return (offer._id == vendor.visitOfferId);
-        });
-        var index = offers.indexOf(visitOffer);
-
-        if(index > -1) {
-          offers.splice(index, 1);
-        }
-
-        debugger;
         
-        for(var i=0;i<offers.length;i++) {
-          var pr = registry.getSharedObject("qualify").getOfferDisplay(userObj, vendor, offers[i])
-          .then(function(offer) {
-            debugger;
-            offersview.push(offer);
-            console.log(i);
-          });
-          plist.push(pr);
-        }
-        Q.all(plist).then(function() {
-          console.log('q.all');
-          console.log(offersview);
-          vendor.offers = offersview;
-          deferred.resolve(vendor);
+        	return Q.all( 
+			_.map( offers, function( offer ){ 
+				return  registry.getSharedObject("qualify").getOfferDisplay( context.user, context.vendor, offers ); 
+			} );
+		);
+
+	}).then(function( offers ) {
+          	//console.log('q.all');
+          	console.log( offers );
+          	vendor.offers = offers;
+          	deferred.resolve(vendor);
         });
-      });
-  }, function(err) {
-    debugger;
-    deferred.resolve({code:500,error:err});
-  });
-}, function(err) {
-  deferred.resolve({code:500,error:err});
-});
-return deferred.promise;
+      
 }
 
 registry.register('view_vendor_offers_offersPage_S1', {get:view_vendor_offers_offerPage_S1});

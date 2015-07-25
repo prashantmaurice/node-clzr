@@ -11,6 +11,12 @@
    return { description: lookup + ": shared object not found." , code: 500  }
 }
 
+
+function sendError( res, err, code ){
+	res.status( code );
+	res.send( err );
+	res.end();
+}
 router.get("/:object/:handler/:view", function( req, res ){
     var registry = global.registry;
     // var logger = registry.getSharedObject("logger");
@@ -20,54 +26,46 @@ router.get("/:object/:handler/:view", function( req, res ){
     var view = req.params.view;
 //    console.log("HIT: " + dataClass + " " + handler + " " + view );
     if( !registry ){
-        // logger.err();   
+        // logger.err();
     }
 
     var httpObjView = registry.getSharedObject( "view_" + dataClass + "_" + handler + "_" + view );
     if( !httpObjView ){
-        res.status(404)
-        res.send( JSON.stringify(registry.getSharedObject("view_error").makeError( makeRegLookupError( "http_" + dataClass + "_" + handler + "_" + view ) )) );
-        res.end();
+		sendError( res, JSON.stringify(registry.getSharedObject("view_error").makeError( makeRegLookupError( "http_" + dataClass + "_" + handler + "_" + view ) ) ), 404 )
+		return;
     }
-
-    else {
-        try{
+    try{
             httpObjView.get( req.query ,req.user).then( function( output ){
-                //debugger;
                 if(!output){
-                    res.status(500)
-                    res.end('')
-                    return;
+                    sendError( res, "", 500 );
+					return;
                 } 
-                if(output.code)
-                    res.status(output.code)
-                if(output.err){
-		    console.log("error: ");
-                    console.log(output.err)
-                    if(output.err.code)
-                        res.status(output.err.code)
-                    else
-                        res.status(404)
-                }
-                res.send( JSON.stringify( output ) );
-            }, function( err ){
-		debugger;
-		console.log( err );
-                //throw err;
-            	console.log("caught error : ");
-		console.log( err );
-            	var error = registry.getSharedObject("view_error").makeError({ error:err, code:500 });
-            	res.send( error );
-            	res.end();
-            }).done();
-        } catch( err ){
-            console.log("caught error : "+err);
-	    console.log( err );
-            var error = registry.getSharedObject("view_error").makeError({ error:err, code:500 });
-            res.send( error );
-            res.end();
-        }
 
+				// All OK.
+                res.status( 200 );
+				res.send( JSON.stringify( output ) );
+				res.end();
+
+            } ).catch( function( err ){
+
+				console.log("caught error : "+err);
+				console.log( err );
+
+				if( err.stack ){
+					console.log(" Stack trace: ");
+					console.log( err.stack );
+				}
+
+				var error = registry.getSharedObject("view_error").makeError({ error:err, code:500 });
+				
+				sendError( res, error, 500 );
+			});
+
+    } catch( err ){
+            console.log("caught error : "+err);
+			console.log( err );
+            var error = registry.getSharedObject("view_error").makeError({ error:err, code:500 });
+			sendError( res, error, 500 );
     }
 });
 

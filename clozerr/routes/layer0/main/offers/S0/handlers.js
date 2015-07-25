@@ -11,56 +11,6 @@ var CHECKIN_STATE_ACTIVE = 0;
 var CHECKIN_STATE_CONFIRMED = 1;
 var CHECKIN_STATE_CANCELLED = 2;
 
-var vendor_checkin_S0_predicates = {
-    "limitedTime": function(user, vendor, offer) {
-        var currentDate = new Date();
-        var deferred = Q.defer();
-        if(currentDate > offer.params.startDateTime && currentDate < offer.params.endDateTime) {
-            deferred.resolve(true);
-        }
-        else {
-            deferred.resolve(false);
-        }
-        return deferred.promise;
-    },
-    "limitedCustomer": function( user, vendor, offer) {
-        var deferred = Q.defer();
-        var CheckinByVendor=registry.getSharedObject("data_checkins");
-        CheckinByVendor.get({
-            "offer":offer.id,
-            "state":{$in:[CHECKIN_STATE_ACTIVE,CHECKIN_STATE_CONFIRMED]}
-        }).then(function(checkins){
-            if(checkins.length<(offer.params.maxCustomers || 0)){
-                if(_.find(checkins,function(ch){ch.user==user.id}))
-                    deferred.resolve(false)
-                else
-                    deferred.resolve(true)
-            }
-            else
-                deferred.resolve(false)
-        })
-        return deferred.promise;
-    },
-    "happyHour": function(user,vendor,offer){
-	console.log("happyHour reward predicate");
-        var days=offer.params.days; //array containing 0-6 , 0 => Sunday
-        var startHour=offer.params.startHour;//hours in 0-23
-        var endHour=offer.params.endHour;//inclusive of end hour
-        var date=new Date();
-        //console.log(date.getDay(),date.getHours())
-        //console.log( offer );
-	return Q(_.contains(days,date.getDay()) && date.getHours()<=endHour && date.getHours()>=startHour)
-    },
-    "welcomeReward": function(user,vendor,offer){
-        //TODO: are we initializing to zero or one?
-        return Q((!user.stamplist)||(!user.stamplist[vendor.fid])||(user.stamplist[vendor.fid]==0))
-    },
-    "noOffer": function(){ return Q(true); }
-}
-
-vendor_checkin_S0_predicates["welcome"] = vendor_checkin_S0_predicates["welcomeReward"];
-vendor_checkin_S0_predicates["happyHours"] = vendor_checkin_S0_predicates["happyHour"];
-vendor_checkin_S0_predicates["limitedCustomers"] = vendor_checkin_S0_predicates["limitedCustomer"];
 
 var vendor_checkin_S0 = function( params,user, vendor, offer ){
     var deferred = Q.defer();
@@ -70,47 +20,43 @@ var vendor_checkin_S0 = function( params,user, vendor, offer ){
 
     //TODO : Also if the checkin is not validated within 2 hrs, just cancel it i.e set its state to cancelled and save it
     //TODO : Check for predicates.
+    var context = {user:user, params:params};
 
-    registry.getSharedObject("util").policyCheckDuplicateCheckins(user, vendor, offer).then(function(checkin) {
+    return registry.getSharedObject("util").policyCheckDuplicateCheckins(user, vendor, offer).then(function(checkin) {
         console.log("Duplicate cehck finished");
 	if(checkin) {
-            deferred.resolve(checkin);
+            return Q(checkin);
         }
-        else {
-            registry.getSharedObject("util").policyCheckTimeDelayBetweenCheckins(user, vendor, offer).then(function(retval) {
-		console.log("Check time delay between checkins");
-                debugger;
-                var rack = hat.rack(10, 10);
-                if(retval) {
-                    checkinObj.vendor = vendor._id;
-                    checkinObj.user = user._id;
-                    checkinObj.offer = offer._id;
-                    checkinObj.state = CHECKIN_STATE_ACTIVE;
-                    checkinObj.date_created = new Date();
-                    checkinObj.pin=rack();
-                    checkinObj.gcm_id=params.gcm_id||0;
-                    console.log("saving checkin");
-                    checkinObj.save(function(err) {
-                        deferred.resolve({code:500,error:err});
-                    });
-                    deferred.resolve(checkinObj);
-                }
-                else {
-                        deferred.resolve({code:200,error:'checkin time delay error'});
-                    }
-                }, function(err) {
-                    deferred.resolve({code:500,error:err});
-                });
-        }
-    }, function(err) {
-        deferred.resolve({code:500,error:err});
+        
+        return registry.getSharedObject("util").policyCheckTimeDelayBetweenCheckins(user, vendor, offer);
+	
+    }).then(function(retval) {
+
+	// Pass value through.	
+
+	if( typeof retval != "Boolean" ){
+		return Q(checkin);
+	}
+    	var rack = hat.rack(10, 10);
+        if(!retval) {
+		throw { code:437, description:"Time delay between checkins required" };
+	}
+        checkinObj.vendor = vendor._id;
+        checkinObj.user = user._id;
+        checkinObj.offer = offer._id;
+        checkinObj.state = CHECKIN_STATE_ACTIVE;
+        checkinObj.date_created = new Date();
+        checkinObj.pin=rack();
+        checkinObj.gcm_id=params.gcm_id||0;
+        console.log("saving checkin");
+        return checkinObj.save();
     });
 
-return deferred.promise;
 }
 
 var vendor_predicate_S0 = function(user, vendor, offer) {
     debugger;
+    var vendor_checkin_S0_predicates = registry.getSharedObject("checkin_S0_predicates");
     var s0_types = _.keys( vendor_checkin_S0_predicates );
 
     if(!offer.params ||!offer.params.type){
@@ -121,6 +67,7 @@ var vendor_predicate_S0 = function(user, vendor, offer) {
       console.log('wrong params.type for offer'+JSON.stringify(offer));
       return Q(false);
     }
+    //var vendor_checkin_S0_predicates = registry.getSharedObject("checkin_S0_predicates");
     return vendor_checkin_S0_predicates[offer.params.type](user, vendor, offer);
 }
 
@@ -128,9 +75,9 @@ var vendor_validate_S0 = function( vendor, user, checkin, offer ){
     var deferred = Q.defer();
 
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
-    debugger;
     checkin.state = CHECKIN_STATE_CONFIRMED;
-    registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(user) {
+    
+    return registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(user) {
         if(!user.stamplist)
             user.stamplist=[]
         if(!user.stamplist[vendor.fid])
@@ -147,31 +94,23 @@ var vendor_validate_S0 = function( vendor, user, checkin, offer ){
 		console.log("removing reward");
 		
 		var idx = user.rewards.indexOf( checkin.offer );
-		console.log(idx)
 	
 		if( idx != -1 )
 			user.rewards.splice( idx, 1 );
 
-		console.log("user now has: ");
-		console.log( user.rewards );
 		user.markModified("rewards");
 	}
 	console.log("Checkin validated");
-	user.save( function( res ){ console.log( res ) }, function(err) {
-            //deferred.resolve({code:500,error:err});
-            console.log( err );
-    	});
+	return user.save();
+
+    }).then(function( user ){
+
+    	return checkin.save();
 
     });
 
     
-    checkin.save( function( res ){ console.log( res ) }, function(err) {
-            //deferred.resolve({code:500,error:err});
-            console.log( err );
-    });
-    deferred.resolve(checkin);
 
-    return deferred.promise;
 }
 
 global.registry.register("handler_checkin_S0", {get:vendor_checkin_S0});
