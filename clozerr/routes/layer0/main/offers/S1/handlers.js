@@ -22,24 +22,30 @@ var vendor_checkin_S1 = function( params, user, vendor, offer ){
     //TODO : Also if the checkin is not validated within 2 hrs, just cancel it i.e set its state to cancelled and save it
     
     return util.policyCheckDuplicateCheckins(user, vendor, offer).then(function(checkin) {
+	    console.log( user );
+        console.log( vendor );
+        console.log( offer );
         if( checkin ) {
-		return Q(checkin);
-	}
+		    return Q(checkin);
+	    }
+	    /*console.log( user );
+        console.log( vendor );
+        console.log( offer );*/
         
         return util.policyCheckTimeDelayBetweenCheckins(user, vendor, offer)
 
     }).then(function(retval) {
 
-	if( typeof retval != "Boolean" ){
-		return Q(checkin);
-	}
+	    if( typeof retval != "boolean" ){
+		    return Q( retval );
+	    }
 
         var rack = hat.rack(10, 10);
         if( !retval ) {
-		throw({code:546, error:"Minimum 2 hrs between checkins"});
-	}
+		    throw {code:546, error:"Minimum 2 hrs between checkins"};
+	    }
                     
-	checkinObj.vendor = vendor._id;
+	    checkinObj.vendor = vendor._id;
         checkinObj.user = user._id;
        	checkinObj.offer = offer._id;
         checkinObj.state = CHECKIN_STATE_ACTIVE;
@@ -88,10 +94,10 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
         if(!user.stamplist[vendor.fid])
             user.stamplist[vendor.fid] = 0
 
-	console.log("validate_data");
-	console.log(checkin.validate_data.stamps);
+	    console.log("validate_data");
+	    console.log(checkin.validate_data.stamps);
         
-	user.stamplist[vendor.fid] = parseInt(user.stamplist[vendor.fid]) + parseInt( checkin.validate_data.stamps );
+	    user.stamplist[vendor.fid] = parseInt(user.stamplist[vendor.fid]) + parseInt( checkin.validate_data.stamps );
         user.markModified("stamplist");
 
 
@@ -99,8 +105,7 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
             //deferred.resolve({code:500,error:err});
             console.log( err );
         });
-	
-        //registry.getSharedObject("analytics_checkin").get({},checkin,user);
+
         return Q(checkin);
 
 }

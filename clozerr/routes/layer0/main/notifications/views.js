@@ -71,6 +71,6 @@ var view_notifications_read_all = function( params, user ){
     return Q({result:true});
 }
 
-registry.register("view_notifications_vendor_get",{get:view_notifications_vendor_get});
+//registry.register("view_notifications_vendor_get",{get:view_notifications_vendor_get});
 registry.register("view_notifications_list_all",{get:view_notifications_list_all});
 registry.register("view_notifications_read_all",{get:view_notifications_read_all});

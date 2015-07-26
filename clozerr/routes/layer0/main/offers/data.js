@@ -11,11 +11,12 @@ var data_vendor_offer=function(params,vendor){
 }
 
 var data_offer=function(params){
-	var deferred=Q.defer();
-	if(!params.offer_id) return Q({code:500,error:'Invalid params'})
-	return registry.getSharedObject("models_Offer").findOne({
-		_id:params.offer_id
-	}).exec();
+	if(!params.offer_id) 
+        throw {code:500,error:'Invalid params'};
+
+	return Q(registry.getSharedObject("models_Offer").findOne({
+        _id:params.offer_id
+    }).exec());
 }
 
 var request=require('request')

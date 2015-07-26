@@ -15,8 +15,8 @@ var Registry = function(){
         console.log("REGISTERED : " + key + " -> " + object);
     }
 
-    this.getSharedObject = function( key ){
-//	console.log(key);
+    this.getSharedObject = function( key ){ 
+        console.log(key);
         if( !key ) {
             console.log("Unregistered Key : " + key);
             return null;
@@ -26,8 +26,10 @@ var Registry = function(){
 
         if( this.registry[key] )
             return this.registry[key];
-        else
+        else{
+            console.log("Forwarding");
             return this.getSharedObject( this.forwards[key] );
+        }
     }
     
     this.forwardObject = function( src, dest ){

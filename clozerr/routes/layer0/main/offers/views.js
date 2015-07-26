@@ -2,7 +2,7 @@ var registry = global.registry;
 var Q = require("q");
 var _ = require("underscore");
 
-/*var view_vendor_offers_offersPage=function(params,user){
+var view_vendor_offers_offersPage=function(params,user){
 	console.log("Vendor offersPage")
 	var deferred = Q.defer();
 	registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
@@ -30,7 +30,7 @@ var _ = require("underscore");
 		})
 	});
 	return deferred.promise;
-}*/
+}
 
 var view_offers_checkin_create=function(params,user){
 	var deferred = Q.defer();
@@ -72,7 +72,7 @@ var view_offers_checkin_create=function(params,user){
 		console.log("io emitting to signal , "+JSON.stringify({ vendor_id: context.vendor._id }));
 		global.io.emit('signal', JSON.stringify({vendor_id:context.vendor._id}) );
 		
-		return registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin));// Ridiculous name.
+		return registry.getSharedObject("qualify").getCheckinOnCheckinDisplay(checkin);// Ridiculous name.
 	});
 	
 	//return deferred.promise;
@@ -123,13 +123,13 @@ var view_vendor_offers_validate=function(params,user){
 
 	var context = { user:user, params:params };
 
-	return registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).exec().then(function(checkin){
+	return Q(registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).exec()).then(function(checkin){
 
 		if( !checkin ){
 			throw { result: false, message:"No such checkin"} ;
 		}
-		return registry.getSharedObject("data_vendor").get({vendor_id:checkin.vendor})
 		context.checkin = checkin;
+		return registry.getSharedObject("data_vendor").get({vendor_id:checkin.vendor})
 
 	}).then(function(vendor){
 
@@ -149,10 +149,10 @@ var view_vendor_offers_validate=function(params,user){
 
 		registry.getSharedObject("gcm").sendPushNotification( 
 			context.checkin.gcm_id || user.gcm_id || 0,
-			registry.getSharedObject("display").GCMCheckinDisplay( context.checkin, context.vendor );
+			registry.getSharedObject("display").GCMCheckinDisplay( context.checkin, context.vendor )
 		);
 		
-		return registry.getSharedObject("qualify").getCheckinOnValidateDisplay( context.checkin ));
+		return registry.getSharedObject("qualify").getCheckinOnValidateDisplay( context.checkin );
 
 	});
 
@@ -188,7 +188,7 @@ var view_vendor_offers_qrcodevalidate = function(params, user) {
 	return deferred.promise;
 }
 
-registry.register("view_vendor_offers_offersPage", {get:view_vendor_offers_offersPage});
+//registry.register("view_vendor_offers_offersPage", {get:view_vendor_offers_offersPage});
 
 var view_vendor_offers_create = function(params, user) {
 	
@@ -224,7 +224,7 @@ var view_vendor_offers_create = function(params, user) {
 var view_offer_details_get = function(params,user){
 	//var deferred = Q.defer();
 	var offer = registry.getSharedObject("data_offer");
-	return offer.get(params);
+	return Q(offer.get(params));
   	//return deferred.promise;
 }
 var view_offer_details_set = function( params, user ) {
@@ -254,7 +254,7 @@ var view_offer_details_set = function( params, user ) {
 
 registry.register("view_offers_checkin_validate", {get:view_vendor_offers_validate});
 registry.register("view_offers_checkin_create", {get:view_offers_checkin_create});
-registry.register("view_vendor_checkin", {get:view_offers_dummy_checkin_create});
+//registry.register("view_vendor_checkin", {get:view_offers_dummy_checkin_create});
 registry.register("view_offers_checkin_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
 registry.register("view_vendor_offers_qrcodevalidate", {get:view_vendor_offers_qrcodevalidate});
 

@@ -13,15 +13,19 @@ var policyCheckTimeDelayBetweenCheckins = function( user, vendor, offer ) {
 
   var deferred = Q.defer();
   debugger;
-  CheckIn.find( { user:user._id, vendor:vendor._id, state:CHECKIN_STATE_CONFIRMED} ).sort("date_created").exec().then(function( checkins ){
+  CheckIn.find( { user:user._id, vendor:vendor._id, state:CHECKIN_STATE_CONFIRMED} ).sort("-date_created").exec().then(function( checkins ){
     debugger;
     var checkin = checkins[0];
     debugger;
 
+    console.log( checkins );
+    console.log( checkins[0] );
     if( !checkin || !checkin.date_created){
       console.log(" policyCheckTimeDelayBetweenCheckins : true")
       deferred.resolve( true );
     }
+    console.log( new Date().getTime() );
+    console.log( new Date().getTime() - checkin.date_created.getTime() ); 
 
     if( Math.abs( new Date().getTime() - checkin.date_created.getTime() ) < registry.getSharedObject("settings").checkin.delay_between_checkins ) {
       console.log(" policyCheckTimeDelayBetweenCheckins : false")

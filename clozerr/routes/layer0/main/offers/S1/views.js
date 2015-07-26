@@ -24,13 +24,13 @@ var view_vendor_offers_offerPage_S1 = function( params, user ){
 	}).then(function(offers) {
       	
 		plist = [];
-      		var offersview = [];
+      	var offersview = [];
 
         
-        	return Q.all( 
-			_.map( offers, function( offer ){ 
-				return  registry.getSharedObject("qualify").getOfferDisplay( context.user, context.vendor, offers ); 
-			} );
+        return Q.all( 
+		    _.map( offers, function( offer ){ 
+			    return  registry.getSharedObject("qualify").getOfferDisplay( context.user, context.vendor, offers ); 
+		    })
 		);
 
 	}).then(function( offers ) {

@@ -3,83 +3,94 @@ var Q = require("q");
 var _ = require("underscore");
 
 var view_vendor_offers_offers_S0=function(params,user){
-	var deferred = Q.defer();
-	registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
-		debugger;
-		registry.getSharedObject("data_vendor_S0").get(params,vendor).then(function(vendor_offers){
-			debugger;
-			var predicate = registry.getSharedObject("handler_predicate_S0");
-			var plist=[]
-			_.each(vendor_offers.offers,function(element,index,array){
-				plist.push(predicate.get(user,vendor,element))
-			})
-			debugger;
-			Q.all(plist).then(function(predlist){
-				debugger;
-				var offersplist=[];
-				_.each(_.filter(vendor_offers.offers,
-						function(val,idx){return predlist[idx]})
-					,function(offer){
-						// return offer;
-						offersplist.push(registry.getSharedObject("qualify").getOfferDisplay(user,vendor,offer))
-					})
-				Q.all(offersplist).then(function(offerlist){
-					deferred.resolve(offerlist);
-				})
-			}).done()
-		}).done()
-	}).done();
-	return deferred.promise;
-}
-var view_vendor_offers_checkin_S0 = function(params, user) {
-	var deferred = Q.defer();
-
-	registry.getSharedObject("data_vendor_withOffers").get(params).then(function(vendor) {
-		var offer_id = params.offer_id;
-		var offer = _.find(vendor.offers, function(offer) {
-			return (offer._id == offer_id);
-		});
-		if(offer == null) {
-			//TODO : throw error : request made with an offer id which is not an offer given by that particular vendor
-		}
-		registry.getSharedObject("handler_predicate_S0").get(user, vendor, offer).then(function(offer) {
-			if(offer) {
-				registry.getSharedObject("vendor_checkin_S0").get(params, user, vendor, offer).then(function(checkin) {
-					deferred.resolve(qualify.getCheckinOnCheckinDisplay(checkin));
-				}, function(err) {
-					deferred.resolve({code:500,error:err});
-				});
-			}
-			else {
-				//TODO : throw error here -- object empty here.. not an offer for the user
-			}
-		}, function(err) {
-			deferred.resolve({code:500,error:err});
-		}); 
+	
+    var context = { params: params, user:user };
+    return registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+	    context.vendor = vendor;	
+        return registry.getSharedObject("data_vendor_S0").get(params,vendor);
+    
+    }).then(function(vendor_offers){
 		
-	}, function(err) {
-		deferred.resolve({code:500,error:err});
+        context.vendor_offers = vendor_offers;
+
+		var predicate = registry.getSharedObject("handler_predicate_S0");
+		var plist = [];
+
+        _.each(vendor_offers.offers,function(element,index,array){
+			plist.push(predicate.get(user,context.vendor,element))
+		})
+			
+			return Q.all(plist);
+            
+    }).then(function(predlist){
+				
+		var offersplist=[];
+		_.each(_.filter( context.vendor_offers.offers,
+				function(val,idx){return predlist[idx]})
+				,function(offer){
+						// return offer;
+					offersplist.push(registry.getSharedObject("qualify").getOfferDisplay(user,context.vendor,offer))
+				});
+		return Q.all(offersplist)
+        
+    });
+}
+
+var view_vendor_offers_checkin_S0 = function(params, user) {
+
+
+    var context = {params:params, user:user};
+	return registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+		var offer_id = params.offer_id;
+
+        context.vendor = vendor;
+        return registry.getSharedObject("data_offer").get(params);
+
+    }).then( function( offer ){ 
+		/*var offerFromVendor = _.find( context.vendor.offers, function(offer) {
+			return (offer._id == context.offer_id);
+		});*/
+        context.offer = offer;
+		if( !offer ) {
+			//TODO : throw error : request made with an offer id which is not an offer given by that particular vendor
+            throw { code:311, description:"Offer does not exist" };
+		}
+
+		return registry.getSharedObject("handler_predicate_S0").get(user, vendor, offer)
+        
+    }).then(function(offer) {
+		if( !offer )
+            throw { err:301, description:"Offer not valid in this context"};
+
+		return registry.getSharedObject("vendor_checkin_S0").get(params, user, context.vendor, context.offer).then(function(checkin) {
+			return qualify.getCheckinOnCheckinDisplay(checkin);
+		});	
+
 	});
 
-	return deferred.promise;
+	
 }
 
 var view_vendor_offers_validate_S0 = function(params, user) {
-	var deferred = Q.defer();
 
-	registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
-		registry.getSharedObject("data_checkin").get(params, user).then(function(checkin_obj) {
-			registry.getSharedObject("vendor_validate_S0").get(params,vendor,user,checkin).then(function(checkin) {
-				deferred.resolve(qualify.getCheckinOnValidateDisplay(checkin));
-			}, function(err) {
-				deferred.resolve({code:500,error:err});
-			});
-		}, function(err) {
-			deferred.resolve({code:500,error:err});
-		});
+
+    var context = {};
+	return registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+	    
+        context.vendor = vendor;
+        return registry.getSharedObject("data_checkin").get(params, user);
+    
+    }).then(function(checkin_obj) {
+
+        context.checkin_obj = checkin_obj;
+		return registry.getSharedObject("vendor_validate_S0").get(params,context.vendor,user,context.checkin_obj)
+
+    }).then(function(checkin) {
+
+		return qualify.getCheckinOnValidateDisplay(checkin);
+
 	});
 
-	return deferred.promise;
 }
 
 var view_vendor_offers_limitedtimeoffers = function(params, user) {

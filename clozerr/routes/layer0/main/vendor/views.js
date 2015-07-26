@@ -29,16 +29,16 @@ function getVendorType(vendor) {
 
 
 var view_vendor_details_get = function( params ) {
-    var deferred = Q.defer();
 
-    registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+    return registry.getSharedObject("data_vendor").get(params).then(function(vendor) {
+        if( !vendor )
+            throw { code : 351, description : "No such vendor" };
+
         vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
-	deferred.resolve(vendor);
-    }, function(err) {
-        deferred.resolve({code:500,error:err});
+	    return vendor;
+
     });
 
-    return deferred.promise;
 }
 
 // DEPRECATED.. Doesn't look good anyway.
@@ -86,13 +86,13 @@ var view_vendor_allOffers = function(params,user){
         }))
     }).then( function( validlist ){
             
-	    context.vendor.offers_filled=_.map(_.zip(vendor.offers_filled,validlist),function(offerpair){
+	    context.vendor.offers_filled=_.map(_.zip( context.vendor.offers_filled, validlist ),function(offerpair){
                 if(!offerpair[0].params)
                     offerpair[0].params={}
                 offerpair[0].params.unlocked=offerpair[1]
                 return offerpair[0]
         })
-        return vendor;
+        return context.vendor;
     }).then(function(vendor){
         var offersplist=[]
 
@@ -151,47 +151,37 @@ function assign_keys(obj_ori, obj_in, key) {
     }
 }
 
+/*
+ * Vendor Details Set function sets details of the vendor object.
+ * Input: key-value pairs as URL parameters.
+ */
+
 var view_vendor_details_set = function( params, user ) {
-    var deferred = Q.defer();
 
     var vendorObjectM = registry.getSharedObject("data_vendor");
-    var userObjectM = registry.getSharedObject("live_session");
 
-    userObjectM.get( params ).then(function(user) {
-        debugger;
-        if(user.type == "Vendor") {
-            if(user.vendor_id == params.vendor_id) {
-               vendorObjectM.get( params ).then(function(vendor) {
-                if(params.vendor) {
-                    for(key in params.vendor) {
-                        console.log('setting vendor property '+key+' to '+params.vendor[key])
-                        vendor[key] = params.vendor[key];
-                        
-			//assign_keys(vendor, params.vendor, key);
-                        //vendor.markModified(key);
-                    }
-                    debugger;
-                    deferred.resolve(vendor.save());
-                }
-                else {
-                    deferred.resolve({code:500,error:'invalid params'});
-                }
-            }, function(err) {
-                deferred.resolve({code:500,error:err});
-            });
-           }
-           else {
-            deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
+    
+    if(user.type != "Vendor") {
+        throw { code:467, description:"user is not a vendor" };    
+    }
+
+    if(user.vendor_id != params.vendor_id) {
+        throw { code:468, description:"user is not associated with this vendor" };    
+    }
+
+    return vendorObjectM.get( params ).then(function(vendor) {
+
+        if( !params.vendor ) {
+            throw { code:469, description:"No vendor object in the request" };    
         }
-    }
-    else {
-        deferred.resolve(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
-    }
-}, function(err) {
-    deferred.resolve({code:500,error:err});
-});
+        
+        for(key in params.vendor) {
+                console.log('setting vendor property '+key+' to '+params.vendor[key])
+                vendor[key] = params.vendor[key];                
+        }
 
-return deferred.promise;
+        return vendor.save();
+    });
 
 }
 
@@ -274,16 +264,19 @@ var view_vendor_search_near=function(params,user){
         tag - vendor.tags (containing tag)
         category - vendor.category
         */
-        var deferred = Q.defer();
-	var util = registry.getSharedObject("util");
+        //var deferred = Q.defer();
+	    
+    
+        var util = registry.getSharedObject("util");
         limit=params.limit || registry.getSharedObject("settings").api.default_limit;
         offset=params.offset || 0;
+
         if(!params.latitude || !params.longitude)
-            deferred.resolve({code:500,description:"distance params missing"});
+            throw {code:500,description:"distance params missing"};
+
         registry.getSharedObject("data_vendor_near").get(params,user).then(function(vendors){
             return vendors;
-        })
-        .then(function(vendors){
+        }).then(function(vendors){
             debugger;
             if(params.name){
                 return _.map(registry.getSharedObject("search").fuzzy(params.name,vendors,{
@@ -318,14 +311,12 @@ var view_vendor_search_near=function(params,user){
             return vendors;
         })
         .then(function(vendors){
-            deferred.resolve(
-                _.map(vendors,function(vendor){
-                    // return vendor
+                return _.map(vendors,function(vendor){
                     return util.vendorDistDisplay(vendor,params.latitude,params.longitude);
-                }))
+                });
         })
-        return deferred.promise
-    }
+}
+
     var view_vendor_gallery_upload = function(params, user) {
         var deferred = Q.defer();
 
@@ -363,6 +354,8 @@ var view_vendor_search_near=function(params,user){
     })
       return deferred.promise;
   }
+
+
   var view_vendor_twitter_promote = function(params,user){
 
     var deferred = Q.defer();
@@ -382,93 +375,61 @@ var view_vendor_search_near=function(params,user){
     return deferred.promise;
 }
 
+
 var view_vendor_checkins_active = function(params, user) {
-    var deferred = Q.defer();
-    debugger;
-
-    if(user.type == "Vendor") {
-        if(user.vendor_id.toString() == params.vendor_id) {
-            registry.getSharedObject("data_vendor_checkins_active").get(params).then(function(checkins_filtered) {
-                deferred.resolve(checkins_filtered);
-            });
-        }
-        else {
-            deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
-        }
+    if(user.type != "Vendor") {
+        throw { code:481, description: "user is not a vendor" };
     }
-    else {
-        deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
+    if(user.vendor_id.toString() != params.vendor_id) {
+        throw { code:483, description: "user is not associated with vendor." };
     }
 
-    return deferred.promise;
+    return registry.getSharedObject("data_vendor_checkins_active").get(params);
 }
 
 var view_vendor_checkins_confirmed = function(params, user) {
-    var deferred = Q.defer();
-    debugger;
 
-    if(user.type == "Vendor") {
-        if(user.vendor_id.toString() == params.vendor_id) {
-            registry.getSharedObject("data_vendor_checkins_confirmed").get(params).then(function(checkins_filtered) {
-                deferred.resolve(checkins_filtered);
-            });
-        }
-        else {
-            deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
-        }
+    if(user.type != "Vendor") {
+        throw { code:491, description: "user is not a vendor" };
     }
-    else {
-        deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
+    if(user.vendor_id.toString() != params.vendor_id) {
+        throw { code:493, description: "user is not associated with vendor." };
     }
 
-    return deferred.promise;
+    return registry.getSharedObject("data_vendor_checkins_confirmed").get(params);
 }
 
 var view_vendor_checkins_cancelled = function(params, user) {
-    var deferred = Q.defer();
-    debugger;
-
-    if(user.type == "Vendor") {
-        if(user.vendor_id.toString() == params.vendor_id) {
-            registry.getSharedObject("data_vendor_checkins_cancelled").get(params).then(function(checkins_filtered) {
-                deferred.resolve(checkins_filtered);
-            });
-        }
-        else {
-            deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
-        }
+    if(user.type != "Vendor") {
+        throw { code:431, description: "user is not a vendor" };
     }
-    else {
-        deferred.resolve({result:false,err:{code:909, message:"Not authorised"}});
+    if(user.vendor_id.toString() != params.vendor_id) {
+        throw { code:433, description: "user is not associated with vendor." };
     }
 
-    return deferred.promise;
+    return registry.getSharedObject("data_vendor_checkins_confirmed").get(params);
 }
 
 var view_vendor_details_create = function(params, user) {
-    var deferred = Q.defer();
+    
     var Vendor = registry.getSharedObject("models_Vendor");
     var obj = registry.getSharedObject("util").filterObject(params, ["name", "location", "image", "description", "address", "phone"]);
 
     if(!obj.result) {
-        deferred.resolve(obj.err);
+        throw { code:344, description:obj.err };
     }
-    else {
-        var vendor_new = new Vendor(obj.data);
-        vendor_new.date_created = new Date();
-        vendor_new.dateUpdated = vendor_new.date_created;
-        vendor_new.resource_name = vendor_new._id;
-        vendor_new.visible = true;
-        vendor_new.test = false;
-        vendor_new.fid = rack();
-        debugger;
-        vendor_new.save();
-        deferred.resolve(vendor_new);
-    }
+    
+    var vendor_new = new Vendor(obj.data);
+        
+    vendor_new.date_created = new Date();
+    vendor_new.dateUpdated = vendor_new.date_created;
+    vendor_new.resource_name = vendor_new._id;
+    vendor_new.visible = true;
+    vendor_new.test = false;
+    vendor_new.fid = rack();
+    
+    return vendor_new.save(); 
 
-    debugger;
-
-    return deferred.promise;
 }
 var getBeaconFormat=function(params,user,vendor){
     if(vendor.geoloc && vendor.geoloc==true)
@@ -575,82 +536,110 @@ var view_vendor_geofences_add = function(params, user) {
     return deferred.promise;
 }
 var view_vendor_offers_unlocked=function(params,user){
-  var deferred = Q.defer();
-  if(params.vendor_id){
-    Q.all([registry.getSharedObject("view_vendor_offerspage").get(params,user)
-    ,registry.getSharedObject("view_vendor_offers_rewardspage").get(params,user)]).then(function(off_rew){
-      //console.log(off_rew);
-      var offers=_.filter(off_rew[0].offers,function(offer){
-        return offer.params.unlocked && !offer.params.used;
-      })
-      var rewards=off_rew[1].rewards;
-      off_rew[0].offers=offers.concat(rewards)
-      var display = registry.getSharedObject("qualify");
+  //var deferred = Q.defer();
+    if(!params.vendor_id){
+        throw { code:351, description:"No vendor_id provided." };
+    }
+
+    var context = { user: user, params: params };
+
+    return Q.all([registry.getSharedObject("view_vendor_offerspage").get(params,user)
+                    ,registry.getSharedObject("view_vendor_offers_rewardspage").get(params,user)]).then(function(off_rew){
+        
+        context.off_rew = off_rew;
+        // Get all unlocked and unused offers from offerspage URL.
+        var offers=_.filter(off_rew[0].offers,function(offer){
+                return offer.params.unlocked && !offer.params.used;
+        })
+
+            // Concatenate the rewards specific to this vendor with the offers.
+        var rewards=off_rew[1].rewards;
+        off_rew[0].offers=offers.concat(rewards)
+      
+        var display = registry.getSharedObject("qualify");
      	console.log("UNLOCKED:");
-	//console.log( off_rew[0].offers ); 
-	var prList = _.map(off_rew[0].offers, function( offer ){
-		return display.getOfferDisplay( user, off_rew[0], offer, false );
-	}); 
-	Q.all( prList ).then( function( offers ){ 
-		off_rew[0].offers = offers;
-      		deferred.resolve(off_rew[0]);
-	 } );
-    })
-  }
-  return deferred.promise
+	        //console.log( off_rew[0].offers ); 
+	    return Q.all( _.map(off_rew[0].offers, function( offer ){
+		
+            return display.getOfferDisplay( user, off_rew[0], offer, false );
+	    
+        }) );
+
+    }).then( function( offers ){ 
+
+		context.off_rew[0].offers = offers;
+      	return context.off_rew[0];
+
+	});
+  
 }
 var view_vendor_offers_rewardspage=function(params,user){
-    var deferred = Q.defer();
-    if(params.vendor_id){
-        var user_rewards_p=Q.all([registry.getSharedObject("view_vendor_offers_offers_S0").get(params,user)
-            ,registry.getSharedObject("view_offers_rewards_user").get(params,user)])
-        .then(function(rewards_s0){
+   
+    var context = {params: params, user:user };
+
+    if( params.vendor_id ){
+
+        return Q.all([registry.getSharedObject("view_vendor_offers_offers_S0").get(params,user)
+                    ,registry.getSharedObject("view_offers_rewards_user").get(params,user)])
+        .then(function( rewards_s0 ){
+            
             console.log( rewards_s0 );
-		return rewards_s0[0].concat(rewards_s0[1])
-        })
-        user_rewards_p.then(function(rewards){
-            registry.getSharedObject("data_vendor").get(params).then(function(vendor){
-                var _vendor=vendor.toObject()
-                _vendor.rewards=_.filter(rewards,
+            return rewards_s0[0].concat(rewards_s0[1]);
+
+        }).then(function( rewards ){
+            
+            context.rewards = rewards;
+            return registry.getSharedObject("data_vendor").get(params)
+            
+        }).then(function( vendor ){
+            var rewards = context.rewards;
+            var _vendor=vendor.toObject()
+            _vendor.rewards=_.filter(rewards,
                     function(reward){
-                        if(reward.type=='reward'){
-                            if(!reward.vendor_id)
-                                return false
-                            console.log(reward.vendor_id)
-                            console.log(vendor._id)
-                            return reward.vendor_id.toString()==vendor._id;
+
+                        // Handle exclusive rewards.
+                        if( reward.vendor && reward.vendor._id ){
+                            
+                            console.log(reward.vendor_id);
+                            console.log(vendor._id);
+                            return reward.vendor._id.toString() == vendor._id;
+
                         }
-                        return true
-                    });
+
+                        // For all other rewards.
+                        return true;
+                    }
+            );
 		
-                _vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
-                deferred.resolve(_vendor)
-            })
-        }).done()
+            // Modify the vendor object a bit first.
+            _vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
+
+            return Q(_vendor);
+        });
+
     } else {
         return registry.getSharedObject("view_offers_rewards_user").get(params,user)
     }
-    return deferred.promise;
 }
+
 var is_vendor_request=function(vendor_id,user){
     return (user.type=='Vendor') && (user.vendor_id==vendor_id)
 }
+
 var view_vendor_club_get = function(params,user){
-    var deferred = Q.defer();
-    // if(!params.vendor_id)
-    //     return Q(registry.getSharedObject("view_error").makeError({ error:{message:"Missing params: vendor_id"}, code:500 }));
+    
     if(!user.type=='Vendor')
-        return Q(registry.getSharedObject("view_error").makeError({ error:{message:"Permission denied"}, code:909 }));
-    registry.getSharedObject("data_vendor").get({vendor_id:user.vendor_id}).then(function(vendor){
-        var field="stamplist."+vendor.fid
-        query_param={}
+        throw { err: 361, description:"user is not vendor" };
+
+    
+    return registry.getSharedObject("data_vendor").get({vendor_id:user.vendor_id}).then(function(vendor){
+        var field="stamplist."+vendor.fid;
+        query_param={};
         query_param[field]={$exists:true}
         query_param[field]={$gt:0}
-        registry.getSharedObject("data_user").get(query_param).then(function(users){
-            deferred.resolve(users);
-        })
-    }).done();
-    return deferred.promise;
+        return registry.getSharedObject("data_user").get(query_param);
+    });
+
 }
 
 global.registry.register("view_vendor_geofences_add", { get : view_vendor_geofences_add });
@@ -660,7 +649,7 @@ global.registry.register("view_vendor_homepage", {get:view_vendor_homepage});
 
 global.registry.register("view_vendor_facebook_promote",{get:view_vendor_facebook_promote});
 global.registry.register("view_vendor_twitter_promote",{get:view_vendor_twitter_promote});
-global.registry.register("view_vendor_offersPage", {get:view_vendor_offersPage});
+//global.registry.register("view_vendor_offersPage", {get:view_vendor_offersPage});
 global.registry.register("view_vendor_offerspage", {get:view_vendor_allOffers});
 global.registry.register("view_vendor_search_near", {get:view_vendor_search_near,post:view_vendor_search_near});
 global.registry.register("view_vendor_beacons_all", {get:view_vendor_beacons_all});
@@ -682,4 +671,4 @@ global.registry.register("view_vendor_allOffers", {get:view_vendor_allOffers});
 global.registry.register("view_vendor_club_get", {get:view_vendor_club_get});
 global.registry.register("view_vendor_offers_unlocked", {get:view_vendor_offers_unlocked});
 
-module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offersPage};
+//module.exports = {homepage:view_vendor_homepage, offerpage:view_vendor_offersPage};

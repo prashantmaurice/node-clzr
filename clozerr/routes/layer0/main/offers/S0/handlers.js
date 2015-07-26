@@ -23,10 +23,15 @@ var vendor_checkin_S0 = function( params,user, vendor, offer ){
     var context = {user:user, params:params};
 
     return registry.getSharedObject("util").policyCheckDuplicateCheckins(user, vendor, offer).then(function(checkin) {
+        context.checkin = checkin;
         console.log("Duplicate cehck finished");
-	if(checkin) {
+	    console.log( user );
+        console.log( vendor );
+        console.log( offer );
+        if(checkin) {
             return Q(checkin);
         }
+        
         
         return registry.getSharedObject("util").policyCheckTimeDelayBetweenCheckins(user, vendor, offer);
 	
@@ -34,13 +39,14 @@ var vendor_checkin_S0 = function( params,user, vendor, offer ){
 
 	// Pass value through.	
 
-	if( typeof retval != "Boolean" ){
-		return Q(checkin);
-	}
-    	var rack = hat.rack(10, 10);
-        if(!retval) {
-		throw { code:437, description:"Time delay between checkins required" };
-	}
+	    if( typeof retval != "boolean" ){
+		    return Q( retval );
+	    }
+
+        var rack = hat.rack(10, 10);
+        if( !retval ) {
+		    throw { code:437, description:"Time delay between checkins required" };
+	    }
         checkinObj.vendor = vendor._id;
         checkinObj.user = user._id;
         checkinObj.offer = offer._id;
@@ -55,14 +61,20 @@ var vendor_checkin_S0 = function( params,user, vendor, offer ){
 }
 
 var vendor_predicate_S0 = function(user, vendor, offer) {
-    debugger;
+    
     var vendor_checkin_S0_predicates = registry.getSharedObject("checkin_S0_predicates");
     var s0_types = _.keys( vendor_checkin_S0_predicates );
-
-    if(!offer.params ||!offer.params.type){
+    
+    // make sure the offer object is in some way linked to the vendor or if it's the default offer.
+    var defaultOffer = registry.getSharedObject("settings").defaultOffer;
+    if( ( offer._id != defaultOffer ) && ( !offer.vendor || (offer.vendor._id != vendor._id) ) && ( vendor.offers.indexOf( offer._id ) == -1  )  )
+        return Q(false);
+    
+    if(!offer.params || !offer.params.type){
         console.log('no params or params.type for offer'+JSON.stringify(offer))
         return Q(false)
     }
+
     if(s0_types.indexOf(offer.params.type)==-1){
       console.log('wrong params.type for offer'+JSON.stringify(offer));
       return Q(false);

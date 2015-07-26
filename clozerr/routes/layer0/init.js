@@ -71,3 +71,14 @@ try{
 }catch( err ){
     console.log(" layer0 couldn't open connection. assuming that the connection is already open. ");
 }
+
+/*Object.prototype.$ = function( text ){
+    
+    var deepest = this;
+
+    text.split(".").forEach( function( sub ){
+        deepest = deepest[ sub ];
+    });
+    
+    return deepest;
+}*/
