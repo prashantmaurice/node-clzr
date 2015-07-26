@@ -93,9 +93,9 @@ var vendor_validate_S0 = function( vendor, user, checkin, offer ){
         if(!user.stamplist)
             user.stamplist=[]
         if(!user.stamplist[vendor.fid])
-            user.stamplist[vendor.fid]= parseInt( checkin.validate_data.stamps );
+            user.stamplist[vendor.fid] = parseInt( checkin.validate_data.stamps );
         else {
-            user.stamplist[vendor.fid]+= parseInt(user.stamplist[vendor.fid]) + parseInt(checkin.validate_data.stamps);
+            user.stamplist[vendor.fid] = parseInt(user.stamplist[vendor.fid]) + parseInt(checkin.validate_data.stamps);
         }
         user.markModified('stamplist')
 

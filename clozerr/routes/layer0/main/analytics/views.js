@@ -45,6 +45,12 @@ function makeArray(obj) {
 	}
 }
 
+var view_analytics_get = function( params, user ){
+	return Q( registry.getSharedObject("models_Analytics").find( params ) ).then( function( hits ){
+		var analytics_admin_view = registry.getSharedObject("analytics_admin_view");
+		return _.map( hits, function( hit ){ analytics_admin_view[hit.metric]( hit ); } );
+	} );
+}
 var view_analytics_byDay = function(params,user){
 	var scope = {};
 	scope.filterObject = global.registry.getSharedObject('util').filterObject;

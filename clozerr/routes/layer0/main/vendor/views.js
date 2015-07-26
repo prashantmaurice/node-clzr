@@ -274,7 +274,7 @@ var view_vendor_search_near=function(params,user){
         if(!params.latitude || !params.longitude)
             throw {code:500,description:"distance params missing"};
 
-        registry.getSharedObject("data_vendor_near").get(params,user).then(function(vendors){
+        return registry.getSharedObject("data_vendor_near").get(params,user).then(function(vendors){
             return vendors;
         }).then(function(vendors){
             debugger;

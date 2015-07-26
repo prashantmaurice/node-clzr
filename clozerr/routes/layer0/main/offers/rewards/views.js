@@ -78,8 +78,8 @@ var view_offers_reward_transfer=function(params,user){
 
 var view_offers_rewards_user=function(params,user){
 	
-    return registry.getSharedObject('data_rewards')
-	.get({_id:{$in:user.rewards}}).then(function(rewards){
+    return Q( registry.getSharedObject('data_rewards')
+	.get({_id:{$in:user.rewards}}) ).then(function(rewards){
 
 		return Q( _.map(rewards,registry.getSharedObject('display').rewardListDisplay) );
 	
