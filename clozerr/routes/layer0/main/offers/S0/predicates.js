@@ -1,7 +1,7 @@
 
 var registry = global.registry;
 var _ = require("underscore");
-var Q = require("Q");
+var Q = require("q");
 var vendor_checkin_S0_predicates = {
     "limitedTime": function(user, vendor, offer) {
         var currentDate = new Date();
