@@ -1,4 +1,8 @@
 
+var CHECKIN_STATE_ACTIVE = 0;
+var CHECKIN_STATE_CONFIRMED = 1;
+var CHECKIN_STATE_CANCELLED = 2;
+
 var registry = global.registry;
 var _ = require("underscore");
 var Q = require("q");

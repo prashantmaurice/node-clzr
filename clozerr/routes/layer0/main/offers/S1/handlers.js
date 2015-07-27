@@ -63,7 +63,11 @@ var vendor_predicate_S1 = function(user, vendor, offer) {
         user.stamplist[vendor.fid] = 0;
     }
 
-    if( (user.stamplist[vendor.fid]+1 >= offer.stamps*1) || ( vendor.visitOfferId && (offer._id.toString() == vendor.visitOfferId.toString()) ) ) {
+    var defaultOffer = registry.getSharedObject("settings").defaultOffer;
+    if( ( offer._id != defaultOffer ) && ( !offer.vendor || (offer.vendor._id != vendor._id) ) && ( vendor.offers.indexOf( offer._id ) == -1  )  )
+        return Q(false);
+
+    if( (user.stamplist[vendor.fid] >= offer.stamps*1) || ( vendor.visitOfferId && (offer._id.toString() == vendor.visitOfferId.toString()) ) ) {
         return Q(true);
     }
     else {

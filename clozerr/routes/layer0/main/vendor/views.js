@@ -152,6 +152,36 @@ function assign_keys(obj_ori, obj_in, key) {
 }
 
 /*
+ *	Takes a stringified version of the patch object( to preserve type data ).
+ *	Parses it and patches it onto the existing vendor object.
+ */
+var view_vendor_details_patch = function( params, user ){
+
+    var vendorObjectM = registry.getSharedObject("data_vendor");
+
+    
+    if(user.type != "Vendor") {
+        throw { code:467, description:"user is not a vendor" };    
+    }
+
+    if(user.vendor_id != params.vendor_id) {
+        throw { code:468, description:"user is not associated with this vendor" };    
+    }
+
+	var patch = JSON.parse( params.data );
+	
+	var util = registry.getSharedObject("util");
+    return vendorObjectM.get( params ).then(function(vendor) {
+		util.patchObject( vendor, patch );
+		//console.log( vendor.description );
+		//console.log( patch );
+		//vendor.description = patch.description;
+		//console.log( vendor.save );
+		return vendor.save();
+    });
+}
+
+/*
  * Vendor Details Set function sets details of the vendor object.
  * Input: key-value pairs as URL parameters.
  */
@@ -252,6 +282,7 @@ var view_vendor_homepage = function( params, user ){
 
     return deferred.promise;
 }
+
 
 var view_category_list = function(params,user) {
     return Q(registry.getSharedObject("settings").categories)
@@ -664,6 +695,7 @@ global.registry.register("view_vendor_details_get", {get:view_vendor_details_get
 global.registry.register("view_vendor_details_create", {get:view_vendor_details_create});
 global.registry.register("view_vendor_details_update", {get:view_vendor_details_update});
 global.registry.register("view_vendor_details_set", {get:view_vendor_details_set});
+global.registry.register("view_vendor_details_patch", {get:view_vendor_details_patch});
 
 global.registry.register("view_vendor_users_visited", {get:view_vendor_users_visited});
 global.registry.register("view_vendor_offers_rewardspage", {get:view_vendor_offers_rewardspage});

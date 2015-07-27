@@ -90,6 +90,7 @@ router.get("/:object/:view", function( req, res ){
     else {
         try{
             httpObjView.get( req.query ,req.user).then( function( output ){
+				
                 if(output.code)
                     res.status(output.code)
                 if(output.err){

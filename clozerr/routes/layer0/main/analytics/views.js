@@ -2,14 +2,20 @@ var registry=global.registry
 var Q = require('q')
 var view_analytics_hit=function(params,user){
 	var Analytics = registry.getSharedObject('models_Analytics')
-	var analytics_obj=new Analytics();
+	var analytics_obj = new Analytics();
+
 	console.log(params)
 	analytics_obj.timeStamp=params.time || Date.now();
 	analytics_obj.user=user.id;
 	analytics_obj.metric=params.metric;
 	analytics_obj.dimensions=params.dimensions;
 	analytics_obj.test=params.test||false;
-	return Q(analytics_obj.save())
+	
+	return Q(analytics_obj.save()).then(function( analytics_obj ){
+		// broadcast ID to all listeners prompting them to load the analytics data.
+		global.io.emit('analytics', JSON.stringify({event_id:analytics_obj._id}) );
+		return analytics_obj;
+	});
 }
 var compute_analytics=function(map,reduce,query,scope){
 	debugger;
@@ -46,9 +52,11 @@ function makeArray(obj) {
 }
 
 var view_analytics_get = function( params, user ){
+
+	// Check if user is admin.
 	return Q( registry.getSharedObject("models_Analytics").find( params ) ).then( function( hits ){
 		var analytics_admin_view = registry.getSharedObject("analytics_admin_view");
-		return _.map( hits, function( hit ){ analytics_admin_view[hit.metric]( hit ); } );
+		return _.map( hits, function( hit ){ if( analytics_admin_view[hit.metric] ) return analytics_admin_view[hit.metric]( hit ); else return Q(false) } );
 	} );
 }
 var view_analytics_byDay = function(params,user){

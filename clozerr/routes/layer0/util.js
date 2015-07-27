@@ -221,7 +221,28 @@ module.exports = {
   vendorDistDisplay:vendorDistDisplay,
   arrayOperations:arrayOperations,
   getCheckinSuccessMessage:getCheckinSuccessMessage,
-  filterObject:filterObject
+  filterObject:filterObject,
+  patchObject:patchObject
+}
+
+function patchObject( obj, patch ){
+	for( var key in patch ){
+		console.log(key);
+		if( !( ( typeof patch[key] ) in {"boolean":1,"string":1,"number":1,"function":1} ) ){
+			obj[key] = patchObject( obj[key]||{}, patch[key] );
+		}else{
+			// Handle mongoose objects.
+			console.log(" patching key: " + key );
+			obj[key] = patch[key];	
+		}
+		console.log( obj );
+		console.log( key );
+		if( obj.markModified ){
+			console.log("marking modified: " + key);
+			obj.markModified( key );
+		}
+	}
+	return obj
 }
 
 registry.register("util", module.exports);
