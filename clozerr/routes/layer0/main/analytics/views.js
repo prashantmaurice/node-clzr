@@ -5,11 +5,11 @@ var view_analytics_hit=function(params,user){
 	var analytics_obj = new Analytics();
 
 	console.log(params)
-	analytics_obj.timeStamp=params.time || Date.now();
-	analytics_obj.user=user.id;
-	analytics_obj.metric=params.metric;
-	analytics_obj.dimensions=params.dimensions;
-	analytics_obj.test=params.test||false;
+	analytics_obj.timeStamp = params.time || Date.now();
+	analytics_obj.user = user.id;
+	analytics_obj.metric = params.metric;
+	analytics_obj.dimensions = params.dimensions;
+	analytics_obj.test = params.test||false;
 	
 	return Q(analytics_obj.save()).then(function( analytics_obj ){
 		// broadcast ID to all listeners prompting them to load the analytics data.
@@ -213,6 +213,7 @@ var view_analytics_vendor = function(params, user) {
     return compute_analytics()
 }
 
+registry.register("view_analytics_get", {get:view_analytics_get});
 registry.register("view_analytics_hit",{get:view_analytics_hit,post:view_analytics_hit})
 registry.register('view_analytics_vendor_get', { get : view_analytics_vendor_get });
 registry.register("view_analytics_byDay",{get:view_analytics_byDay})

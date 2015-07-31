@@ -129,14 +129,17 @@ var view_vendor_allOffers = function(params,user){
             user.stamplist=[]
         if(!user.stamplist[vendor.fid])
             user.stamplist[vendor.fid]=0
-
+		
+		
         vendor.offers=vendor.offers_filled;
         console.log( user.stamplist );
+		console.log( "OFFERS:: ");
+		console.log( vendor.offers );
 
 		vendor.stamps=user.stamplist[vendor.fid]
         vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
 
-        return vendor;
+        return Q(vendor);
 	})
 }
 
@@ -342,9 +345,9 @@ var view_vendor_search_near=function(params,user){
             return vendors;
         })
         .then(function(vendors){
-                return _.map(vendors,function(vendor){
-                    return util.vendorDistDisplay(vendor,params.latitude,params.longitude);
-                });
+            return _.map(vendors,function(vendor){
+                return util.vendorDistDisplay(vendor,params.latitude,params.longitude);
+            });
         })
 }
 
@@ -578,18 +581,23 @@ var view_vendor_offers_unlocked=function(params,user){
                     ,registry.getSharedObject("view_vendor_offers_rewardspage").get(params,user)]).then(function(off_rew){
         
         context.off_rew = off_rew;
-        // Get all unlocked and unused offers from offerspage URL.
-        var offers=_.filter(off_rew[0].offers,function(offer){
-                return offer.params.unlocked && !offer.params.used;
-        })
+        console.log( off_rew );
+		// Get all unlocked and unused offers from offerspage URL.
+        var offers = _.filter(off_rew[0].offers,function(offer){
+            return offer.params.unlocked && !offer.params.used;
+        });
 
-            // Concatenate the rewards specific to this vendor with the offers.
-        var rewards=off_rew[1].rewards;
+        // Concatenate the rewards specific to this vendor with the offers.
+        var rewards = _.filter(off_rew[1].rewards, function( reward ){
+			return reward.unlocked;
+		});
+
         off_rew[0].offers=offers.concat(rewards)
       
         var display = registry.getSharedObject("qualify");
      	console.log("UNLOCKED:");
-	        //console.log( off_rew[0].offers ); 
+
+	    console.log( off_rew[0].offers ); 
 	    return Q.all( _.map(off_rew[0].offers, function( offer ){
 		
             return display.getOfferDisplay( user, off_rew[0], offer, false );
@@ -597,7 +605,7 @@ var view_vendor_offers_unlocked=function(params,user){
         }) );
 
     }).then( function( offers ){ 
-
+		console.log( offers );
 		context.off_rew[0].offers = offers;
       	return context.off_rew[0];
 
@@ -613,7 +621,10 @@ var view_vendor_offers_rewardspage=function(params,user){
         return Q.all([registry.getSharedObject("view_vendor_offers_offers_S0").get(params,user)
                     ,registry.getSharedObject("view_offers_rewards_user").get(params,user)])
         .then(function( rewards_s0 ){
-            
+
+			// Set unlocked = true for rewards to maintain symmetry.
+			rewards_s0[1] = _.map( rewards_s0[1], function( reward ){ reward.unlocked = true; return reward; } );
+
             console.log( rewards_s0 );
             return rewards_s0[0].concat(rewards_s0[1]);
 
@@ -624,8 +635,8 @@ var view_vendor_offers_rewardspage=function(params,user){
             
         }).then(function( vendor ){
             var rewards = context.rewards;
-            var _vendor=vendor.toObject()
-            _vendor.rewards=_.filter(rewards,
+            var _vendor = vendor.toObject()
+            _vendor.rewards = _.filter(rewards,
                     function(reward){
 
                         // Handle exclusive rewards.

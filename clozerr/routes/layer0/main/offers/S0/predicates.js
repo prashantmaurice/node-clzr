@@ -37,14 +37,14 @@ var vendor_checkin_S0_predicates = {
         return deferred.promise;
     },
     "happyHour": function(user,vendor,offer){
-	console.log("happyHour reward predicate");
+		console.log("happyHour reward predicate");
         var days=offer.params.days; //array containing 0-6 , 0 => Sunday
         var startHour=offer.params.startHour;//hours in 0-23
         var endHour=offer.params.endHour;//inclusive of end hour
         var date=new Date();
-        //console.log(date.getDay(),date.getHours())
-        //console.log( offer );
-	return Q(_.contains(days,date.getDay()) && date.getHours()<=endHour && date.getHours()>=startHour)
+        console.log(date.getDay(),date.getHours())
+        console.log( days );
+		return Q(_.contains(days,date.getDay()+'') && date.getHours()<=parseInt(endHour) && date.getHours()>=parseInt(startHour))
     },
     "welcomeReward": function(user,vendor,offer){
         //TODO: are we initializing to zero or one?

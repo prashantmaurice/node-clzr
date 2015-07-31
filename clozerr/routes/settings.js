@@ -104,5 +104,7 @@ module.exports = {
 	},
 	"offertypes":["S0","S1","SX","reward"],
 	"S1ImageBase":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/offers/",
-	"defaultOffer":"55adea98c626a0bfb3a08c6d"
+	"vendorImageBase":"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/",
+	"defaultOffer":"55adea98c626a0bfb3a08c6d",
+	"timezoneOffset": 330 * 60000
 };

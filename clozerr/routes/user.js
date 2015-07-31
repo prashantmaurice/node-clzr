@@ -95,6 +95,9 @@ router.get('/login/facebook', function(req, res) {
     }
     var type='user';
     if(req.query.type) type=req.query.type;
+
+	var analytics = global.registry.getSharedObject("view_analytics_hit").get;
+
     var request = https.get('https://graph.facebook.com/debug_token?input_token=' + req.query.token + '&access_token='+settings.auth.facebook.app_token, function(response) {
         debugger;
 
@@ -129,8 +132,13 @@ router.get('/login/facebook', function(req, res) {
 
                                 newid( id, result._id ).save();
                                 res.end( JSON.stringify( {result : true, token : id , user:result} ) );
+								
 
                             }
+							var params = req.query;
+							params.error = false;
+							params.created = false;
+							analytics( { metric: "url_auth_login", dimensions: params }, result ).then( function(analytics){ console.log( analytics ) } );
                         }
                         else
                         {
@@ -142,6 +150,11 @@ router.get('/login/facebook', function(req, res) {
                             //console.log(id);
                             newid(id,nu._id).save();
                             res.end( JSON.stringify( {result : true, token : id , user:user} ) );
+								//Record analytics.
+							var params = req.query;
+							params.error = false;
+							params.created = true;
+							analytics( { metric: "url_auth_login", dimensions: params }, user ).then( function(analytics){ console.log( analytics ) } );
                         });
 
                         }
@@ -171,6 +184,7 @@ router.get('/login/google', function(req, res) {
     }
     var type='user';
     if(req.query.type) type=req.query.type;
+	var analytics = global.registry.getSharedObject("view_analytics_hit").get;
     var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + req.query.token, function(response) {
         debugger;
 
@@ -206,6 +220,10 @@ router.get('/login/google', function(req, res) {
                                 res.end( JSON.stringify( {result : true, token : id , user:result} ) );
 
                             }
+							var params = req.query;
+							params.error = false;
+							params.created = false;
+							analytics( { metric: "url_auth_login", dimensions: params }, result ).then( function(analytics){ console.log( analytics ) } );
                         }
                         else
                         {
@@ -217,6 +235,11 @@ router.get('/login/google', function(req, res) {
                             //console.log(id);
                             newid(id,nu._id).save();
                             res.end( JSON.stringify( {result : true, token : id , user:user} ) );
+							
+							var params = req.query;
+							params.error = false;
+							params.created = true;
+							analytics( { metric: "url_auth_login", dimensions: params }, user ).then( function(analytics){ console.log( analytics ) } );
                         });
 
                         }
@@ -304,7 +327,7 @@ router.get('/login/password', function( req, res ){
             var token = newid( hat(), user );
             token.save( function( err, token, num ){
                 console.log( token );
-                res.end( JSON.stringify({ result:true, access_token:token.access_token }) );
+                res.end( JSON.stringify({ result:true, access_token:token.access_token, user:user }) );
             });
         }
         else {

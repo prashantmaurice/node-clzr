@@ -13,7 +13,7 @@ var vendorSchema = new Schema({
 	offers_old : [ObjectId],
 	fid:String,
 	date_created:Date,
-    	dateUpdated:Date,
+    dateUpdated:Date,
 	address: String,
 	city: String,
 	phone: String,
@@ -26,17 +26,18 @@ var vendorSchema = new Schema({
 	settings : Schema.Types.Mixed,
 	campaigns : Schema.Types.Mixed,
 	visitOfferId : ObjectId,
-	category : String,
-	flags : [String],
-	trials:Number,
+	category : String, 
+	flags : [String], 
+	trials:Number, // ?
 	qrcodes:[String],
 	gallery:[String],
-	image_small:String,
-	tags:[Schema.Types.ObjectId],
+	image_base:String,
+	image_small:String,// ?
+	tags:[Schema.Types.ObjectId],// ?
 	club_members:Number,
-	geoloc:Boolean,
-	last_post:Date,
-	last_tweet:Date,
+	geoloc:Boolean,// ?
+	last_post:Date,// ?
+	last_tweet:Date,// ?
 	geofences:[ObjectId],
 	logo: String,
 	fb:String,

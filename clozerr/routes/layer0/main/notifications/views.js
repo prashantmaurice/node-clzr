@@ -45,13 +45,17 @@ var view_notifications_list_all = function( params, user ){
 var view_notifications_list_since = function( params, user ){
 	if( user.notifications && user.notifications.last_seen )
 		params.since = user.notifications.last_seen
+
+	var context = {};
+
 	return view_notifications_list_all( params, user ).then( function( notifs ){
-		return view_notifications_read_all( params, user ).then( function( status ){
-			if( status )
-				return Q(notifs);	
-			else
-				return({code:564, description:"Error setting last seen"});
-		});
+		context.notifs = notifs;
+		return view_notifications_read_all( params, user );	
+	}).then( function( status ){
+		if( status )
+			return Q(context.notifs);
+		else
+			throw {code:564, description:"Error setting last seen"};
 	});
 }
 var view_notifications_read_all = function( params, user ){
@@ -73,4 +77,5 @@ var view_notifications_read_all = function( params, user ){
 
 //registry.register("view_notifications_vendor_get",{get:view_notifications_vendor_get});
 registry.register("view_notifications_list_all",{get:view_notifications_list_all});
+registry.register("view_notifications_list_since",{get:view_notifications_list_since});
 registry.register("view_notifications_read_all",{get:view_notifications_read_all});

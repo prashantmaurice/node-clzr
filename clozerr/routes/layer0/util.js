@@ -148,18 +148,26 @@ function vendorDisplay(vendor){
   }
 }
 function vendorDistDisplay(vendor,latitude,longitude){
-  return {
+  var obj = {
     _id:vendor.id,
     name:vendor.name,
     location:vendor.location,
     distance:getDistance(latitude,longitude,vendor),
     image:vendor.image,
-    image_small:vendor.image_small,
+    image_base:vendor.image_base,
     gallery:vendor.gallery,
     address:vendor.address,
     club_members:vendor.club_members,
-    resource_name:vendor.resource_name
+    resource_name:vendor.resource_name,
+	caption:getDistance(latitude,longitude,vendor) + " km",
+	active:true
   }
+	
+	if( vendor.settings.viewState && !vendor.settings.viewState.active ){
+		obj.caption = vendor.settings.viewState.placeholder;
+		obj.active = vendor.settings.viewState.active;
+	}
+	return obj;
 }
 function geoLocate(address){
   var deferred=Q.defer();
