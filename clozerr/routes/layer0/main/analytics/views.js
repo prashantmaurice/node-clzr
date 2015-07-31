@@ -54,9 +54,10 @@ function makeArray(obj) {
 var view_analytics_get = function( params, user ){
 
 	// Check if user is admin.
-	return Q( registry.getSharedObject("models_Analytics").find( params ) ).then( function( hits ){
+    
+	return Q( registry.getSharedObject("models_Analytics").findOne( { _id:params.analytics_id } ) ).then( function( hit ){
 		var analytics_admin_view = registry.getSharedObject("analytics_admin_view");
-		return _.map( hits, function( hit ){ if( analytics_admin_view[hit.metric] ) return analytics_admin_view[hit.metric]( hit ); else return Q(false) } );
+		if( analytics_admin_view[hit.metric] ) return analytics_admin_view[hit.metric]( hit ); else return analytics_admin_view["default"]( hit );
 	} );
 }
 var view_analytics_byDay = function(params,user){
@@ -214,5 +215,6 @@ var view_analytics_vendor = function(params, user) {
 }
 
 registry.register("view_analytics_hit",{get:view_analytics_hit,post:view_analytics_hit})
+registry.register("view_analytics_get",{get:view_analytics_get,post:view_analytics_get})
 registry.register('view_analytics_vendor_get', { get : view_analytics_vendor_get });
 registry.register("view_analytics_byDay",{get:view_analytics_byDay})

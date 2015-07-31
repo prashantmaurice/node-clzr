@@ -304,7 +304,7 @@ router.get('/login/password', function( req, res ){
             var token = newid( hat(), user );
             token.save( function( err, token, num ){
                 console.log( token );
-                res.end( JSON.stringify({ result:true, access_token:token.access_token }) );
+                res.end( JSON.stringify({ result:true, access_token:token.access_token, user:user }) );
             });
         }
         else {
