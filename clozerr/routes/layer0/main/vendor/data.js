@@ -198,8 +198,25 @@ var data_vendors_category = function( params ) {
 }
 
 var data_vendor_checkins_active = function( params ) {
+
+	var settings = registry.getSharedObject("settings");
     params.criteria = { vendor : ObjectId(params.vendor_id) , state : CHECKIN_STATE_ACTIVE };
-    return registry.getSharedObject("data_checkin_params").get(params);
+    return registry.getSharedObject("data_checkin_params").get(params).then( function( checkins ){
+		return _.filter( checkins, function( checkin ) {
+			
+
+			if( new Date().getTime() - checkin.date_created.getTime() < settings.checkin.expiry_time )
+				return (true);
+			else{
+				console.log( checkin );
+				console.log("Expired. Auto-Cancelling");
+				checkin.raw.state = CHECKIN_STATE_CANCELLED;
+				checkin.raw.save();
+				return (false);
+			}
+
+		});
+	});
 }
 
 var data_vendor_checkins_confirmed = function( params ) {

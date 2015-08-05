@@ -414,10 +414,8 @@ var view_vendor_checkins_active = function(params, user) {
     if(user.type != "Vendor") {
         throw { code:481, description: "user is not a vendor" };
     }
-    if(user.vendor_id.toString() != params.vendor_id) {
-        throw { code:483, description: "user is not associated with vendor." };
-    }
 
+	params.vendor_id = user.vendor_id;
     return registry.getSharedObject("data_vendor_checkins_active").get(params);
 }
 

@@ -21,7 +21,7 @@
                 <td>{{ checkin.pin }}</td>
                 <td>{{ getTimeInFormat(checkin.date_created || humanize_date) }}</td>
                 <td>{{ checkin.offer.caption }}</td>
-                <td>{{ checkin.offer.stamps }}</td>
+                <td>{{ checkin.current_visits }}</td>
                 <td data-time="{{ checkin.date_created }}" class="timer"></td>
                 <td>
                 <input type="number" value=1 class="form-control" id="stamps" ng-model="checkin.validate_data.stamps"></td>

@@ -100,12 +100,12 @@ router.get('/login/facebook', function(req, res) {
 
     var request = https.get('https://graph.facebook.com/debug_token?input_token=' + req.query.token + '&access_token='+settings.auth.facebook.app_token, function(response) {
         debugger;
-
+		
 
         response.on('data', function(dat) {
             debugger;
             d=JSON.parse(dat.toString());
-            //console.log(d);
+            console.log(d);
             if( d.data && d.data.is_valid )
             {
 

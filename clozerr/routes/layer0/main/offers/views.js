@@ -34,6 +34,9 @@ var view_vendor_offers_offersPage=function(params,user){
 
 var view_offers_checkin_create=function(params,user){
 	var deferred = Q.defer();
+	// TODO: change id_type..
+	if( user.id_type == "Anonymous" )
+		throw { code:403, description:"Not Authenticated" };
 
 	var context = {};
 	return registry.getSharedObject("data_vendor").get(params).then(function(vendor){
@@ -55,7 +58,7 @@ var view_offers_checkin_create=function(params,user){
 			throw { code:433, description:"Checkin is invalid" }
 		}
 		console.log("creating checkin")
-		
+			
 		return registry.getSharedObject("handler_checkin").get( params, user, context.vendor, context.offer );
 
 	}).then(function(checkin){
