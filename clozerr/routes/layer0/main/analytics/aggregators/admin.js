@@ -33,11 +33,11 @@ var admin_2D_reports = function(){
 	var report = {
 		"installs" : registry.getSharedObject("analytics_installs").byDay(),
 //		"installs_today" : registry.getSharedObject("analytics_installs").today(),
-//		"checkins" : registry.getSharedObject("analytics_checkins").all(),
+//		"checkins" : registry.getSharedObject("analytics_checkins").byDay(),
 //		"checkins_today" : registry.getSharedObject("analytics_checkins").today(),
 //		"beacons" : registry.getSharedObject("analytics_beacons").all(),
 //		"beacons_today" : registry.getSharedObject("analytics_beacons").today(),
-//		"app_views" : registry.getSharedObject("analytics_appviews").all(),
+		"app_views" : registry.getSharedObject("analytics_appviews").byDay(),
 //		"app_views_today" : registry.getSharedObject("analytics_appviews").today(),
 	};
 

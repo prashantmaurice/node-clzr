@@ -33,12 +33,18 @@ var analytics_installs_byDay = function(){
 	var req = {
 	
 		dimensions: [],
-		time_interval: 1000 * 60 * 60 * 24,
-		query:{ metric:"url_auth_login", created:true },
+		time_interval: 1000 * 60 * 60 * 12,
+		query:{ metric:"url_auth_login", "dimensions.created":true }
 
 	}
 
-	return mapReduce.get( req );
+	return mapReduce.get( req ).then( function( records ){
+        return _.map( records, function( record ){
+            if( record._id.time )
+                record._id.time_string = new Date( record._id.time ).toString();
+            return record;
+        } );
+    } );
 }
 
 
