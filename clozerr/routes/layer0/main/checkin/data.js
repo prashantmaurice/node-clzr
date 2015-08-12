@@ -60,7 +60,7 @@ var data_load_checkin_with_params = function( params ){
 
     
 
-    return Q( Checkin.find(params.criteria).limit(params.limit).skip(params.offset).exec().then(function(checkins) {
+    return Q( Checkin.find(params.criteria).limit(params.limit).skip(params.offset).sort("-date_created").exec().then(function(checkins) {
 		var plist = _.map( checkins, function( checkin ){
             var checkin_obj = { _id:checkin._id, pin:checkin.pin, date_created:checkin.date_created, raw:checkin };
         
@@ -84,9 +84,13 @@ var data_load_checkin_with_params = function( params ){
 				console.log("Visit no: " + (numVisits + 1));
 
 				checkin_obj.current_visits = (numVisits + 1);
-                return Q(checkin_obj);
 
-            });
+				
+				return Checkin.count({ user: checkin_obj.user._id, vendor: checkin_obj.vendor._id, state:1, date_created:{$lte: checkin.date_created} });
+            }).then( function( visitNum ){
+				checkin_obj.visit_num = visitNum;
+				return Q(checkin_obj);
+			});
 //            plist.push(pr);
 		
         });

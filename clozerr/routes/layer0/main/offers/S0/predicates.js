@@ -42,9 +42,10 @@ var vendor_checkin_S0_predicates = {
         var startHour=offer.params.startHour;//hours in 0-23
         var endHour=offer.params.endHour;//inclusive of end hour
         var date=new Date();
-        console.log(date.getDay(),date.getHours())
-        console.log( days );
-		return Q(_.contains(days,date.getDay()+'') && date.getHours()<=parseInt(endHour) && date.getHours()>=parseInt(startHour))
+        //console.log(date.getDay(),date.getHours())
+        //console.log( days );
+		//console.log( _.contains( days, date.getDay()+'' ) )
+		return Q(_.contains(days,date.getDay()+'') && date.getHours()<parseInt(endHour) && date.getHours()>=parseInt(startHour))
     },
     "welcomeReward": function(user,vendor,offer){
         //TODO: are we initializing to zero or one?

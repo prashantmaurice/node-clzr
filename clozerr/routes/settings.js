@@ -6,7 +6,8 @@ module.exports = {
 		"google":{
 			"app_id":["496568600186-q67jdokmmuofba4updq7v8kl9j4niaoe.apps.googleusercontent.com",
 			"496568600186-ku41clmavuaam8dru15iheg4lnn66inb.apps.googleusercontent.com",
-			" 496568600186-25gp2rukpdi85euh02ud8i32ua3g5jvh.apps.googleusercontent.com"]
+			"496568600186-25gp2rukpdi85euh02ud8i32ua3g5jvh.apps.googleusercontent.com",
+			"496568600186-1h4lgdj9vmoi93fjbgkcr31ilkjpqa8i.apps.googleusercontent.com"]
 
 		},
 		"password":{
@@ -23,7 +24,7 @@ module.exports = {
 		"base_path":"app/coupons-alpha"
 	},
 	"checkin":{
-		"expiry_time":10 * 60 * 1000,
+		"expiry_time":60 * 60 * 1000,
 		"delay_between_checkins":2 * 60 * 60 * 1000
 	},
 	"api":{

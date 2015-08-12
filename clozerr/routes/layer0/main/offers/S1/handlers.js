@@ -78,8 +78,7 @@ var vendor_predicate_S1 = function(user, vendor, offer) {
     if( (user.stamplist[vendor.fid]*1 >= offer.stamps*1) || ( vendor.visitOfferId && (offer._id.toString() == vendor.visitOfferId.toString()) ) ) {
         console.log("num stamps is greater offer level.")
 		return Q(true);
-    }
-    else {
+    } else {
         console.log("num stamps is NOT greater offer level.")
         return Q(false);
     }

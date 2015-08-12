@@ -8,7 +8,7 @@ var countdown = function( selector ){
     $( selector ).each(function( item ){
       //console.log("Detected one.");
      //var datetime =new Date( 10 * 60  - new Date( new Date().getUTCSeconds() - new Date(  $(this).attr("data-time") ).getUTCSeconds() ).getUTCSeconds());
-      var datetime = new Date( 10*60*1000 - (new Date().getTime() - new Date(  $(this).attr("data-time") ).getTime()));
+      var datetime = new Date( 60*60*1000 - (new Date().getTime() - new Date(  $(this).attr("data-time") ).getTime()));
       var inner_html = datetime.getUTCMinutes() + ":" + datetime.getUTCSeconds();
 	  if( datetime.getUTCMinutes() == 0 && datetime.getUTCSeconds() == 0 ){
 		$(window).trigger("checkin-expired");

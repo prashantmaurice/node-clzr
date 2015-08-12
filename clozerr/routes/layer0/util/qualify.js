@@ -95,13 +95,15 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
 
     if(!user.stamplist[vendor.fid])
       user.stamplist[vendor.fid]=0
+	
+	offerDisplay.params.unlocked = offer.params.unlocked;
 
-    if((offerDisplay.type=="S1" ||offerDisplay.type=="SX") && offerDisplay.stamps*1 <= user.stamplist[vendor.fid]*1) {
+    /*if((offerDisplay.type=="S1" ||offerDisplay.type=="SX") && offerDisplay.stamps*1 <= user.stamplist[vendor.fid]*1) {
       offerDisplay.params.unlocked = true;
     }
     else {
       offerDisplay.params.unlocked = false;
-    }
+    }*/
 
     if(offerDisplay.type=="S1") {
       offerDisplay.params.stamps=offer.stamps*1;

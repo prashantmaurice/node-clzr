@@ -43,6 +43,7 @@ var vendorSchema = new Schema({
 	fb:String,
 	twitter:String,
 	gplus:String,
+	computed: Schema.Types.Mixed
 });
 vendorSchema.index({ location: '2d' });
 
@@ -101,7 +102,8 @@ Models.User = mongoose.model('User',new Schema({
     lucky_rewards:Schema.Types.Mixed,
     failed_instances:Schema.Types.Mixed,
     rewards : [ObjectId],
-    notifications: Schema.Types.Mixed
+    notifications: Schema.Types.Mixed,
+	computed: Schema.Types.Mixed
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
@@ -151,4 +153,9 @@ Models.Analytics = mongoose.model('Analytics',new Schema({
 Models.Tag = mongoose.model('Tag',new Schema({
 	name:String
 }))
+
+Models.DataBundle = mongoose.model('DataBundle', new Schema({
+	data: Schema.Types.Mixed
+}))
+
 module.exports = Models;

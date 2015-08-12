@@ -125,7 +125,7 @@ $scope.notifyUser = function() {
       });
 }
 
-var CLOZERR_ALL_CHECKINS_URL = CLOZERR_API + "checkin/confirmed";
+var CLOZERR_ALL_CHECKINS_URL = CLOZERR_API + "v2/vendor/checkins/confirmed";
 
 $scope.preprocess = function( checkin ){
   checkin.offer.caption = unescape(checkin.offer.caption);
