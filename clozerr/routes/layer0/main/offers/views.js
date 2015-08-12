@@ -34,6 +34,9 @@ var view_vendor_offers_offersPage=function(params,user){
 
 var view_offers_checkin_create=function(params,user){
 	var deferred = Q.defer();
+	// TODO: change id_type..
+	if( user.id_type == "Anonymous" )
+		throw { code:403, description:"Not Authenticated" };
 
 	var context = {};
 	return registry.getSharedObject("data_vendor").get(params).then(function(vendor){
@@ -55,7 +58,7 @@ var view_offers_checkin_create=function(params,user){
 			throw { code:433, description:"Checkin is invalid" }
 		}
 		console.log("creating checkin")
-		
+			
 		return registry.getSharedObject("handler_checkin").get( params, user, context.vendor, context.offer );
 
 	}).then(function(checkin){
@@ -160,32 +163,46 @@ var view_vendor_offers_validate=function(params,user){
 
 var view_vendor_offers_qrcodevalidate = function(params, user) {
 	var deferred = Q.defer();
+	// Ensure qrcode in the query.
+	
+	var context = {};
+	return registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).then( function( checkin ){
+		
+		context.checkin = checkin;
 
-	registry.getSharedObject("data_vendor").get( params ).then(function(vendor) {
-		registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).exec().then(function(checkin) {
-			debugger;
-			registry.getSharedObject("handler_validate_qrcode").get(params, vendor, user, checkin).then(function(val_checkin) {
-				debugger;
-				if(val_checkin) {
-					console.log(" gcm pushin to "+(params.gcm_id||user.gcm_id||0))
-					registry.getSharedObject("gcm").sendPushNotification(params.gcm_id||user.gcm_id||0,
-						registry.getSharedObject("util").getCheckinSuccessMessage(checkin))
-					deferred.resolve(registry.getSharedObject("qualify").getCheckinOnValidateDisplay(checkin));
-				}
-				else {
-					deferred.resolve({result:false,message:"invalid checkin"});
-				}
-			}, function(err) {
-				deferred.resolve(err);
-			})
-		}, function(err) {
-			deferred.resolve(err);
-		});
-	}, function(err) {
-		deferred.resolve(err);
+		if( !checkin )
+			throw { code:121, description:"No such checkin recorded." };
+		
+		if( !params.qrcode ){
+			throw { code:121, description:"No QR code in query." };
+		}
+
+
+		return registry.getSharedObject("data_vendor").get( { vendor_id:checkin.vendor } );
+		
+	}).then(function( vendor ) {
+		context.vendor = vendor;
+		// Simple QR code check.. move this to a submodule and let it be handled abstractly.
+		if( vendor.qrcodes.indexOf( params.qrcode ) == -1 )
+			throw { code:122, description:"QR code does not belong to vendor."};
+	
+		params.validate_data = { stamps:1, method:"qrcode" };
+		return registry.getSharedObject("handler_validate").get(params, context.vendor, user, context.checkin);
+	}).then(function(val_checkin) {
+		
+		if( !val_checkin )
+			throw {code:123, description:"Invalid request."};
+
+		//console.log(" gcm pushin to "+(context.checkin.gcm_id||user.gcm_id||0));
+
+		registry.getSharedObject("gcm").sendPushNotification( 
+			context.checkin.gcm_id||user.gcm_id||0,
+			registry.getSharedObject("display").GCMCheckinDisplay( context.checkin, context.vendor )
+		);
+		
+		return registry.getSharedObject("qualify").getCheckinOnValidateDisplay( context.checkin );
 	});
-
-	return deferred.promise;
+	
 }
 
 //registry.register("view_vendor_offers_offersPage", {get:view_vendor_offers_offersPage});
@@ -233,20 +250,20 @@ var view_offer_details_set = function( params, user ) {
     var userObjectM = registry.getSharedObject("live_session");// LIVE SESSION??
 
     if(user.type != "Vendor") {
-	throw { err: 436, description: "User not authorized"};
+		throw { err: 436, description: "User not authorized"};
     }
 
     return offerObjectM.get( params ).then(function(offer) {
         if( !params.offer ) {
-		throw { err: 437, description: "Offer details not specified"};
+			throw { err: 437, description: "Offer details not specified"};
         }
 
-	for( key in params.offer ) {
+		for( key in params.offer ) {
                 offer[key] = params.offer[key];
                 offer.markModified(key);
         }
         
-	return offer.save();
+		return offer.save();
 
     });
 

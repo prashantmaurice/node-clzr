@@ -1,3 +1,4 @@
+
 var express = require('express');
 var mongoose = require('mongoose');
 var router = express.Router();
@@ -14,11 +15,13 @@ var OfferHandler = require("./predicate");
 var error = require("./error");
 var s3 = require("s3policy");
 var policy = require("s3-policy");
-var settings = require("./settings");
 var push = require("./util/push");
 var qualify = require('./util/qualify');
 
 var request = require('request');
+
+var settings = require("./settings");
+var settings2 = require("./settings");
 
 function postMessage(access_token, message, response) {
     // Specify the URL and query string parameters needed for the request
@@ -113,7 +116,9 @@ router.get('/make_visit_offers', function ( req, res) {
   res.end("done");
 });
 
+console.log( settings2 );
 router.get('/create', function (req, res) {
+	console.log( settings2 );
   var errobj = error.err_insuff_params(res, req, ["latitude", "longitude", "image", "fid", "name"]);
   if (!errobj) {
         //error.err(res,errobj.code,errobj.params);
@@ -122,6 +127,8 @@ router.get('/create', function (req, res) {
       }
       var user=req.user;
 
+	console.log( settings2 );
+	var image_base = settings2.vendorImageBase;
     //if( req.user.type != "Admin" ){
     // TODO approve vendor
     /*if( user.type != "Admin" ){
@@ -167,8 +174,11 @@ router.get('/create', function (req, res) {
         date_created: date_created,
         dateUpdated:date_created,
         settings:settings,
-        resource_name:resource_name
+        resource_name:resource_name,
+		image_base:image_base
       });
+	  vendor.resource_name = vendor._id;
+
     res.send({
       result: true,
       data: vendor

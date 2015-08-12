@@ -13,7 +13,7 @@ var vendorSchema = new Schema({
 	offers_old : [ObjectId],
 	fid:String,
 	date_created:Date,
-    	dateUpdated:Date,
+    dateUpdated:Date,
 	address: String,
 	city: String,
 	phone: String,
@@ -26,22 +26,24 @@ var vendorSchema = new Schema({
 	settings : Schema.Types.Mixed,
 	campaigns : Schema.Types.Mixed,
 	visitOfferId : ObjectId,
-	category : String,
-	flags : [String],
-	trials:Number,
+	category : String, 
+	flags : [String], 
+	trials:Number, // ?
 	qrcodes:[String],
 	gallery:[String],
-	image_small:String,
-	tags:[Schema.Types.ObjectId],
+	image_base:String,
+	image_small:String,// ?
+	tags:[Schema.Types.ObjectId],// ?
 	club_members:Number,
-	geoloc:Boolean,
-	last_post:Date,
-	last_tweet:Date,
+	geoloc:Boolean,// ?
+	last_post:Date,// ?
+	last_tweet:Date,// ?
 	geofences:[ObjectId],
 	logo: String,
 	fb:String,
 	twitter:String,
 	gplus:String,
+	computed: Schema.Types.Mixed
 });
 vendorSchema.index({ location: '2d' });
 
@@ -100,7 +102,8 @@ Models.User = mongoose.model('User',new Schema({
     lucky_rewards:Schema.Types.Mixed,
     failed_instances:Schema.Types.Mixed,
     rewards : [ObjectId],
-    notifications: Schema.Types.Mixed
+    notifications: Schema.Types.Mixed,
+	computed: Schema.Types.Mixed
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
@@ -150,4 +153,9 @@ Models.Analytics = mongoose.model('Analytics',new Schema({
 Models.Tag = mongoose.model('Tag',new Schema({
 	name:String
 }))
+
+Models.DataBundle = mongoose.model('DataBundle', new Schema({
+	data: Schema.Types.Mixed
+}))
+
 module.exports = Models;

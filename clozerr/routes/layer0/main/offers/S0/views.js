@@ -20,20 +20,35 @@ var view_vendor_offers_offers_S0=function(params,user){
 			plist.push(predicate.get(user,context.vendor,element))
 		})
 			
-			return Q.all(plist);
+		return Q.all(plist);
             
     }).then(function(predlist){
-				
+		context.predlist = predlist;
 		var offersplist=[];
-		_.each(_.filter( context.vendor_offers.offers,
-				function(val,idx){return predlist[idx]})
-				,function(offer){
+		console.log("BLUBLABLEY");
+		console.log( context.vendor_offers.offers );
+		_.each( context.vendor_offers.offers,
+				function(offer){
 						// return offer;
 					offersplist.push(registry.getSharedObject("qualify").getOfferDisplay(user,context.vendor,offer))
 				});
 		return Q.all(offersplist)
         
-    });
+	}).then(function( offers ){
+		return Q( _.map( offers, function( offer, index ){
+			
+			console.log("Setting predicate values.");
+			console.log( offer );
+			var unlocked = context.predlist[ index ];
+			if( offer )
+				offer.unlocked = unlocked;
+			return offer;
+		}));
+
+    }).then(function( offers ){
+		// eliminate NULLs
+		return Q(_.filter( offers, function( offer ){ if( offer ) return true; else return false; } ));
+	});
 }
 
 var view_vendor_offers_checkin_S0 = function(params, user) {

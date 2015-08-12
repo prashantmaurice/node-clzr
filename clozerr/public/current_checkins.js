@@ -26,7 +26,7 @@ var current_checkins = function( $rootScope, $scope, $http ){
     return str;
   }
 
-  var CLOZERR_CURRENT_CHECKINS_URL = CLOZERR_API + "checkin/active";
+  var CLOZERR_CURRENT_CHECKINS_URL = CLOZERR_API + "v2/vendor/checkins/active";
   // TODO: update this url somewhere.
   $scope.showData = true;
   $scope.update = function(){
@@ -40,7 +40,7 @@ var current_checkins = function( $rootScope, $scope, $http ){
       $scope.spinner = false;
       $scope.showData = true;
 
-      $scope.checkins = data.data;
+      $scope.checkins = data;
     	$scope.checkins.forEach( function( checkin ){ checkin.validate_data = {}; checkin.validate_data.stamps = 1; });
     }).error(function(data, status, headers, config) {
       /*
@@ -76,6 +76,18 @@ var current_checkins = function( $rootScope, $scope, $http ){
   $scope.$on("validate-finish", function(){
     $scope.update();
   });
+
+  $(window).on("checkin-expired", function(){ 
+	
+	console.log("checkin-expired signal received");
+	
+	setTimeout( function(){
+		console.log("Standby.. refreshing..");
+		$scope.update(); 
+	}, 1000 );
+
+  });
+
   $scope.invokeTypeRequirement = function( checkin ){
     /*if( checkin.offer.type == "SX" ){
       $("#SX-Modal").modal();

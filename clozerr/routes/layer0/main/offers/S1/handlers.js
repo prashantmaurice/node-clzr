@@ -1,7 +1,7 @@
 var registry = global.registry;
 var Q = require("q");
 var hat = require("hat")
-
+var _ = require("underscore");
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
@@ -64,13 +64,22 @@ var vendor_predicate_S1 = function(user, vendor, offer) {
     }
 
     var defaultOffer = registry.getSharedObject("settings").defaultOffer;
-    if( ( offer._id != defaultOffer ) && ( !offer.vendor || (offer.vendor._id != vendor._id) ) && ( vendor.offers.indexOf( offer._id ) == -1  )  )
-        return Q(false);
+	console.log( vendor.offers );
+	console.log( offer._id );
+	var offerInVendor = _.find( vendor.offers, function( _offer ){
+		return offer._id.toString() == _offer.toString();
+	} ); 
+    if( ( offer._id != defaultOffer ) && ( !offer.vendor || (offer.vendor._id != vendor._id) ) && !offerInVendor  ){
+        
+        console.log("offer does not belong to vendor.")
+		return Q(false);
+	}
 
-    if( (user.stamplist[vendor.fid] >= offer.stamps*1) || ( vendor.visitOfferId && (offer._id.toString() == vendor.visitOfferId.toString()) ) ) {
-        return Q(true);
-    }
-    else {
+    if( (user.stamplist[vendor.fid]*1 >= offer.stamps*1) || ( vendor.visitOfferId && (offer._id.toString() == vendor.visitOfferId.toString()) ) ) {
+        console.log("num stamps is greater offer level.")
+		return Q(true);
+    } else {
+        console.log("num stamps is NOT greater offer level.")
         return Q(false);
     }
 }

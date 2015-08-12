@@ -80,7 +80,7 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
     //offerDisplay.stamps=offer.stamps*1;
     offerDisplay.image = offer.image;
     offerDisplay.params={};
-	console.log( offerDisplay );
+	//console.log( offerDisplay );
     debugger;
 
     if(checkinOld) {
@@ -95,17 +95,19 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
 
     if(!user.stamplist[vendor.fid])
       user.stamplist[vendor.fid]=0
+	
+	offerDisplay.params.unlocked = offer.params.unlocked;
 
-    if((offerDisplay.type=="S1" ||offerDisplay.type=="SX") && offerDisplay.stamps*1 <= user.stamplist[vendor.fid]*1) {
+    /*if((offerDisplay.type=="S1" ||offerDisplay.type=="SX") && offerDisplay.stamps*1 <= user.stamplist[vendor.fid]*1) {
       offerDisplay.params.unlocked = true;
     }
     else {
       offerDisplay.params.unlocked = false;
-    }
+    }*/
 
     if(offerDisplay.type=="S1") {
       offerDisplay.params.stamps=offer.stamps*1;
-      console.log( offerDisplay );
+      //console.log( offerDisplay );
       if( !offerDisplay.image || offerDisplay.image == "" )
       	offerDisplay.image = registry.getSharedObject("settings").S1ImageBase + offerDisplay.params.stamps + ".png";
     }
@@ -126,10 +128,10 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
     if(offerDisplay.type=="S0") {
       if(!offer.params || !offer.params.type) return Q(null)
       //offerDisplay.image = offer.image;
-      console.log( offer );
-      console.log( offerDisplay );
-      console.log( offer["image"] );
-	console.log("Offer display " + offerDisplay.image);
+      //console.log( offer );
+      //console.log( offerDisplay );
+      //console.log( offer["image"] );
+		//console.log("Offer image " + offerDisplay.image);
       if( !offerDisplay.image || ( offerDisplay.image == "" ) )
       	offerDisplay.image = global.registry.getSharedObject("settings").S0OfferTypes[offer.params.type];
       offerDisplay.params=offer.params;

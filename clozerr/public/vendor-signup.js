@@ -90,7 +90,7 @@ var vendorSignup = function($scope, $rootScope, $http, $window) {
 		$scope.fid = Math.floor(Math.random() * Math.pow(10,16));
 		console.log($scope.fid);
 
-		var image = "http://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/" + name.toLowerCase();
+		var image = "http://s3-ap-southeast-1.amazonaws.com/clozerr/app/coupons-alpha/";
 		$http.get( CLOZERR_VENDORS_URL + "/create" + "?latitude=" + $scope.vlatitude +"&longitude=" + $scope.vlongitude + "&image=" + image +"&fid=" + $scope.fid+"&name=" + $scope.vpublicname + "&phone=" + $scope.vphoneno + "&" + str).
 		success(function(data, status, headers, config) {
 			$rootScope.vendor=data;

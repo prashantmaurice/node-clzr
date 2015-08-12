@@ -44,22 +44,28 @@ var policyCheckTimeDelayBetweenCheckins = function( user, vendor, offer ) {
 var policyCheckDuplicateCheckins = function( user, vendor, offer ) {
 
   var deferred = Q.defer();
-  debugger;
-  CheckIn.findOne( { user:user._id, vendor:vendor._id, offer:offer._id, state:CHECKIN_STATE_ACTIVE} ).exec().then(function( checkin ){
+  //debugger;
+	console.log("Cehcking for duplicates");
+	var CheckIn = registry.getSharedObject("models_Checkin");
+	console.log( user );
 
-    debugger;
+  return Q( CheckIn.findOne( { user:user._id, vendor:vendor._id, offer:offer._id, state:CHECKIN_STATE_ACTIVE } ).exec().then(function( checkin ){
+
+	console.log("checkin findOne returns");
+	console.log( checkin );
+    //debugger;
     if( checkin ) {
       console.log(" policyCheckDuplicateCheckins : true")
-      deferred.resolve( checkin );
+      return Q( checkin );
     }
     else{
       console.log(" policyCheckDuplicateCheckins : false")
-      deferred.resolve( );
+      return Q( null );
     }
 
-  });
+  }) );
 
-  return deferred.promise;
+  //return deferred.promise;
 
 }
 
@@ -148,18 +154,26 @@ function vendorDisplay(vendor){
   }
 }
 function vendorDistDisplay(vendor,latitude,longitude){
-  return {
+  var obj = {
     _id:vendor.id,
     name:vendor.name,
     location:vendor.location,
     distance:getDistance(latitude,longitude,vendor),
     image:vendor.image,
-    image_small:vendor.image_small,
+    image_base:vendor.image_base,
     gallery:vendor.gallery,
     address:vendor.address,
     club_members:vendor.club_members,
-    resource_name:vendor.resource_name
+    resource_name:vendor.resource_name,
+	caption:getDistance(latitude,longitude,vendor) + " km",
+	active:true
   }
+	
+	if( vendor.settings.viewState && !vendor.settings.viewState.active ){
+		obj.caption = vendor.settings.viewState.placeholder;
+		obj.active = vendor.settings.viewState.active;
+	}
+	return obj;
 }
 function geoLocate(address){
   var deferred=Q.defer();

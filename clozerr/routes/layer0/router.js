@@ -29,13 +29,16 @@ router.get("/:object/:handler/:view", function( req, res ){
         // logger.err();
     }
 
+	var analytics = registry.getSharedObject("view_analytics_hit").get;
+
     var httpObjView = registry.getSharedObject( "view_" + dataClass + "_" + handler + "_" + view );
     if( !httpObjView ){
 		sendError( res, JSON.stringify(registry.getSharedObject("view_error").makeError( makeRegLookupError( "http_" + dataClass + "_" + handler + "_" + view ) ) ), 404 )
 		return;
     }
     try{
-            httpObjView.get( req.query ,req.user).then( function( output ){
+			
+            httpObjView.get( req.query ,req.user ).then( function( output ){
                 if(!output){
                     sendError( res, "", 500 );
 					return;
@@ -45,6 +48,13 @@ router.get("/:object/:handler/:view", function( req, res ){
                 res.status( 200 );
 				res.send( JSON.stringify( output ) );
 				res.end();
+				
+				if( req.user.type == 'User' || req.user.type == 'TestUser' ){
+					//Record analytics.
+					var params = req.query;
+					params.error = false;
+					analytics( { metric: "url_" + dataClass + "_" + handler + "_" + view, dimensions: params }, req.user ).then( function(analytics){ console.log( analytics ) } );
+				}
 
             } ).catch( function( err ){
 
@@ -59,6 +69,12 @@ router.get("/:object/:handler/:view", function( req, res ){
 				var error = registry.getSharedObject("view_error").makeError({ error:err, code:500 });
 				
 				sendError( res, error, 500 );
+				if( req.user.type == 'User' || req.user.type == 'TestUser' ){
+					//Record analytics.
+					var params = req.query;
+					params.error = true;
+					analytics( { metric: "url_" + dataClass + "_" + handler + "_" + view, dimensions: params }, req.user ).then( function(analytics){ console.log( analytics ) } );
+				}
 			});
 
     } catch( err ){

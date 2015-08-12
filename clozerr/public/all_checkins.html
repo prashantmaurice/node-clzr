@@ -8,10 +8,12 @@
             <th>USERNAME</th>
             <th>TIME</th>
             <th>OFFER</th>
+			<th>DESCRIPTION</th>
             <th>VISIT NO</th>
+			<th>TOTAL STAMPS</th>
             <th>RATING</th> 
             <th>FEEDBACK</th>
-            <th>BILL</th>
+          
           </tr>
         </thead>
 
@@ -20,11 +22,13 @@
             <td>{{ checkin.user.profile.name }}</td>
             <td>{{ getTimeInFormat(checkin.date_created || humanize_date) }}</td>
             <td>{{ checkin.offer.caption }}</td>
-            <td>{{ checkin.offer.stamps }}</td>
-            <td>{{getAvgStars(checkin.review.stars)}}</td>
+            <td>{{ checkin.offer.description }}</td>
+            <td>{{ checkin.visit_num }}</td>
+			<td>{{ checkin.current_stamps }}</td>
+            <td>{{ getAvgStars(checkin.review.stars) }}</td>
             <!-- <td>{{ checkin.review.remarks }}</td> -->
             <td><a href="javascript:void(0)" class="btn btn-primary" ng-click="showPopUpReview($event,checkin,$index)" ng-disabled="getAvgStars(checkin.review.stars) == 'N/A' || getAvgStars(checkin.review.stars) == '-NIL-'">SHOW</a></td>
-          <td><a href="javascript:void(0)" class="btn btn-primary" id="makeBill" ng-click="createBill( checkin )">MAKE BILL</a></td>
+         
         </tr>
       </tbody>
 

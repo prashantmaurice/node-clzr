@@ -85,11 +85,13 @@ var view_vendor_allOffers = function(params,user){
             return registry.getSharedObject("handler_predicate").get(user,vendor,offer);
         }))
     }).then( function( validlist ){
-            
+        console.log("VALIDLIST:");
+		console.log(validlist);
 	    context.vendor.offers_filled=_.map(_.zip( context.vendor.offers_filled, validlist ),function(offerpair){
                 if(!offerpair[0].params)
                     offerpair[0].params={}
-                offerpair[0].params.unlocked=offerpair[1]
+				console.log(offerpair);
+                offerpair[0].params.unlocked = offerpair[1]
                 return offerpair[0]
         })
         return context.vendor;
@@ -103,6 +105,7 @@ var view_vendor_allOffers = function(params,user){
                 offer:offer._id,
                 state:1//CHECKIN_CONFIRMED
             })).then(function(checkins){
+				
 				return offer.params.used=(checkins.length>0)
 			}));
         })
@@ -120,23 +123,33 @@ var view_vendor_allOffers = function(params,user){
         debugger;
 		// Run the display function of every offer to morph it into the right type.
 		var vendor = context.vendor;
-        vendor.offers_filled=_.map(vendor.offers_filled,function(offer){
+        return Q.all(_.map(vendor.offers_filled,function(offer){
             if(offer.stamps)
                 offer.params.stamps=offer.stamps
-            return registry.getSharedObject('display').offerDisplay(offer)
-        })
+			console.log("BEFORE DISPLAY");
+			console.log( offer );
+            return registry.getSharedObject('qualify').getOfferDisplay( user, vendor, offer, null );
+        }) );
+
+	}).then( function( offers ) {
+
+		var vendor = context.vendor;
+		vendor.offers_filled = offers;
 		if(!user.stamplist)
             user.stamplist=[]
         if(!user.stamplist[vendor.fid])
             user.stamplist[vendor.fid]=0
-
-        vendor.offers=vendor.offers_filled;
+		
+		
+        vendor.offers = vendor.offers_filled;
         console.log( user.stamplist );
+		console.log( "OFFERS:: ");
+		console.log( vendor.offers );
 
 		vendor.stamps=user.stamplist[vendor.fid]
         vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
 
-        return vendor;
+        return Q(vendor);
 	})
 }
 
@@ -331,7 +344,7 @@ var view_vendor_search_near=function(params,user){
                     })
                 })
             } else
-            return vendors;
+				return vendors;
         })
         .then(function(vendors){
             if(params.category){
@@ -342,9 +355,15 @@ var view_vendor_search_near=function(params,user){
             return vendors;
         })
         .then(function(vendors){
-                return _.map(vendors,function(vendor){
-                    return util.vendorDistDisplay(vendor,params.latitude,params.longitude);
-                });
+            return _.map(vendors,function(vendor){
+				// Change this function slightly..
+                var disp = util.vendorDistDisplay(vendor,params.latitude,params.longitude);
+				if( user.favourites && ( user.favourites.indexOf( disp._id ) != -1 ) )
+					disp.favourite = true;
+				else
+					disp.favourite = false;
+				return disp;
+            });
         })
 }
 
@@ -411,10 +430,8 @@ var view_vendor_checkins_active = function(params, user) {
     if(user.type != "Vendor") {
         throw { code:481, description: "user is not a vendor" };
     }
-    if(user.vendor_id.toString() != params.vendor_id) {
-        throw { code:483, description: "user is not associated with vendor." };
-    }
 
+	params.vendor_id = user.vendor_id;
     return registry.getSharedObject("data_vendor_checkins_active").get(params);
 }
 
@@ -423,10 +440,8 @@ var view_vendor_checkins_confirmed = function(params, user) {
     if(user.type != "Vendor") {
         throw { code:491, description: "user is not a vendor" };
     }
-    if(user.vendor_id.toString() != params.vendor_id) {
-        throw { code:493, description: "user is not associated with vendor." };
-    }
 
+	params.vendor_id = user.vendor_id;
     return registry.getSharedObject("data_vendor_checkins_confirmed").get(params);
 }
 
@@ -575,21 +590,26 @@ var view_vendor_offers_unlocked=function(params,user){
     var context = { user: user, params: params };
 
     return Q.all([registry.getSharedObject("view_vendor_offerspage").get(params,user)
-                    ,registry.getSharedObject("view_vendor_offers_rewardspage").get(params,user)]).then(function(off_rew){
+                    ,registry.getSharedObject("view_vendor_offers_rewards").get(params,user)]).then(function(off_rew){
         
         context.off_rew = off_rew;
-        // Get all unlocked and unused offers from offerspage URL.
-        var offers=_.filter(off_rew[0].offers,function(offer){
-                return offer.params.unlocked && !offer.params.used;
-        })
+        console.log( off_rew );
+		// Get all unlocked and unused offers from offerspage URL.
+        var offers = _.filter(off_rew[0].offers,function(offer){
+            return offer.params.unlocked && !offer.params.used;
+        });
 
-            // Concatenate the rewards specific to this vendor with the offers.
-        var rewards=off_rew[1].rewards;
+        // Concatenate the rewards specific to this vendor with the offers.
+        var rewards = _.filter(off_rew[1].rewards, function( reward ){
+			return reward.unlocked;
+		});
+
         off_rew[0].offers=offers.concat(rewards)
       
         var display = registry.getSharedObject("qualify");
      	console.log("UNLOCKED:");
-	        //console.log( off_rew[0].offers ); 
+
+	    console.log( off_rew[0].offers ); 
 	    return Q.all( _.map(off_rew[0].offers, function( offer ){
 		
             return display.getOfferDisplay( user, off_rew[0], offer, false );
@@ -597,14 +617,67 @@ var view_vendor_offers_unlocked=function(params,user){
         }) );
 
     }).then( function( offers ){ 
-
+		console.log( offers );
 		context.off_rew[0].offers = offers;
       	return context.off_rew[0];
 
 	});
   
 }
-var view_vendor_offers_rewardspage=function(params,user){
+
+var view_vendor_offers_rewardspage = function( params, user ){
+	
+    if(!params.vendor_id){
+        throw { code:351, description:"No vendor_id provided." };
+    }
+
+    var context = { user: user, params: params };
+
+    return Q.all([registry.getSharedObject("view_vendor_offerspage").get(params,user)
+                    ,registry.getSharedObject("view_vendor_offers_rewards").get(params,user)]).then(function(off_rew){
+        
+        context.off_rew = off_rew;
+		console.log("OFF_REW offers[0]");
+        console.log( off_rew[0].offers );
+		// Get all unlocked and unused offers from offerspage URL.
+        var offers = _.map(off_rew[0].offers,function(offer){
+            offer.unlocked = offer.params.unlocked && !offer.params.used;
+			offer.params.type = "loyalty";
+			return offer;
+        });
+
+        // Concatenate the rewards specific to this vendor with the offers.
+        /*var rewards = _.map(off_rew[1].rewards, function( reward ){
+			return reward.unlocked;
+		});*/
+
+		var rewards = off_rew[1].rewards;
+
+		//rewards = _.map( rewards, function( reward ){ reward.unlocked = true; return reward; } );
+        off_rew[0].offers = rewards.concat(offers);
+      
+        var display = registry.getSharedObject("qualify");
+     	console.log("UNLOCKED:");
+
+	    console.log( off_rew[0].offers ); 
+	    
+		return Q( _.map(off_rew[0].offers, function( offer ){
+		
+            return offer;
+	    
+        }) );
+
+    }).then( function( offers ){ 
+		
+		console.log( offers );
+		context.off_rew[0].rewards = offers;
+      	return context.off_rew[0];
+
+	});
+  
+}
+
+var view_vendor_offers_rewards = function(params,user){
    
     var context = {params: params, user:user };
 
@@ -613,7 +686,10 @@ var view_vendor_offers_rewardspage=function(params,user){
         return Q.all([registry.getSharedObject("view_vendor_offers_offers_S0").get(params,user)
                     ,registry.getSharedObject("view_offers_rewards_user").get(params,user)])
         .then(function( rewards_s0 ){
-            
+
+			// Set unlocked = true for rewards to maintain symmetry.
+			rewards_s0[1] = _.map( rewards_s0[1], function( reward ){ reward.unlocked = true; return reward; } );
+
             console.log( rewards_s0 );
             return rewards_s0[0].concat(rewards_s0[1]);
 
@@ -624,8 +700,8 @@ var view_vendor_offers_rewardspage=function(params,user){
             
         }).then(function( vendor ){
             var rewards = context.rewards;
-            var _vendor=vendor.toObject()
-            _vendor.rewards=_.filter(rewards,
+            var _vendor = vendor.toObject()
+            _vendor.rewards = _.filter(rewards,
                     function(reward){
 
                         // Handle exclusive rewards.
@@ -662,14 +738,23 @@ var view_vendor_club_get = function(params,user){
     if(!user.type=='Vendor')
         throw { err: 361, description:"user is not vendor" };
 
-    
+	var context = {}; 
     return registry.getSharedObject("data_vendor").get({vendor_id:user.vendor_id}).then(function(vendor){
         var field="stamplist."+vendor.fid;
         query_param={};
         query_param[field]={$exists:true}
         query_param[field]={$gt:0}
+		context.vendor = vendor;
         return registry.getSharedObject("data_user").get(query_param);
-    });
+    }).then( function( users ){
+		var userDisplay = registry.getSharedObject("display_user_clubmember");
+		return Q.all( 
+			_.map( users, function( user ){ 
+				return userDisplay.make( user, context.vendor ) 
+			})
+		);
+
+	});
 
 }
 
@@ -699,6 +784,9 @@ global.registry.register("view_vendor_details_patch", {get:view_vendor_details_p
 
 global.registry.register("view_vendor_users_visited", {get:view_vendor_users_visited});
 global.registry.register("view_vendor_offers_rewardspage", {get:view_vendor_offers_rewardspage});
+
+global.registry.register("view_vendor_offers_rewards", {get:view_vendor_offers_rewards});
+
 global.registry.register("view_vendor_allOffers", {get:view_vendor_allOffers});
 global.registry.register("view_vendor_club_get", {get:view_vendor_club_get});
 global.registry.register("view_vendor_offers_unlocked", {get:view_vendor_offers_unlocked});

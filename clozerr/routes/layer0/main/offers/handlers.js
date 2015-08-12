@@ -56,12 +56,12 @@ var vendor_validate = function(params, vendor, user, checkin) {
         else
             throw { code: 282, description:"Checkin has expired." }
 
-
-	if( user.type != "Vendor" || checkin.vendor != user.vendor_id )
-        throw { code: 281, description:"User is not associated with vendor." };
+	// Do this test in the upper layers.
+//	if( user.type != "Vendor" || checkin.vendor != user.vendor_id )
+//        throw { code: 281, description:"User is not associated with vendor." };
 
 	return Q.all([registry.getSharedObject("models_Offer").findOne({_id:checkin.offer}),registry.getSharedObject("models_User").findOne({_id:checkin.user})]).then(function(resList){
-		console.log(resList);
+		//console.log(resList);
 		return registry.getSharedObject("handler_validate_" + resList[0].type).get( vendor, resList[1], checkin, resList[0], user );
 	});
 }

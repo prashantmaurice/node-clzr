@@ -105,14 +105,17 @@ router.get('/login/facebook', function(req, res) {
     }
     var type='user';
     if(req.query.type) type=req.query.type;
+
+	var analytics = global.registry.getSharedObject("view_analytics_hit").get;
+
     var request = https.get('https://graph.facebook.com/debug_token?input_token=' + req.query.token + '&access_token='+settings.auth.facebook.app_token, function(response) {
         debugger;
-
+		
 
         response.on('data', function(dat) {
             debugger;
             d=JSON.parse(dat.toString());
-            //console.log(d);
+            console.log(d);
             if( d.data && d.data.is_valid )
             {
 
@@ -145,6 +148,10 @@ router.get('/login/facebook', function(req, res) {
                             if( type == "vendor" ){
                                 
                             }
+							var params = req.query;
+							params.error = false;
+							params.created = false;
+							analytics( { metric: "url_auth_login", dimensions: params }, result ).then( function(analytics){ console.log( analytics ) } );
                         }
                         else
                         {
@@ -156,6 +163,11 @@ router.get('/login/facebook', function(req, res) {
                             //console.log(id);
                             newid(id,nu._id).save();
                             res.end( JSON.stringify( {result : true, token : id , user:user, action:"create"} ) );
+								//Record analytics.
+							var params = req.query;
+							params.error = false;
+							params.created = true;
+							analytics( { metric: "url_auth_login", dimensions: params }, user ).then( function(analytics){ console.log( analytics ) } );
                         });
 
                         }
@@ -185,6 +197,7 @@ router.get('/login/google', function(req, res) {
     }
     var type='user';
     if(req.query.type) type=req.query.type;
+	var analytics = global.registry.getSharedObject("view_analytics_hit").get;
     var request = https.get('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + req.query.token, function(response) {
         debugger;
 
@@ -220,6 +233,10 @@ router.get('/login/google', function(req, res) {
                                 res.end( JSON.stringify( {result : true, token : id , user:result, action:"refresh"} ) );
 
                             }
+							var params = req.query;
+							params.error = false;
+							params.created = false;
+							analytics( { metric: "url_auth_login", dimensions: params }, result ).then( function(analytics){ console.log( analytics ) } );
                         }
                         else
                         {
@@ -231,6 +248,11 @@ router.get('/login/google', function(req, res) {
                             //console.log(id);
                             newid(id,nu._id).save();
                             res.end( JSON.stringify( {result : true, token : id , user:user, action:"create"} ) );
+							
+							var params = req.query;
+							params.error = false;
+							params.created = true;
+							analytics( { metric: "url_auth_login", dimensions: params }, user ).then( function(analytics){ console.log( analytics ) } );
                         });
 
                         }
