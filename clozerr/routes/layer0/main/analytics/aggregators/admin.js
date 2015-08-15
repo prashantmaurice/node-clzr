@@ -42,9 +42,15 @@ var admin_2D_reports = function(){
 	};
 
 	var promises = _.values( report );
-	
+	function toObject(names, values) {
+		var result = {};
+	    for (var i = 0; i < names.length; i++)
+		        result[names[i]] = values[i];
+		return result;
+	}
+
 	return Q.all( promises ).then( function( data ){
-		return _.zip( _.keys( report ), data );	
+		return toObject( _.keys( report ), data );	
 	});
 }
 

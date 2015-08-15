@@ -131,6 +131,12 @@ var view_vendor_allOffers = function(params,user){
             return registry.getSharedObject('qualify').getOfferDisplay( user, vendor, offer, null );
         }) );
 
+	}).then( function( offers ){
+		// Run a sorting algo to make sure offers are presented properly.
+		return _.sortBy( offers, function( a ){
+			return a.params.stamps*1;
+		});
+
 	}).then( function( offers ) {
 
 		var vendor = context.vendor;
