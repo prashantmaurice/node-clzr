@@ -37,7 +37,7 @@ var vendor_checkin_S0 = function( params,user, vendor, offer ){
 	
     }).then(function(retval) {
 
-	// Pass value through.	
+	    // Pass value through.	
 
 	    if( typeof retval != "boolean" ){
 		    return Q( retval );
@@ -67,13 +67,18 @@ var vendor_predicate_S0 = function(user, vendor, offer) {
     
     // make sure the offer object is in some way linked to the vendor or if it's the default offer.
     var defaultOffer = registry.getSharedObject("settings").defaultOffer;
-    if( ( offer._id != defaultOffer ) && ( !offer.vendor || (offer.vendor._id != vendor._id) ) && ( vendor.offers.indexOf( offer._id ) == -1  )  )
-        return Q(false);
+    if( ( offer._id != defaultOffer )  // Test whether it's the default offer.
+        && ( !offer.vendor || ( ( offer.vendor._id != vendor._id ) || ( user.rewards.current.indexOf( offer._id ) == -1 ) )  ) // Test whether it's a reward.
+        && ( vendor.offers.indexOf( offer._id ) == -1  )  // Test whether it belongs to the vendor.
+    )
+        return Q(false);    // If all fail.. then this offer isn't associated in any way with this (vendor, user) pair. Reject it.
     
+
     if(!offer.params || !offer.params.type){
         console.log('no params or params.type for offer'+JSON.stringify(offer))
         return Q(false)
     }
+
 
     if(s0_types.indexOf(offer.params.type)==-1){
       console.log('wrong params.type for offer'+JSON.stringify(offer));
@@ -95,25 +100,26 @@ var vendor_validate_S0 = function( vendor, user, checkin, offer ){
         if(!user.stamplist[vendor.fid])
             user.stamplist[vendor.fid] = parseInt( checkin.validate_data.stamps );
         else {
-            user.stamplist[vendor.fid] = parseInt(user.stamplist[vendor.fid]) + parseInt(checkin.validate_data.stamps);
+            user.stamplist[vendor.fid] = parseInt( user.stamplist[vendor.fid]) + parseInt(checkin.validate_data.stamps);
         }
+
         user.markModified('stamplist')
 
-	console.log("checking for rewards..");
-	console.log( offer );
-	// Handle the case of offers being exclusive.
-        if( offer.vendor && user.rewards ){
-		console.log("removing reward");
-		
-		var idx = user.rewards.indexOf( checkin.offer );
+	    console.log("checking for rewards..");
+	    console.log( offer );
+	    // Handle the case of offers being exclusive.
+        if( offer.vendor && user.rewards && user.rewards.current ){
+		    console.log("removing reward");
+        
+		    var idx = user.rewards.current.indexOf( checkin.offer );
 	
-		if( idx != -1 )
-			user.rewards.splice( idx, 1 );
+		    if( idx != -1 )
+			    user.rewards.current.splice( idx, 1 );
 
-		user.markModified("rewards");
-	}
-	console.log("Checkin validated");
-	return user.save();
+		    user.markModified("rewards");
+	    }
+	    console.log("Checkin validated");
+	    return user.save();
 
     }).then(function( user ){
 

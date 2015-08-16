@@ -120,20 +120,19 @@ var view_user_pinned_list = function(params,user){
 	})
 	return deferred.promise;
 }
+
+// 2nd order view: uses one or more first order views.
 var view_user_details_get = function(params,user){
-	var deferred = Q.defer();
-	if(!user.rewards)
-		user.rewards=[]
-	user.save();
-	registry.getSharedObject('data_rewards')
-	.get({_id:{$in:user.rewards}}).then(function(rewards){
-		// console.log(rewards)
-		var nuser=user.toObject()
-		nuser.rewards=rewards;
-		// console.log(nuser)
-		deferred.resolve(nuser)
-	})
-	return deferred.promise;
+	
+    // Populate user object with rewards.
+    return registry.getSharedObject('view_user_rewards')
+	.get( user ).then(function(rewards){
+		var user_obj = user.toObject()
+
+		user_obj.rewards = rewards;
+		
+        return user_obj;
+	});
 }
 
 

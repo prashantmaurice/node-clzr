@@ -83,27 +83,40 @@ Models.Notification = mongoose.model('Notification',new Schema({
 } ));
 
 Models.User = mongoose.model('User',new Schema({
-	social_id:String,
-	type:String,
-	vendor_id:String,
-	stamplist: Schema.Types.Mixed,
-	username:String,
-	password:String,
-	auth_type:String,
-	profile: Schema.Types.Mixed,
-	date_created:Date,
+
+	social_id:String,   // Social ID in case auth-type references external ID provider.
+	type:String,    // Type of user.. possible types are "User", "Vendor", "Admin" & "TestUser".
+	vendor_id:String,   // In case type="Vendor", ref to vendor.
+
+	stamplist: Schema.Types.Mixed,  // Record stamps at each vendor.
+
+    username:String,    // For auth-type = "password"
+	password:String,    // Password is SHA256 hashed with secret key stored in the settings.
+
+	auth_type:String,   // Identity source.
+	profile: Schema.Types.Mixed, // Record profile data obtained from Identity Provider.
+	
+    date_created:Date,
+
 	dateLastLogin:Date,
 	dateLastLogout:Date,
-	upgraded:Date,
-	gcm_id: String,
-	favourites:Schema.Types.Mixed,
-	pinned:Schema.Types.Mixed,
-    stateList: Schema.Types.Mixed,
-    lucky_rewards:Schema.Types.Mixed,
-    failed_instances:Schema.Types.Mixed,
-    rewards : [ObjectId],
+	
+    upgraded:Date,  // Record Switch to v2 or above.
+	gcm_id: String,  // Record latest GCM ID.
+
+	favourites:Schema.Types.Mixed, // Record favourite vendors.
+	pinned:Schema.Types.Mixed, // Record pinned offers.
+
+    stateList: Schema.Types.Mixed,// ?
+    lucky_rewards:Schema.Types.Mixed, // ??? 
+    failed_instances:Schema.Types.Mixed,// ???
+
+    rewards : Schema.Types.Mixed,
     notifications: Schema.Types.Mixed,
-	computed: Schema.Types.Mixed
+	
+    computed: Schema.Types.Mixed, // Impulse Scope data.
+    
+    offers_used : [ObjectId]
 }));
 
 Models.Token = mongoose.model('Token',new Schema({

@@ -49,7 +49,12 @@ var view_offers_checkin_create=function(params,user){
 
 		context.offer = offer;
 		console.log("CC: Got Offer");
-		return registry.getSharedObject("handler_predicate").get( user, context.vendor, context.offer );
+		
+        // Offer already used check.
+        if( user.offers_used && user.offer_used.indexOf( offer._id ) )
+            throw { code:381, description:"Offer already used by user." };
+
+        return registry.getSharedObject("handler_predicate").get( user, context.vendor, context.offer );
 
 	}).then(function(valid){
 
@@ -154,7 +159,13 @@ var view_vendor_offers_validate=function(params,user){
 			context.checkin.gcm_id || user.gcm_id || 0,
 			registry.getSharedObject("display").GCMCheckinDisplay( context.checkin, context.vendor )
 		);
-		
+	    
+        if( !user.offers_used )
+            user.offers_used = [];
+    
+        // Use optimizations based on algorithms later.
+        user.offers_used.push( context.checkin.offers );
+
 		return registry.getSharedObject("qualify").getCheckinOnValidateDisplay( context.checkin );
 
 	});

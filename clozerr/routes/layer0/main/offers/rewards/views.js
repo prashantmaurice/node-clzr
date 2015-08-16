@@ -1,11 +1,12 @@
 var registry=global.registry
 var Q=require('q')
 var _=require('underscore')
+var jwt = require('jsonwebtoken')
+
 
 var view_offers_reward_create=function(params,user){
 	params.type='S0'
-	
-   
+	   
 	if(!params.vendor_id)
 	    throw {code:500,error:'reward needs vendor_id'};
     
@@ -36,6 +37,7 @@ var give_reward = function(user,offer_id){
 		return Q(user)
 	}
 }
+
 var view_offers_reward_give = function(params,user){
 	var deferred=Q.defer();
 	if(!params.user_id || !params.reward_id || !params.vendor_id){
@@ -76,13 +78,76 @@ var view_offers_reward_transfer=function(params,user){
     });
 }
 
+var view_offers_rewards_redeem = function( params, user ){
+    
+    utils.require_args( params, ['token', 'acces_token'] );
+    
+
+    if( user.type == "Anonymous" )
+        throw { code:541, description:"Not authenticated." }
+   
+    // Verfiy signature of certificate.
+    var token = jwt.verify( token, registry.getSharedObject("settings").gift_certificate.secret );
+    
+    // If it's expired then reject.
+    if( new Date( token.expiry ) >= new Date() )
+        throw { code: 542, description:"Gift Expired" };
+
+    // Push into the user's current giftbox.
+    user.rewards.current.push( token.reward );
+    
+    return { result: true };
+
+}
+var view_offers_rewards_make_transfer_token = function( params, user ){
+    
+    utils.require_args( params, ['reward_id','access_token']);
+
+    if( user.type == "Anonymous" )
+        throw { code:241, description:"Not authenticated." }
+
+    if( user.rewards.current.indexOf( params.reward_id ) == -1 )
+        throw { code:242, description:"No such reward in user's current gift-box" }
+
+    var expiry = registry.getSharedObject("settings").rewards.gift_expiry;
+
+    // Remove reward from the rewards.current object.
+    user.rewards.current.splice( user.rewards.indexOf( params.reward_id ) );
+
+    // Add it to gifting object.
+    user.rewards.gifting.push( params.reward_id );
+    
+    
+    // Sign a JWT certificate for the reward.
+    var token = jwt.sign({ reward: params.reward_id, expiry: expiry, user: user._id }, registry.getSharedObject("settings").gift_certificate.secret );
+    return { token: token };
+}
+
 var view_offers_rewards_user=function(params,user){
 	
-    return Q( registry.getSharedObject('data_rewards')
-	.get({_id:{$in:user.rewards}}) ).then(function(rewards){
+    var context = {};
+    
+    if( !user.rewards )
+        user.rewards = { current:{}, gifting:{} };
 
-		return Q( _.map(rewards,registry.getSharedObject('display').rewardListDisplay) );
-	
+    return Q( registry.getSharedObject('data_rewards')
+    .get({_id:{$in:user.rewards.current}}) ).then(function(rewards){
+
+		return Q( _.map( rewards, registry.getSharedObject('display').rewardListDisplay ) );
+
+    }).then( function( rewards ){
+        
+        context.rewards = _.map( rewards, function(reward){ reward.active=true } );
+        return registry.getSharedObject('data_rewards').get({_id:{$in:user.rewards.gifting}});
+
+    }).then( function( rewards ){
+        
+        return Q( _.map( rewards, registry.getSharedObject('display').rewardListDisplay ) )
+    
+    }).then( function( rewards ){
+
+        return context.rewards.concat( _.map( rewards, function( reward ){ reward.active=false; return reward; } ) );
+    
     });
 }
 
