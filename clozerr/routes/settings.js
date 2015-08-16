@@ -25,7 +25,7 @@ module.exports = {
 	},
 	"checkin":{
 		"expiry_time":60 * 60 * 1000,
-		"delay_between_checkins":2 * 60 * 60 * 1000
+		"delay_between_checkins":0 * 60 * 60 * 1000
 	},
     "jwt":{
         "secret":"blublabley"
