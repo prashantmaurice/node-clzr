@@ -21,8 +21,17 @@ var vendor_predicate = function(user, vendor, offer) {
 	/*if(offer.type=='reward'){ // BLOO!
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}*/
+    
+    if( user.offers_used.indexOf( offer._id ) != -1 )
+        return Q(false);
 
 	return registry.getSharedObject("handler_predicate_" + offer.type).get( user, vendor, offer );
+}
+
+var handler_display = function( params, vendor, offer, checkin ){
+    // Handle display requirements here.
+
+	return registry.getSharedObject("handler_display_" + offer.type).get( user, vendor, offer );
 }
 
 var vendor_validate = function(params, vendor, user, checkin) {

@@ -27,9 +27,9 @@ module.exports = {
 		"expiry_time":60 * 60 * 1000,
 		"delay_between_checkins":0 * 60 * 60 * 1000
 	},
-    "jwt":{
+    "gift_certificate":{
         "secret":"blublabley"
-    }
+    },
 	"api":{
 		"default_limit" : 30
 	},

@@ -57,6 +57,17 @@ var vendor_checkin_S1 = function( params, user, vendor, offer ){
      });
 }
 
+// Mapper function for presentation layer.
+var handler_display_S1 = function( user, vendor, offer ){
+
+    // Copy params for consistency.
+    offer.params.stamps=offer.stamps*1;
+
+    // Set numeric image.
+    if( !offer.image || offer.image == "" )
+        offer.image = registry.getSharedObject("settings").S1ImageBase + offer.params.stamps + ".png";
+}
+
 var vendor_predicate_S1 = function(user, vendor, offer) {
 
     if(!user.stamplist[vendor.fid]) {

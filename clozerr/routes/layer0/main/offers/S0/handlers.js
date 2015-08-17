@@ -88,6 +88,18 @@ var vendor_predicate_S0 = function(user, vendor, offer) {
     return vendor_checkin_S0_predicates[offer.params.type](user, vendor, offer);
 }
 
+var handler_display_S0 = function( user, vendor, offer ){
+    
+    if(!offer.params || !offer.params.type) return Q(null); // Reject.
+
+    if( !offer.image || ( offer.image == "" ) )
+      	offer.image = global.registry.getSharedObject("settings").S0OfferTypes[offer.params.type];
+
+    // Call subtype routine here.
+
+    return offer;
+}
+
 var vendor_validate_S0 = function( vendor, user, checkin, offer ){
     var deferred = Q.defer();
 
