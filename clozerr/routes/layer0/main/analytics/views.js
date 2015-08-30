@@ -12,8 +12,11 @@ var view_analytics_hit=function(params,user){
 	analytics_obj.test = params.test||false;
 	
 	return Q(analytics_obj.save()).then(function( analytics_obj ){
-		// broadcast ID to all listeners prompting them to load the analytics data.
+		// Broadcast ID to all external listeners prompting them to load the analytics data.
 		global.io.emit('analytics', JSON.stringify({event_id:analytics_obj._id}) );
+		// Broadcast event to internal listeners.
+		global.impulse.emit( analytics_obj.metric, analytics_obj, user );
+
 		return analytics_obj;
 	});
 }

@@ -21,7 +21,7 @@ function newUser( backend, id ) {
         date_created: new Date(),
         favourites:[],
         pinned:[],
-        rewards:[]
+        rewards:{current:[], gifting:[]}
     });
     nuser.markModified("stamplist");
     return nuser;
@@ -54,12 +54,24 @@ function addVendorToUser( user ){
     return user;
 }
 
+
+// TODO: Move map functions to a new file and import them here.
+function mapFacebookData( user ){
+
+	// Straightforward copying.
+	user.profile.name = user.profile.raw.name;
+	user.profile.email = user.profile.raw.email;
+	
+}
+
 function loadFacebookDetails( user, access_token, cb ){
-    https.get("https://graph.facebook.com/me/?access_token=" + access_token, function( response ){
+
+	https.get("https://graph.facebook.com/me/?access_token=" + access_token, function( response ){
 
         response.on("data", function( dat ){
             var obj = JSON.parse( dat.toString() );
             user.profile = obj;
+			//mapFacebookData( user );
             user.markModified("profile");
             user.upgraded = new Date();
             cb( user );
@@ -68,12 +80,34 @@ function loadFacebookDetails( user, access_token, cb ){
     });
 }
 
+
+function mapGoogleData( user ){
+
+	// Assume raw profile is in user.profile.raw.
+	
+
+	user.profile.name = user.profile.raw.displayName;
+	
+	// TODO: Read docs for this.
+	if( user.profile.raw.emails )
+		user.profile.email = user.profile.emails[0].value;
+	
+}
+
+
 function loadGoogleDetails( user, access_token, cb ){
     https.get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + access_token, function( response ){
 
         response.on("data", function( dat ){
             var obj = JSON.parse( dat.toString() );
-            user.profile = obj;
+
+			user.profile = {};
+
+			// Essential transforms.
+			user.profile = obj;
+			
+			//mapGoogleData( user );
+
             user.upgraded = new Date();
             user.markModified("profile");
             cb( user );

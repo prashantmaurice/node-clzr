@@ -80,7 +80,13 @@ router.get("/:object/:handler/:view", function( req, res ){
     } catch( err ){
             console.log("caught error : "+err);
 			console.log( err );
-            var error = registry.getSharedObject("view_error").makeError({ error:err, code:500 });
+			
+			if( err.stack ){
+				console.log( "Stack Trace: ");
+				console.log( err.stack );
+			}
+
+			var error = registry.getSharedObject("view_error").makeError({ error:err, code:500 });
 			sendError( res, error, 500 );
     }
 });
@@ -106,7 +112,11 @@ router.get("/:object/:view", function( req, res ){
     else {
         try{
             httpObjView.get( req.query ,req.user).then( function( output ){
-				
+				if( !output ){
+					res.end();
+					return;
+				}
+
                 if(output.code)
                     res.status(output.code)
                 if(output.err){
@@ -150,7 +160,7 @@ router.post("/:object/:handler/:view", function( req, res ){
     }
     else {
         try{
-            httpObjView.post( req.body ,req.user).then( function( output ){
+            httpObjView.post( req.body, req.user ).then( function( output ){
                 if(output.code)
                     res.status(output.code)
                 if(output.err){

@@ -24,7 +24,7 @@
                 <td>{{ checkin.offer.caption }}</td>
                 <td>{{ checkin.offer.description }}</td>
                 <td>{{ checkin.current_visits }}</td>
-                <td data-time="{{ checkin.date_created }}" class="timer"></td>
+                <td><timer interval="1000" finish-callback="update()" countdown="checkin.ms_to_expiry">{{mminutes}}:{{sseconds}}</timer></td>
                 <td>
                 <input type="number" value=1 class="form-control" id="stamps" ng-model="checkin.validate_data.stamps"></td>
                 <td><a href="javascript:void(0)" ng-click="invokeTypeRequirement( checkin )" class="btn btn-primary">VALIDATE</a></td>

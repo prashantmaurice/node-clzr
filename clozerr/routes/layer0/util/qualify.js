@@ -79,16 +79,16 @@ var getOfferDisplay = function (user, vendor, offer, checkinOld){
     offerDisplay.description=offer.description;
     //offerDisplay.stamps=offer.stamps*1;
     offerDisplay.image = offer.image;
-    offerDisplay.params={};
+    offerDisplay.params=offer.params;
 	//console.log( offerDisplay );
     debugger;
 
-    if(checkinOld) {
+    /*if(checkinOld) {
       offerDisplay.params.used = true;
     }
     else {
       offerDisplay.params.used = false;
-    }
+    }*/
 
     if(!user.stamplist)
       user.stamplist={}

@@ -45,12 +45,17 @@ var vendor_checkin_S1 = function( params, user, vendor, offer ){
 		    throw {code:546, error:"Minimum 2 hrs between checkins"};
 	    }
                     
-	    checkinObj.vendor = vendor._id;
+		var expiry = registry.getSharedObject("settings").checkin.expiry_time;
+		if( vendor.settings.checkins && vendor.settings.checkins.expiry )
+			expiry = vendor.settings.checkins.expiry;
+	    
+		checkinObj.vendor = vendor._id;
         checkinObj.user = user._id;
        	checkinObj.offer = offer._id;
         checkinObj.state = CHECKIN_STATE_ACTIVE;
         checkinObj.date_created = new Date();
         checkinObj.pin=rack();
+        checkinObj.expiry = new Date( new Date().getTime() + expiry );
         checkinObj.gcm_id=params.gcm_id||0;
         return checkinObj.save();
 
@@ -58,7 +63,7 @@ var vendor_checkin_S1 = function( params, user, vendor, offer ){
 }
 
 // Mapper function for presentation layer.
-var handler_display_S1 = function( user, vendor, offer ){
+var handler_display_S1 = function( offer ){
 
     // Copy params for consistency.
     offer.params.stamps=offer.stamps*1;
@@ -66,6 +71,8 @@ var handler_display_S1 = function( user, vendor, offer ){
     // Set numeric image.
     if( !offer.image || offer.image == "" )
         offer.image = registry.getSharedObject("settings").S1ImageBase + offer.params.stamps + ".png";
+	
+	return offer;
 }
 
 var vendor_predicate_S1 = function(user, vendor, offer) {
@@ -75,7 +82,7 @@ var vendor_predicate_S1 = function(user, vendor, offer) {
     }
 
     var defaultOffer = registry.getSharedObject("settings").defaultOffer;
-	console.log( vendor.offers );
+	//console.log( vendor.offers );
 	console.log( offer._id );
 	var offerInVendor = _.find( vendor.offers, function( _offer ){
 		return offer._id.toString() == _offer.toString();
@@ -85,7 +92,8 @@ var vendor_predicate_S1 = function(user, vendor, offer) {
         console.log("offer does not belong to vendor.")
 		return Q(false);
 	}
-
+	console.log( offer.stamps );
+	console.log( user.stamplist[vendor.fid] );
     if( (user.stamplist[vendor.fid]*1 >= offer.stamps*1) || ( vendor.visitOfferId && (offer._id.toString() == vendor.visitOfferId.toString()) ) ) {
         console.log("num stamps is greater offer level.")
 		return Q(true);
@@ -102,38 +110,30 @@ var vendor_validate_S1 = function( vendor, user, checkin ){
 
     //REMEMBER : user should be user object of vendor
 
-    	console.log(user.stamplist);
+    console.log(user.stamplist);
 
-    	checkin.state = CHECKIN_STATE_CONFIRMED;
-    	console.log(checkin);
+    checkin.state = CHECKIN_STATE_CONFIRMED;
+    console.log(checkin);
 	// :O
-    	checkin.save( function( res ){ console.log( res ) }, function(err) {
-            //deferred.resolve({code:500,error:err});
-            console.log( err );
-        });
 	
-        if(!user.stamplist)
-            user.stamplist={}
+    if(!user.stamplist)
+        user.stamplist={}
 
-        if(!user.stamplist[vendor.fid])
-            user.stamplist[vendor.fid] = 0
+    if(!user.stamplist[vendor.fid])
+        user.stamplist[vendor.fid] = 0
 
-	    console.log("validate_data");
-	    console.log(checkin.validate_data.stamps);
+	console.log("validate_data");
+	console.log(checkin.validate_data.stamps);
         
-	    user.stamplist[vendor.fid] = parseInt(user.stamplist[vendor.fid]) + parseInt( checkin.validate_data.stamps );
-        user.markModified("stamplist");
+	user.stamplist[vendor.fid] = parseInt(user.stamplist[vendor.fid]) + parseInt( checkin.validate_data.stamps );
+    user.markModified("stamplist");
 
 
-        user.save( function( res ){ console.log( res ) }, function(err) {
-            //deferred.resolve({code:500,error:err});
-            console.log( err );
-        });
-
-        return Q(checkin);
+    return Q( user.save().then( function( user ) { return Q( checkin.save() ) } ) );
 
 }
 
 global.registry.register("handler_checkin_S1", {get:vendor_checkin_S1});
 global.registry.register("handler_validate_S1", {get:vendor_validate_S1});
 global.registry.register("handler_predicate_S1", {get:vendor_predicate_S1});
+global.registry.register("handler_display_S1", {get:handler_display_S1});

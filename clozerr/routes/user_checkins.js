@@ -9,7 +9,7 @@
 require("./layer0/init");
 
 console.log("finished building environment");
-var q = require("Q");
+var Q = require("q");
 var _ = require("underscore");
 
 var registry = global.registry;

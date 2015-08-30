@@ -34,8 +34,12 @@ var view_vendor_details_get = function( params ) {
         if( !vendor )
             throw { code : 351, description : "No such vendor" };
 
-        vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
-	    return vendor;
+        
+		vendor.visitOfferId = registry.getSharedObject("settings").defaultOffer;
+	    vendor.logo = encodeURI( vendor.image_base + vendor.resource_name + "_logo" );
+		vendor.image = encodeURI( vendor.image_base + vendor.resource_name );
+		//vendor.
+		return vendor;
 
     });
 
@@ -82,6 +86,8 @@ var view_vendor_allOffers = function(params,user){
         })
 		context.vendor = vendor;
         return Q.all(_.map(vendor.offers_filled,function(offer){
+			console.log( "PROCESSING:" );
+			console.log( offer );
             return registry.getSharedObject("handler_predicate").get(user,vendor,offer);
         }))
     }).then( function( validlist ){
@@ -97,22 +103,15 @@ var view_vendor_allOffers = function(params,user){
         return context.vendor;
     }).then(function(vendor){
         var offersplist=[]
-
+		console.log(user.offers_used);
 		// Check if an offer has been used or not.	
-        _.each(context.vendor.offers_filled,function(offer){
-            offersplist.push(Q(registry.getSharedObject("data_checkins").get({
-                user:user._id,
-                offer:offer._id,
-                state:1//CHECKIN_CONFIRMED
-            })).then(function(checkins){
-				
-				return offer.params.used=(checkins.length>0)
-			}));
-        })
-        return Q.all(offersplist)
+        return _.map(context.vendor.offers_filled,function(offer){
+			return user.offers_used.indexOf( offer._id ) > -1;
+        });
+        //return Q.all(offersplist)
 	}).then(function(usedlist){
-
-		// Remove the used offers.
+		console.log( usedlist );
+		//Remove the used offers.
         context.vendor.offers_filled=_.map(_.zip(context.vendor.offers_filled,usedlist),function(offerpair){
             offerpair[0].params.used=offerpair[1]
             return offerpair[0]
@@ -320,12 +319,26 @@ var view_vendor_search_near=function(params,user){
         var util = registry.getSharedObject("util");
         limit=params.limit || registry.getSharedObject("settings").api.default_limit;
         offset=params.offset || 0;
-
+		
+		
         if(!params.latitude || !params.longitude)
             throw {code:500,description:"distance params missing"};
 
-        return registry.getSharedObject("data_vendor_near").get(params,user).then(function(vendors){
-            return vendors;
+		var pr = registry.getSharedObject("data_vendor_near").get(params,user);
+		if( params.name ){
+			var obj = { visible:true };
+			if( user.role == "User" )
+				obj.test = {$ne:true};
+
+			pr = registry.getSharedObject("data_vendors").get(obj);	
+		}
+
+		console.log("Pr");
+		console.log( pr );
+
+		return Q( pr ).then(function(vendors){
+            console.log( vendors.length );
+			return vendors;
         }).then(function(vendors){
             debugger;
             if(params.name){
@@ -623,7 +636,21 @@ var view_vendor_offers_unlocked=function(params,user){
         }) );
 
     }).then( function( offers ){ 
+		context.offers = offers;
+
+		offers.push({
+			_id : registry.getSharedObject("settings").defaultOffer,
+			caption:"No Offer",
+			description:"Checkin to get Stamps",
+			params:{
+				type:"noOffer"
+			},
+			image:"https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/happy+hour.png"
+		});
 		console.log( offers );
+		
+
+
 		context.off_rew[0].offers = offers;
       	return context.off_rew[0];
 
@@ -764,6 +791,29 @@ var view_vendor_club_get = function(params,user){
 
 }
 
+var view_vendor_geofence_autocreate = function( params, user ){
+	
+	if( user.type != "Admin" )
+		throw {code:403, description:"Not authorized for this action"};
+	
+	
+	var geofence_for_vendor = registry.getSharedObject("geofence_for_vendor");
+	var settings = registry.getSharedObject("settings");
+	var RADIUS = settings.geofencing.default_radius;
+	var TYPE = settings.geofencing.default_type;
+
+	return registry.getSharedObject("models_Vendor").findOne({_id:params.vendor_id}).then(function( vendor ){ 
+		
+		if( !vendor )
+			return { code:400, description:"No such vendor" };
+
+		return geofence_for_vendor.create( vendor, TYPE, RADIUS, {} );
+
+	});
+
+}
+
+global.registry.register("view_vendor_geofence_autocreate", { get : view_vendor_geofence_autocreate } );
 global.registry.register("view_vendor_geofences_add", { get : view_vendor_geofences_add });
 
 global.registry.register("view_category_list", {get:view_category_list});

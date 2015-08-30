@@ -55,6 +55,7 @@ var analytics_mapreduce = function(params) {
 
 		var allow = true;
 		
+		var analytics_obj = this;
 
 		var EXTERN = 0;
 		for( var i = 0; i < dimensions.length; i++ ){
@@ -75,6 +76,9 @@ var analytics_mapreduce = function(params) {
 	var reduce = function(key, values) {
 		return Array.sum(values);
 	}
+	
+	if( params.reduce )
+		reduce = params.reduce;
 
 	var query = params.query;
 

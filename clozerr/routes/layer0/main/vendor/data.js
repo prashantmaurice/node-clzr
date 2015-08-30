@@ -204,8 +204,10 @@ var data_vendor_checkins_active = function( params ) {
     return registry.getSharedObject("data_checkin_params").get(params).then( function( checkins ){
 		return _.filter( checkins, function( checkin ) {
 			
-
-			if( new Date().getTime() - checkin.date_created.getTime() < settings.checkin.expiry_time )
+			console.log( checkin.expiry );
+			console.log( new Date() );
+			console.log( checkin.expiry < new Date() );
+			if( checkin.expiry > new Date() )
 				return (true);
 			else{
 				console.log( checkin );

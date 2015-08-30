@@ -126,8 +126,8 @@ var view_user_details_get = function(params,user){
 	
     // Populate user object with rewards.
     
-    return registry.getSharedObject('view_offer_rewards_user')
-	.get( user ).then(function(rewards){
+    return registry.getSharedObject('view_offers_rewards_user')
+	.get( params, user ).then(function(rewards){
 		var user_obj = user.toObject()
 
 		user_obj.rewards = rewards;

@@ -38,6 +38,7 @@ var admin_2D_reports = function(){
 //		"beacons" : registry.getSharedObject("analytics_beacons").all(),
 //		"beacons_today" : registry.getSharedObject("analytics_beacons").today(),
 		"app_views" : registry.getSharedObject("analytics_appviews").byDay(),
+		"active_users" : registry.getSharedObject("analytics_activeusers").byDay(),
 //		"app_views_today" : registry.getSharedObject("analytics_appviews").today(),
 	};
 

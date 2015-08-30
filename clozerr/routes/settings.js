@@ -14,6 +14,10 @@ module.exports = {
 			"default":"password"
 		}
 	},
+	"geofencing":{
+		"default_radius" : 200,
+		"default_type"   : 1
+	},
 	"db":{
 		"mongo":{ "host":"db.clozerr.com", "port":"27107", "name":"fin4", "username":"mongoadmin", "password":"clozerradmin"}
 	},
@@ -28,7 +32,8 @@ module.exports = {
 		"delay_between_checkins":0 * 60 * 60 * 1000
 	},
     "gift_certificate":{
-        "secret":"blublabley"
+        "secret":"blublabley",
+		"expiry": 24 * 60 * 60 * 1000
     },
 	"api":{
 		"default_limit" : 30

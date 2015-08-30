@@ -30,7 +30,8 @@ var view_vendor_offers_offers_S0=function(params,user){
 		_.each( context.vendor_offers.offers,
 				function(offer){
 						// return offer;
-					offersplist.push(registry.getSharedObject("qualify").getOfferDisplay(user,context.vendor,offer))
+					//offersplist.push( registry.getSharedObject("qualify").getOfferDisplay(user,context.vendor,offer) )
+					offersplist.push( registry.getSharedObject("handler_display").get( offer, { vendor:context.vendor, user:user }, "rewardspage" ) )
 				});
 		return Q.all(offersplist)
         

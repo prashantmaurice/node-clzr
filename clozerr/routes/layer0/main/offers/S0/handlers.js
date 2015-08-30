@@ -11,6 +11,7 @@ var CHECKIN_STATE_ACTIVE = 0;
 var CHECKIN_STATE_CONFIRMED = 1;
 var CHECKIN_STATE_CANCELLED = 2;
 
+var subdisplays = require("./display");
 
 var vendor_checkin_S0 = function( params,user, vendor, offer ){
     var deferred = Q.defer();
@@ -47,6 +48,10 @@ var vendor_checkin_S0 = function( params,user, vendor, offer ){
         if( !retval ) {
 		    throw { code:437, description:"Time delay between checkins required" };
 	    }
+		var expiry = registry.getSharedObject("settings").checkin.expiry_time;
+		if( vendor.settings.checkins && vendor.settings.checkins.expiry )
+			expiry = vendor.settings.checkins.expiry;
+
         checkinObj.vendor = vendor._id;
         checkinObj.user = user._id;
         checkinObj.offer = offer._id;
@@ -54,7 +59,8 @@ var vendor_checkin_S0 = function( params,user, vendor, offer ){
         checkinObj.date_created = new Date();
         checkinObj.pin=rack();
         checkinObj.gcm_id=params.gcm_id||0;
-        console.log("saving checkin");
+        checkinObj.expiry = new Date( new Date().getTime() + expiry );
+		console.log("saving checkin");
         return checkinObj.save();
     });
 
@@ -64,15 +70,19 @@ var vendor_predicate_S0 = function(user, vendor, offer) {
     
     var vendor_checkin_S0_predicates = registry.getSharedObject("checkin_S0_predicates");
     var s0_types = _.keys( vendor_checkin_S0_predicates );
-    
+   
+	console.log( offer );
+	console.log( vendor._id );
+	console.log( user.rewards );
     // make sure the offer object is in some way linked to the vendor or if it's the default offer.
     var defaultOffer = registry.getSharedObject("settings").defaultOffer;
     if( ( offer._id != defaultOffer )  // Test whether it's the default offer.
-        && ( !offer.vendor || ( ( offer.vendor._id != vendor._id ) || ( user.rewards.current.indexOf( offer._id ) == -1 ) )  ) // Test whether it's a reward.
+        && ( (!offer.vendor) || (offer.vendor._id != vendor._id) || ( user.rewards.current.indexOf( offer._id.toString() ) == -1 ) ) // Test whether it's a reward.
         && ( vendor.offers.indexOf( offer._id ) == -1  )  // Test whether it belongs to the vendor.
-    )
+    ){
+		console.log('offer not associated with vendor');
         return Q(false);    // If all fail.. then this offer isn't associated in any way with this (vendor, user) pair. Reject it.
-    
+    }
 
     if(!offer.params || !offer.params.type){
         console.log('no params or params.type for offer'+JSON.stringify(offer))
@@ -88,7 +98,7 @@ var vendor_predicate_S0 = function(user, vendor, offer) {
     return vendor_checkin_S0_predicates[offer.params.type](user, vendor, offer);
 }
 
-var handler_display_S0 = function( user, vendor, offer ){
+var handler_display_S0 = function( offer, params, view_type ){
     
     if(!offer.params || !offer.params.type) return Q(null); // Reject.
 
@@ -96,8 +106,11 @@ var handler_display_S0 = function( user, vendor, offer ){
       	offer.image = global.registry.getSharedObject("settings").S0OfferTypes[offer.params.type];
 
     // Call subtype routine here.
+	
+	if( subdisplays[offer.params.type] )
+		return subdisplays[offer.params.type]( offer, params, view_type );
 
-    return offer;
+	return offer.toJSON();
 }
 
 var vendor_validate_S0 = function( vendor, user, checkin, offer ){
@@ -106,7 +119,7 @@ var vendor_validate_S0 = function( vendor, user, checkin, offer ){
     //TODO : Put a review scheduler for sending review push notification after some preset time delay
     checkin.state = CHECKIN_STATE_CONFIRMED;
     
-    return registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(user) {
+    //return registry.getSharedObject("util_session").get({user_id:checkin.user}).then(function(user) {
         if(!user.stamplist)
             user.stamplist=[]
         if(!user.stamplist[vendor.fid])
@@ -123,7 +136,8 @@ var vendor_validate_S0 = function( vendor, user, checkin, offer ){
         if( offer.vendor && user.rewards && user.rewards.current ){
 		    console.log("removing reward");
         
-		    var idx = user.rewards.current.indexOf( checkin.offer );
+		    var idx = user.rewards.current.indexOf( checkin.offer.toString() );
+			console.log("found reward at index: " + idx);
 	
 		    if( idx != -1 )
 			    user.rewards.current.splice( idx, 1 );
@@ -131,13 +145,12 @@ var vendor_validate_S0 = function( vendor, user, checkin, offer ){
 		    user.markModified("rewards");
 	    }
 	    console.log("Checkin validated");
-	    return user.save();
+	return Q( user.save().then( function( user ){
 
-    }).then(function( user ){
-
-    	return checkin.save();
-
-    });
+    //}).then(function( user ){
+		return Q( checkin.save() );
+	}) );
+    //});
 
     
 
@@ -146,3 +159,4 @@ var vendor_validate_S0 = function( vendor, user, checkin, offer ){
 global.registry.register("handler_checkin_S0", {get:vendor_checkin_S0});
 global.registry.register("handler_validate_S0", {get:vendor_validate_S0});
 global.registry.register("handler_predicate_S0", {get:vendor_predicate_S0});
+global.registry.register("handler_display_S0", {get:handler_display_S0});

@@ -17,6 +17,10 @@
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="http://dashboard.clozerr.com/assets/img/icons/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="http://dashboard.clozerr.com/assets/img/icons/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="http://dashboard.clozerr.com/assets/img/icons/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="http://dashboard.clozerr.com/assets/img/icons/favicon-16x16.png" sizes="16x16">
     <link href="css/animate.css" rel="stylesheet">  
     <!-- <link href="css/custom_hovercard.css" rel="stylesheet">
  -->
@@ -30,6 +34,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+	
     <style>
     a{
       color:#FFF;
@@ -122,7 +127,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="nav-button navbar-brand" href="#"><img style="height:60px" src="http://api.clozerr.com:8080/assets/img/logo_300.png"></a>
+                <a class="nav-button navbar-brand" href="#"><img style="height:60px" src="http://dashboard.clozerr.com/assets/img/logo_300.png"></a>
 
             </div>
             <!-- Top Menu Items -->
@@ -199,9 +204,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script type="text/javascript" src="js/countdown.js"></script>
-    <script>
+    <script src="bower_components/momentjs/min/moment.min.js"></script>
+    <script src="bower_components/momentjs/min/locales.min.js"></script>
+    <script src="bower_components/angular-timer/dist/angular-timer.min.js"></script>
+    <script src="bower_components/humanize-duration/humanize-duration.js"></script>
+
+
+	<script>
     countdown( ".timer" );
-    var app = angular.module("clozerr",['ngImgCrop']);
+    var app = angular.module("clozerr",['ngImgCrop','timer']);
     app.filter("humanize_date", function(){
       return function( input ){
         return new Date( input ).toLocaleString()

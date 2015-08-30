@@ -47,5 +47,4 @@ var view_geofence_list_near = function(params, user) {
 
 	return deferred.promise;
 }
-
 global.registry.register('view_geofence_list_near', { get : view_geofence_list_near });

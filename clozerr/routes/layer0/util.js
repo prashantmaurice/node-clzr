@@ -166,7 +166,8 @@ function vendorDistDisplay(vendor,latitude,longitude){
     club_members:vendor.club_members,
     resource_name:vendor.resource_name,
 	caption:getDistance(latitude,longitude,vendor) + " km",
-	active:true
+	active:true,
+	geofences:vendor.geofences
   }
 	
 	if( vendor.settings.viewState && !vendor.settings.viewState.active ){

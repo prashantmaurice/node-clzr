@@ -34,7 +34,7 @@ var analytics_appviews_byDay = function(){
 	
 		dimensions: [],
 		time_interval: 1000 * 60 * 60 * 24,
-		query:{ metric:"url_vendor_search_near" }
+		query:{ metric:"url_vendor_search_near", "dimensions.offset":"0" }
 
 	}
 

@@ -41,7 +41,11 @@ var current_checkins = function( $rootScope, $scope, $http ){
       $scope.showData = true;
 
       $scope.checkins = data;
-    	$scope.checkins.forEach( function( checkin ){ checkin.validate_data = {}; checkin.validate_data.stamps = 1; });
+    	$scope.checkins.forEach( function( checkin ){ 
+			checkin.ms_to_expiry = ( new Date( checkin.expiry ).getTime() - (new Date()).getTime() )/1000; 
+			checkin.validate_data = {}; 
+			checkin.validate_data.stamps = 1; 
+		});
     }).error(function(data, status, headers, config) {
       /*
       TODO: Throw error here.

@@ -84,7 +84,7 @@ var data_load_checkin_with_params = function( params ){
 				console.log("Visit no: " + (numVisits + 1));
 
 				checkin_obj.current_visits = (numVisits + 1);
-
+				checkin_obj.expiry = checkin.expiry;
 				
 				return Checkin.count({ user: checkin_obj.user._id, vendor: checkin_obj.vendor._id, state:1, date_created:{$lte: checkin.date_created} });
             }).then( function( visitNum ){

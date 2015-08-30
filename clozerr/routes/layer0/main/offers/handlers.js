@@ -21,20 +21,20 @@ var vendor_predicate = function(user, vendor, offer) {
 	/*if(offer.type=='reward'){ // BLOO!
 		return registry.getSharedObject("handler_predicate_" + offer.type).get(user, vendor, offer);
 	}*/
-    
-    if( user.offers_used.indexOf( offer._id ) != -1 )
+	
+
+    if( user.offers_used && user.offers_used.indexOf( offer._id ) != -1 && ( registry.getSharedObject("settings").defaultOffer != offer._id.toString() ) )
         return Q(false);
 
 	return registry.getSharedObject("handler_predicate_" + offer.type).get( user, vendor, offer );
 }
 
-var handler_display = function( params, vendor, offer, checkin ){
+var handler_display = function( offer, params, view_type ){
     // Handle display requirements here.
 
-	return registry.getSharedObject("handler_display_" + offer.type).get( user, vendor, offer );
+	return registry.getSharedObject("handler_display_" + offer.type).get( offer, params, view_type );
 }
-
-var vendor_validate = function(params, vendor, user, checkin) {
+var vendor_validate = function( params, vendor, vendor_account, checkin, user ) {
 
 
 	// Transfer additional data from the front-end to the checkin object.
@@ -50,10 +50,25 @@ var vendor_validate = function(params, vendor, user, checkin) {
         else
             throw { code: 282, description:"Checkin has expired." }
 
+	var context = {};
 
 	return Q.all([registry.getSharedObject("models_Offer").findOne({_id:checkin.offer}),registry.getSharedObject("models_User").findOne({_id:checkin.user})]).then(function(resList){
 	
-		return registry.getSharedObject("handler_validate_" + resList[0].type).get( vendor, resList[1], checkin, resList[0], user );
+		return registry.getSharedObject("handler_validate_" + resList[0].type).get( vendor, resList[1], checkin, resList[0], vendor_account );
+	}).then( function( checkin ){
+		// Do common book-keeping here.
+		
+		context.checkin = checkin;
+		if( vendor.settings.stampsReset && vendor.settings.stampsReset.active )
+			if( user.stamplist[vendor.fid]*1 > vendor.settings.stampsReset.totalStamps*1 ){
+				user.stamplist[vendor.fid] = (user.stamplist[vendor.fid]*1) % (vendor.settings.stampReset.totalStamps*1);
+			}
+
+		user.offers_used.push( checkin.offer );
+		user.markModified("offers_used");
+		return Q( user.save() );
+	}).then( function( user ){
+		return Q( context.checkin );
 	});
 }
 
@@ -80,6 +95,7 @@ var vendor_validate_qrcode = function(params, vendor, user, checkin) {
 }
 
 global.registry.register("handler_checkin", {get:vendor_checkin});
+global.registry.register("handler_display", {get:handler_display});
 global.registry.register("handler_validate", {get:vendor_validate});
 global.registry.register("handler_predicate", {get:vendor_predicate});
 global.registry.register("handler_validate_qrcode", {get:vendor_validate_qrcode});

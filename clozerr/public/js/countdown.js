@@ -11,6 +11,7 @@ var countdown = function( selector ){
       var datetime = new Date( 60*60*1000 - (new Date().getTime() - new Date(  $(this).attr("data-time") ).getTime()));
       var inner_html = datetime.getUTCMinutes() + ":" + datetime.getUTCSeconds();
 	  if( datetime.getUTCMinutes() == 0 && datetime.getUTCSeconds() == 0 ){
+		console.log("triggering expiry");
 		$(window).trigger("checkin-expired");
 	  }
       //console.log(datetime);

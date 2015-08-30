@@ -51,7 +51,8 @@ var geofenceSchema = new Schema({
 	location : {type:[Number], index:'2dsphere'},
 	radius : Number,
 	type : Number,
-	params : Schema.Types.Mixed
+	params : Schema.Types.Mixed,
+	vendors : [ObjectId]
 });
 geofenceSchema.index({ location : '2d' });
 
@@ -72,7 +73,8 @@ Models.CheckIn = mongoose.model('CheckIn',new Schema({
 	date_created:Date,
 	pin:String,
 	gcm_id:String,
-	validate_data:Schema.Types.Mixed
+	validate_data:Schema.Types.Mixed,
+	expiry:Date
 } ));
 
 Models.Notification = mongoose.model('Notification',new Schema({
@@ -108,15 +110,17 @@ Models.User = mongoose.model('User',new Schema({
 	pinned:Schema.Types.Mixed, // Record pinned offers.
 
     stateList: Schema.Types.Mixed,// ?
-    lucky_rewards:Schema.Types.Mixed, // ??? 
-    failed_instances:Schema.Types.Mixed,// ???
+    lucky_rewards: Schema.Types.Mixed, // ??? 
+    failed_instances: Schema.Types.Mixed,// ???
 
     rewards : Schema.Types.Mixed,
     notifications: Schema.Types.Mixed,
 	
     computed: Schema.Types.Mixed, // Impulse Scope data.
     
-    offers_used : [ObjectId]
+    offers_used : [ObjectId],
+	alias_of: ObjectId	//  Holds a reference to the main object if any.
+
 }));
 
 Models.Token = mongoose.model('Token',new Schema({
@@ -128,6 +132,15 @@ Models.VendorRequest = mongoose.model('VendorRequest', new Schema({
 	account:ObjectId,
 	name:String,
 	remarks:String
+}));
+
+Models.Feedback = mongoose.model('Feedback', new Schema({
+	user: ObjectId,
+	params: Schema.Types.Mixed,		// Contains notification title & message and other data.
+	request: Schema.Types.Mixed,	
+	response: Schema.Types.Mixed,
+	extra: String,
+	timestamp: Date,
 }));
 
 Models.Offer = mongoose.model('Offer',new Schema({

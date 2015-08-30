@@ -9,6 +9,7 @@ registry.register("models_Offer", models.Offer);
 registry.register("models_Checkin", models.CheckIn);
 registry.register("models_Token",models.Token);
 registry.register("models_Review", models.Review);
+registry.register("models_Feedback", models.Feedback);
 registry.register("models_Tag", models.Tag);
 registry.register("models_Notification", models.Notification);
 global.registry.register("models_Geofence", models.Geofence);

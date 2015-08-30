@@ -14,7 +14,7 @@ var view_vendor_offers_offersPage=function(params,user){
     }).then(function(vendor_offers){
     
 		return Q.all( _.map( vendor_offers, function( offer ){
-            return registry.getSharedObject("handler_display").get( user, offer, context.vendor );
+            return registry.getSharedObject("handler_display").get( user, context.vendor, offer );
         }));
         
     }).then(function(offersList) {
@@ -43,9 +43,9 @@ var view_offers_checkin_create=function(params,user){
 		context.offer = offer;
 		console.log("CC: Got Offer");
 		
-        // Offer already used check.
-        if( user.offers_used && user.offer_used.indexOf( offer._id ) )
-            throw { code:381, description:"Offer already used by user." };
+        // Offer already used check. DUPLICATE.. remove it
+        //if( user.offers_used && ( user.offers_used.indexOf( offer._id ) != -1 ) )
+        //    throw { code:381, description:"Offer already used by user." };
 
         return registry.getSharedObject("handler_predicate").get( user, context.vendor, context.offer );
 
@@ -119,10 +119,9 @@ var view_offers_dummy_checkin_create=function(params,user){
 	return deferred.promise;
 }*/
 
-var view_vendor_offers_validate=function(params,user){
-	var vendor_account = user;
+var view_vendor_offers_validate=function( params, vendor_account ){
 
-	var context = { user:user, params:params };
+	var context = { vendor_account:vendor_account, params:params };
 
 	return Q(registry.getSharedObject("models_Checkin").findOne({_id:params.checkin_id}).exec()).then(function(checkin){
 
@@ -132,27 +131,30 @@ var view_vendor_offers_validate=function(params,user){
 		context.checkin = checkin;
 		return registry.getSharedObject("data_vendor").get({vendor_id:checkin.vendor})
 
-	}).then(function(vendor){
+	}).then(function( vendor ){
 
 		context.vendor = vendor;		
-		return registry.getSharedObject("handler_validate").get( params, context.vendor, user, context.checkin );
-
-	}).then(function(val_checkin){
-
-		if( !val_checkin )
-			throw { err: 435, message:"Error validating checkin."};
 		
-		return registry.getSharedObject('data_user').get({_id:context.checkin.user})
+		return Q( registry.getSharedObject('models_User').findOne({_id:context.checkin.user}) );
 
-	}).then(function(user){
+	}).then(function( user ){
 
+		context.user = user;
+		return registry.getSharedObject("handler_validate").get( params, context.vendor, context.vendor_account, context.checkin, context.user );
+
+	}).then(function( checkin ){
+
+		if( !checkin )
+			throw { err: 435, message:"Error validating checkin."};
 		//console.log(" gcm pushing to "+(checkin.gcm_id||user.gcm_id||0))
+		var user = context.user;
 
 		registry.getSharedObject("gcm").sendPushNotification( 
 			context.checkin.gcm_id || user.gcm_id || 0,
 			registry.getSharedObject("display").GCMCheckinDisplay( context.checkin, context.vendor )
 		);
-	    
+		
+		
         if( !user.offers_used )
             user.offers_used = [];
     

@@ -2,7 +2,7 @@ var registry=global.registry
 var Q=require('q')
 var _=require('underscore')
 var jwt = require('jsonwebtoken')
-
+var utils = require("../../../../util/utils.js")
 
 var view_offers_reward_create=function(params,user){
 	params.type='S0'
@@ -27,9 +27,9 @@ var give_reward = function(user,offer_id){
 	//TODO can user have multiple rewards?
 	console.log('giving reward '+offer_id+ ' to user '+user._id)
 	if(!user.rewards)
-		user.rewards=[]
-	if(user.rewards.indexOf(offer_id)==-1){
-		user.rewards.push(offer_id)
+		user.rewards={ current:[], gifting:[] };
+	if(user.rewards.current.indexOf(offer_id)==-1){
+		user.rewards.current.push(offer_id)
 		user.markModified('rewards')
 		return Q(user.save())
 	} else {
@@ -80,23 +80,31 @@ var view_offers_reward_transfer=function(params,user){
 
 var view_offers_rewards_redeem = function( params, user ){
     
-    utils.require_args( params, ['token', 'acces_token'] );
+    utils.require_args( params, ['token', 'access_token'] );
     
 
     if( user.type == "Anonymous" )
         throw { code:541, description:"Not authenticated." }
-   
+  
+	
     // Verfiy signature of certificate.
-    var token = jwt.verify( token, registry.getSharedObject("settings").gift_certificate.secret );
+    var token = jwt.verify( params.token, registry.getSharedObject("settings").gift_certificate.secret );
     
+	if( user.rewards.current.indexOf( token.reward ) != -1 )
+		throw { cose: 542, description:"User already has reward" };
+	
+	console.log( token );
     // If it's expired then reject.
-    if( new Date( token.expiry ) >= new Date() )
+    if( new Date( token.expiry ) <= new Date() )
         throw { code: 542, description:"Gift Expired" };
 
     // Push into the user's current giftbox.
     user.rewards.current.push( token.reward );
-    
-    return { result: true };
+	user.markModified("rewards");
+
+	return Q( user.save().then( function(){
+		return Q( { result: true } );
+	}) );
 
 }
 var view_offers_rewards_make_transfer_token = function( params, user ){
@@ -109,27 +117,32 @@ var view_offers_rewards_make_transfer_token = function( params, user ){
     if( user.rewards.current.indexOf( params.reward_id ) == -1 )
         throw { code:242, description:"No such reward in user's current gift-box" }
 
-    var expiry = registry.getSharedObject("settings").rewards.gift_expiry;
+    var expiry = registry.getSharedObject("settings").gift_certificate.expiry;
 
     // Remove reward from the rewards.current object.
-    user.rewards.current.splice( user.rewards.indexOf( params.reward_id ) );
+    user.rewards.current.splice( user.rewards.current.indexOf( params.reward_id ) );
 
     // Add it to gifting object.
     user.rewards.gifting.push( params.reward_id );
-    
-    
+	
+	user.markModified("rewards");
+	console.log(user.rewards); 
+
     // Sign a JWT certificate for the reward.
-    var token = jwt.sign({ reward: params.reward_id, expiry: expiry, user: user._id }, registry.getSharedObject("settings").gift_certificate.secret );
-    return { token: token };
+    var token = jwt.sign({ reward: params.reward_id, expiry: new Date().getTime() + expiry, user: user._id }, registry.getSharedObject("settings").gift_certificate.secret );
+    return Q( user.save().then( function( user ){
+		return Q( { token: token } );
+	} ) );
 }
 
 var view_offers_rewards_user=function(params,user){
 	
     var context = {};
     
-    if( !user.rewards )
-        user.rewards = { current:{}, gifting:{} };
+    if( !user.rewards || ( user.rewards.length != undefined ) )
+        user.rewards = { current:[], gifting:[] };
 
+	console.log( user.rewards );
     return Q( registry.getSharedObject('data_rewards')
     .get({_id:{$in:user.rewards.current}}) ).then(function(rewards){
 
@@ -137,7 +150,7 @@ var view_offers_rewards_user=function(params,user){
 
     }).then( function( rewards ){
         
-        context.rewards = _.map( rewards, function(reward){ reward.active=true } );
+        context.rewards = _.map( rewards, function(reward){ reward.params.active=true; return reward; } );
         return registry.getSharedObject('data_rewards').get({_id:{$in:user.rewards.gifting}});
 
     }).then( function( rewards ){
@@ -146,7 +159,7 @@ var view_offers_rewards_user=function(params,user){
     
     }).then( function( rewards ){
 
-        return context.rewards.concat( _.map( rewards, function( reward ){ reward.active=false; return reward; } ) );
+        return context.rewards.concat( _.map( rewards, function( reward ){ reward.params.active=false; return reward; } ) );
     
     });
 }
@@ -155,3 +168,5 @@ registry.register("view_offers_reward_create", {get:view_offers_reward_create});
 registry.register("view_offers_reward_give", {get:view_offers_reward_give});
 registry.register("view_offers_reward_transfer", {get:view_offers_reward_transfer});
 registry.register("view_offers_rewards_user", {get:view_offers_rewards_user});
+registry.register("view_offers_rewards_redeem", {get:view_offers_rewards_redeem});
+registry.register("view_offers_rewards_make_transfer_token", {get:view_offers_rewards_make_transfer_token});

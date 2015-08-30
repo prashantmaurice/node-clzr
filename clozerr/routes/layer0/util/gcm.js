@@ -3,6 +3,11 @@ var registry = global.registry;
 
 var sendPushNotification=function( gcm_id, data ) {
   //debugger;
+  gcm_parts = gcm_id.split("|:");
+  console.log( gcm_parts );
+  if( gcm_parts.length > 1 )
+	gcm_id = gcm_parts[1];
+
   console.log("Sending push notif to :" + gcm_id);
   console.log(data);
   var message = new gcm.Message({
