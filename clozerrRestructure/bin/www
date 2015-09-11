@@ -4,6 +4,8 @@
  * Module dependencies.
  */
 
+require('../lib/init/init_app.js');
+
 var app = require('../app');
 var debug = require('debug')('clozerrRestructure:server');
 var http = require('http');
