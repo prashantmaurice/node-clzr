@@ -24,39 +24,52 @@ mongoose.connection.on('error', function(err) {
 
 
 //Entity Models
+var tags_repo = require('./mongo/tags_repo')(mongoose);
+var datas_repo = require('./mongo/datas_repo')(mongoose);
 var users_repo = require('./mongo/users_repo')(mongoose);
-var vendors_repo = require('./mongo/vendors_repo')(mongoose);
-var geofences_repo = require('./mongo/geofences_repo')(mongoose);
-var checkins_repo = require('./mongo/checkins_repo')(mongoose);
-var contents_repo = require('./mongo/contents_repo')(mongoose);
-var notifications_repo = require('./mongo/notifications_repo')(mongoose);
-var feedbacks_repo = require('./mongo/feedbacks_repo')(mongoose);
-var offers_repo = require('./mongo/offers_repo')(mongoose);
-var reviews_repo = require('./mongo/reviews_repo')(mongoose);
 var tokens_repo = require('./mongo/tokens_repo')(mongoose);
+var offers_repo = require('./mongo/offers_repo')(mongoose);
+var vendors_repo = require('./mongo/vendors_repo')(mongoose);
+var reviews_repo = require('./mongo/reviews_repo')(mongoose);
+var contents_repo = require('./mongo/contents_repo')(mongoose);
+var checkins_repo = require('./mongo/checkins_repo')(mongoose);
+var geofences_repo = require('./mongo/geofences_repo')(mongoose);
+var analytics_repo = require('./mongo/analytics_repo')(mongoose);
+var feedbacks_repo = require('./mongo/feedbacks_repo')(mongoose);
+var databundles_repo = require('./mongo/databundles_repo')(mongoose);
+var notifications_repo = require('./mongo/notifications_repo')(mongoose);
 var vendor_requests_repo = require('./mongo/vendor_requests_repo')(mongoose);
 
+
+//Define all Collections names here, note : mongoose is smart and adds 's' at the end of collection name
+TagModel = mongoose.model('tag', tags_repo);
 UsersModel = mongoose.model('user', users_repo);
+DataModel = mongoose.model('datamodel', datas_repo);
 VendorsModel = mongoose.model('vendor', vendors_repo);
-GeoFencesModel = mongoose.model('geofence', geofences_repo);
 CheckinModel = mongoose.model('checkin', checkins_repo);
 ContentModel = mongoose.model('content', contents_repo);
-NotificationModel = mongoose.model('notification', notifications_repo);
-FeedbackModel = mongoose.model('notification', feedbacks_repo);
+TokenModel = mongoose.model('notification', tokens_repo);
 OfferModel = mongoose.model('notification', offers_repo);
 ReviewModel = mongoose.model('notification', reviews_repo);
-TokenModel = mongoose.model('notification', tokens_repo);
+GeoFencesModel = mongoose.model('geofence', geofences_repo);
+AnalyticsModel = mongoose.model('analytic', analytics_repo);
+FeedbackModel = mongoose.model('notification', feedbacks_repo);
+DataBundleModel = mongoose.model('databundle', databundles_repo);
+NotificationModel = mongoose.model('notification', notifications_repo);
 VendorRequestModel = mongoose.model('notification', vendor_requests_repo);
 
-
+exports.Tags = TagModel;
+exports.Data = DataModel;
 exports.Users = UsersModel;
+exports.Offers = OfferModel;
+exports.Tokens = TokenModel;
+exports.Reviews = ReviewModel;
 exports.Vendors = VendorsModel;
-exports.GeoFences = GeoFencesModel;
 exports.Checkins = CheckinModel;
 exports.Contents = ContentModel;
-exports.Notifications = NotificationModel;
 exports.Feedbacks = FeedbackModel;
-exports.Offers = OfferModel;
-exports.Reviews = ReviewModel;
-exports.Tokens = TokenModel;
+exports.Analytics = AnalyticsModel;
+exports.GeoFences = GeoFencesModel;
+exports.DataBundles = DataBundleModel;
+exports.Notifications = NotificationModel;
 exports.VendorRequests = VendorRequestModel;
