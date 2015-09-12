@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var config = require('config');
 
 var routes = require('./routes/index');
 
@@ -24,6 +25,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/users', require('./routes/users'));
 app.use('/vendors', require('./routes/vendors'));
+
+//Add a re-router to original server so that all calls to this server that are unattended are served by that server
+//until this server itself handles all these routes too
+app.use(function(req, res, next) {
+    console.logger.error("Re-routing To main Server : "+req.url);
+    res.redirect(config.nodePreviousServer.host+":"+config.nodePreviousServer.port+req.url);
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

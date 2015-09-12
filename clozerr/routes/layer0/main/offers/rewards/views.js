@@ -2,7 +2,7 @@ var registry=global.registry
 var Q=require('q')
 var _=require('underscore')
 var jwt = require('jsonwebtoken')
-var utils = require("../../../../util/utils.js")
+var utils = require("../../../util.js")
 
 var view_offers_reward_create=function(params,user){
 	params.type='S0'

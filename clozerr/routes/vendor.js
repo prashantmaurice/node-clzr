@@ -99,6 +99,7 @@ router.get('/make_visit_offers', function ( req, res) {
       debugger;
       if(vendor.settings.sxEnabled == "true" || vendor.settings.sxEnabled == true) {
         offer.type = "SX";
+        offer.type = "SX";
       }
       else {
         offer.type = "S1";

@@ -11,7 +11,7 @@ var CHECKIN_STATE_ACTIVE = 0;
 var CHECKIN_STATE_CONFIRMED = 1;
 var CHECKIN_STATE_CANCELLED = 2;
 
-var subdisplays = require("./display");
+var subdisplays = require("../../user/display");
 
 var vendor_checkin_S0 = function( params,user, vendor, offer ){
     var deferred = Q.defer();

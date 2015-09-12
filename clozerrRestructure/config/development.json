@@ -1,4 +1,11 @@
 {
+    "nodeServerConfig":{
+        "port" : 3001
+    },
+    "nodePreviousServer":{
+        "host" : "http://api.clozerr.com",
+        "port" : 80
+    },
     "log4jConfig": {
         "auditLogAppender": {
             "category": "audit",
