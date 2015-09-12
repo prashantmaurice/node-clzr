@@ -25,8 +25,11 @@ mongoose.connection.on('error', function(err) {
 
 //Entity Models
 var users_repo = require('./mongo/users_repo')(mongoose);
+var vendors_repo = require('./mongo/vendors_repo')(mongoose);
 
 UsersModel = mongoose.model('user', users_repo);
+VendorsModel = mongoose.model('vendor', vendors_repo);
 
 
 exports.Users = UsersModel;
+exports.Vendors = VendorsModel;

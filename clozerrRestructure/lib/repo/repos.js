@@ -3,10 +3,12 @@
  */
 
 var usersRepo = require('./mongodb_repos.js').Users;
+var vendorsRepo = require('./mongodb_repos.js').Vendors;
 
 
 var Repos = {
-    usersRepo                   :   usersRepo
+    usersRepo                   :   usersRepo,
+    vendorsRepo                 :   vendorsRepo
 };
 
 module.exports = Repos;
