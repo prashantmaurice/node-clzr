@@ -7,7 +7,7 @@ var vendorsAPI = new (require('../../lib/vendorsAPI.js'))();
 
 /**
  * Routes Pending :
- *      http://api.clozerr.com/v2/vendor/offers/rewardspage?version=2.3.2&access_token=
+ *      http://api.clozerr.com/v2/vendor/offers/rewardspage?version=2.3.2&vendor_id=55f411c0b9a5ccd57400d84b&access_token=2c2c7e0dd81940ce2ed4116b4556bce7
  *      http://api.clozerr.com/v2/vendor/get/details?vendor_id=55f411c0b9a5ccd57400d84b
  *      http://api.clozerr.com/v2/vendor/offers/offerspage?access_token=2c2c7e0dd81940ce2ed4116b4556bce7&vendor_id=55f411c0b9a5ccd57400d84b
  *      http://api.clozerr.com/v2/vendor/offers/unlocked?access_token=2c2c7e0dd81940ce2ed4116b4556bce7&vendor_id=55f411c0b9a5ccd57400d84b
@@ -103,6 +103,37 @@ router.get('/search/near', function(req, res, next) {
 router.get('/get/details', function(req, res, next) {
     callAPI(req, res, fn.bind(vendorsAPI, 'getDetailsOfVendor'));
 });
+
+
+/**
+ *  Serves requests from VendorPage->Rewards of the app
+ *
+ *  sample request : http://api.clozerr.com/v2/vendor/offers/rewardspage?version=2.3.2&vendor_id=55f411c0b9a5ccd57400d84b&access_token=2c2c7e0dd81940ce2ed4116b4556bce7
+ *  sample response :
+ {
+    rewards: [
+        {
+            image: "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/welcome+reward.png",
+            _id: "55f41303b9a5ccd57400d85a",
+            type: "S0",
+            stamps: "1",
+            caption: "Welcome Reward",
+            description: "One brownie or panacotta free",
+            params: {
+                type: "welcomeReward",
+                expiry: "no"
+            },
+            __v: 0,
+            unlocked: true
+        }
+    ]
+}
+ *
+ */
+router.get('/offers/rewardspage', function(req, res, next) {
+    callAPI(req, res, fn.bind(vendorsAPI, 'getRewardsOfVendor'));
+});
+
 
 
 

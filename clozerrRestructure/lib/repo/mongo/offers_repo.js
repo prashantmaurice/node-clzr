@@ -28,5 +28,10 @@ module.exports =  function(mongoose){
         this.find({}).limit(limit).lean().exec(cb);
     };
 
+    OffersSchema.statics.getOffersForIds = function (data, cb) {
+        var ids = data.ids || [];
+        this.find({ _id: { $in: ids } } ).lean().exec(cb);
+    };
+
     return OffersSchema;
 };

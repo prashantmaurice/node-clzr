@@ -13,6 +13,7 @@
 var deferred = require('../common-utils/deferred');
 var fn = require('../common-utils/functions');
 var repos = require('./repo/repos.js');
+var _ = require('underscore');
 var dataRelatedSettings = require('config').dataRelatedSettings;
 //var repos = require('./repo/repos.js');
 var moment = require('moment');
@@ -73,20 +74,20 @@ VendorsAPI.prototype.searchNear = function(params) {
             var distance = (each.location)?getDistanceFromLatLonInMetre(each.location[0],each.location[1],latitude,longitude):null;
             distance = (distance)?Math.round((distance/1000)*1000)/1000:null;//round it to 3 decimal places
             result.push({
-                _id     :   each._id,
-                name     :   each.name,
-                location     :   each.location,
-                distance     :   distance,
-                image     :   each.image,
-                image_base     :   each.image_base,
+                _id         :   each._id,
+                name        :   each.name,
+                location    :   each.location,
+                distance    :   distance,
+                image       :   each.image,
+                image_base  :   each.image_base,
                 gallery     :   each.gallery,
                 address     :   each.address,
                 resource_name     :   each._id,
                 caption     :   (distance)?distance+" km":"",
-                active     :   each.visible,
-                geofences     :   each.geofences,
+                active      :   each.visible,
+                geofences   :   each.geofences,
                 //TODO : get user data and show whether he has favourited this vendor or not
-                favourite     :   (each.favourite)?each.favourite:false
+                favourite   :   (each.favourite)?each.favourite:false
             });
         });
 
@@ -119,6 +120,58 @@ VendorsAPI.prototype.getDetailsOfVendor = function(params) {
     });
 };
 
+
+VendorsAPI.prototype.getRewardsOfVendor = function(params) {
+    var vendor_id = params.post.vendor_id || params.vendor_id;
+    if(!vendor_id) return apiResponse(false, "vendor_id is missing");
+
+
+    return fn.defer(fn.bind(repos.vendorsRepo, 'readVendorOfParams'))({ id : vendor_id}).pipe(function(vendorData){
+        if(!vendorData) return apiResponse(false, "No such vendor exists");
+        var vendorOffers = vendorData.offers || [];
+
+        return fn.defer(fn.bind(repos.offersRepo, 'getOffersForIds'))({ ids : vendorOffers}).pipe(function(offersArr){
+            var result = [];
+            var offersArrMap = _.indexBy(offersArr,'_id');
+
+
+            vendorOffers.forEach(function(offerId){
+                var reward = offersArrMap[offerId];
+                var type = "";
+                var params = {};
+                switch(reward.type) {
+                    //Ones that Android app is parsing currently : "loyalty","happyHour"."S1";
+                    //Ones in DB are S0, S1
+                    case "S0": type = "welcomeReward";
+                        params.expiry = "no";
+                        break;
+                    case "S1": type = "S1";
+                        params.expiry = "no";
+                        params.stamps = reward.stamps;
+                        params.used = false;    //@sai : stitch this
+                        params.unblocked = false;   //@sai : stitch this
+                        break;
+                    case "S2": type = "loyalty";break;
+                    default : type = "S1";
+                    //TODO : @sai once see this and add correct type here
+                }
+                params.type = type;
+
+                result.push({
+                    _id         :   reward._id,
+                    type        :   reward.type,//@deprecated
+                    caption     :   reward.caption,
+                    description :   reward.description,
+                    image       :   reward.image, //TODO : get this data from vendorRepo
+                    unlocked    :   reward.unlocked, //TODO : get this data from userRepo
+                    params      :   params
+                });
+            });
+            return apiResponseDeprecated(true,{ rewards : result});
+        });
+
+    });
+};
 
 //Helper functions
 function getDistanceFromLatLonInMetre( lat1, lon1, lat2, lon2 ){
