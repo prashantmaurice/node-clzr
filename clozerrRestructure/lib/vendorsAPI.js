@@ -96,6 +96,30 @@ VendorsAPI.prototype.searchNear = function(params) {
 };
 
 
+VendorsAPI.prototype.getDetailsOfVendor = function(params) {
+    var vendor_id = params.post.vendor_id || params.vendor_id;
+    if(!vendor_id) return apiResponse(false, "vendor_id is missing");
+
+
+    return fn.defer(fn.bind(repos.vendorsRepo, 'readVendorOfParams'))({ id : vendor_id}).pipe(function(data){
+        var result = {
+            logo : data.logo,
+            visitOfferId : data._id,
+            _id : data._id,
+            location : data.location,
+            name : data.name,
+            phone : data.phone,
+            image : data.image,
+            image_base : data.image_base,
+            address : data.address,
+            description : data.description,
+            resource_name : data._id,
+        };
+        return apiResponseDeprecated(true,result);
+    });
+};
+
+
 //Helper functions
 function getDistanceFromLatLonInMetre( lat1, lon1, lat2, lon2 ){
     var R = 6371; // Radius of the earth in km

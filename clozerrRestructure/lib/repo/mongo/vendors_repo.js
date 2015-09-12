@@ -76,5 +76,11 @@ module.exports =  function(mongoose){
 
     };
 
+    VendorsSchema.statics.readVendorOfParams = function (params, cb) {
+        var paramsObj = {};
+        if(params.id) paramsObj._id =  params.id;
+        this.findOne(paramsObj).exec(cb);
+    };
+
     return VendorsSchema;
 };
