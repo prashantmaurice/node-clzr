@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var _ = require('underscore');
-var deferred = require('../common-utils/deferred');
-var fn = require('../common-utils/functions');
-var usersAPI = new (require('../lib/usersAPI.js'))();
+var deferred = require('../../common-utils/deferred');
+var fn = require('../../common-utils/functions');
+var usersAPI = new (require('../../lib/usersAPI.js'))();
 
 function callAPI(req, res, apiMethod) {
 
@@ -31,10 +31,7 @@ function callAPI(req, res, apiMethod) {
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     callAPI(req, res, fn.bind(usersAPI, 'getAllUsers'));
-});
-
-router.all('/', function (req, res) {
-    res.send('Unhandled request');
+//  res.send('respond with a resource');
 });
 
 module.exports = router;

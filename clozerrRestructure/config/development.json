@@ -53,5 +53,11 @@
         "username" : "root",
         "password" : null,
         "database": "clozerrLocal"
+    },
+    "dataRelatedSettings":{
+        "defaultSearchLatLong":{
+            "lat" : 12.93684595,
+            "longg" : 77.62860971
+        }
     }
 }

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var v2 = require('./v2');
+var v2 = require('./v2/v2');
 
 var allRoutes = function (app) {
     /* GET home page. */

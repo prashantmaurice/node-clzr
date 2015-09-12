@@ -53,5 +53,11 @@
         "username" : "apiuser",
         "password" : "foodninjapr0d1",
         "database": "wehiveDb"
+    },
+    "dataRelatedSettings":{
+        "defaultSearchLatLong":{
+            "lat" : 12.93684595,
+            "longg" : 77.62860971
+        }
     }
 }

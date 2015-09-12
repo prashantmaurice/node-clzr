@@ -13,7 +13,7 @@
 var deferred = require('../common-utils/deferred');
 var fn = require('../common-utils/functions');
 var repos = require('./repo/repos.js');
-
+var dataRelatedSettings = require('config').dataRelatedSettings;
 //var repos = require('./repo/repos.js');
 var moment = require('moment');
 
@@ -38,6 +38,19 @@ function VendorsAPI() {}
 
 
 VendorsAPI.prototype.getAllVendors = function(params) {
+    return fn.defer(fn.bind(repos.vendorsRepo, 'readAllD'))({ limit : 30}).pipe(function(data){
+        return apiResponse(true,data);
+    });
+};
+
+/**
+ *  Search for nearest restaurents, This call is being made from Home page of App
+ *
+ * @param params
+ * @returns {*}
+ */
+VendorsAPI.prototype.searchNear = function(params) {
+    var latitude = params.post.latitude || params.latitude || dataRelatedSettings.defaultSearchLatLong.lat;
     return fn.defer(fn.bind(repos.vendorsRepo, 'readAllD'))({ limit : 30}).pipe(function(data){
         return apiResponse(true,data);
     });

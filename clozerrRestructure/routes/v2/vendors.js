@@ -1,9 +1,18 @@
 var express = require('express');
 var router = express.Router();
 var _ = require('underscore');
-var deferred = require('../common-utils/deferred');
-var fn = require('../common-utils/functions');
-var usersAPI = new (require('../lib/usersAPI.js'))();
+var deferred = require('../../common-utils/deferred');
+var fn = require('../../common-utils/functions');
+var vendorsAPI = new (require('../../lib/vendorsAPI.js'))();
+
+/**
+ * Routes needed
+ *
+ *
+ * @param req
+ * @param res
+ * @param apiMethod
+ */
 
 function callAPI(req, res, apiMethod) {
 
@@ -30,8 +39,13 @@ function callAPI(req, res, apiMethod) {
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    callAPI(req, res, fn.bind(usersAPI, 'getAllUsers'));
-//  res.send('respond with a resource');
+    callAPI(req, res, fn.bind(vendorsAPI, 'getAllVendors'));
 });
+router.get('/search/near', function(req, res, next) {
+    callAPI(req, res, fn.bind(vendorsAPI, 'searchNear'));
+});
+
+
+
 
 module.exports = router;
