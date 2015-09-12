@@ -44,19 +44,19 @@ var vendor_requests_repo = require('./mongo/vendor_requests_repo')(mongoose);
 //Define all Collections names here, note : mongoose is smart and adds 's' at the end of collection name
 TagModel = mongoose.model('tag', tags_repo);
 UsersModel = mongoose.model('user', users_repo);
+TokenModel = mongoose.model('token', tokens_repo);
+OfferModel = mongoose.model('offer', offers_repo);
 DataModel = mongoose.model('datamodel', datas_repo);
+ReviewModel = mongoose.model('review', reviews_repo);
 VendorsModel = mongoose.model('vendor', vendors_repo);
 CheckinModel = mongoose.model('checkin', checkins_repo);
 ContentModel = mongoose.model('content', contents_repo);
-TokenModel = mongoose.model('notification', tokens_repo);
-OfferModel = mongoose.model('notification', offers_repo);
-ReviewModel = mongoose.model('notification', reviews_repo);
+FeedbackModel = mongoose.model('feedback', feedbacks_repo);
 GeoFencesModel = mongoose.model('geofence', geofences_repo);
 AnalyticsModel = mongoose.model('analytic', analytics_repo);
-FeedbackModel = mongoose.model('notification', feedbacks_repo);
 DataBundleModel = mongoose.model('databundle', databundles_repo);
 NotificationModel = mongoose.model('notification', notifications_repo);
-VendorRequestModel = mongoose.model('notification', vendor_requests_repo);
+VendorRequestModel = mongoose.model('vendorrequest', vendor_requests_repo);
 
 exports.Tags = TagModel;
 exports.Data = DataModel;

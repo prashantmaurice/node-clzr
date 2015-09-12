@@ -1,4 +1,6 @@
-
+/**
+ * @deprecated
+ */
 var models = require("../models");
 
 var registry = global.registry;
