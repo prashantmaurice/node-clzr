@@ -8,6 +8,11 @@ var geofencesRepo = require('./mongodb_repos.js').GeoFences;
 var checkinsRepo = require('./mongodb_repos.js').Checkins;
 var contentsRepo = require('./mongodb_repos.js').Contents;
 var notificationsRepo = require('./mongodb_repos.js').Notifications;
+var feedbacksRepo = require('./mongodb_repos.js').Feedbacks;
+var offersRepo = require('./mongodb_repos.js').Offers;
+var reviewsRepo = require('./mongodb_repos.js').Reviews;
+var tokensRepo = require('./mongodb_repos.js').Tokens;
+var vendorRequestsRepo = require('./mongodb_repos.js').VendorRequests;
 
 
 var Repos = {
@@ -16,7 +21,13 @@ var Repos = {
     geofencesRepo                 :   geofencesRepo,
     checkinsRepo                 :   checkinsRepo,
     contentsRepo                 :   contentsRepo,
-    notificationsRepo                 :   notificationsRepo
+    notificationsRepo                 :   notificationsRepo,
+    feedbacksRepo                 :   feedbacksRepo,
+    offersRepo                 :   offersRepo,
+    reviewsRepo                 :   reviewsRepo,
+    tokensRepo                 :   tokensRepo,
+    vendorRequestsRepo                 :   vendorRequestsRepo
+
 };
 
 module.exports = Repos;
