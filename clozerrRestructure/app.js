@@ -22,9 +22,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', require('./routes/users'));
-app.use('/vendors', require('./routes/vendors'));
+//setup router as middleware
+routes(app);
+
+
 
 //Add a re-router to original server so that all calls to this server that are unattended are served by that server
 //until this server itself handles all these routes too

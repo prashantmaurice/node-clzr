@@ -1,12 +1,22 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+var v2 = require('./v2');
 
-module.exports = router;
+var allRoutes = function (app) {
+    /* GET home page. */
+    app.use('/', express.Router().get('/', function (req, res, next) {
+        res.render('index', { title: 'Express' });
+    }));
+
+    //All V2 routes
+    app.use('/v2', v2);
+};
+
+
+
+
+module.exports = allRoutes;
 
 
 /** ALL ROUTES THAT ARE BEING HIT ON LIVE DB
