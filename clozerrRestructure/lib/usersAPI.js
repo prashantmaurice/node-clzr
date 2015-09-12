@@ -1,9 +1,15 @@
 /**
- * Created by devesh on 21/07/15.
+ *      Documented by Maurice :
+ *
+ *      This contains all the logic of the different API calls. Use the routes folder only for routing towards different modules
+ *      like this. Keep DB structure out of this module and put them in a module under repos so that DB schema change wont affect
+ *      this module
  */
+
 'use strict';
 var deferred = require('../common-utils/deferred');
 var fn = require('../common-utils/functions');
+var repos = require('./repo/repos.js');
 
 //var repos = require('./repo/repos.js');
 var moment = require('moment');
@@ -28,8 +34,10 @@ function apiResponse(success, result) {
 function UsersAPI() {}
 
 
-UsersAPI.prototype.testUser = function(params) {
-    return apiResponse(true,{ data : "Users API working"});
+UsersAPI.prototype.getAllUsers = function(params) {
+    return fn.defer(fn.bind(repos.usersRepo, 'readAllD'))({ limit : 30}).pipe(function(data){
+        return apiResponse(true,data);
+    });
 };
 
 

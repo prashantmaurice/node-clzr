@@ -40,5 +40,11 @@
             "type": "dateFile"
         },
         "appendConsoleLog" : true
+    },
+    "mongodbConfig" : {
+        "host" : "localhost",
+        "username" : "root",
+        "password" : null,
+        "database": "clozerrLocal"
     }
 }

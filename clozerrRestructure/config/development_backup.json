@@ -40,5 +40,11 @@
             "type": "dateFile"
         },
         "appendConsoleLog" : true
+    },
+    "mongodbConfig" : {
+        "host" : "prod-db.tinystep.in",
+        "username" : "apiuser",
+        "password" : "foodninjapr0d1",
+        "database": "wehiveDb"
     }
 }
