@@ -65,12 +65,18 @@ module.exports =  function(mongoose){
         var offset = params.offset || 0;
         var longg = params.longg || dataRelatedSettings.defaultSearchLatLong.longg;
         var lat = params.lat || dataRelatedSettings.defaultSearchLatLong.lat;
+        var query = params.query || "";
+        var searchRegex = /[a-z]/i;
+        if(query.replace(" ","")!="") searchRegex = RegExp(query, 'i');
+
         var whereParam = (params.active!=null)?{ visible : params.active } : {};
+
 
         //TODO : add max Radius Support
         var radius = params.radius ? Number(params.radius) : 10000000; //in Meters
 
-        this.find({ location: { $near :  [ lat, longg ] }})
+
+        this.find({ name: { $regex: searchRegex }, location: { $near :  [ lat, longg ] }})
         .where(whereParam)
         .skip(offset).limit(limit).exec(cb);
 

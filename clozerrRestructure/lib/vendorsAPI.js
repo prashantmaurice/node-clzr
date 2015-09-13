@@ -59,6 +59,7 @@ VendorsAPI.prototype.searchNear = function(params) {
     var longitude = params.post.longitude || params.longitude || dataRelatedSettings.defaultSearchLatLong.longg;
     var offset = params.post.offset || params.offset || 0;
     var limit = params.post.limit || params.limit || 10;
+    var searchQuery = params.post.name || params.name || "";
     latitude = Number(latitude);
     longitude = Number(longitude);
 
@@ -67,7 +68,8 @@ VendorsAPI.prototype.searchNear = function(params) {
         limit   :   limit,
         lat     :   latitude,
         longg   :   longitude,
-        active  :   true
+        active  :   true,
+        query   :   searchQuery
     }).pipe(function(data){
 
         var result = [];
