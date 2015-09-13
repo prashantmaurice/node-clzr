@@ -14,6 +14,7 @@ var deferred = require('../common-utils/deferred');
 var fn = require('../common-utils/functions');
 var repos = require('./repo/repos.js');
 var _ = require('underscore');
+var settings = require('./init/settings');
 var dataRelatedSettings = require('config').dataRelatedSettings;
 //var repos = require('./repo/repos.js');
 var moment = require('moment');
@@ -141,16 +142,19 @@ VendorsAPI.prototype.getRewardsOfVendor = function(params) {
             vendorOffers.forEach(function(offerId){
                 var reward = offersArrMap[offerId];
                 var type = "";
+                var imageUrl = "";
                 var params = {};
                 switch(reward.type) {
                     //Ones that Android app is parsing currently : "loyalty","happyHour"."S1";
                     //Ones in DB are S0, S1
                     case "S0": type = "welcomeReward";
+                        imageUrl = settings.S0OfferTypes.welcomeReward;
                         params.expiry = "no";
                         break;
                     case "S1": type = "S1";
                         params.expiry = "no";
                         params.stamps = reward.stamps;
+                        imageUrl = settings.S1ImageBase+reward.stamps+".png";
                         params.used = false;    //@sai : stitch this
                         params.unblocked = false;   //@sai : stitch this
                         break;
@@ -160,12 +164,13 @@ VendorsAPI.prototype.getRewardsOfVendor = function(params) {
                 }
                 params.type = type;
 
+
                 result.push({
                     _id         :   reward._id,
                     type        :   reward.type,//@deprecated
                     caption     :   reward.caption,
                     description :   reward.description,
-                    image       :   reward.image, //TODO : get this data from vendorRepo
+                    image       :   imageUrl,
                     unlocked    :   reward.unlocked, //TODO : get this data from userRepo
                     params      :   params
                 });
