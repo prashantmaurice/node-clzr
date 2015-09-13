@@ -217,6 +217,7 @@ AuthAPI.prototype.updateGCMId = function(params) {
     });
 };
 
+//Helper functions
 function getUserForAccessToken(access_token){
     return fn.defer(fn.bind(repos.tokensRepo, 'getUserForTokenD'))({ access_token : access_token}).pipe(function(tokenData){
         if(!tokenData) return deferred.success(null);

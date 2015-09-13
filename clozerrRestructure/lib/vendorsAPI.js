@@ -181,6 +181,81 @@ VendorsAPI.prototype.getRewardsOfVendor = function(params) {
     });
 };
 
+VendorsAPI.prototype.getStampsOfVendor = function(params) {
+    var access_token = params.access_token;
+    var vendor_id = params.post.vendor_id || params.vendor_id;
+    if(!vendor_id) return apiResponse(false, "vendor_id is missing");
+
+    var deferred_userData =  getUserForAccessToken(access_token);
+    var deferred_vendorData = fn.defer(fn.bind(repos.vendorsRepo, 'readVendorOfParams'))({ id : vendor_id});
+    return deferred.combine({vendorData : deferred_vendorData, userData : deferred_userData}).pipe(function(result){
+        var vendorData = result.vendorData;
+        var userData = result.userData;
+
+        if(!vendorData) return apiResponse(false, "No such vendor exists");
+        if(!userData) return apiResponse(false, "No such User exists");
+        var vendorOffers = vendorData.offers || [];
+
+        return fn.defer(fn.bind(repos.offersRepo, 'getOffersForIds'))({ ids : vendorOffers}).pipe(function(offersArr){
+            var result = [];
+            var offersArrMap = _.indexBy(offersArr,'_id');
+            var userConsumedOffers = (userData.offers_used)?userData.offers_used:[];
+            console.log("userConsumedOffers",userConsumedOffers);
+
+            var maxUsedStamp = 0;
+            vendorOffers.forEach(function(offerId){
+                var reward = offersArrMap[offerId];
+
+                //Find Stamp number that user has reached
+                userConsumedOffers.forEach(function(offerId2){ if(offerId2.equals(offerId)) maxUsedStamp = parseInt(reward.stamps)});
+
+                var type = "";
+                var imageUrl = "";
+                var params = {};
+                switch(reward.type) {
+                    //Ones that Android app is parsing currently : "loyalty","happyHour"."S1";
+                    //Ones in DB are S0, S1
+                    case "S0": type = "welcomeReward";
+                        imageUrl = settings.S0OfferTypes.welcomeReward;
+                        params.expiry = "no";
+                        break;
+                    case "S1": type = "S1";
+                        params.expiry = "no";
+                        params.stamps = reward.stamps;
+                        imageUrl = settings.S1ImageBase+reward.stamps+".png";
+                        params.used = false;    //@sai : stitch this
+                        params.unblocked = false;   //@sai : stitch this
+                        break;
+                    case "S2": type = "loyalty";break;
+                    default : type = "S1";
+                    //TODO : @sai once see this and add correct type here
+                }
+                params.type = type;
+
+
+                if(reward.type== "S1") result.push({
+                    _id         :   reward._id,
+                    type        :   reward.type,//@deprecated
+                    caption     :   reward.caption,
+                    description :   reward.description,
+                    image       :   imageUrl,
+                    unlocked    :   reward.unlocked, //TODO : get this data from userRepo
+                    params      :   params
+                });
+            });
+            return apiResponseDeprecated(true,{
+                userData : userData,
+                stamps : maxUsedStamp,
+                settings : { policy : vendorData.settings.policy},
+                offers : result
+            });
+        });
+
+    });
+};
+
+
+
 //Helper functions
 function getDistanceFromLatLonInMetre( lat1, lon1, lat2, lon2 ){
     var R = 6371; // Radius of the earth in km
@@ -193,6 +268,16 @@ function getDistanceFromLatLonInMetre( lat1, lon1, lat2, lon2 ){
         ;
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     return R * c * 1000; // Distance in Metre
+}
+function getUserForAccessToken(access_token){
+    return fn.defer(fn.bind(repos.tokensRepo, 'getUserForTokenD'))({ access_token : access_token}).pipe(function(tokenData){
+        if(!tokenData) return deferred.success(null);
+        return fn.defer(fn.bind(repos.usersRepo, 'readUserOfID'))({ id : tokenData.account}).pipe(function(userData){
+            if(!userData) return deferred.success(null);
+            console.log("Token Validation success, Found user for token : "+access_token+" & userId : "+tokenData.account.toString()+" & name : "+((userData.profile.name)?userData.profile.name:""));
+            return deferred.success(userData);
+        });
+    });
 }
 
 function deg2rad(deg) {

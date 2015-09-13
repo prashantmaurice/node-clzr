@@ -134,6 +134,37 @@ router.get('/offers/rewardspage', function(req, res, next) {
     callAPI(req, res, fn.bind(vendorsAPI, 'getRewardsOfVendor'));
 });
 
+/**
+ *  Serves requests from VendorPage->Stamps of the app
+ *
+ *  sample request : http://api.clozerr.com/v2/vendor/offers/offerspage?version=2.3.2&vendor_id=55f411c0b9a5ccd57400d84b&access_token=2c2c7e0dd81940ce2ed4116b4556bce7
+ *  sample response :
+ {
+    settings : { policy : "One stamp on a min. bill of Rs 400"}
+    offers: [
+        {
+            image: "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/welcome+reward.png",
+            _id: "55f41303b9a5ccd57400d85a",
+            type: "S0",
+            stamps: "1",
+            caption: "Welcome Reward",
+            description: "One brownie or panacotta free",
+            params: {
+                type: "welcomeReward",
+                expiry: "no"
+            },
+            __v: 0,
+            unlocked: true
+        }
+    ],
+    stamps : 0
+}
+ *
+ */
+router.get('/offers/offerspage', function(req, res, next) {
+    callAPI(req, res, fn.bind(vendorsAPI, 'getStampsOfVendor'));
+});
+
 
 
 
