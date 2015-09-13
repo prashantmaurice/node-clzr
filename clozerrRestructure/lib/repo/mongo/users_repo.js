@@ -52,5 +52,15 @@ module.exports =  function(mongoose){
         this.find({}).limit(limit).lean().exec(cb);
     };
 
+    UsersSchema.statics.readUserOfID = function (data, cb) {
+        var userId = data.id;
+        this.find({_id : userId}).lean().exec(cb);
+    };
+
+    UsersSchema.statics.readUserOfEmail = function (data, cb) {
+        var email = data.email;
+        this.findOne({"profile.email" : email}).lean().exec(cb);
+    };
+
     return UsersSchema;
 };

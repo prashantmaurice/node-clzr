@@ -18,6 +18,7 @@ admin.get('/', function (req, res) {
 });
 admin.use('/users', require('./users'));
 admin.use('/vendor', require('./vendors'));
+admin.use('/auth', require('./auth'));
 
 module.exports = admin;
 

@@ -13,12 +13,28 @@ module.exports =  function(mongoose){
 
     var TokensSchema = mongoose.Schema({
         access_token:String,
-        account:ObjectId
+        account : ObjectId
     });
 
     TokensSchema.statics.readAllD = function (data, cb) {
         var limit = data.limit || 30;
         this.find({}).limit(limit).lean().exec(cb);
+    };
+
+    TokensSchema.statics.getUserForTokenD = function (data, cb) {
+        var access_token = data.access_token;
+        this.find({access_token : access_token}).lean().exec(cb);
+    };
+
+    TokensSchema.statics.getTokenForUserD = function (data, cb) {
+        var id = data.userId;
+        this.findOne({account : mongoose.Types.ObjectId(id)}).lean().exec(cb);
+    };
+
+    TokensSchema.statics.addTokenD = function (data, cb) {
+        var account = mongoose.Types.ObjectId(data.userId);
+        var access_token = data.access_token;
+        this.create({account : account, access_token:access_token },cb);
     };
 
     return TokensSchema;

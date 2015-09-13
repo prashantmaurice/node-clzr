@@ -125,7 +125,6 @@ VendorsAPI.prototype.getRewardsOfVendor = function(params) {
     var vendor_id = params.post.vendor_id || params.vendor_id;
     if(!vendor_id) return apiResponse(false, "vendor_id is missing");
 
-
     return fn.defer(fn.bind(repos.vendorsRepo, 'readVendorOfParams'))({ id : vendor_id}).pipe(function(vendorData){
         if(!vendorData) return apiResponse(false, "No such vendor exists");
         var vendorOffers = vendorData.offers || [];

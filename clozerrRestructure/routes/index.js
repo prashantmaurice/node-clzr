@@ -40,4 +40,5 @@ module.exports = allRoutes;
  *  http://api.clozerr.com/v2/vendor/offers/offerspage?version=2.3.2&vendor_id=55f411c0b9a5ccd57400d84b&access_token=2c2c7e0dd81940ce2ed4116b4556bce7
  *  http://api.clozerr.com/v2/vendor/offers/unlocked?version=2.3.2&vendor_id=55f411c0b9a5ccd57400d84b&access_token=2c2c7e0dd81940ce2ed4116b4556bce7
  *  http://api.clozerr.com/v2/vendor/offers/checkin?version=2.3.2&offer_id=55f41303b9a5ccd57400d85a&vendor_id=55f411c0b9a5ccd57400d84b&gcm_id=%7CID%7C1%7C%3AccbTvPFCNPE%3AAPA91bHv3ODSqNcb-vYWd743kwEXBMGyrDE60KmiJBfTl89TCm3niaUakc5hixUb7BjLBPtMQv6_rBMjN4fxIhod7ROCwNCjx2-ng8keVreBQbhP_UiwSv33sJUCMrt_qgALmm0Qat7t&access_token=2c2c7e0dd81940ce2ed4116b4556bce7
+ *  http://api.clozerr.com/v2/auth/login/google?token=ya29.7QE0vp4i1K2IfLTXr2VG5gha-qWQlV_cRXX_4nYG8SqPLXZ0A9Kx4s9rDo6tvVpugFTXyA
  */
