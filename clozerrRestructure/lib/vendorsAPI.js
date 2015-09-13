@@ -56,6 +56,7 @@ VendorsAPI.prototype.getAllVendors = function(params) {
  * @returns {*}
  */
 VendorsAPI.prototype.searchNear = function(params) {
+    var access_token = params.access_token;
     var latitude = params.post.latitude || params.latitude || dataRelatedSettings.defaultSearchLatLong.lat;
     var longitude = params.post.longitude || params.longitude || dataRelatedSettings.defaultSearchLatLong.longg;
     var offset = params.post.offset || params.offset || 0;
@@ -64,20 +65,28 @@ VendorsAPI.prototype.searchNear = function(params) {
     latitude = Number(latitude);
     longitude = Number(longitude);
 
-    return fn.defer(fn.bind(repos.vendorsRepo, 'nearByVendorsD'))({
+    var deferred_userData =  getUserForAccessToken(access_token);
+    var deferred_nearbyVendorsData =  fn.defer(fn.bind(repos.vendorsRepo, 'nearByVendorsD'))({
         offset  :   offset,
         limit   :   limit,
         lat     :   latitude,
         longg   :   longitude,
         active  :   true,
         query   :   searchQuery
-    }).pipe(function(data){
+    });
 
+    return deferred.combine({userData:deferred_userData,nearbyVendors : deferred_nearbyVendorsData }).pipe(function(deferredResult){
+        var userData = deferredResult.userData;
+        var nearbyVendors = deferredResult.nearbyVendors;
         var result = [];
-        data.forEach(function(each){
+        nearbyVendors.forEach(function(each){
 
             var distance = (each.location)?getDistanceFromLatLonInMetre(each.location[0],each.location[1],latitude,longitude):null;
             distance = (distance)?Math.round((distance/1000)*1000)/1000:null;//round it to 3 decimal places
+
+            var isfavourited = false;
+            userData.favourites.forEach(function(offerId2){ if(offerId2==each._id) isfavourited  = true;});;
+
             result.push({
                 _id         :   each._id,
                 name        :   each.name,
@@ -91,8 +100,7 @@ VendorsAPI.prototype.searchNear = function(params) {
                 caption     :   (distance)?distance+" km":"",
                 active      :   each.visible,
                 geofences   :   each.geofences,
-                //TODO : get user data and show whether he has favourited this vendor or not
-                favourite   :   (each.favourite)?each.favourite:false
+                favourite   :   isfavourited
             });
         });
 
