@@ -31,7 +31,11 @@ function callAPI(req, res, apiMethod) {
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     callAPI(req, res, fn.bind(usersAPI, 'getAllUsers'));
-//  res.send('respond with a resource');
+});
+
+
+router.get('/favourites/list', function(req, res, next) {
+    callAPI(req, res, fn.bind(usersAPI, 'getFavoutiteVendors'));
 });
 
 module.exports = router;

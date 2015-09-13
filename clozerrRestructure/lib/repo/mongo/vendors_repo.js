@@ -82,5 +82,10 @@ module.exports =  function(mongoose){
         this.findOne(paramsObj).exec(cb);
     };
 
+    VendorsSchema.statics.readVendorsOfIds = function (params, cb) {
+        var idsArr =  params.vendorIds;
+        this.find({ _id: { $in :  idsArr }}).exec(cb);
+    };
+
     return VendorsSchema;
 };

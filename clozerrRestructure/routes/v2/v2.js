@@ -16,7 +16,7 @@ admin.on('mount', function (parent) {
 admin.get('/', function (req, res) {
     res.send({status : 'v2 apis are working seamlessly.......!'});
 });
-admin.use('/users', require('./users'));
+admin.use('/user', require('./users'));
 admin.use('/vendor', require('./vendors'));
 admin.use('/auth', require('./auth'));
 

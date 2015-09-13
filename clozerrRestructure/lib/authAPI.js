@@ -210,7 +210,7 @@ AuthAPI.prototype.updateGCMId = function(params) {
     var access_token = params.access_token;
     var gcm_id = params.gcm_id;
     return getUserForAccessToken(access_token).pipe(function(userData){
-        if(!userData) return apiResponse(false,"This user does not exist : "+access_token);
+        if(!userData) return apiResponse(false,"Invalid access token : "+access_token);
         return fn.defer(fn.bind(repos.usersRepo, 'updateGcmIdForUser'))({ id : userData._id, gcmId : gcm_id}).pipe(function(data){
             return apiResponse(true,{ status : "success", new_gcm_id : gcm_id});
         });
@@ -226,7 +226,6 @@ function getUserForAccessToken(access_token){
             console.log("Found user for token : "+access_token+" & name : "+((userData.profile.name)?userData.profile.name:""));
             return deferred.success(userData);
         });
-//        return deferred.success(data);
     });
 }
 
