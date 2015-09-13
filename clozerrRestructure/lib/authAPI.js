@@ -54,49 +54,69 @@ AuthAPI.prototype.loginWithGoogleToken = function(params) {
     console.log("calling : "+url);
     var self = this;
     return self.httpClient.getJSON(url,{}).pipe(function(response) {
-        var result = JSON.parse(response.result);
-        if(result.error){
+        var googleUserData = JSON.parse(response.result);
+        if(googleUserData.error){
             //Wrong token credentials
-            return apiResponse(false,result.error.message,error.code.INVALID_GOOGLE_TOKEN);
+            return apiResponse(false,googleUserData.error.message,error.code.INVALID_GOOGLE_TOKEN);
         }else{
             //Extract from google api result
-            var userId = result.id;
-            var email = result.email;
-            var name = result.name;
-            var picture = result.picture;
-            var gender = result.gender;
+            var socialId = googleUserData.id;
+            var email = googleUserData.email;
+            var name = googleUserData.name;
+            var picture = googleUserData.picture;
+            var gender = googleUserData.gender;
 
             return fn.defer(fn.bind(repos.usersRepo, 'readUserOfEmail'))({ email : email}).pipe(function(userData){
-                if(!userData) return apiResponse(false,"User with this email does not exists");
-                return fn.defer(fn.bind(repos.tokensRepo, 'getTokenForUserD'))({ userId : userData._id }).pipe(function(tokenData){
-                    function sendData(access_token){
-                        return apiResponseDeprecated(true,{
-                            result   : true,
-                            token : access_token,
-                            user : {
-                                _id : userData._id,
-                                profile : {
-                                    name : userData.profile.name,
-                                    picture : userData.profile.picture
-                                }
+                function sendData(access_token, userId, name,picture){
+                    return apiResponseDeprecated(true,{
+                        result   : true,
+                        token : access_token,
+                        user : {
+                            _id : userId,
+                            profile : {
+                                name : name,
+                                picture : picture
                             }
-                        });
-                    };
-
-
-                    if(!tokenData){
+                        }
+                    });
+                }
+                if(!userData){
+                    //New user
+                    console.log("User with email "+email+" does not exist, hence creating one");
+                    return fn.defer(fn.bind(repos.usersRepo, 'createNewUser'))({
+                        email : data.email,
+                        name : name,
+                        picture : picture,
+                        socialId : socialId,
+                        raw : email,
+                        gender : gender, //TODO : add enum here
+                        auth_type : "google" //TODO : add enum here
+                    }).pipe(function(userCreateData){
                         //Generate fresh clozerr token
-                        console.log("Creating new CLozerr token for user : "+userData._id);
+                        console.log("userCreateData ",userCreateData);
+                        console.log("Creating new CLozerr token for user : "+userCreateData._id);
                         var access_token = hat();
                         return fn.defer(fn.bind(repos.tokensRepo, 'addTokenD'))({userId : userData._id, access_token:access_token }).pipe(function(data){
-                            return sendData(access_token);
+                            return sendData(access_token,userCreateData._id,name,picture);
                         });
-                    }else{
-                        console.log("Sending already existing CLozerr token for user : "+userData._id);
-                        return sendData(tokenData.access_token);
-                    }
+                    });
 
-                });
+                }else{
+                    //Already existing user
+                    return fn.defer(fn.bind(repos.tokensRepo, 'getTokenForUserD'))({ userId : userData._id }).pipe(function(tokenData){
+                        if(!tokenData){
+                            //Generate fresh clozerr token
+                            console.log("Creating new CLozerr token for user : "+userData._id);
+                            var access_token = hat();
+                            return fn.defer(fn.bind(repos.tokensRepo, 'addTokenD'))({userId : userData._id, access_token:access_token }).pipe(function(tokenCreateData){
+                                return sendData(access_token,userData._id,userData.profile.name,userData.profile.picture);
+                            });
+                        }else{
+                            console.log("Sending already existing CLozerr token for user : "+userData._id);
+                            return sendData(tokenData.access_token,userData._id,userData.profile.name,userData.profile.picture);
+                        }
+                    });
+                }
             });
         }
     });

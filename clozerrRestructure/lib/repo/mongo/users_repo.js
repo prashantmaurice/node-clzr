@@ -62,5 +62,32 @@ module.exports =  function(mongoose){
         this.findOne({"profile.email" : email}).lean().exec(cb);
     };
 
+    UsersSchema.statics.createNewUser = function (data, cb) {
+        var upgraded = new Date();
+        var email = data.email;
+        var name = data.name;
+        var picture = data.picture;
+        var socialId = data.socialId;
+        var raw = data.rawProfileData;
+        var auth_type = data.auth_type;
+        var gender = data.gender;
+        this.create({
+            auth_type : auth_type,
+            upgraded : upgraded,
+            profile : {
+                id : socialId,
+                picture : picture,
+                name : name,
+                email : email,
+                raw : raw,
+                gender : gender
+            },
+            favourites : [],
+            pinned : [],
+            computed : [],
+            rewards : []
+        },cb);
+    };
+
     return UsersSchema;
 };
