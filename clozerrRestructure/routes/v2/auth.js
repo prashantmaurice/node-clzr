@@ -35,32 +35,29 @@ function callAPI(req, res, apiMethod) {
 
 
 /**
- *  User trying to login with google access_token, to get his userId, username, picurl, access_token(clozerr-server's)
+ *  User trying to login with google/facebook access_token, to get his userId, username, picurl, access_token(clozerr-server's)
  *
  *  sample request : http://api.clozerr.com/v2/auth/login/google?token=ya29.7QE0vp4i1K2IfLTXr2VG5gha-qWQlV_cRXX_4nYG8SqPLXZ0A9Kx4s9rDo6tvVpugFTXyA
  *  sample response :
  {
-    rewards: [
-        {
-            image: "https://s3-ap-southeast-1.amazonaws.com/clozerr/app/general/icons/welcome+reward.png",
-            _id: "55f41303b9a5ccd57400d85a",
-            type: "S0",
-            stamps: "1",
-            caption: "Welcome Reward",
-            description: "One brownie or panacotta free",
-            params: {
-                type: "welcomeReward",
-                expiry: "no"
-            },
-            __v: 0,
-            unlocked: true
+    result: true,
+    token: "7ba7296781c5b1040fa00eaa125a10d3",
+    user: {
+        _id: "54ddfc1d5500776b146a27d1",
+        profile: {
+            name: "Prashant Maurice",
+            picture: "https://lh4.googleusercontent.com/-T-2uyM8lKyI/AAAAAAAAAAI/AAAAAAAAB_U/IWmXmmYWDJY/photo.jpg?sz=50"
         }
-    ]
+    },
+    statusCode: 200
 }
  *
  */
 router.get('/login/google', function(req, res, next) {
     callAPI(req, res, fn.bind(authAPI, 'loginWithGoogleToken'));
+});
+router.get('/login/facebook', function(req, res, next) {
+    callAPI(req, res, fn.bind(authAPI, 'loginWithFacebookToken'));
 });
 
 

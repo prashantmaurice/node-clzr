@@ -126,6 +126,85 @@ AuthAPI.prototype.loginWithGoogleToken = function(params) {
 //    });
 };
 
+AuthAPI.prototype.loginWithFacebookToken = function(params) {
+    var token = params.token;
+    console.log("Trying to Login with Facebook token : "+token);
+    var url = "https://graph.facebook.com/me/?access_token="  + token;
+    console.log("calling : "+url);
+    var self = this;
+    return self.httpClient.getJSON(url,{}).pipe(function(response) {
+        var fbUserData = JSON.parse(response.result);
+        if(fbUserData.error){
+            //Wrong token credentials
+            return apiResponse(false,fbUserData.error.message,error.code.INVALID_GOOGLE_TOKEN);
+        }else{
+            //Extract from facebook api result
+            var socialId = fbUserData.id;
+            var email = fbUserData.email;
+            var name = fbUserData.name;
+            var picture = fbUserData.picture;
+            var gender = fbUserData.gender;
+
+            return fn.defer(fn.bind(repos.usersRepo, 'readUserOfEmail'))({ email : email}).pipe(function(userData){
+                function sendData(access_token, userId, name,picture){
+                    return apiResponseDeprecated(true,{
+                        result   : true,
+                        token : access_token,
+                        user : {
+                            _id : userId,
+                            profile : {
+                                name : name,
+                                picture : picture
+                            }
+                        }
+                    });
+                }
+                if(!userData){
+                    //New user
+                    console.log("User with email "+email+" does not exist, hence creating one");
+                    return fn.defer(fn.bind(repos.usersRepo, 'createNewUser'))({
+                        email : data.email,
+                        name : name,
+                        picture : picture,
+                        socialId : socialId,
+                        raw : email,
+                        gender : gender, //TODO : add enum here
+                        auth_type : "google" //TODO : add enum here
+                    }).pipe(function(userCreateData){
+                        //Generate fresh clozerr token
+                        console.log("userCreateData ",userCreateData);
+                        console.log("Creating new CLozerr token for user : "+userCreateData._id);
+                        var access_token = hat();
+                        return fn.defer(fn.bind(repos.tokensRepo, 'addTokenD'))({userId : userData._id, access_token:access_token }).pipe(function(data){
+                            return sendData(access_token,userCreateData._id,name,picture);
+                        });
+                    });
+
+                }else{
+                    //Already existing user
+                    return fn.defer(fn.bind(repos.tokensRepo, 'getTokenForUserD'))({ userId : userData._id }).pipe(function(tokenData){
+                        if(!tokenData){
+                            //Generate fresh clozerr token
+                            console.log("Creating new CLozerr token for user : "+userData._id);
+                            var access_token = hat();
+                            return fn.defer(fn.bind(repos.tokensRepo, 'addTokenD'))({userId : userData._id, access_token:access_token }).pipe(function(tokenCreateData){
+                                return sendData(access_token,userData._id,userData.profile.name,userData.profile.picture);
+                            });
+                        }else{
+                            console.log("Sending already existing CLozerr token for user : "+userData._id);
+                            return sendData(tokenData.access_token,userData._id,userData.profile.name,userData.profile.picture);
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+//    return fn.defer(fn.bind(repos.usersRepo, 'readAllD'))({ limit : 30}).pipe(function(data){
+//        return apiResponse(true,data);
+//    });
+};
+
 
 module.exports = AuthAPI;
 
