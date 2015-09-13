@@ -54,7 +54,7 @@ module.exports =  function(mongoose){
 
     UsersSchema.statics.readUserOfID = function (data, cb) {
         var userId = data.id;
-        this.find({_id : userId}).lean().exec(cb);
+        this.findOne({_id : userId}).lean().exec(cb);
     };
 
     UsersSchema.statics.readUserOfEmail = function (data, cb) {
@@ -87,6 +87,13 @@ module.exports =  function(mongoose){
             computed : [],
             rewards : []
         },cb);
+    };
+
+    UsersSchema.statics.updateGcmIdForUser = function (data, cb) {
+        var userId = data.id;
+        var gcmId = data.gcmId;
+        this.update({_id: userId}, {gcm_id:gcmId}, {upsert: false}).lean().exec(cb);
+//        this.find({_id : userId}).lean().exec(cb);
     };
 
     return UsersSchema;

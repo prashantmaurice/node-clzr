@@ -206,6 +206,31 @@ AuthAPI.prototype.loginWithFacebookToken = function(params) {
 };
 
 
+AuthAPI.prototype.updateGCMId = function(params) {
+    var access_token = params.access_token;
+    var gcm_id = params.gcm_id;
+    return getUserForAccessToken(access_token).pipe(function(userData){
+        if(!userData) return apiResponse(false,"This user does not exist : "+access_token);
+        return fn.defer(fn.bind(repos.usersRepo, 'updateGcmIdForUser'))({ id : userData._id, gcmId : gcm_id}).pipe(function(data){
+            return apiResponse(true,{ status : "success", new_gcm_id : gcm_id});
+        });
+    });
+};
+
+function getUserForAccessToken(access_token){
+    return fn.defer(fn.bind(repos.tokensRepo, 'getUserForTokenD'))({ access_token : access_token}).pipe(function(tokenData){
+        if(!tokenData) return deferred.success(null);
+        console.log("Token Validation success, token : "+access_token+" & userId : "+tokenData.account.toString());
+        return fn.defer(fn.bind(repos.usersRepo, 'readUserOfID'))({ id : tokenData.account}).pipe(function(userData){
+            if(!userData) return deferred.success(null);
+            console.log("Found user for token : "+access_token+" & name : "+((userData.profile.name)?userData.profile.name:""));
+            return deferred.success(userData);
+        });
+//        return deferred.success(data);
+    });
+}
+
+
 module.exports = AuthAPI;
 
 

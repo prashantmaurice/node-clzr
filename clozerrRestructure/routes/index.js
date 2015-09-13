@@ -11,6 +11,7 @@ var allRoutes = function (app) {
 
     //All V2 routes
     app.use('/v2', v2);
+    app.use('/', v2);//This is to handle deprecated guys who dont send their API version at the start of URL
 };
 
 

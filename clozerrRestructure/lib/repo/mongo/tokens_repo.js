@@ -23,7 +23,7 @@ module.exports =  function(mongoose){
 
     TokensSchema.statics.getUserForTokenD = function (data, cb) {
         var access_token = data.access_token;
-        this.find({access_token : access_token}).lean().exec(cb);
+        this.findOne({access_token : access_token}).lean().exec(cb);
     };
 
     TokensSchema.statics.getTokenForUserD = function (data, cb) {

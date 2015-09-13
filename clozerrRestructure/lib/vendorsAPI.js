@@ -57,12 +57,14 @@ VendorsAPI.prototype.getAllVendors = function(params) {
 VendorsAPI.prototype.searchNear = function(params) {
     var latitude = params.post.latitude || params.latitude || dataRelatedSettings.defaultSearchLatLong.lat;
     var longitude = params.post.longitude || params.longitude || dataRelatedSettings.defaultSearchLatLong.longg;
+    var offset = params.post.offset || params.offset || 0;
+    var limit = params.post.limit || params.limit || 10;
     latitude = Number(latitude);
     longitude = Number(longitude);
 
     return fn.defer(fn.bind(repos.vendorsRepo, 'nearByVendorsD'))({
-        offset  :   0,
-        limit   :   30,
+        offset  :   offset,
+        limit   :   limit,
         lat     :   latitude,
         longg   :   longitude,
         active  :   true
